@@ -141,7 +141,7 @@ The available controls can change frequency, mode and offsets.
 
 FILES AND SAVED PREFERENCES
 
-YAC.exe starts the program.
+YAC-001-beta.exe starts the program.
 _internal contains the bundled runtime and libraries; leave it intact.
 lang contains English, German and Polish labels and help.
 rad_cmds contains radio command definitions.

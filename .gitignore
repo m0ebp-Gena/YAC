@@ -24,6 +24,7 @@ venv/
 /dist/
 *.spec
 /YAC-*.zip
+/YAC-*.sha256
 
 # Operating system and sync metadata.
 .DS_Store
