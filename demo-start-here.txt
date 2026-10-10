@@ -1,0 +1,171 @@
+YAC - Yet Another Controller
+Getting started with the Windows 64-bit demo
+
+Welcome to this demonstration of Yet Another Controller. YAC provides a
+keyboard-operated radio interface designed with speech and braille access
+in mind. This guide explains how to start the program and try the controls
+currently available.
+
+If you have questions about YAC, I'll be happy to help. You can contact me
+via the Active Elements or Blind Hams email lists, or directly at
+gena@m0ebp.uk.
+
+STARTING YAC
+
+1. Extract the entire ZIP using Windows Extract All. Choose an ordinary
+   writable folder, such as Downloads or Documents.
+2. Open the extracted YAC folder and run YAC-001-beta.exe. Do not run it from inside
+   the ZIP or move the executable on its own. Keep the supplied files and
+   subfolders together exactly as extracted. No separate installation is
+   needed.
+3. Maximise the terminal window before working through the prompts. Hold
+   Alt and press Space, release both keys, then press x. This opens the
+   window menu and selects Maximise.
+
+PREPARING YOUR RADIO
+
+Connect your radio and close any other control program using its COM port.
+If Windows needs a USB driver for your radio, install the driver supplied
+by the radio manufacturer before starting YAC.
+
+YAC will attempt to find your connected radio automatically. A new radio
+scan typically takes about a minute, and there may be pauses with no new
+message.
+YAC is still working during these pauses. Please leave it running and
+allow the scan to finish.
+
+LANGUAGE AND STARTUP PROMPTS
+
+Follow the language and name or callsign prompts. The
+language choices are 1 for English, 2 for German and 3 for Polish. Each
+language is presented in its own language. Select a number and press Space
+when asked to confirm. The selected language is used for YAC's subsequent
+messages and help; your screen reader provides speech and/or braille
+output for YAC's messages.
+
+USING SPEECH AND BRAILLE
+
+Version 001 beta, 10 October 2026, uses the compact interface tested with
+a Focus Blue 40. Radio responses omit the yac: prefix and command keys
+are not echoed. Your saved name appears in the welcome and closing goodbye.
+Numeric values remain visible while editing; e: marks frequency entry.
+
+YAC leaves the terminal cursor on its latest response so that a braille
+display following the cursor can keep that information under your fingers.
+Earlier messages remain available by reviewing the terminal transcript found above.
+
+In your screen reader settings, select North American Computer Braille
+for the braille input and output tables. YAC expects literal single letters
+and punctuation. A contracted table that expands b to "but", for example,
+will send input that YAC does not recognise as the b command.
+
+Most commands use a single letter without Enter. Where YAC asks you to type
+a frequency or step size, enter the value and press Enter.
+
+Comma (,) moves down or decreases a value. Full stop (.) moves up or
+increases a value. Use these punctuation keys from your keyboard or braille keyboard.
+
+In band, mode and offset controls, q leaves that control and returns
+to the top level. Another command key leaves the control and starts
+that command. Band and mode changes take effect as you make them. At the top level, q
+quits YAC.
+
+USING THE DEMO
+
+w - Where am I? Read the current signal strength, frequency and mode.
+
+b - Select a band. Press comma to move down or full stop to move up.
+Press h for help, q to return, or another command key to continue.
+
+e - Enter a new frequency in megahertz, using a decimal point. For example,
+type 7.103 and press Enter to set 7.103 MHz. This also offers a quick way to
+move to a different band.
+
+m - Select a different mode. Use comma and full stop to cycle through the modes
+supported by the connected radio. Press h for help or q to return.
+
+Comma or full stop at the top level - Decrease or increase frequency
+by YAC's configured step for the current mode.
+
+You can also tune using your radio's tuning knob. Use w to read the
+current frequency.
+
+z - Round the current VFO frequency up or down to the nearest kilohertz.
+After tuning with the knob, press z to settle on an exact kilohertz
+without repeatedly checking the frequency as you turn the knob.
+
+o - Press o repeatedly to cycle through Receive, Transmit and Clear
+controls for offsets, described by manufacturers as RIT, XIT or clarifiers.
+Receive adjusts the receive frequency; Transmit adjusts the transmit
+frequency. Opening the offset control resets the offset to zero.
+In Receive or Transmit, comma subtracts 10 Hz and full stop adds 10 Hz.
+In Clear, either key clears the offsets and switches RIT/XIT or clarifiers
+off. Press q to return or another command key to continue.
+
+YAC gives commonly used commands at the top level their own letters. Some letters open a
+submenu containing less frequently used commands.
+
+s - Open the Settings submenu. This contains commands for adjusting how
+YAC works, including the tuning step size.
+
+To set the tuning step for the current mode, press s to open Settings,
+then press s again. Enter a positive whole number of hertz and press Enter.
+YAC saves this preference. The default step sizes are:
+
+SSB: 1000 Hz (1 kHz)
+CW:   500 Hz (0.5 kHz)
+AM:  2500 Hz (2.5 kHz)
+FM: 12500 Hz (12.5 kHz)
+
+These are YAC's tuning increments. You can adjust each mode's value to suit
+how you prefer to explore the bands.
+
+v - Within Settings, switch which VFO YAC controls, where supported.
+Manufacturers use names such as VFO A and VFO B, or Main and Sub, for
+these selections. YAC reports the selected VFO, its frequency and mode.
+Press q to return from Settings, or another command key to continue.
+
+h - Request help. YAC provides context-sensitive help where available.
+
+q - Quit from the top level, or leave the current control or Settings.
+
+WHAT THIS DEMO COVERS
+
+This is a limited working demonstration. Please try the available controls
+and tell us what works well and what could be improved.
+
+This demo has been tested with the IC-705, FTX-1 and FTDX10 during the
+development process.
+
+The available controls can change frequency, mode and offsets.
+
+FILES AND SAVED PREFERENCES
+
+YAC.exe starts the program.
+_internal contains the bundled runtime and libraries; leave it intact.
+lang contains English, German and Polish labels and help.
+rad_cmds contains radio command definitions.
+YAC.ini saves preferences and discovered radio connections.
+logs contains a diagnostic record, created automatically by this demo.
+START-HERE-English.txt contains these instructions.
+
+The demo creates no Start menu shortcut and installs no files into Windows.
+Moving the whole extracted YAC folder carries its saved preferences with
+it. Each separately extracted copy has its own settings.
+
+YOUR FEEDBACK
+
+Thank you for taking the time to try YAC. We hope you enjoy exploring it.
+If you would like to share a comment or suggestion, we would be pleased to
+hear from you. Any feedback is welcome, however brief. You can send it via
+the Active Elements or Blind Hams email lists, or directly to me at
+gena@m0ebp.uk.
+
+This demo records diagnostic information automatically, so there is
+nothing extra for you to set up. If something does not work as you hoped
+and you are happy to help us investigate, please send us YAC-debug.log
+from the logs folder inside your extracted YAC folder.
+
+Sharing the log is entirely optional. It can include your name or callsign,
+device details and operating frequencies, so please share it only if you
+are comfortable doing so.

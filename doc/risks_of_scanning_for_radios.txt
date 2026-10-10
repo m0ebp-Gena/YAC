@@ -1,0 +1,67 @@
+YAC: Risks of scanning for radios
+================================
+
+Purpose
+-------
+YAC scans serial ports to identify a connected radio and determine how to
+communicate with it. This note describes the risks and limits discussed during
+development. Port discovery is designed to use read-only radio queries, but it
+cannot be guaranteed harmless for every serial device, adapter, driver, or radio.
+
+Commands sent during discovery
+------------------------------
+For CAT radios, discovery sends FA; to request the current frequency. If that
+returns a valid frequency, it sends ID; to request the radio's CAT identifier.
+For supported Yaesu models it may also send MD0; to read the main-band mode.
+For Icom CI-V radios it sends read requests for frequency and mode.
+
+The routine does not send commands intended to set frequency, mode, transmit,
+or PTT. A detected connection and its port, baud rate, protocol, and model ID
+are saved in yac.ini; saving that profile does not change radio settings.
+
+RTS and DTR
+-----------
+The serial code disables RTS/CTS and DSR/DTR flow control. It sets RTS and DTR
+deasserted before opening a port, then sets them deasserted again after open.
+This reduces the chance that opening a port will key a radio, but cannot remove
+the risk of a brief control-line transition: some operating systems or serial
+drivers may activate RTS or DTR automatically while a port is opening.
+
+If a radio or interface is configured to use RTS or DTR for PTT, it could
+transmit briefly during discovery. Disable PTT-on-RTS/DTR in the radio or
+interface before scanning. Do not assume that setting the lines inactive in
+software guarantees that they never glitch.
+
+PySerial documents this driver-dependent behavior in its Serial.open() notes:
+https://pyserial.readthedocs.io/en/latest/pyserial_api.html
+
+Other serial devices
+--------------------
+Discovery enumerates and probes serial ports because it may not know which one
+belongs to the radio. A non-radio device on an enumerated port could receive
+the short CAT or CI-V probe bytes and interpret them differently. The probes
+are intended for radio control interfaces, not arbitrary serial equipment.
+
+Reliability limits
+------------------
+Discovery tries a defined set of common baud rates and validates CAT frequency
+responses before accepting them. A radio may still be missed if it uses an
+unsupported protocol, baud rate, CAT configuration, CI-V address, or response
+format. A CAT ID can also be shared by more than one radio model, so the ID may
+identify a compatible command set without proving the exact product model.
+
+USB descriptors help rank likely radio ports. When a radio exposes paired
+virtual COM ports, a shared USB identity and matching radio response can help
+group them; Windows' Enhanced COM/Standard COM descriptions help choose the
+preferred interface. Missing or duplicated USB identities can make grouping
+ambiguous. COM numbers alone are not stable identifiers because Windows can
+reassign them.
+
+Practical summary
+-----------------
+The scan is designed to identify radios with read-only requests and to avoid
+radio-setting commands. The remaining practical risks are a driver-generated
+RTS/DTR transition (especially when those lines control PTT) and probe bytes
+being interpreted by another serial device. Compatibility is strongest for
+radios and interfaces that have been tested with the routine; success with one
+radio does not establish safety or compatibility for every model.

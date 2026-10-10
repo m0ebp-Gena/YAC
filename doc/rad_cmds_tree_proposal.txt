@@ -1,0 +1,70 @@
+YAC Radio Command Directory Tree Proposal
+==========================================
+
+This document describes folders only. It contains no CAT or CI-V commands.
+
+The directory levels are:
+1. Manufacturer: Yaesu, Icom, and other manufacturers as added.
+2. Protocol: CAT, CI-V, or another protocol as needed.
+3. Shared defaults and individual radio models.
+4. Read and set command groups.
+
+The intended lookup order for a radio operation is:
+1. Model-specific file, if present.
+2. Manufacturer/protocol shared-default file, if present.
+3. Otherwise, report that the operation is unsupported.
+
+Model files contain only exceptions to shared defaults. Do not add a radio
+family layer until a comparison of its official manuals shows that it provides
+useful, verified sharing.
+
+rad_cmds
+- yaesu
+- ** CAT
+- *** common (verified shared defaults only)
+- **** read
+- **** set
+- *** models
+- **** 0761 (Yaesu FT-DX10 CAT ID)
+- ***** read (model-specific overrides only)
+- ***** set (model-specific overrides only)
+- **** 0800 (Yaesu FT-710 CAT ID)
+- ***** read (model-specific overrides only)
+- ***** set (model-specific overrides only)
+- **** 0840 (Yaesu FTX-1 CAT ID)
+- ***** read (model-specific overrides only)
+- ***** set (model-specific overrides only)
+- icom
+- ** CI-V
+- *** common (verified shared defaults only)
+- **** read
+- **** set
+- *** models
+- **** ic-705
+- ***** read (model-specific overrides only)
+- ***** set (model-specific overrides only)
+- **** ic-7300
+- ***** read (model-specific overrides only)
+- ***** set (model-specific overrides only)
+
+Notes
+=====
+
+- Yaesu and Icom are examples of manufacturer folders. The manufacturer is the
+  first level; CAT and CI-V are protocol folders below it.
+- CAT and CI-V remain separate because CAT uses Yaesu's ASCII command format
+  here, while CI-V uses Icom's framed binary format.
+- Numeric Yaesu model directories use the ID returned by the radio's CAT ID
+  query. Keep a model-name mapping in YAC so the numeric IDs remain readable.
+- Icom model directories use YAC's model name/key, not the CI-V address. Keep
+  the CI-V address separately in the saved radio profile because it is
+  configurable and is not a reliable model identifier.
+- The sample model list is illustrative, not a statement that YAC supports
+  every radio shown.
+- A CAT/CI-V profile file represents a logical radio operation. Keyboard
+  bindings should map to logical operations in YAC; they should not define the
+  radio's CAT/CI-V command format.
+- The common folders should start small. Promote an operation to common only
+  after confirming that its command, parameters, response, and meaning match
+  for the radios that will use it.
+

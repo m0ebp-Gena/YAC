@@ -1,0 +1,34 @@
+# Local reference material, releases, backups and personal decisions.
+/local_storage/
+
+# Personal preferences, discovered devices and diagnostics.
+/yac.ini
+/github_url.txt
+/logs/
+*.log
+
+# Python environments, caches and downloaded build dependencies.
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+/.build-deps/
+/.test-deps/
+/.installer-verification/
+
+# Generated packages and build output.
+/.demo-build/
+/demo-dist/
+/build/
+/dist/
+*.spec
+/YAC-*.zip
+
+# Operating system and sync metadata.
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.nosync
+*.swp
+*~

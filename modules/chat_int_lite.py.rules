@@ -1,0 +1,7 @@
+This file should display the chat interface. This file's purpose is to listen to radio responses provided by yac.py and present them as a chat terminal interface. So that the braille display driver being used can show the radio's output in braille.
+Omit the users name and do not echo user's input at all.
+I think I saw python just provide a > symbol as the prompt at one point. Use a single symbol or nothing just display the output. line by line pausing at the end of the line so the output is under the fingertips of the user.
+Again, not necessary to press enter unless it is at the end of a frequency / tone / step size.
+Perhaps indicate an edit field by presenting a letter e as the prompt.
+This may mean creating a new yac.py, if so call it yac-lite.py
+Same for ini

@@ -1,0 +1,34 @@
+This file should should discover what platform is accommodating the program and ammend the ini file accordingly.
+This file should call lang_sel.py if the ini doesn't state the users language.
+This file should call modules/name_call_sel.py if ini doesn't contain a name in the call= entry.
+This file should call find_rad.py if the ini doesn't  contain port, baud, model.
+This file then should interact with chat_int.py communicating with the radio and passing cleaned responses for chat_int.py to display to the user.
+Cleaning means removing trailing and leading zweros and inserting a decimal point between megahertz and kilohertz.
+Translating MD01 to LSB and other output to human readable format. The label mechanism for each language should be used which chat_int.py should display language defined labels.
+New labels must be provided for every supported language.
+
+Paths:
+
+All labels must be sourced from the path according to the language selected by the user 
+/yac/lang/en/labels
+${HOME}/yac/lang/de/labels
+${HOME}/yac/lang/pl/labels
+
+Likewise for language specific help tags.
+${HOME}/yac/lang/en/help
+${HOME}/yac/lang/de/help
+${HOME}/yac/lang/pl/help
+
+All radio controll commands read and set must be in this path. Each new radio will use a model identifier inside which set and read subdirectories. The example is the Yaesu FT-DX10.
+${HOME}/yac/rad_cmds/yaesu/CAT/models/0761/read/
+${HOME}/yac/rad_cmds/yaesu/CAT/models/0761/set/
+${HOME}/yac/rad_cmds/yaesu/CAT/common/read/
+${HOME}/yac/rad_cmds/yaesu/CAT/common/set/
+
+For tidiness small module units are found.
+${HOME}/yac/modules
+
+This file and yac.ini
+${HOME}/yac/
+
+

@@ -1,0 +1,10 @@
+# Optional starter settings. YAC creates yac.ini on first run.
+# Leave language and callsign blank to receive the startup prompts.
+[yac]
+lang=
+call=
+debug=0
+step_ssb=1000
+step_cw=500
+step_am=2500
+step_fm=12500

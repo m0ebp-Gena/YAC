@@ -1,0 +1,7 @@
+Tone input: press i to cycle CTCSS, DCS N (normal polarity) and DCS I (inverted polarity). The cycle repeats. Radios with CTCSS only stay on CTCSS.
+For CTCSS, type a supported tone in hertz, for example 88.5 or 100.0. The field accepts digits and one decimal point, up to five characters.
+For DCS, type a supported three-digit code, for example 023 or 754, including any leading zero. Do not type D, N, I or a decimal point. DCS code digits are 0 to 7; not every combination is a supported code.
+Use Backspace, Delete and the cursor keys to edit. Press Enter to accept the value. At TX/Both: t/b, press t to send the tone or code on transmission only, or b to send it and require it for reception. Both uses the selected DCS polarity for transmission and reception. When a radio supports only Both, YAC applies it directly after Enter without asking t/b. This applies to DCS on the FTX-1: the selected code and polarity are used for both transmission and reception.
+The radio is changed after t or b, or directly after Enter when Both is automatic. YAC confirms the result and returns to the main interface after success. A failed setting lets you edit and try again. Empty Enter leaves the current field open.
+Press h for this help; the entered value is kept. Press i to choose the next tone type and clear the field. Press q at either stage to cancel and return to the main interface.
+These controls are available in supported FM repeater bands. To disable tones, use the radio's controls.

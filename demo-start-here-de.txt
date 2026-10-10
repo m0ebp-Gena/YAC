@@ -1,0 +1,195 @@
+YAC - Yet Another Controller
+Erste Schritte mit der Windows-64-Bit-Demo
+
+Version 001 beta, 10. Oktober 2026: kompakte Oberfläche für Sprache und Braille.
+Funkgeräteantworten erscheinen ohne yac:-Präfix; Befehlstasten werden nicht
+angezeigt. Der gespeicherte Name erscheint in Begrüßung und Abschied.
+Zahlen bleiben bei der Eingabe sichtbar; e: kennzeichnet die Frequenzeingabe.
+
+Willkommen zu dieser Demonstration von Yet Another Controller. YAC bietet
+eine per Tastatur bedienbare Funkgerätesteuerung, die für die Nutzung mit
+Sprachausgabe und Braille entwickelt wurde. Diese Anleitung erklärt den
+Programmstart und die derzeit verfügbaren Bedienelemente.
+
+Bei Fragen zu YAC helfe ich Ihnen gerne. Sie erreichen mich über die
+E-Mail-Listen Active Elements oder Blind Hams oder direkt unter
+gena@m0ebp.uk.
+
+YAC STARTEN
+
+1. Entpacken Sie die gesamte ZIP-Datei mit der Windows-Funktion „Alle
+   extrahieren“. Wählen Sie einen beschreibbaren Ordner, beispielsweise
+   Downloads oder Dokumente.
+2. Öffnen Sie den entpackten YAC-Ordner und starten Sie YAC-001-beta.exe. Starten
+   Sie das Programm nicht innerhalb der ZIP-Datei und verschieben Sie die
+   Programmdatei nicht einzeln. Lassen Sie alle mitgelieferten Dateien und
+   Unterordner so zusammen, wie sie entpackt wurden. Eine gesonderte
+   Installation ist nicht erforderlich.
+3. Maximieren Sie das Terminalfenster, bevor Sie die Eingabeaufforderungen
+   bearbeiten. Halten Sie Alt gedrückt und drücken Sie die Leertaste.
+   Lassen Sie beide Tasten los und drücken Sie dann x. Damit öffnen Sie
+   das Fenstermenü und wählen „Maximieren“.
+
+DAS FUNKGERÄT VORBEREITEN
+
+Schließen Sie Ihr Funkgerät an und beenden Sie andere Steuerprogramme,
+die dessen COM-Port verwenden. Wenn Windows einen USB-Treiber für Ihr
+Funkgerät benötigt, installieren Sie vor dem Start von YAC den vom
+Funkgerätehersteller bereitgestellten Treiber.
+
+YAC versucht, Ihr angeschlossenes Funkgerät automatisch zu finden. Eine
+neue Suche dauert normalerweise etwa eine Minute. Dabei kann es Pausen
+geben, in denen keine neue Meldung erscheint. YAC arbeitet während dieser
+Pausen weiter. Lassen Sie das Programm laufen, bis die Suche beendet ist.
+
+SPRACHE UND EINGABEN BEIM START
+
+Folgen Sie den Aufforderungen zur Auswahl der Sprache und zur Eingabe
+Ihres Namens oder Rufzeichens. Die Sprachauswahl lautet: 1 für Englisch,
+2 für Deutsch und 3 für Polnisch. Jede Sprache wird in ihrer eigenen
+Sprache angezeigt. Wählen Sie eine Zahl und drücken Sie die Leertaste,
+wenn Sie zur Bestätigung aufgefordert werden. YAC verwendet die gewählte
+Sprache für die folgenden Meldungen und Hilfetexte. Ihr Screenreader
+stellt die Sprach- und/oder Brailleausgabe der YAC-Meldungen bereit.
+
+SPRACHAUSGABE UND BRAILLE VERWENDEN
+
+YAC lässt den Terminalcursor auf seiner letzten Antwort stehen. Eine
+Braillezeile, die dem Cursor folgt, hält diese Information dadurch unter
+Ihren Fingern. Frühere Meldungen können Sie im darüberliegenden
+Terminalverlauf nachlesen.
+
+Wählen Sie in den Einstellungen Ihres Screenreaders North American
+Computer Braille als Braille-Ein- und -Ausgabetabelle. YAC erwartet einzelne
+Buchstaben und Satzzeichen. Eine Kurzschrifttabelle, die beispielsweise b
+zum englischen Wort „but“ erweitert, sendet eine Eingabe, die YAC nicht
+als Befehl b erkennt.
+
+Die meisten Befehle bestehen aus einem einzelnen Buchstaben und benötigen
+kein Enter. Wenn YAC eine Frequenz oder Schrittweite abfragt, geben Sie
+den Wert ein und drücken Sie Enter.
+
+Komma (,) bewegt die Auswahl nach unten oder verringert einen Wert.
+Punkt (.) bewegt die Auswahl nach oben oder erhöht einen Wert. Verwenden
+Sie diese Satzzeichentasten auf Ihrer Tastatur oder Brailletastatur.
+
+Bei Band-, Betriebsarten- und Offsetsteuerung verlässt q die jeweilige
+Steuerung und kehrt zur obersten Ebene zurück. Eine andere Befehlstaste
+verlässt die Steuerung und führt diesen Befehl aus. Band- und
+Betriebsartenänderungen werden sofort wirksam. Auf der obersten Ebene
+beendet q YAC.
+
+DIE DEMO VERWENDEN
+
+w - Where am I? (Wo bin ich?) Signalstärke, Frequenz und Betriebsart lesen.
+
+b - Ein Band wählen. Komma bewegt nach unten, Punkt nach oben.
+Drücken Sie h für Hilfe, q zur Rückkehr oder eine andere Befehlstaste,
+um fortzufahren.
+
+e - Eine neue Frequenz in Megahertz mit einem Dezimalpunkt eingeben.
+Geben Sie beispielsweise 7.103 ein und drücken Sie Enter, um 7.103 MHz
+einzustellen. So können Sie auch schnell zu einem anderen Band wechseln.
+
+m - Eine andere Betriebsart wählen. Mit Komma und Punkt wechseln Sie
+zwischen den vom angeschlossenen Funkgerät unterstützten Betriebsarten.
+Drücken Sie h für Hilfe oder q zur Rückkehr.
+
+Komma oder Punkt auf der obersten Ebene - Frequenz um die in YAC
+festgelegte Schrittweite für die aktuelle Betriebsart senken oder erhöhen.
+
+Sie können auch mit dem Abstimmknopf Ihres Funkgeräts abstimmen. Mit w
+lesen Sie die aktuelle Frequenz.
+
+z - Die aktuelle VFO-Frequenz auf das nächste ganze Kilohertz auf- oder
+abrunden. Nach dem Abstimmen mit dem Knopf drücken Sie z, um ein genaues
+ganzes Kilohertz einzustellen, ohne während des Drehens immer wieder die
+Frequenz abfragen zu müssen.
+
+o - Drücken Sie o wiederholt, um zwischen Empfang, Senden und Löschen
+zu wechseln. Diese Funktionen stellen Frequenzablagen ein, die Hersteller
+als RIT, XIT oder Clarifier bezeichnen. Empfang verändert die
+Empfangsfrequenz; Senden verändert die Sendefrequenz. Beim Öffnen der
+Offsetsteuerung wird die Ablage auf null gesetzt. Bei Empfang oder Senden
+zieht Komma 10 Hz ab und Punkt fügt 10 Hz hinzu. Bei Löschen setzt jede
+der beiden Tasten die Ablagen zurück und schaltet RIT/XIT oder die
+Clarifier aus. Drücken Sie q zur Rückkehr oder eine andere Befehlstaste,
+um fortzufahren.
+
+YAC weist häufig verwendeten Befehlen auf der obersten Ebene eigene
+Buchstaben zu. Manche Buchstaben öffnen ein Untermenü mit seltener
+verwendeten Befehlen.
+
+s - Das Untermenü Einstellungen öffnen. Es enthält Befehle zum Anpassen
+der Arbeitsweise von YAC, einschließlich der Abstimmschrittweite.
+
+Um die Schrittweite für die aktuelle Betriebsart festzulegen, drücken
+Sie s für Einstellungen und anschließend nochmals s. Geben Sie eine
+positive ganze Zahl in Hertz ein und drücken Sie Enter. YAC speichert
+diese Einstellung. Die Standardschrittweiten sind:
+
+SSB: 1000 Hz (1 kHz)
+CW:   500 Hz (0,5 kHz)
+AM:  2500 Hz (2,5 kHz)
+FM: 12500 Hz (12,5 kHz)
+
+Dies sind die Abstimmschritte von YAC. Sie können den Wert für jede
+Betriebsart so anpassen, wie Sie die Bänder erkunden möchten.
+
+v - In Einstellungen wechseln, welchen VFO YAC steuert, sofern unterstützt.
+Hersteller verwenden dafür Bezeichnungen wie VFO A und VFO B oder Main
+und Sub. YAC meldet den gewählten VFO, seine Frequenz und seine Betriebsart.
+Drücken Sie q, um Einstellungen zu verlassen, oder eine andere
+Befehlstaste, um fortzufahren.
+
+h - Hilfe anfordern. YAC bietet kontextbezogene Hilfe, wo sie verfügbar ist.
+
+q - YAC auf der obersten Ebene beenden oder die aktuelle Steuerung bzw.
+Einstellungen verlassen.
+
+UMFANG DIESER DEMO
+
+Dies ist eine begrenzte, funktionsfähige Demonstration. Probieren Sie die
+verfügbaren Bedienelemente aus und teilen Sie uns mit, was gut funktioniert
+und was verbessert werden könnte.
+
+Diese Demo wurde während der Entwicklung mit dem IC-705, FTX-1 und
+FTDX10 getestet.
+
+Die verfügbaren Bedienelemente können Frequenz, Betriebsart und
+Frequenzablagen ändern.
+
+DATEIEN UND GESPEICHERTE EINSTELLUNGEN
+
+YAC-001-beta.exe startet das Programm.
+_internal enthält die mitgelieferte Laufzeitumgebung und Bibliotheken;
+lassen Sie diesen Ordner unverändert.
+lang enthält Meldungen und Hilfe auf Englisch, Deutsch und Polnisch.
+rad_cmds enthält die Funkgerätebefehle.
+YAC.ini speichert Einstellungen und gefundene Funkgeräteverbindungen.
+logs enthält ein Diagnoseprotokoll, das die Demo automatisch erstellt.
+START-HERE-English.txt enthält die englische Fassung dieser Anleitung.
+HIER-STARTEN-Deutsch.txt enthält diese deutsche Fassung.
+
+Die Demo erstellt keine Verknüpfung im Startmenü und installiert keine
+Dateien in Windows. Wenn Sie den gesamten entpackten YAC-Ordner
+verschieben, bleiben seine gespeicherten Einstellungen erhalten. Jede
+separat entpackte Kopie hat ihre eigenen Einstellungen.
+
+IHRE RÜCKMELDUNG
+
+Vielen Dank, dass Sie sich Zeit nehmen, YAC auszuprobieren. Wir wünschen
+Ihnen Freude beim Erkunden. Über Kommentare und Vorschläge freuen wir
+uns. Jede Rückmeldung ist willkommen, auch eine kurze. Sie können sie
+über die E-Mail-Listen Active Elements oder Blind Hams oder direkt an
+mich unter gena@m0ebp.uk senden.
+
+Diese Demo zeichnet Diagnoseinformationen automatisch auf. Sie müssen
+dafür nichts zusätzlich einrichten. Wenn etwas nicht wie erhofft
+funktioniert und Sie bei der Untersuchung helfen möchten, senden Sie
+uns bitte YAC-debug.log aus dem Ordner logs in Ihrem entpackten YAC-Ordner.
+
+Das Teilen des Protokolls ist freiwillig. Es kann Ihren Namen oder Ihr
+Rufzeichen, Geräteinformationen und Betriebsfrequenzen enthalten.
+Teilen Sie es daher nur, wenn Sie damit einverstanden sind.
+

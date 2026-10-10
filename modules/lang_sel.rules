@@ -1,0 +1,6 @@
+This file asks the user to choose their preferred language.
+Each language should be displayed on the screen being assigned a number. Number 1 should be English. Each item of the menu should be in the native language so that the user recognises their own language. A menu in English is no good. This file should display the label for each language. Once the user has made their selection, Ask for confirmation using the labels. Clear the screen. 
+This file should enter the selected language in the ini file fusing label l000.  then exit.
+l000
+l002
+l005

@@ -1,0 +1,184 @@
+YAC - Yet Another Controller
+Pierwsze kroki z wersją demonstracyjną dla 64-bitowego Windows
+
+Wersja 001 beta, 10 października 2026: uproszczony interfejs dla mowy i brajla.
+Odpowiedzi radia nie mają prefiksu yac:, a klawisze poleceń nie są wyświetlane.
+Zapisane imię pojawia się w powitaniu i pożegnaniu. Liczby pozostają widoczne
+podczas edycji; e: oznacza wprowadzanie częstotliwości.
+
+Witamy w demonstracji Yet Another Controller. YAC umożliwia sterowanie
+radiem za pomocą klawiatury i został zaprojektowany z myślą o dostępie
+przez mowę i brajl. Ten przewodnik wyjaśnia, jak uruchomić program
+i korzystać z obecnie dostępnych funkcji.
+
+Chętnie odpowiem na pytania dotyczące YAC. Możesz skontaktować się ze mną
+przez listy e-mailowe Active Elements lub Blind Hams albo bezpośrednio
+pod adresem gena@m0ebp.uk.
+
+URUCHAMIANIE YAC
+
+1. Rozpakuj cały plik ZIP za pomocą funkcji Windows „Wyodrębnij wszystkie”.
+   Wybierz zwykły folder, w którym możesz zapisywać pliki, na przykład
+   Pobrane lub Dokumenty.
+2. Otwórz rozpakowany folder YAC i uruchom YAC-001-beta.exe. Nie uruchamiaj go
+   wewnątrz pliku ZIP ani nie przenoś samego pliku wykonywalnego.
+   Zachowaj wszystkie dostarczone pliki i podfoldery razem, tak jak
+   zostały rozpakowane. Oddzielna instalacja nie jest potrzebna.
+3. Zmaksymalizuj okno terminala przed wykonaniem poleceń wyświetlanych
+   przez program. Przytrzymaj Alt i naciśnij Spację, zwolnij oba klawisze,
+   a następnie naciśnij x. Otwiera to menu okna i wybiera maksymalizację.
+
+PRZYGOTOWANIE RADIA
+
+Podłącz radio i zamknij inne programy sterujące, które korzystają z jego
+portu COM. Jeśli Windows wymaga sterownika USB do Twojego radia,
+zainstaluj sterownik dostarczony przez producenta przed uruchomieniem YAC.
+
+YAC spróbuje automatycznie znaleźć podłączone radio. Nowe wyszukiwanie
+zwykle trwa około minuty. Mogą wystąpić przerwy bez nowych komunikatów.
+W tym czasie YAC nadal pracuje. Pozostaw program uruchomiony i poczekaj
+na zakończenie wyszukiwania.
+
+JĘZYK I PYTANIA PRZY URUCHOMIENIU
+
+Postępuj zgodnie z pytaniami o język oraz imię lub znak wywoławczy.
+Dostępne języki to: 1 angielski, 2 niemiecki i 3 polski. Każdy język jest
+przedstawiony w swoim własnym języku. Wybierz numer i naciśnij Spację,
+gdy program poprosi o potwierdzenie. Wybrany język jest używany w kolejnych
+komunikatach i pomocy YAC. Czytnik ekranu zapewnia mowę i/lub brajl
+przy odczytywaniu komunikatów YAC.
+
+KORZYSTANIE Z MOWY I BRAJLA
+
+YAC pozostawia kursor terminala na swojej ostatniej odpowiedzi, dzięki
+czemu monitor brajlowski śledzący kursor utrzymuje tę informację pod
+Twoimi palcami. Wcześniejsze komunikaty można odczytać w historii
+terminala znajdującej się powyżej.
+
+W ustawieniach czytnika ekranu wybierz North American Computer Braille
+jako tablice wejściową i wyjściową brajla. YAC oczekuje pojedynczych liter
+i znaków interpunkcyjnych. Tablica brajla skrótowego, która na przykład
+rozwija b do angielskiego słowa „but”, wysyła dane, których YAC nie
+rozpozna jako polecenia b.
+
+Większość poleceń wymaga jednej litery bez Enter. Gdy YAC prosi o wpisanie
+częstotliwości lub kroku strojenia, wpisz wartość i naciśnij Enter.
+
+Przecinek (,) przesuwa wybór w dół lub zmniejsza wartość. Kropka (.)
+przesuwa wybór w górę lub zwiększa wartość. Używaj tych znaków na
+klawiaturze zwykłej lub brajlowskiej.
+
+Przy wyborze pasma, emisji i przesunięcia częstotliwości q opuszcza daną
+funkcję i wraca do najwyższego poziomu. Inny klawisz polecenia opuszcza
+funkcję i uruchamia to polecenie. Zmiany pasma i emisji działają od razu.
+Na najwyższym poziomie q kończy YAC.
+
+KORZYSTANIE Z DEMO
+
+w - Where am I? (Gdzie jestem?) Odczytaj siłę sygnału, częstotliwość i emisję.
+
+b - Wybierz pasmo. Przecinek przesuwa w dół, a kropka w górę.
+Naciśnij h, aby uzyskać pomoc, q, aby wrócić, lub inny klawisz polecenia,
+aby kontynuować.
+
+e - Wpisz nową częstotliwość w megahercach, używając kropki dziesiętnej.
+Na przykład wpisz 7.103 i naciśnij Enter, aby ustawić 7.103 MHz.
+Jest to również szybki sposób przejścia na inne pasmo.
+
+m - Wybierz inną emisję. Przecinek i kropka przełączają emisje obsługiwane
+przez podłączone radio. Naciśnij h, aby uzyskać pomoc, lub q, aby wrócić.
+
+Przecinek lub kropka na najwyższym poziomie - Zmniejsz lub zwiększ
+częstotliwość o krok ustawiony w YAC dla bieżącej emisji.
+
+Możesz także stroić pokrętłem swojego radia. Użyj w, aby odczytać
+bieżącą częstotliwość.
+
+z - Zaokrąglij bieżącą częstotliwość VFO w górę lub w dół do najbliższego
+pełnego kiloherca. Po strojeniu pokrętłem naciśnij z, aby ustawić dokładną
+wartość w pełnych kilohercach bez wielokrotnego sprawdzania częstotliwości
+podczas obracania pokrętłem.
+
+o - Naciskaj o, aby przełączać Odbiór, Nadawanie i Kasowanie. Funkcje te
+ustawiają przesunięcia częstotliwości, nazywane przez producentów RIT,
+XIT lub Clarifier. Odbiór zmienia częstotliwość odbioru, a Nadawanie
+częstotliwość nadawania. Otwarcie funkcji przesunięcia zeruje przesunięcie.
+W Odbiorze lub Nadawaniu przecinek odejmuje 10 Hz, a kropka dodaje 10 Hz.
+W Kasowaniu każdy z tych klawiszy zeruje przesunięcia i wyłącza RIT/XIT
+lub funkcje Clarifier. Naciśnij q, aby wrócić, lub inny klawisz polecenia,
+aby kontynuować.
+
+YAC przypisuje często używanym poleceniom na najwyższym poziomie osobne
+litery. Niektóre litery otwierają podmenu z rzadziej używanymi poleceniami.
+
+s - Otwórz podmenu Ustawienia. Zawiera ono polecenia pozwalające dostosować
+działanie YAC, w tym krok strojenia.
+
+Aby ustawić krok strojenia dla bieżącej emisji, naciśnij s, aby otworzyć
+Ustawienia, a następnie ponownie s. Wpisz dodatnią liczbę całkowitą
+w hercach i naciśnij Enter. YAC zapisuje ustawienie. Domyślne kroki to:
+
+SSB: 1000 Hz (1 kHz)
+CW:   500 Hz (0,5 kHz)
+AM:  2500 Hz (2,5 kHz)
+FM: 12500 Hz (12,5 kHz)
+
+Są to kroki strojenia YAC. Możesz dostosować wartość dla każdej emisji
+do tego, jak chcesz poznawać pasma.
+
+v - W Ustawieniach zmień VFO sterowane przez YAC, jeśli jest to obsługiwane.
+Producenci używają nazw takich jak VFO A i VFO B lub Main i Sub dla tych
+wyborów. YAC podaje wybrane VFO, jego częstotliwość i emisję.
+Naciśnij q, aby opuścić Ustawienia, lub inny klawisz polecenia,
+aby kontynuować.
+
+h - Poproś o pomoc. YAC udostępnia pomoc zależną od kontekstu tam,
+gdzie jest ona dostępna.
+
+q - Zakończ YAC na najwyższym poziomie lub opuść bieżącą funkcję
+albo Ustawienia.
+
+ZAKRES DEMO
+
+Jest to działająca demonstracja o ograniczonym zakresie. Wypróbuj dostępne
+funkcje i powiedz nam, co działa dobrze i co można poprawić.
+
+Podczas prac nad programem demo zostało przetestowane z IC-705, FTX-1
+i FTDX10.
+
+Dostępne funkcje pozwalają zmieniać częstotliwość, emisję i przesunięcia
+częstotliwości.
+
+PLIKI I ZAPISANE USTAWIENIA
+
+YAC-001-beta.exe uruchamia program.
+_internal zawiera dołączone środowisko uruchomieniowe i biblioteki;
+pozostaw ten folder bez zmian.
+lang zawiera etykiety i pomoc w języku angielskim, niemieckim i polskim.
+rad_cmds zawiera definicje poleceń radia.
+YAC.ini zapisuje ustawienia i wykryte połączenia z radiami.
+logs zawiera zapis diagnostyczny tworzony automatycznie przez demo.
+START-HERE-English.txt zawiera angielską wersję tej instrukcji.
+ZACZNIJ-TUTAJ-Polski.txt zawiera tę polską wersję.
+
+Demo nie tworzy skrótu w menu Start ani nie instaluje plików w Windows.
+Przeniesienie całego rozpakowanego folderu YAC przenosi również zapisane
+ustawienia. Każda osobno rozpakowana kopia ma własne ustawienia.
+
+TWOJE UWAGI
+
+Dziękujemy za poświęcenie czasu na wypróbowanie YAC. Mamy nadzieję, że
+poznawanie programu sprawi Ci przyjemność. Chętnie przyjmiemy komentarze
+i sugestie. Każda uwaga jest mile widziana, nawet krótka. Możesz ją wysłać
+przez listy e-mailowe Active Elements lub Blind Hams albo bezpośrednio
+do mnie pod adresem gena@m0ebp.uk.
+
+Demo automatycznie zapisuje informacje diagnostyczne, więc nie musisz
+niczego dodatkowo ustawiać. Jeśli coś nie działa zgodnie z oczekiwaniami
+i chcesz pomóc nam to zbadać, wyślij plik YAC-debug.log z folderu logs
+wewnątrz rozpakowanego folderu YAC.
+
+Udostępnienie dziennika jest całkowicie dobrowolne. Może zawierać Twoje
+imię lub znak wywoławczy, informacje o urządzeniu i częstotliwości pracy.
+Udostępnij go tylko wtedy, gdy się na to zgadzasz.
+

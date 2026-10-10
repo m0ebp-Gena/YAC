@@ -1,0 +1,11 @@
+b: Bandauswahl; Punkt/Komma ändern das Band, q beendet die Auswahl
+e: Frequenz in MHz eingeben, z. B. 7.2
+m: Modusauswahl; Punkt/Komma ändern den Modus, q beendet die Auswahl
+Punkt/Komma: Frequenz um die gespeicherte Schrittweite erhöhen/verringern
+w oder f: Signalstärke, Frequenz und Modus lesen
+z: Frequenz auf das nächste Kilohertz runden
+s: Einstellungen; v wählt FTX-1 Main/Sub oder Icom VFO A/B (zuerst A); s speichert die Schrittweite
+o: Offset; o wählt Empfang/Senden/Löschen; Punkt/Komma ändern um 10 Hz; q beendet
+i: Toneingabe; i wechselt CTCSS/DCS N/DCS I; Wert eingeben, Enter, dann bei Abfrage t für TX oder b für Beide; q beendet, h hilft
+q: YAC beenden
+Radioauswahl: Nummer markieren, Leertaste bestätigt, q bricht ab

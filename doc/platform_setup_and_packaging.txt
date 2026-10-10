@@ -1,0 +1,105 @@
+YAC platform setup and tester packaging
+=======================================
+
+This note describes a practical starting point for testers. It is not yet a
+tested release/build recipe. YAC still needs a clean packaging pass and testing
+on each target operating system.
+
+Windows executable for testers
+------------------------------
+
+PyInstaller can bundle the Python runtime and installed Python packages, so a
+tester should not need to install Python or pyserial. Build on Windows for
+Windows; PyInstaller does not make one build that runs on Windows, macOS, and
+Linux. Build and verify a separate package on each operating system.
+
+Start with an onedir build. It is easier to inspect and troubleshoot than a
+single-file executable. From the YAC project directory, in PowerShell:
+
+    py -3 -m venv .venv
+    .\.venv\Scripts\Activate.ps1
+    python -m pip install --upgrade pip
+    python -m pip install pyserial pyinstaller
+    pyinstaller --noconfirm --clean --onedir --console --name yac `
+      --add-data "lang;lang" --add-data "rad_cmds;rad_cmds" yac.py
+
+The output will be under dist\yac. Give testers the complete dist\yac folder,
+not just yac.exe. Confirm that the language and radio-command data files are
+present and that YAC can create or update its configuration and log files from
+the packaged location. The final package should include a clean starter
+configuration, not the developer's personal settings or logs.
+
+Before distributing it, test the folder on a Windows machine that does not
+have Python installed. Also test radio discovery, a supported radio, an
+unsupported/unknown radio, and the help and error paths. PyInstaller bundles
+Python packages; it does not supply a radio's USB-to-serial driver. A tester
+may still need the driver for their radio or USB adapter. Decide where user
+settings and logs should live before making an installer; a Windows protected
+application folder may not be writable by a normal user.
+
+Linux (x64 computers and Raspberry Pi)
+------------------------------------
+
+The same source setup applies to x64 Linux computers and Raspberry Pi.
+An interactive setup script is now available: from the extracted source
+folder, run sh install-yac.sh. See doc/linux-macos-setup.txt for the full
+installation, launcher and radio-access instructions.
+
+YAC requires Python 3.10 or newer. Check whether Python 3 is present:
+
+    python3 --version
+
+If it is, create an isolated environment in the YAC directory and install
+pyserial there:
+
+    python3 -m venv .venv
+    source .venv/bin/activate
+    python -m pip install --upgrade pip
+    python -m pip install pyserial
+    python yac.py
+
+If creating the environment reports that venv support is missing, install the
+matching distribution package for the Pi's OS (on Raspberry Pi OS/Debian this
+is commonly python3-venv), then repeat the commands. A system package such as
+python3-serial is another option, but the virtual environment keeps YAC's
+Python dependencies separate from operating-system Python packages.
+
+Linux may restrict access to serial ports. If YAC can see a port but cannot
+open it, check the port's group and the user's permissions; on many Debian
+systems the serial-access group is dialout. After changing group membership,
+sign out and back in before testing again. The exact port name and any USB
+adapter driver depend on the Pi, operating system, and radio interface.
+
+macOS
+-----
+
+The same interactive script can be used from Terminal: sh install-yac.sh.
+Mac radio, terminal and accessibility testing is still required.
+
+Use the same virtual-environment approach, with the Python 3.10+ installation
+available on the Mac:
+
+    python3 --version
+    python3 -m venv .venv
+    source .venv/bin/activate
+    python -m pip install --upgrade pip
+    python -m pip install pyserial
+    python yac.py
+
+Serial device names and USB adapter drivers differ from Windows and Linux.
+Check the device names YAC reports and install the adapter manufacturer's
+macOS driver if required. A packaged macOS app would need its own Mac build and
+verification; signing/notarization may be needed for a polished public
+distribution.
+
+References
+----------
+
+PyInstaller usage and platform-specific builds:
+https://pyinstaller.org/en/stable/usage.html
+
+pySerial installation and platform documentation:
+https://pyserial.readthedocs.io/en/stable/pyserial.html
+
+Python Packaging User Guide, virtual environments:
+https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/

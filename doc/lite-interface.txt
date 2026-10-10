@@ -1,0 +1,17 @@
+YAC uses the compact interface accepted in the Focus Blue 40 trial.
+
+Run run-yac.cmd on this Windows machine to use the installed Python directly.
+Normal YAC uses yac.ini. The earlier lite experiment has been archived in
+local_storage/backups. Its launcher would need restoring to the project
+root, alongside its Python file and test INI, before being used again.
+
+Radio responses have no yac: prefix, callsign prefix or command-key echo.
+The cursor stays at the end of the response until the next action. Numeric
+entry remains visible for checking and correction. Frequency entry uses e:.
+The saved name appears in the welcome and localized closing goodbye.
+All existing radio controls, language selection and setup remain available.
+
+The original interface is backed up in local_storage/backups/chat_int_long_prompts.py.
+The controller before this change is in local_storage/backups/yac_before_lite.py.bak.
+Previously built executables and dated archives require rebuilding to include
+these source changes.

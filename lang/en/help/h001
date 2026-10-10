@@ -1,0 +1,12 @@
+b: Band Select (period/comma, h help; q or another command exits)
+e: frequency in MHz (e.g. 7.2)
+m: Mode Select (period/comma, h help; q or another command exits)
+period/comma: increase/decrease frequency by the configured step
+z: round the current frequency to the nearest 1 kHz
+s: Settings; v selects FTX-1 Main/Sub or Icom VFO A/B (first press selects A)
+s then s: save the step size in hertz for the current mode
+w or f: read signal strength, frequency and mode
+q: quit YAC
+o: Offset; o cycles Receive/Transmit/Clear; period adds 10 Hz, comma subtracts 10 Hz; either clears in Clear; q exits
+i: Tone input; i cycles CTCSS/DCS N/DCS I; enter a value, Enter, then t for TX or b for Both when offered; q exits, h gives help
+Profile selection: enter a number to highlight a radio, Space to select it, or q to cancel. Press h on the profile screen for this help.

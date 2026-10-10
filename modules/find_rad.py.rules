@@ -1,0 +1,3 @@
+This file runs routines to find a radio. Looking to see if any of the serial parameters have been entered by the user. I or this script. This program will check the port baud and radio all match. If the ini has a valid connection. An instruction to yac.py that radio has been found and the port is open for action. If not, this program searches. and displays label. when a radio is found the program will clear the screen and exit. 
+l008
+l009

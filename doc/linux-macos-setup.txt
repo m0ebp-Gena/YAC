@@ -1,0 +1,114 @@
+YAC source setup for Linux and macOS
+==================================
+
+This setup is for initial testing on Linux and macOS. Radio discovery,
+keyboard input and speech/braille access still need checking on these
+systems. The Windows YAC.exe package cannot run natively on either system.
+
+Linux includes ordinary x64 computers and Raspberry Pi systems. The same
+source setup applies to both: use Python installed for that machine's OS
+and architecture. On a Mac, use Terminal with Python for that Mac.
+
+INSTALLING
+
+1. Download and extract the YAC source ZIP. Keep its files together.
+2. Open a terminal and change to the extracted source directory.
+3. Run:
+
+       sh install-yac.sh
+
+   You do not need to mark the script executable when running it this way.
+   Run it as your normal user, without sudo.
+
+The script checks for python3 and reports its version. YAC requires Python
+3.10 or newer. If Python is missing or too old, the script advises using
+your package manager's installation instructions and exits. On macOS,
+Python is also available from https://www.python.org/downloads/macos/.
+The script does not install or replace system Python.
+
+It asks before creating ~/yac. Agreeing creates that folder, copies only
+YAC's source and data, and creates a private environment in ~/yac/.venv.
+It installs pyserial there using pip, which requires internet access. It
+does not copy the developer's settings or logs and does not start YAC or
+open any serial ports. An existing ~/yac is left unchanged.
+
+Some Linux distributions provide venv/pip support in a separate package.
+On Debian, Ubuntu and Raspberry Pi OS this is usually python3-venv.
+Consult the instructions for your distribution. If environment creation
+or dependency installation fails, the script prints recovery commands.
+Files already created remain available; they are not deleted automatically.
+
+Once installed, the script creates ~/yac/run-yac. It separately offers to
+create /usr/local/bin/yac if that directory exists. If administrator
+permission is required, it explains this before asking and uses sudo only
+to install the launcher. You may be asked for your login password; the
+terminal usually does not echo password characters.
+
+If the system shortcut is unavailable or declined, it offers a personal
+shortcut at ~/.local/bin/yac. It does not change your shell configuration
+or overwrite an existing yac command. The system shortcut points to your
+personal installation; it is not a shared installation for other users.
+
+RUNNING YAC
+
+Open a terminal and run:
+
+    ~/yac/run-yac
+
+If the optional shortcut's directory is in your PATH, you can instead run:
+
+    yac
+
+The launcher uses the private Python environment directly. You do not need
+to activate it first. Settings and logs remain inside ~/yac regardless of
+the directory from which you start the launcher.
+
+Follow the language and name/callsign prompts. Close any other program
+using your radio's port before starting YAC. YAC attempts to discover the
+radio. Screen-reader speech and braille come from your screen reader's
+access to the terminal; the script does not configure the screen reader.
+Press h at the top level for the command list, and q to quit.
+
+RADIO ACCESS ON LINUX
+
+USB serial device names commonly include /dev/ttyUSB0 or /dev/ttyACM0.
+If YAC finds a port but cannot open it, inspect the device's ownership and
+your user's groups. For example:
+
+    ls -l /dev/ttyUSB0
+    id
+
+Use the actual device reported by YAC. Your distribution may require your
+user to belong to a serial-access group, often dialout on Debian-based
+systems. Follow the distribution's instructions and sign out and back in
+after a group change. The installer does not change group memberships or
+device permissions. Run YAC as your normal user.
+
+RADIO ACCESS ON MACOS
+
+YAC looks for the Mac's serial devices, commonly /dev/cu.*. Some radio
+interfaces need the manufacturer's macOS USB driver. Use the driver for
+your interface and macOS version. Installing YAC does not install drivers.
+Terminal access through VoiceOver and a braille display needs practical
+testing; compatibility is not yet established by this source setup.
+
+MANUAL SETUP ALTERNATIVE
+
+From an extracted source directory with Python 3.10 or newer available:
+
+    python3 -m venv .venv
+    .venv/bin/python -m pip install "pyserial>=3.5,<4"
+    .venv/bin/python yac.py
+
+Keep modules, lang and rad_cmds beside yac.py. This approach keeps YAC in
+the extracted directory rather than copying it to ~/yac. Settings and logs
+will be stored beside that copy of yac.py.
+
+References
+
+Python virtual environments:
+https://docs.python.org/3/library/venv.html
+Python on macOS:
+https://docs.python.org/3/using/mac.html
+pyserial platform support and installation:
+https://pyserial.readthedocs.io/en/latest/pyserial.html

@@ -1,0 +1,9 @@
+YAC debug logging
+
+Start YAC with `python yac.py --debug`, or add `debug=1` under the [yac]
+section of yac.ini. Diagnostic output is appended to logs/yac-debug.log.
+
+The log records radio discovery completion, the selected radio and serial
+settings, top-level and band-adjustment keypresses, CAT and CI-V command bytes,
+radio responses, and band-change frequency readback. Frequencies and serial
+port names may appear in the log. Remove or redact the log before sharing it.

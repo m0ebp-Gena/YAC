@@ -1,0 +1,28 @@
+"""Package the portable Python source for Linux and macOS testing."""
+import argparse
+from datetime import date
+from pathlib import Path
+import zipfile
+
+root = Path(__file__).resolve().parent
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--date", default=date.today().isoformat())
+args = parser.parse_args()
+date.fromisoformat(args.date)
+folder = "YAC-source-" + args.date
+files = [root / name for name in ("yac.py", "install-yac.sh", "install_yac.py", "doc/linux-macos-setup.txt")]
+for directory in [root / "modules", root / "rad_cmds", *(root / "lang" / language for language in ("en", "de", "pl"))]:
+    files.extend(path for path in directory.rglob("*") if path.is_file() and "__pycache__" not in path.parts and path.suffix != ".pyc")
+archive = root / (folder + ".zip")
+with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as package:
+    for path in sorted(files):
+        entry = zipfile.ZipInfo((Path(folder) / path.relative_to(root)).as_posix())
+        entry.external_attr = (0o100755 if path.name == "install-yac.sh" else 0o100644) << 16
+        entry.compress_type = zipfile.ZIP_DEFLATED
+        package.writestr(entry, path.read_bytes())
+with zipfile.ZipFile(archive) as package:
+    assert package.testzip() is None
+    assert b"\r" not in package.read(folder + "/install-yac.sh")
+    assert package.read(folder + "/yac.py") == (root / "yac.py").read_bytes()
+    assert not any(name.endswith(("yac.ini", "YAC.exe", ".pyc", ".log")) for name in package.namelist())
+print("Created and checked " + archive.name)

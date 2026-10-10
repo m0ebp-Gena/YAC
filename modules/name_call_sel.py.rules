@@ -1,0 +1,11 @@
+This file should use the language specific label files.
+This file should generate an edit field that echos the user input.
+When the user press enter, this filed uses labels to ask for confirmation with the space bar.
+If n is entered the user should be able to cursor over their entered chars and edit their original input.
+ After pressing enter confirmation should be asked. When the user confirms with the spacebar.
+Clear screen.
+Edit ini file call=<user input>
+Exit and return to yac.py.
+l004
+l006
+l007
