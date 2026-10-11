@@ -1,0 +1,93 @@
+Freedom Scientific USB braille on Linux - 11 October 2026
+=======================================================
+
+BRLTTY's Freedom Scientific driver is fs (Focus / PAC Mate displays).
+For North American Braille Computer Code, its text table is en-nabcc.
+With the display connected by USB, the command is:
+
+	sudo brltty -b fs -d usb: -t en-nabcc
+
+HumanWare Brailliant BI 40X uses the hw driver. Put the display in its
+terminal / connected-display mode for use with the computer, then use:
+
+	sudo brltty -b hw -d usb: -t en-nabcc
+
+For the foreground test below, replace -b fs with -b hw for HumanWare.
+Use the command for the display connected; do not run both instances.
+
+TESTING NOTES
+
+11 October 2026: the user reports that Freedom Scientific output on Linux
+with this BRLTTY setup works very well, comparable to their NVDA experience
+on Windows. The HumanWare command is documented but not yet confirmed by
+this user's testing.
+
+Apple / macOS: the user reports being able to load the driver/table but
+not obtaining the expected output. The exact display, macOS version and
+whether this is missing output or an incorrect table mapping remain to be
+recorded. This is an unresolved observation, not a confirmed cause or a
+claim that all macOS braille output fails.
+
+Use this only when another BRLTTY instance is not already controlling
+the display. For a temporary test on Debian with its service running,
+have working speech available: stopping the service interrupts braille.
+Run these commands one at a time:
+
+	sudo systemctl stop brltty
+	sudo brltty -n -b fs -d usb: -t en-nabcc
+
+The second command stays running in this terminal. Use another terminal
+for YAC. When finished, press Control+C in the BRLTTY terminal, then:
+
+	sudo systemctl start brltty
+
+This restores the service using its existing configuration. These commands
+do not edit /etc/brltty.conf. Existing saved braille preferences may still
+affect output; choose eight-dot computer braille in BRLTTY's preferences.
+
+LIBLOUIS AND ORCA
+
+Orca uses BRLTTY through BrlAPI to reach the display; it is not a BRLTTY
+fork. Orca's documented table selector is under Enable Contracted Braille.
+With contracted braille disabled, Orca sends ordinary text to BrlAPI and
+BRLTTY uses its text table: -t en-nabcc selects the uncontracted mapping.
+With contracted braille enabled, Orca uses its selected liblouis table;
+changing BRLTTY's text table does not replace that contracted translation.
+
+The liblouis US English eight-dot computer table is en-us-comp8.ctb.
+It is a different table file from BRLTTY's en-nabcc.ttb; do not pass the
+liblouis filename to BRLTTY's -t option. BRLTTY can load liblouis tables
+through -c louis:/absolute/path/to/table when built with liblouis support,
+but that uses its contraction/text-style machinery and is not the same
+as selecting the uncontracted eight-dot text table above.
+
+To inspect your installed versions and find the liblouis table:
+
+	orca --version
+	brltty --version
+	find /usr/share/liblouis -name en-us-comp8.ctb
+
+If the last command finds nothing, the table package may be absent or
+installed elsewhere. We still need to check your Orca version and actual
+braille output before claiming which uncontracted table Orca is using.
+
+YAC DUMMY RADIO TEST (fresh folder, including an existing YAC installation)
+
+	cd ~/YAC-source-2026-10-11
+	python3 -m venv .venv
+	.venv/bin/python -m pip install -r requirements.txt
+	.venv/bin/python yac.py
+
+Disconnect real radio USB connections for this test. Leave the braille
+display connected. After discovery finds no radio, YAC loads the simulated
+FT-DX10 and announces demo mode. Discovery may take about a minute.
+Choose your language and enter your callsign when prompted. Press h for
+help and q at the top level to quit. The dummy cannot transmit.
+Run YAC as your normal user, without sudo.
+
+References:
+https://brltty.app/doc/Manual-BRLTTY/English/BRLTTY-4.html
+https://brltty.app/doc/Manual-BRLTTY/English/BRLTTY-6.html
+https://orca-4f2284.pages.gitlab.gnome.org/help/preferences_braille.html
+https://brltty.app/pipermail/brltty/2020-October/017592.html
+https://github.com/liblouis/liblouis/blob/master/tables/en-us-comp8.ctb

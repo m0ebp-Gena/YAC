@@ -1,0 +1,7 @@
+Entrada de tonos: pulsa i para alternar CTCSS, DCS N (polaridad normal) y DCS I (polaridad invertida). Las radios que solo admiten CTCSS permanecen en CTCSS.
+Para CTCSS, introduce un tono compatible en hercios, por ejemplo 88.5 o 100.0. Se aceptan cifras y un punto decimal, hasta cinco caracteres.
+Para DCS, introduce un código compatible de tres cifras, por ejemplo 023 o 754, incluidos los ceros iniciales. No escribas D, N, I ni un punto decimal. Las cifras van de 0 a 7; no todas las combinaciones son válidas.
+Usa Retroceso, Suprimir y las flechas para editar. Pulsa Intro para aceptar. En TX/Ambos: t/b, pulsa t para transmitir el tono/código solamente, o b para transmitirlo y exigirlo en recepción. Ambos usa la polaridad DCS elegida tanto en transmisión como en recepción. Si la radio solo admite Ambos, YAC lo aplica al pulsar Intro sin preguntar t/b. Esto se aplica a DCS en el FTX-1.
+La radio cambia tras t o b, o directamente tras Intro cuando Ambos es automático. YAC confirma el resultado y vuelve a la interfaz principal. Si falla, puedes editar y reintentar. Intro con el campo vacío mantiene el campo abierto.
+Pulsa h para ver esta ayuda sin perder el valor. Pulsa i para cambiar de tipo de tono y vaciar el campo. Pulsa q en cualquier etapa para cancelar y volver a la interfaz principal.
+Estos controles están disponibles en las bandas FM de repetidores compatibles. Para desactivar los tonos, usa los controles de la radio.

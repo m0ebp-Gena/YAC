@@ -7,3 +7,12 @@ The log records radio discovery completion, the selected radio and serial
 settings, top-level and band-adjustment keypresses, CAT and CI-V command bytes,
 radio responses, and band-change frequency readback. Frequencies and serial
 port names may appear in the log. Remove or redact the log before sharing it.
+
+Discovery also records each visible port's device description, manufacturer,
+USB vendor/product IDs and other available metadata. It reports
+silicon_labs_metadata_seen=true/false for each port and for the whole scan.
+True means a Silicon Labs USB vendor ID (10C4), CP210x name or Silicon Labs /
+Silicon Laboratories description was observed. The evidence is included.
+False means no such clue was visible; it is not a check of installed drivers.
+An unplugged radio, different device naming or an external CI-V adapter can
+all explain a false result. A gentle driver-check hint accompanies false.

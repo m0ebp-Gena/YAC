@@ -1,0 +1,75 @@
+YAC — Yet Another Controller
+Guía rápida de la demostración para Windows de 64 bits
+
+1. Extrae todo el ZIP con «Extraer todo» de Windows en una carpeta donde
+   puedas guardar archivos. Abre esa carpeta y ejecuta YAC-001-beta.exe.
+   Conserva el ejecutable, las carpetas y los demás archivos juntos.
+   No necesitas instalar Python.
+2. Conecta la radio y cierra los otros programas que usan su puerto COM.
+   Instala el controlador USB del fabricante si es necesario.
+3. Selecciona Español (opción 4) y confirma con la barra espaciadora.
+   Introduce tu indicativo o nombre (máximo 10 caracteres) y confirma.
+4. Espera a que termine la búsqueda de radios; puede tardar aproximadamente
+   un minuto. Si hay varias radios, escribe el número y pulsa Espacio.
+   Si ninguna responde, se carga un FT-DX10 simulado para probar la interfaz.
+   En ese modo no se controla ninguna radio real y la señal es simulada.
+
+SI YAC NO ENCUENTRA TU RADIO
+
+1. Comprueba que la radio esté encendida y conectada.
+2. Comprueba si su puerto COM aparece en el Administrador de dispositivos.
+3. Si usas USB directo, comprueba el controlador recomendado por el
+   fabricante de la radio. Un adaptador CI-V externo puede necesitar
+   el controlador de su propio fabricante.
+4. Cierra otros programas que puedan estar usando el mismo puerto COM.
+5. Comprueba la dirección CI-V y la velocidad de comunicación de la radio.
+
+Windows puede mostrar Silicon Labs o CP210x en lugar del modelo de radio.
+El registro de diagnóstico indica los identificadores que reconoce.
+Su ausencia no significa necesariamente que falte el controlador: los
+dispositivos pueden aparecer con otros nombres. Podemos ayudarte a
+interpretar el registro.
+
+INSTRUCCIONES OPCIONALES DE TECLADO: COMPROBAR EL PUERTO COM
+
+Pulsa la tecla Windows, escribe Administrador de dispositivos y pulsa
+Intro. Si Windows está en otro idioma, usa el nombre correspondiente.
+Cuando se abra, pulsa Tab hasta que el lector anuncie el árbol de
+dispositivos o el nombre del ordenador. Usa Flecha abajo para buscar
+Puertos (COM y LPT). Pulsa Flecha derecha para expandir la categoría y
+Flecha abajo para escuchar los dispositivos y sus números COM.
+Los nombres y anuncios varían según el idioma de Windows y el lector;
+no hay un número fijo de pulsaciones de Tab. Indícanos el nombre y número
+COM que escuchas. Si no encuentras Puertos, también es información útil;
+puedes parar ahí. No necesitas cambiar ni desinstalar nada.
+
+CONTROLES
+w o f: leer señal, frecuencia y modo.
+e: introducir una frecuencia en MHz; usa un punto decimal, por ejemplo 7.2.
+punto/coma: subir/bajar la frecuencia según el paso configurado.
+m: selección de modo; punto/coma cambia el modo; q vuelve.
+b: selección de banda; punto/coma cambia la banda; q vuelve.
+s: ajustes; s de nuevo guarda el paso de sintonía en hercios.
+s y luego v: cambiar entre Main/Sub en IC-7600 o FTX-1, o VFO A/B en
+   otros modelos Icom compatibles. En IC-7600 la primera pulsación elige Main.
+o: desplazamiento; o alterna Recepción/Transmisión/Borrar; punto/coma
+   modifica 10 Hz; q vuelve. IC-9700 solo admite RIT en recepción.
+z: redondear la frecuencia al kHz más cercano.
+i: entrada de tonos en radios compatibles; h muestra las instrucciones.
+h: ayuda completa en español.
+q: salir de YAC desde la interfaz principal.
+
+IC-7600
+Esta versión añade detección del IC-7600 en la dirección CI-V 7A de fábrica,
+y controles de frecuencia, modo, bandas HF/6 m y selección Main/Sub.
+Los controles RIT/Delta-TX y el redondeo que conserva los desplazamientos
+requieren firmware 2.00. YAC no actualiza el firmware de la radio.
+El perfil se ha probado con simulación; todavía necesita pruebas con una
+radio física. Si falla, indica la velocidad CI-V, dirección, puerto COM,
+versión de firmware y qué comando has utilizado.
+
+AYUDA Y REGISTRO
+YAC usa tu lector de pantalla para voz y braille. El archivo yac.ini guarda
+las preferencias junto al programa. El registro de diagnóstico está en
+logs/yac-debug.log. Revisa los datos personales antes de compartirlo.
+Escribe a Gena, M0EBP: gena@m0ebp.uk.

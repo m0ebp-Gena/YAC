@@ -34,10 +34,37 @@ message.
 YAC is still working during these pauses. Please leave it running and
 allow the scan to finish.
 
+IF YAC CANNOT FIND YOUR RADIO
+
+1. Check that the radio is powered on and connected.
+2. Check whether its COM port appears in Device Manager.
+3. For a direct USB connection, check the radio manufacturer's recommended
+   driver. An external CI-V adapter may need its own manufacturer's driver.
+4. Close other programs that may be using the same COM port.
+5. Check that the CI-V address and baud rate match the radio's settings.
+
+Windows may identify the interface as Silicon Labs or CP210x rather than
+by the radio's model. The debug log records any matching identifiers it
+sees. Their absence does not necessarily mean the driver is missing:
+devices may be identified differently. We can help interpret the log.
+
+OPTIONAL KEYBOARD INSTRUCTIONS: CHECKING THE COM PORT
+
+Press the Windows key, type Device Manager, then press Enter. On Windows
+in another language, use the local name for Device Manager.
+Once it opens, press Tab until your screen reader announces the device
+tree or your computer's name. Use Down Arrow to find Ports (COM & LPT).
+Press Right Arrow to expand it, then Down Arrow to hear the devices and
+their COM numbers. Names and announcements vary with Windows language
+and screen reader. There is no fixed number of Tab presses.
+Tell us the device name and COM number you hear. If you cannot find Ports,
+that is useful information too; you can stop there. These steps only
+inspect the devices. You do not need to change or uninstall anything.
+
 LANGUAGE AND STARTUP PROMPTS
 
 Follow the language and name or callsign prompts. The
-language choices are 1 for English, 2 for German and 3 for Polish. Each
+language choices are 1 for English, 2 for German, 3 for Polish and 4 for Spanish. Each
 language is presented in its own language. Select a number and press Space
 when asked to confirm. The selected language is used for YAC's subsequent
 messages and help; your screen reader provides speech and/or braille

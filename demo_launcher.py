@@ -12,7 +12,7 @@ def main():
         import serial
         from serial.tools import list_ports
         assert (root / "yac.ini").is_file(), "Missing yac.ini"
-        for language in ("en", "de", "pl"):
+        for language in yac.lang_sel.LANGUAGE_CODES:
             assert (root / "lang" / language / "labels" / "l000").is_file(), language
         assert any((root / "rad_cmds").rglob("*")), "Missing radio commands"
         print("YAC package check passed. Python and pyserial are bundled.")

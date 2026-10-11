@@ -1,0 +1,51 @@
+YAC 001 beta - Debian Trixie quick start
+======================================
+
+Transfer YAC-source-2026-10-11.zip to your home directory on the mini PC.
+For example, from PowerShell in the folder containing the ZIP:
+
+    scp YAC-source-2026-10-11.zip user@mini-pc:~/
+
+Replace user and mini-pc with your Debian username and hostname or IP address.
+Log in to the mini PC, then run:
+
+    sudo apt update
+    sudo apt install python3 python3-venv unzip
+    cd ~
+    unzip YAC-source-2026-10-11.zip
+    cd YAC-source-2026-10-11
+    sh install-yac.sh
+
+Run the installer as your normal user. Answer y when it asks to create
+~/yac. It installs pyserial from the internet in a private Python environment.
+The optional command shortcuts are offered separately. You can decline
+them and still start YAC with:
+
+    ~/yac/run-yac
+
+Connect the radio to the mini PC and close other programs using its port.
+Follow YAC's language and name/callsign prompts. Press h for help and q
+to quit from the top level. Automatic discovery can take about a minute.
+When using SSH, terminal speech and braille depend on the screen reader
+and SSH terminal on your client computer.
+
+If a serial port cannot be opened, check its permissions and your groups:
+
+    ls -l /dev/ttyUSB* /dev/ttyACM*
+    id
+
+It is normal for one of those device patterns to report no matching file.
+If the radio device belongs to dialout and your user is not in that group:
+
+    sudo usermod -aG dialout "$USER"
+
+Sign out and reconnect so the new group membership takes effect.
+Run YAC as your normal user.
+
+The package contains source, all four languages, radio definitions and
+the installer. No Windows executable, personal settings or logs are included.
+Linux radio discovery, keyboard input and speech/braille access still need
+practical testing. See doc/linux-macos-setup.txt for recovery instructions.
+
+Debian Python venv package:
+https://packages.debian.org/trixie/python3-venv

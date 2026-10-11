@@ -230,7 +230,7 @@ class Icom7300Tests(unittest.TestCase):
             with patch.object(yac, 'connect_radio', return_value=radio), \
                  patch.object(yac, '_read_settings', return_value={'call':'test','lang':'en'}), \
                  patch.object(yac, '_set_yac_value') as save, \
-                 patch.object(lang_sel, 'read_key', side_effect=lambda:next(keys)), \
+                 patch.object(lang_sel, 'read_key', side_effect=lambda **kwargs:next(keys)), \
                  patch('builtins.input', side_effect=['14.185001','250']), redirect_stdout(output):
                 self.assertEqual(yac.main([]), 0)
             self.assertIn('VFO A',output.getvalue())

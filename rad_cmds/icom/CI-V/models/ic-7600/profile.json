@@ -1,0 +1,69 @@
+{
+  "default_address": 122,
+  "minimum_hz": 30000,
+  "maximum_hz": 60000000,
+  "modes": {
+    "00": "LSB",
+    "01": "USB",
+    "02": "AM",
+    "03": "CW",
+    "04": "RTTY",
+    "05": "FM",
+    "07": "CW-R",
+    "08": "RTTY-R",
+    "12": "PSK",
+    "13": "PSK-R"
+  },
+  "bands_hz": [
+    1900000,
+    3750000,
+    5357000,
+    7150000,
+    10125000,
+    14175000,
+    18118000,
+    21225000,
+    24940000,
+    28850000,
+    52000000
+  ],
+  "command_files": {
+    "read": [
+      "frequency",
+      "mode",
+      "signal",
+      "id",
+      "offset",
+      "rit",
+      "xit",
+      "selected_frequency",
+      "unselected_frequency",
+      "selected_mode",
+      "unselected_mode",
+      "tuning_step",
+      "split"
+    ],
+    "set": [
+      "e",
+      "m",
+      "offset",
+      "rit",
+      "xit",
+      "vfo_a",
+      "vfo_b",
+      "vfo_equal",
+      "vfo_exchange",
+      "selected_frequency",
+      "unselected_frequency",
+      "selected_mode",
+      "unselected_mode",
+      "tuning_step",
+      "split"
+    ]
+  },
+  "vfo_labels": [
+    "Main",
+    "Sub"
+  ],
+  "offset_firmware": "2.00"
+}

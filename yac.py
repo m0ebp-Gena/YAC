@@ -12,6 +12,7 @@ import sys
 import tempfile
 from pathlib import Path
 
+from modules import lang_sel
 from modules.find_rad import RadioConnection, find_radios
 from modules.signal_report import format_s_meter
 from modules.icom_profile import SUPPORTED_MODELS, load_profile
@@ -47,7 +48,7 @@ def _icom_write(radio: RadioConnection, name: str, data: bytes) -> bytes:
 
 
 def _icom_select_vfo(root: Path, radio: RadioConnection, language: str) -> str:
-    """Select A on the first request, then alternate A and B after acknowledgements."""
+    """Select the first VFO/band, then alternate after acknowledgements."""
     key = (radio.port, radio.civ_address)
     selected = 1 - _ICOM_VFO_SELECTION[key] if key in _ICOM_VFO_SELECTION else 0
     response = _icom_write(radio, "vfo_b" if selected else "vfo_a", b"")
@@ -59,7 +60,8 @@ def _icom_select_vfo(root: Path, radio: RadioConnection, language: str) -> str:
     mode = _current_mode(radio)
     if frequency is None or mode is None:
         return _read_label(root, language, "l050", "Could not read frequency and mode from the radio.")
-    return f"VFO {'B' if selected else 'A'} {frequency} {mode}"
+    labels = _icom_profile(radio).get("vfo_labels", ["VFO A", "VFO B"])
+    return f"{labels[selected]} {frequency} {mode}"
 
 
 def _ftx1(radio: RadioConnection) -> bool:
@@ -421,8 +423,8 @@ def _civ_bcd_frequency(data: bytes | None) -> str | None:
 
 
 def _tone_radio_kind(radio: RadioConnection) -> str | None:
-    if radio.protocol == "CI-V" and radio.model_id.casefold() == "ic-705":
-        return "ic705"
+    if radio.protocol == "CI-V" and radio.model_id.casefold() in {"ic-705", "ic-9700"}:
+        return "ic9700" if radio.model_id.casefold() == "ic-9700" else "ic705"
     if radio.protocol == "CAT" and radio.manufacturer_key == "yaesu":
         if radio.model_id in {"0761", "0840"}:
             return "ftdx10" if radio.model_id == "0761" else "ftx1"
@@ -439,6 +441,10 @@ def _tone_band_supported(kind: str, frequency: str | None) -> bool:
     # Repeater-tone functions are intended for FM VHF/UHF, and 10/6 m on these rigs.
     if kind == "ftdx10":
         return 28_000_000 <= hz <= 29_700_000 or 50_000_000 <= hz <= 54_000_000
+    if kind == "ic9700":
+        return (144_000_000 <= hz <= 148_000_000
+                or 430_000_000 <= hz <= 450_000_000
+                or 1_240_000_000 <= hz <= 1_300_000_000)
     if kind == "ts590":
         return 28_000_000 <= hz <= 29_700_000
     if kind == "ftx1":
@@ -530,7 +536,7 @@ def _tone_command(
                 re.search(rf"CN{side}0{tone_index:03d};", _cat_exchange(radio, f"CN{side}0;")) is not None
                 and re.search(rf"CT{side}{1 if target == 'TX' else 2};", _cat_exchange(radio, f"CT{side};")) is not None
             )
-        if kind == "ic705":
+        if kind in {"ic705", "ic9700"}:
             ack = bytes((0xFE, 0xFE, 0xE0, radio.civ_address, 0xFB, 0xFD))
             digits = f"{int(round(float(value) * 10)):04d}"
             data = bytes((0x00, int(digits[:2], 16), int(digits[2:], 16)))
@@ -566,7 +572,7 @@ def _tone_command(
                 re.search(rf"CN{side}1{code_index:03d};", _cat_exchange(radio, f"CN{side}1;")) is not None
                 and re.search(rf"CT{side}3;", _cat_exchange(radio, f"CT{side};")) is not None
             )
-        if kind == "ic705":
+        if kind in {"ic705", "ic9700"}:
             ack = bytes((0xFE, 0xFE, 0xE0, radio.civ_address, 0xFB, 0xFD))
             # 1B 02: TX polarity in the high nibble, RX in the low nibble.
             polarity = 0x11 if inverted else 0x00
@@ -597,7 +603,7 @@ def _set_tone(
     frequency = _current_frequency(root, radio)
     if _current_mode(radio) != "FM" or not _tone_band_supported(kind, frequency):
         return _read_label(root, language, "l092", "CTCSS/DCS is available only in supported FM repeater bands.")
-    selected = _tone_value(raw_value, kind in {"ftx1", "ic705"}, selection)
+    selected = _tone_value(raw_value, kind in {"ftx1", "ic705", "ic9700"}, selection)
     if selected is None:
         return _read_label(root, language, "l093", "Invalid tone/code. h: help")
     tone_kind, value = selected
@@ -670,7 +676,7 @@ def _tone_control(root: Path, radio: RadioConnection, language: str, call: str) 
     if kind is None:
         chat_int.show_response(_read_label(root, language, "l091", "CTCSS/DCS is not supported for this radio."))
         return
-    selections = ("CTCSS", "DCS N", "DCS I") if kind in {"ftx1", "ic705"} else ("CTCSS",)
+    selections = ("CTCSS", "DCS N", "DCS I") if kind in {"ftx1", "ic705", "ic9700"} else ("CTCSS",)
     labels = {"CTCSS": "l096", "DCS N": "l099", "DCS I": "l100"}
     index = 0
     value = ""
@@ -694,7 +700,7 @@ def _tone_control(root: Path, radio: RadioConnection, language: str, call: str) 
         if not value:
             sys.stdout.write("\n")
             continue
-        parsed = _tone_value(value, kind in {"ftx1", "ic705"}, selection)
+        parsed = _tone_value(value, kind in {"ftx1", "ic705", "ic9700"}, selection)
         if parsed is None or (kind == "ts590" and parsed[1] not in TS590_CTCSS):
             sys.stdout.write("\n")
             chat_int.show_response(_read_label(root, language, "l093", "Invalid tone/code. h: help"))
@@ -752,6 +758,8 @@ def _icom_offset_hz(radio: RadioConnection) -> int | None:
 def _icom_clarifier_enabled(radio: RadioConnection, subcommand: int) -> bool | None:
     if radio.civ_address is None:
         return None
+    if subcommand == 0x02 and not _icom_profile(radio).get("supports_xit", True):
+        return False
     response = _icom_read(radio, "rit" if subcommand == 0x01 else "xit")
     data = _civ_response_data(response, radio.civ_address, 0x21, subcommand)
     if data is None or len(data) != 1 or data[0] not in (0x00, 0x01):
@@ -788,6 +796,8 @@ def _set_icom_offset(radio: RadioConnection, offset_hz: int) -> None:
 def _set_icom_clarifier_enabled(
     radio: RadioConnection, subcommand: int, enabled: bool,
 ) -> None:
+    if subcommand == 0x02 and not _icom_profile(radio).get("supports_xit", True):
+        return
     _icom_write(radio, "rit" if subcommand == 0x01 else "xit", bytes((int(enabled),)))
 
 
@@ -940,6 +950,8 @@ def _offset_action(
     if not (icom or yaesu):
         return _read_label(root, language, "l072", "NOT Understood.")
 
+    if icom and selection == 1 and not _icom_profile(radio).get("supports_xit", True):
+        return _read_label(root, language, "l108", "Transmit offset is not supported for this radio.")
     if icom:
         current_offset = _icom_offset_hz(radio)
         receive_enabled = _icom_clarifier_enabled(radio, 0x01)
@@ -1212,7 +1224,15 @@ def _current_mode_code(radio: RadioConnection) -> int | str | None:
 
 def _available_modes(radio: RadioConnection) -> list[tuple[int | str, str]]:
     if _icom_supported(radio):
-        return list(_icom_profile(radio)["modes"].items())
+        modes = list(_icom_profile(radio)["modes"].items())
+        if radio.model_id.casefold() == "ic-9700":
+            frequency = _current_frequency(project_root(), radio)
+            satellite = _civ_response_data(
+                _civ_exchange(radio, 0x16, 0x5A), radio.civ_address, 0x16, 0x5A,
+            ) if frequency is not None and float(frequency) >= 1240 else None
+            if frequency is None or float(frequency) < 1240 or satellite != b"\x00":
+                modes = [(code, label) for code, label in modes if code != 0x22]
+        return modes
     if radio.protocol == "CAT" and radio.manufacturer_key == "yaesu":
         modes = MODE_LABELS.items()
         if not _ftx1(radio):
@@ -1225,7 +1245,7 @@ def _available_modes(radio: RadioConnection) -> list[tuple[int | str, str]]:
 
 def _set_mode(radio: RadioConnection, mode_code: int | str) -> bool:
     if _icom_supported(radio):
-        if mode_code not in _icom_profile(radio)["modes"]:
+        if mode_code not in dict(_available_modes(radio)):
             return False
         response = _icom_write(radio, "m", bytes((int(mode_code),)))
         acknowledgement = bytes((0xFE, 0xFE, 0xE0, radio.civ_address, 0xFB, 0xFD))
@@ -1418,7 +1438,8 @@ def _set_frequency(
 
     if maximum_hz == 0:
         return _read_label(root, language, "l057", "No verified frequency-setting profile is available for this radio.")
-    if not minimum_hz <= hz <= maximum_hz:
+    ranges = _icom_profile(radio).get("frequency_ranges_hz", [[minimum_hz, maximum_hz]]) if _icom_supported(radio) else [[minimum_hz, maximum_hz]]
+    if not any(low <= hz <= high for low, high in ranges):
         return _read_label(root, language, "l052", "Frequency is outside the supported range.")
 
     original_frequency = original_frequency or _current_frequency(root, radio)
@@ -1631,7 +1652,7 @@ def connect_radio(ini_path: Path | None = None) -> RadioConnection | None:
     saved_platform = settings.get("platform", "")
     if saved_platform.casefold() != platform.casefold():
         language = settings.get("lang", "").casefold()
-        if language not in {"en", "de", "pl"}:
+        if language not in lang_sel.LANGUAGE_CODES:
             language = "en"
         if saved_platform:
             message = _read_label(
@@ -1643,7 +1664,7 @@ def connect_radio(ini_path: Path | None = None) -> RadioConnection | None:
 
     settings = _read_settings(ini_path)
     saved_language = settings.get("lang", "")
-    if saved_language and saved_language.casefold() not in {"en", "de", "pl"}:
+    if saved_language and saved_language.casefold() not in lang_sel.LANGUAGE_CODES:
         print(_read_label(
             root, "en", "l030",
             "The saved language '{language}' is not supported. Please select a language.",
@@ -1670,6 +1691,11 @@ def connect_radio(ini_path: Path | None = None) -> RadioConnection | None:
     DEBUG_LOG.info("Starting configured-port probe and radio discovery")
     radios = find_radios(ini_path)
     DEBUG_LOG.info("Radio discovery returned %d radio(s)", len(radios))
+    if not radios:
+        from modules.dummy_radio import create_dummy_radio
+        print(_read_label(root, language, "l009", "No radio found. Loading the FT-DX10 demo."))
+        DEBUG_LOG.info("Loading in-memory FT-DX10 demo")
+        return create_dummy_radio()
     return _choose_radio(radios, root, language)
 
 
@@ -1706,9 +1732,9 @@ def main(argv: list[str] | None = None) -> int:
 
     settings = _read_settings(root / "yac.ini")
     language = settings.get("lang", "en") or "en"
-    label = _read_label(root, language, "l008", "Radio Connected")
-    print(label)
-    print(f"{radio.model_name} connected.")
+    label = _read_label(root, language, "l107", "Demo mode: simulated FT-DX10. No radio is connected.") if radio.is_dummy else _read_label(root, language, "l008", "Radio Connected")
+    if radio.is_dummy:
+        print(label)
     DEBUG_LOG.info(
         "Radio ready model=%s id=%s protocol=%s port=%s baud=%s address=%s",
         radio.model_name, radio.model_id, radio.protocol, radio.port,
@@ -1719,6 +1745,22 @@ def main(argv: list[str] | None = None) -> int:
     pending_key: str | None = None
     call = settings.get("call", "YAC")
     chat_int.show_prompt(call)
+    if radio.is_dummy:
+        chat_int.show_response(_read_label(root, language, "l055", "Simulated Mode"))
+    else:
+        chat_int.show_response(f"{label} {radio.model_name}")
+    from modules.connection_watch import ConnectionWatch
+    def announce_connection(event):
+        key, fallback = (
+            ("l109", "Radio connection lost. Waiting for the same radio to reconnect.")
+            if event == "lost" else ("l110", "Radio connection restored.")
+        )
+        chat_int.show_response(_read_label(root, language, key, fallback))
+    watch = ConnectionWatch(radio, lambda: _current_frequency(root, radio), announce_connection)
+    def read_radio_key():
+        if radio.is_dummy:
+            return lang_sel.read_key()
+        return lang_sel.read_key(idle_callback=watch.tick)
     prompt_open = True
     try:
         while True:
@@ -1726,7 +1768,7 @@ def main(argv: list[str] | None = None) -> int:
                 key, pending_key = pending_key, None
             else:
                 try:
-                    key = lang_sel.read_key()
+                    key = read_radio_key()
                 except (RuntimeError, OSError) as error:
                     print(f"\n{error}", file=sys.stderr)
                     break
@@ -1739,6 +1781,12 @@ def main(argv: list[str] | None = None) -> int:
             if key == "q":
                 chat_int.show_goodbye(root, language, call)
                 break
+            if watch.lost:
+                if key == "h":
+                    chat_int.show_response(_dispatch(root, radio, language, key, None) or "")
+                else:
+                    announce_connection("lost")
+                continue
             if key == "e":
                 original_frequency = _current_frequency(root, radio)
                 if original_frequency is None:
@@ -1776,9 +1824,12 @@ def main(argv: list[str] | None = None) -> int:
                 response = None
                 while True:
                     try:
-                        mode_key = lang_sel.read_key()
+                        mode_key = read_radio_key()
                     except (RuntimeError, OSError) as error:
                         print(f"\n{error}", file=sys.stderr)
+                        break
+                    if watch.lost:
+                        pending_key = mode_key or "w"
                         break
                     mode_key = mode_key.casefold()
                     if not mode_key:
@@ -1815,9 +1866,12 @@ def main(argv: list[str] | None = None) -> int:
                 )
                 while True:
                     try:
-                        band_key = lang_sel.read_key()
+                        band_key = read_radio_key()
                     except (RuntimeError, OSError) as error:
                         print(f"\n{error}", file=sys.stderr)
+                        break
+                    if watch.lost:
+                        pending_key = band_key or "w"
                         break
                     band_key = band_key.casefold()
                     if not band_key:
@@ -1845,10 +1899,13 @@ def main(argv: list[str] | None = None) -> int:
                 response = None
                 while True:
                     try:
-                        settings_key = lang_sel.read_key()
+                        settings_key = read_radio_key()
                     except (RuntimeError, OSError) as error:
                         print(f"\n{error}", file=sys.stderr)
                         response = None
+                        break
+                    if watch.lost:
+                        pending_key = settings_key or "w"
                         break
                     if not settings_key:
                         continue
@@ -1949,9 +2006,12 @@ def main(argv: list[str] | None = None) -> int:
                 response = None
                 while True:
                     try:
-                        offset_key = lang_sel.read_key()
+                        offset_key = read_radio_key()
                     except (RuntimeError, OSError) as error:
                         print(f"\n{error}", file=sys.stderr)
+                        break
+                    if watch.lost:
+                        pending_key = offset_key or "w"
                         break
                     if not offset_key:
                         continue

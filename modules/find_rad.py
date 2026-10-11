@@ -22,6 +22,7 @@ closes the port when it exits.
 from __future__ import annotations
 
 import argparse
+import json
 import logging
 import os
 import re
@@ -45,7 +46,7 @@ CONTROLLER_ADDRESS = 0xE0
 # and A2 for the IC-9700; other entries provide sensible first guesses when
 # Windows identifies an Icom USB interface. A user-supplied civ_address is
 # always tried first.
-CIV_ADDRESSES = (0xA4, 0xA2, 0x94, 0xB6, 0x98, 0x88, 0x70, 0x5C, 0x58)
+CIV_ADDRESSES = (0xA4, 0x7A, 0xA2, 0x94, 0xB6, 0x98, 0x88, 0x70, 0x5C, 0x58)
 CAT_MODELS = {
     "0761": "Yaesu FTDX10",
     "0840": "Yaesu FTX-1",
@@ -59,6 +60,7 @@ CI_V_MODELS = {
     "94": "IC-7300",
     "B6": "IC-7300MK2",
     "A2": "IC-9700",
+    "7A": "IC-7600",
     "98": "IC-7610",
     "88": "IC-7100",
 }
@@ -169,11 +171,49 @@ def _port_details(port: Any) -> dict[str, str | None]:
     return details
 
 
-def serial_port_diagnostics() -> list[dict[str, str | None]]:
+def _silicon_labs_evidence(port: Any) -> list[str]:
+    """Report visible USB clues, without claiming a driver is installed."""
+    evidence = []
+    if getattr(port, "vid", None) == 0x10C4:
+        evidence.append("USB vendor ID 10C4")
+    for name in ("description", "manufacturer", "product", "interface", "hwid"):
+        value = str(getattr(port, name, "") or "")
+        if "cp210" in value.casefold() or "silicon lab" in value.casefold():
+            evidence.append(f"{name}: {value}")
+    return evidence
+
+
+def _diagnostic_port_details(port: Any) -> dict:
+    details = _port_details(port)
+    evidence = _silicon_labs_evidence(port)
+    details["silicon_labs_metadata_seen"] = bool(evidence)
+    details["silicon_labs_evidence"] = evidence
+    return details
+
+
+def _log_port_diagnostics(ports: list[Any]) -> None:
+    if not DEBUG_LOG.isEnabledFor(logging.INFO):
+        return
+    details = [_diagnostic_port_details(port) for port in ports]
+    seen = any(port["silicon_labs_metadata_seen"] for port in details)
+    DEBUG_LOG.info("Serial-port metadata: %s", json.dumps(details, ensure_ascii=True))
+    DEBUG_LOG.info("silicon_labs_metadata_seen=%s (visible device metadata; not an installed-driver check)",
+                   str(seen).lower())
+    if not seen:
+        DEBUG_LOG.info(
+            "No Silicon Labs identifier was found in the visible serial-port metadata. "
+            "Devices may be identified differently; this does not mean the driver is missing. "
+            "If using the radio's direct USB connection and discovery fails, it may help to "
+            "check the manufacturer's USB driver and the device name/status in Device Manager. "
+            "External CI-V interfaces may use a different manufacturer's driver."
+        )
+
+
+def serial_port_diagnostics() -> list[dict]:
     """Return current PySerial port/USB metadata for an opt-in debug report."""
     from serial.tools import list_ports
 
-    return [_port_details(port) for port in list_ports.comports()]
+    return [_diagnostic_port_details(port) for port in list_ports.comports()]
 
 
 def _port_text(port: Any) -> str:
@@ -241,22 +281,15 @@ def _rank_ports(ports: list[Any], preferred_ports: tuple[str, ...] = ()) -> list
 
 def _is_icom_candidate(port: Any, paired_silabs: bool) -> bool:
     text = _port_text(port)
-    if any(word in text for word in ("icom", "ci-v", "ic-705", "ic-7300", "ic-9700")):
+    if any(word in text for word in ("icom", "ci-v", "ic-705", "ic-7300", "ic-9700", "ic-7600")):
         return True
     # A Silicon Labs bridge is a useful radio clue; a second matching COM port
     # raises its ranking, but a single bridge can still be the radio CAT port.
-    return (
-        getattr(port, "vid", None) == 0x10C4
-        or "cp210" in text
-        or "silicon labs" in text
-        or paired_silabs
-    )
+    return bool(_silicon_labs_evidence(port)) or paired_silabs
 
 
 def _is_paired_silabs(port: Any, ports: list[Any]) -> bool:
-    is_silabs = getattr(port, "vid", None) == 0x10C4 or any(
-        word in _port_text(port) for word in ("cp210", "silicon labs")
-    )
+    is_silabs = bool(_silicon_labs_evidence(port))
     if not is_silabs:
         return False
     keys = set(_usb_pair_keys(port))
@@ -455,6 +488,7 @@ class RadioConnection:
     mode_code: str = ""
     usb_identity: str = ""
     port_details: dict[str, str | None] = field(default_factory=dict)
+    is_dummy: bool = False
 
     @property
     def manufacturer_key(self) -> str:
@@ -721,6 +755,7 @@ def find_radios(
     DEBUG_LOG.info("Enumerated serial ports: %s", ", ".join(
         str(getattr(port, "device", "") or "?") for port in ports
     ))
+    _log_port_diagnostics(ports)
     ports = _rank_ports(ports, preferred_ports)
 
     # Previously discovered radios get one direct attempt at their saved port
@@ -780,7 +815,7 @@ def find_radios(
                     description = _port_text(port_info)
                     explicit_model = next(
                         (
-                            model for model in ("IC-7300MK2", "IC-705", "IC-7300", "IC-9700", "IC-7610", "IC-7100")
+                            model for model in ("IC-7300MK2", "IC-705", "IC-7300", "IC-9700", "IC-7600", "IC-7610", "IC-7100")
                             if model.casefold() in description
                         ),
                         "",
@@ -1023,7 +1058,7 @@ def main() -> int:
     )
     root = project_root()
     if radio is None:
-        print(_read_label(root, language, "l009", "Radio could not be found! Falling back to dummy radio."))
+        print(_read_label(root, language, "l028", "YAC could not find a responding radio."))
         return 1
 
     _clear_console()

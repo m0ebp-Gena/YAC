@@ -1,0 +1,69 @@
+{
+  "default_address": 162,
+  "minimum_hz": 144000000,
+  "maximum_hz": 1300000000,
+  "modes": {
+    "00": "LSB",
+    "01": "USB",
+    "02": "AM",
+    "03": "CW",
+    "04": "RTTY",
+    "05": "FM",
+    "07": "CW-R",
+    "08": "RTTY-R",
+    "17": "DV",
+    "22": "DD"
+  },
+  "bands_hz": [
+    145000000,
+    433000000,
+    1296500000
+  ],
+  "command_files": {
+    "read": [
+      "frequency",
+      "mode",
+      "signal",
+      "id",
+      "offset",
+      "rit",
+      "selected_frequency",
+      "unselected_frequency",
+      "selected_mode",
+      "unselected_mode",
+      "tuning_step",
+      "split"
+    ],
+    "set": [
+      "e",
+      "m",
+      "offset",
+      "rit",
+      "vfo_a",
+      "vfo_b",
+      "vfo_equal",
+      "vfo_exchange",
+      "selected_frequency",
+      "unselected_frequency",
+      "selected_mode",
+      "unselected_mode",
+      "tuning_step",
+      "split"
+    ]
+  },
+  "frequency_ranges_hz": [
+    [
+      144000000,
+      148000000
+    ],
+    [
+      430000000,
+      450000000
+    ],
+    [
+      1240000000,
+      1300000000
+    ]
+  ],
+  "supports_xit": false
+}

@@ -10,8 +10,13 @@ parser.add_argument("--date", default=date.today().isoformat())
 args = parser.parse_args()
 date.fromisoformat(args.date)
 folder = "YAC-source-" + args.date
-files = [root / name for name in ("yac.py", "install-yac.sh", "install_yac.py", "doc/linux-macos-setup.txt")]
-for directory in [root / "modules", root / "rad_cmds", *(root / "lang" / language for language in ("en", "de", "pl"))]:
+files = [root / name for name in (
+    "yac.py", "install-yac.sh", "install_yac.py", "requirements.txt",
+    "doc/linux-macos-setup.txt", "doc/debian-trixie-setup.txt",
+    "BRAILLE-FS-START-HERE.txt", "doc/ic-7600-support.md", "doc/ic-9700-support.md",
+    "doc/pi-brltty-speech.txt",
+)]
+for directory in [root / "modules", root / "rad_cmds", *(root / "lang" / language for language in ("en", "de", "pl", "es"))]:
     files.extend(path for path in directory.rglob("*") if path.is_file() and "__pycache__" not in path.parts and path.suffix != ".pyc")
 archive = root / (folder + ".zip")
 with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as package:
@@ -24,5 +29,7 @@ with zipfile.ZipFile(archive) as package:
     assert package.testzip() is None
     assert b"\r" not in package.read(folder + "/install-yac.sh")
     assert package.read(folder + "/yac.py") == (root / "yac.py").read_bytes()
+    for required in ("modules/dummy_radio.py", "BRAILLE-FS-START-HERE.txt", "lang/es/labels/l107"):
+        assert package.read(folder + "/" + required) == (root / required).read_bytes()
     assert not any(name.endswith(("yac.ini", "YAC.exe", ".pyc", ".log")) for name in package.namelist())
 print("Created and checked " + archive.name)

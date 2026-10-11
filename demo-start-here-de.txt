@@ -18,17 +18,17 @@ gena@m0ebp.uk.
 YAC STARTEN
 
 1. Entpacken Sie die gesamte ZIP-Datei mit der Windows-Funktion „Alle
-   extrahieren“. Wählen Sie einen beschreibbaren Ordner, beispielsweise
-   Downloads oder Dokumente.
+   extrahieren“. Wählen Sie einen gewöhnlichen Ordner mit Schreibrechten,
+   beispielsweise Downloads oder Dokumente.
 2. Öffnen Sie den entpackten YAC-Ordner und starten Sie YAC-001-beta.exe. Starten
    Sie das Programm nicht innerhalb der ZIP-Datei und verschieben Sie die
    Programmdatei nicht einzeln. Lassen Sie alle mitgelieferten Dateien und
    Unterordner so zusammen, wie sie entpackt wurden. Eine gesonderte
    Installation ist nicht erforderlich.
 3. Maximieren Sie das Terminalfenster, bevor Sie die Eingabeaufforderungen
-   bearbeiten. Halten Sie Alt gedrückt und drücken Sie die Leertaste.
-   Lassen Sie beide Tasten los und drücken Sie dann x. Damit öffnen Sie
-   das Fenstermenü und wählen „Maximieren“.
+   bearbeiten. Alt+Leertaste öffnet das Fenstermenü. Lassen Sie beide
+   Tasten los. Sobald das Fenstermenü geöffnet ist, drücken Sie x,
+   um „Maximieren“ zu wählen.
 
 DAS FUNKGERÄT VORBEREITEN
 
@@ -42,11 +42,39 @@ neue Suche dauert normalerweise etwa eine Minute. Dabei kann es Pausen
 geben, in denen keine neue Meldung erscheint. YAC arbeitet während dieser
 Pausen weiter. Lassen Sie das Programm laufen, bis die Suche beendet ist.
 
+WENN YAC DAS FUNKGERÄT NICHT FINDET
+
+1. Prüfen Sie, ob das Funkgerät eingeschaltet und angeschlossen ist.
+2. Prüfen Sie, ob sein COM-Port im Geräte-Manager angezeigt wird.
+3. Bei direktem USB-Anschluss prüfen Sie den empfohlenen Treiber des
+   Funkgeräteherstellers. Ein externer CI-V-Adapter kann einen eigenen
+   Treiber seines Herstellers benötigen.
+4. Beenden Sie andere Programme, die denselben COM-Port verwenden.
+5. Prüfen Sie CI-V-Adresse und Baudrate anhand der Funkgeräteeinstellungen.
+
+Windows kann die Schnittstelle als Silicon Labs oder CP210x statt mit dem
+Funkgerätemodell anzeigen. Das Debugprotokoll enthält erkannte Kennungen.
+Fehlende Kennungen bedeuten nicht unbedingt, dass der Treiber fehlt;
+Geräte können anders bezeichnet sein. Wir helfen beim Lesen des Protokolls.
+
+OPTIONALE TASTATURANLEITUNG: COM-PORT PRÜFEN
+
+Drücken Sie die Windows-Taste, geben Sie Geräte-Manager ein und drücken
+Sie Enter. Verwenden Sie bei anderer Windows-Sprache den örtlichen Namen.
+Drücken Sie nach dem Öffnen Tab, bis Ihr Screenreader den Gerätebaum oder
+den Computernamen ansagt. Suchen Sie mit Pfeil nach unten Anschlüsse
+(COM & LPT). Erweitern Sie die Kategorie mit Pfeil nach rechts und lesen
+Sie mit Pfeil nach unten die Geräte und COM-Nummern.
+Namen und Ansagen hängen von Windows-Sprache und Screenreader ab; es gibt
+keine feste Anzahl von Tab-Tastendrücken. Teilen Sie uns Gerätename und
+COM-Nummer mit. Wenn Sie die Kategorie nicht finden, ist auch das hilfreich;
+Sie können hier aufhören. Sie müssen nichts ändern oder deinstallieren.
+
 SPRACHE UND EINGABEN BEIM START
 
 Folgen Sie den Aufforderungen zur Auswahl der Sprache und zur Eingabe
 Ihres Namens oder Rufzeichens. Die Sprachauswahl lautet: 1 für Englisch,
-2 für Deutsch und 3 für Polnisch. Jede Sprache wird in ihrer eigenen
+2 für Deutsch, 3 für Polnisch und 4 für Spanisch. Jede Sprache wird in ihrer eigenen
 Sprache angezeigt. Wählen Sie eine Zahl und drücken Sie die Leertaste,
 wenn Sie zur Bestätigung aufgefordert werden. YAC verwendet die gewählte
 Sprache für die folgenden Meldungen und Hilfetexte. Ihr Screenreader
@@ -76,8 +104,8 @@ Sie diese Satzzeichentasten auf Ihrer Tastatur oder Brailletastatur.
 Bei Band-, Betriebsarten- und Offsetsteuerung verlässt q die jeweilige
 Steuerung und kehrt zur obersten Ebene zurück. Eine andere Befehlstaste
 verlässt die Steuerung und führt diesen Befehl aus. Band- und
-Betriebsartenänderungen werden sofort wirksam. Auf der obersten Ebene
-beendet q YAC.
+Betriebsartenänderungen treten sofort in Kraft, sobald Sie die Auswahl
+treffen. Auf der obersten Ebene beendet q YAC.
 
 DIE DEMO VERWENDEN
 
@@ -90,6 +118,8 @@ um fortzufahren.
 e - Eine neue Frequenz in Megahertz mit einem Dezimalpunkt eingeben.
 Geben Sie beispielsweise 7.103 ein und drücken Sie Enter, um 7.103 MHz
 einzustellen. So können Sie auch schnell zu einem anderen Band wechseln.
+Achtung: Verwenden Sie einen Punkt (.), kein Komma. Im Deutschen ist das
+Komma das Dezimaltrennzeichen, aber in YAC ist das Komma eine Befehlstaste.
 
 m - Eine andere Betriebsart wählen. Mit Komma und Punkt wechseln Sie
 zwischen den vom angeschlossenen Funkgerät unterstützten Betriebsarten.
@@ -98,22 +128,23 @@ Drücken Sie h für Hilfe oder q zur Rückkehr.
 Komma oder Punkt auf der obersten Ebene - Frequenz um die in YAC
 festgelegte Schrittweite für die aktuelle Betriebsart senken oder erhöhen.
 
-Sie können auch mit dem Abstimmknopf Ihres Funkgeräts abstimmen. Mit w
+Sie können auch mit dem Abstimmrad Ihres Funkgeräts abstimmen. Mit w
 lesen Sie die aktuelle Frequenz.
 
 z - Die aktuelle VFO-Frequenz auf das nächste ganze Kilohertz auf- oder
-abrunden. Nach dem Abstimmen mit dem Knopf drücken Sie z, um ein genaues
-ganzes Kilohertz einzustellen, ohne während des Drehens immer wieder die
-Frequenz abfragen zu müssen.
+abrunden. Nach dem Abstimmen mit dem Abstimmrad drücken Sie z, um ein
+genaues ganzes Kilohertz einzustellen, ohne während des Drehens immer
+wieder die Frequenz abfragen zu müssen.
 
 o - Drücken Sie o wiederholt, um zwischen Empfang, Senden und Löschen
 zu wechseln. Diese Funktionen stellen Frequenzablagen ein, die Hersteller
 als RIT, XIT oder Clarifier bezeichnen. Empfang verändert die
 Empfangsfrequenz; Senden verändert die Sendefrequenz. Beim Öffnen der
 Offsetsteuerung wird die Ablage auf null gesetzt. Bei Empfang oder Senden
-zieht Komma 10 Hz ab und Punkt fügt 10 Hz hinzu. Bei Löschen setzt jede
-der beiden Tasten die Ablagen zurück und schaltet RIT/XIT oder die
-Clarifier aus. Drücken Sie q zur Rückkehr oder eine andere Befehlstaste,
+verringert Komma die Ablage um 10 Hz und Punkt erhöht sie um 10 Hz.
+Bei Löschen setzt jede der beiden Tasten die Ablagen zurück und schaltet
+RIT/XIT oder die Clarifier aus. Drücken Sie q zur Rückkehr oder eine
+andere Befehlstaste,
 um fortzufahren.
 
 YAC weist häufig verwendeten Befehlen auf der obersten Ebene eigene
@@ -136,7 +167,8 @@ FM: 12500 Hz (12,5 kHz)
 Dies sind die Abstimmschritte von YAC. Sie können den Wert für jede
 Betriebsart so anpassen, wie Sie die Bänder erkunden möchten.
 
-v - In Einstellungen wechseln, welchen VFO YAC steuert, sofern unterstützt.
+v - Wechselt in den Einstellungen den von YAC gesteuerten VFO, sofern
+unterstützt.
 Hersteller verwenden dafür Bezeichnungen wie VFO A und VFO B oder Main
 und Sub. YAC meldet den gewählten VFO, seine Frequenz und seine Betriebsart.
 Drücken Sie q, um Einstellungen zu verlassen, oder eine andere

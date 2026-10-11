@@ -38,6 +38,10 @@ CALIBRATIONS: dict[str, Sequence[tuple[int, float]]] = {
     # Reuse the Icom curve as an approximation, pending hardware calibration.
     "ic-7300": ICOM_IC705_CALIBRATION,
     "ic-7300mk2": ICOM_IC705_CALIBRATION,
+    # IC-9700 guide has the same S0/S9/S9+60 endpoints; interpolation is approximate.
+    "ic-9700": ICOM_IC705_CALIBRATION,
+    # IC-7600 manual specifies the same S0/S9/S9+60 raw endpoints.
+    "ic-7600": ICOM_IC705_CALIBRATION,
 }
 
 

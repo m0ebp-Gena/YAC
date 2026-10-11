@@ -5,7 +5,7 @@ braille access in mind. It runs in a terminal and uses your screen reader for
 speech and braille output. The current version is **001 beta**.
 
 Controls include reading signal strength, frequency and mode; tuning; band and
-mode selection; and receive/transmit offsets where supported. English, German
+mode selection; and receive/transmit offsets where supported. English, German, Spanish
 and Polish labels and help are included. Press `h` for help and `q` to quit
 from the top level.
 
@@ -30,11 +30,13 @@ Keep `modules`, `lang` and `rad_cmds` alongside `yac.py`.
 
 Connect your radio and close any other program using its serial port. Install
 the manufacturer's USB driver if required. Follow the language and name or
-callsign prompts. Automatic radio discovery can take about a minute.
+callsign prompts. Automatic radio discovery can take about a minute. If no radio responds, YAC
+loads an in-memory FT-DX10 demo so you can explore the controls. Signal strength
+and radio settings are simulated; no demo connection is saved in yac.ini.
 
 For the controls and braille settings, read [the English demo guide](demo-start-here.txt).
 [German](demo-start-here-de.txt) and [Polish](demo-start-here-pl.txt) guides are
-also available. The executable instructions in those guides apply to the
+also available, along with [Spanish](demo-start-here-es.txt). The executable instructions in those guides apply to the
 packaged Windows demo; the commands above apply to this source repository.
 
 ## Linux and macOS
@@ -48,6 +50,21 @@ sh install-yac.sh
 The installer asks before creating `~/yac`, creates a private Python
 environment and installs pyserial. See [Linux and macOS setup](doc/linux-macos-setup.txt)
 for requirements, launch commands and radio access details.
+
+For braille and console speech, see [BRLTTY display commands](BRAILLE-FS-START-HERE.txt)
+and the [Pi BRLTTY speech guide](doc/pi-brltty-speech.txt). Initial Linux testing
+has confirmed usable Freedom Scientific braille and the simulated-radio startup
+line; broader hardware and sleep/wake testing remains ongoing.
+
+Real connections are checked quietly every five seconds while waiting for
+command keys. After repeated failures, YAC attempts to reconnect to the same
+device and model without restoring radio settings or entering simulated mode.
+The connection and simulated-mode messages stay under the terminal cursor
+until a command is entered. Polling pauses during editable fields.
+
+New Icom definitions are documented in [IC-7600 support](doc/ic-7600-support.md)
+and [IC-9700 support](doc/ic-9700-support.md); those profiles still require
+physical-radio validation.
 
 ## Settings and diagnostics
 
@@ -65,7 +82,7 @@ sharing. See [debugging instructions](doc/debugging.txt).
 Offline regression tests can be run without a connected radio:
 
 ```powershell
-.\.venv\Scripts\python.exe -m unittest test_install_yac test_radio_responses test_icom_7300 test_tone_input
+.\.venv\Scripts\python.exe -m unittest test_install_yac test_radio_responses test_icom_7300 test_tone_input test_demo_and_ic9700 test_ic7600
 ```
 
 The `radio_*_check.py` scripts are hardware checks; inspect them before use.
@@ -78,3 +95,9 @@ and [planned work](TODO.md).
 Contact Gena through the Active Elements or Blind Hams email lists, or at
 gena@m0ebp.uk. Include the YAC version, operating system, radio model and steps
 to reproduce any problem.
+
+IC-9700 control support is based on Icom documentation and offline simulations;
+hardware validation is still required. See [IC-9700 support notes](doc/ic-9700-support.md).
+
+[IC-7600 support notes](doc/ic-7600-support.md) describe Main/Sub controls and
+the firmware 2.00 requirement for RIT/Delta-TX. Hardware testing is pending.

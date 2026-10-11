@@ -15,7 +15,7 @@ import tempfile
 from pathlib import Path
 
 
-LANGUAGE_CODES = ("en", "de", "pl")
+LANGUAGE_CODES = ("en", "de", "pl", "es")
 
 
 def project_root() -> Path:
@@ -92,10 +92,15 @@ def set_language(ini_path: Path, language: str) -> None:
             temporary_path.unlink()
 
 
-def read_key() -> str:
+def read_key(idle_callback=None) -> str:
     """Read one key without requiring Enter, restoring terminal state afterward."""
     if os.name == "nt":
         import msvcrt
+        if idle_callback is not None:
+            import time
+            while not msvcrt.kbhit():
+                idle_callback()
+                time.sleep(0.1)
 
         key = msvcrt.getwch()
         if key in ("\x00", "\xe0"):
@@ -112,6 +117,15 @@ def read_key() -> str:
     previous_settings = termios.tcgetattr(descriptor)
     try:
         tty.setraw(descriptor)
+        if idle_callback is not None:
+            import select
+            # Idle callbacks may print status. Preserve terminal output newline
+            # processing while retaining raw, single-key input.
+            raw_settings = termios.tcgetattr(descriptor)
+            raw_settings[1] = previous_settings[1]
+            termios.tcsetattr(descriptor, termios.TCSANOW, raw_settings)
+            while not select.select([descriptor], [], [], 0.1)[0]:
+                idle_callback()
         return sys.stdin.read(1)
     finally:
         termios.tcsetattr(descriptor, termios.TCSADRAIN, previous_settings)

@@ -5,7 +5,7 @@ from functools import lru_cache
 from pathlib import Path
 
 
-SUPPORTED_MODELS = frozenset({"ic-705", "ic-7300", "ic-7300mk2"})
+SUPPORTED_MODELS = frozenset({"ic-705", "ic-7300", "ic-7300mk2", "ic-9700", "ic-7600"})
 
 
 @lru_cache(maxsize=8)

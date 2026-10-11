@@ -39,10 +39,36 @@ zwykle trwa około minuty. Mogą wystąpić przerwy bez nowych komunikatów.
 W tym czasie YAC nadal pracuje. Pozostaw program uruchomiony i poczekaj
 na zakończenie wyszukiwania.
 
+JEŚLI YAC NIE ZNAJDUJE RADIA
+
+1. Sprawdź, czy radio jest włączone i podłączone.
+2. Sprawdź, czy jego port COM jest widoczny w Menedżerze urządzeń.
+3. Przy bezpośrednim połączeniu USB sprawdź sterownik zalecany przez
+   producenta radia. Zewnętrzny adapter CI-V może wymagać własnego sterownika.
+4. Zamknij inne programy korzystające z tego samego portu COM.
+5. Sprawdź adres CI-V i szybkość transmisji w ustawieniach radia.
+
+Windows może wyświetlać nazwę Silicon Labs lub CP210x zamiast modelu radia.
+Dziennik diagnostyczny zapisuje rozpoznane identyfikatory. Ich brak nie musi
+oznaczać braku sterownika; urządzenie może mieć inną nazwę. Pomożemy
+odczytać dziennik.
+
+OPCJONALNA INSTRUKCJA KLAWIATUROWA: SPRAWDZANIE PORTU COM
+
+Naciśnij klawisz Windows, wpisz Menedżer urządzeń i naciśnij Enter.
+W innym języku Windows użyj lokalnej nazwy Menedżera urządzeń.
+Po otwarciu naciskaj Tab, aż czytnik ekranu odczyta drzewo urządzeń lub
+nazwę komputera. Strzałką w dół znajdź Porty (COM i LPT). Rozwiń kategorię
+strzałką w prawo, następnie strzałką w dół odczytaj urządzenia i numery COM.
+Nazwy i komunikaty zależą od języka Windows i czytnika; liczba naciśnięć
+Tab nie jest stała. Podaj nam nazwę urządzenia i numer COM. Jeśli nie
+znajdziesz kategorii Porty, to również pomocna informacja; możesz tutaj
+zakończyć. Nie musisz niczego zmieniać ani odinstalowywać.
+
 JĘZYK I PYTANIA PRZY URUCHOMIENIU
 
 Postępuj zgodnie z pytaniami o język oraz imię lub znak wywoławczy.
-Dostępne języki to: 1 angielski, 2 niemiecki i 3 polski. Każdy język jest
+Dostępne języki to: 1 angielski, 2 niemiecki, 3 polski i 4 hiszpański. Każdy język jest
 przedstawiony w swoim własnym języku. Wybierz numer i naciśnij Spację,
 gdy program poprosi o potwierdzenie. Wybrany język jest używany w kolejnych
 komunikatach i pomocy YAC. Czytnik ekranu zapewnia mowę i/lub brajl

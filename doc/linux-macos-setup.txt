@@ -69,6 +69,39 @@ radio. Screen-reader speech and braille come from your screen reader's
 access to the terminal; the script does not configure the screen reader.
 Press h at the top level for the command list, and q to quit.
 
+BRAILLE SETUP NOTES
+
+See BRAILLE-FS-START-HERE.txt in the extracted source package for USB
+commands using Freedom Scientific (fs) and HumanWare Brailliant BI 40X
+(hw), with the North American computer braille text table en-nabcc.
+Freedom Scientific braille output on Linux has now received a positive
+user report. HumanWare remains to be tested in this setup. The reported
+Apple / macOS output issue remains unresolved; loading a driver or table
+alone does not establish that the expected output is working.
+
+IDLE RADIO CONNECTIONS
+
+YAC quietly reads frequency every five seconds while waiting for command
+keys, including mode, band, settings and offset menus. Queries and user
+commands run in the same thread, so their replies cannot overlap. Polling
+pauses during editable fields and command execution; it does not require
+keypresses during ordinary listening. Successful checks produce no speech
+or braille output. The simulated radio is not polled.
+
+Three consecutive failed checks produce a localized connection-lost
+message, kept under the terminal cursor. YAC then retries the original
+USB identity (if available), or the original port, and verifies the model
+at its existing baud rate and CI-V address. It does not scan for an
+alternative radio, switch to simulated mode, or restore radio settings.
+Radio commands are blocked once loss is detected; h and q remain available
+at the top level. Successful recovery produces a connection-restored
+message. A device without a USB serial identity must return on its original
+port; that fallback cannot distinguish two units of the same model.
+
+These checks are not an operating-system sleep inhibitor. They do not
+guarantee that macOS keeps USB active on battery or during sleep. Mac
+sleep/wake and real-device reconnection still require hardware testing.
+
 RADIO ACCESS ON LINUX
 
 USB serial device names commonly include /dev/ttyUSB0 or /dev/ttyACM0.
