@@ -1,0 +1,84 @@
+{
+  "preamp": {
+    "protocol": "cat",
+    "read": "PA;",
+    "pattern": "PA([01])0;",
+    "set": "PA{value};",
+    "states": {
+      "0": "l116",
+      "1": "l136"
+    }
+  },
+  "attenuator": {
+    "protocol": "cat",
+    "read": "RA;",
+    "pattern": "RA(0[01])00;",
+    "set": "RA{value};",
+    "states": {
+      "00": "l111",
+      "01": "l112"
+    }
+  },
+  "power": {
+    "protocol": "cat",
+    "read": "PC;",
+    "pattern": "PC(\\d{3});",
+    "minimum": 5,
+    "maximum": 100,
+    "input_minimum": 5,
+    "set": "PC{value};"
+  },
+  "tuner": {
+    "protocol": "cat",
+    "read": "AC;",
+    "pattern": "AC([01][01]0);",
+    "cycle": [
+      "000",
+      "110"
+    ],
+    "set": "AC{value};",
+    "states": {
+      "000": "l121",
+      "010": "l122",
+      "100": "l121",
+      "110": "l122"
+    },
+    "aliases": {
+      "100": "000",
+      "010": "110"
+    }
+  },
+  "af_gain": {
+    "protocol": "cat",
+    "minimum": 0,
+    "maximum": 255,
+    "step": 8,
+    "label": "l140",
+    "read": "AG0;",
+    "set": "AG0{value};",
+    "pattern": "AG0(\\d{3});"
+  },
+  "rf_gain": {
+    "protocol": "cat",
+    "minimum": 0,
+    "maximum": 255,
+    "step": 8,
+    "label": "l141",
+    "read": "RG;",
+    "set": "RG{value};",
+    "pattern": "RG(\\d{3});",
+    "squelch_modes": [
+      "4"
+    ]
+  },
+  "squelch": {
+    "protocol": "cat",
+    "minimum": 0,
+    "maximum": 255,
+    "step": 8,
+    "label": "l142",
+    "read": "SQ0;",
+    "set": "SQ0{value};",
+    "pattern": "SQ0(\\d{3});"
+  }
+}

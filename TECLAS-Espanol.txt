@@ -1,0 +1,62 @@
+YAC — Teclas de control
+
+Pulsa una tecla cada vez. La mayoría de los comandos no necesitan Intro.
+Los comandos dependen de las funciones compatibles de la radio conectada.
+
+NIVEL PRINCIPAL
+a          Ganancia AF
+b          Selección de banda
+e          Nueva frecuencia en MHz; escribe por ejemplo 7.103, luego Intro
+h          Ayuda
+i          Entrada de tono/código (CTCSS/DCS si es compatible); h: ayuda
+m          Selección de modo
+o          Desplazamiento: Recepción, Transmisión, Borrar
+p          Alternar etapas del preamplificador y apagado
+q          Salir de YAC
+r          Ganancia RF; silenciador en FM
+s          Abrir Ajustes
+u          Alternar niveles del atenuador y apagado
+v          Verificar atenuador, preamplificador, potencia y sintonizador
+w          ¿Dónde estoy? Señal, frecuencia y modo
+z          Redondear la frecuencia al kilohercio más cercano
+Punto      Aumentar la frecuencia según el paso configurado
+Coma       Disminuir la frecuencia según el paso configurado
+
+AJUSTES — pulsa s primero
+s luego p  Escribir potencia y pulsar Intro. Vacío cancela.
+s luego s  Paso del modo actual en hercios; escribe un valor, luego Intro
+s luego t  Alternar ajustes del sintonizador; repetir t para la siguiente opción
+s luego v  Seleccionar VFO A/B o Main/Sub, si es compatible
+q          Salir de Ajustes
+
+DENTRO DE LA SELECCIÓN DE BANDA O MODO
+Punto      Subir
+Coma       Bajar
+h          Ayuda
+q          Volver al nivel principal
+Otra tecla de comando sale de la selección e inicia ese comando.
+La selección de modo empieza en el modo actual y recorre los modos en bucle.
+La selección de banda empieza en la banda actual. Icom y Kenwood se detienen
+en ambos extremos; Yaesu sigue el comportamiento de la radio.
+En el límite superior, usa coma para bajar o e para introducir una frecuencia.
+
+DENTRO DEL CONTROL DE DESPLAZAMIENTO
+o          Alternar Recepción, Transmisión, Borrar
+Punto      Añadir 10 hercios
+Coma       Restar 10 hercios
+En Borrar, cualquiera de las teclas de movimiento borra los desplazamientos.
+q          Volver al nivel principal
+Desplazamiento empieza en Recepción a cero hercios. Otra tecla de comando sale.
+
+NOTAS
+q sale de Ajustes; en el nivel principal sale de YAC. Los cambios son inmediatos.
+Pasos predeterminados: SSB 1000 Hz, CW 500 Hz, AM 2500 Hz, FM 12500 Hz.
+Estado del sintonizador: ajuste de la radio; no se detectan equipos independientes.
+Seleccionarlo no inicia la sintonización. Apagar ATAS deselecciona ATAS.
+Potencia: vatios configurados para Yaesu/Kenwood; porcentaje relativo para Icom.
+Desconocido: no se pudo leer el ajuste. Se omiten sintonizadores no compatibles.
+Solo se incluyen comandos implementados. h: ayuda detallada.
+
+a ajusta la ganancia AF. r ajusta el silenciador en FM y la ganancia RF en otros modos. Empieza con el valor actual de la radio, en porcentaje redondeado. Punto aumenta; coma disminuye. Pasos de unos 3 por ciento. Se detiene en los extremos. q sale y conserva el valor. Otra tecla de comando sale y ejecuta ese comando.
+
+Campo de potencia: vatios enteros; h e Intro para ayuda; Intro vacío cancela. Los vatios de Icom son estimados y convertidos a porcentaje; v informa porcentaje. Éxito silencioso. Sal de Ajustes con q antes de v.

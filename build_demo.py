@@ -11,14 +11,17 @@ from datetime import date
 root = Path(__file__).resolve().parent
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--date", default=date.today().isoformat(), help="Release date (YYYY-MM-DD)")
-parser.add_argument("--dist-dir", default="demo-dist", help="Build output directory")
+parser.add_argument("--dist-dir", default="builds/.work/demo-dist", help="Staging directory within builds")
 args = parser.parse_args()
 date.fromisoformat(args.date)
+staging = (root / args.dist_dir).resolve()
+if not staging.is_relative_to((root / 'builds/.work').resolve()):
+    raise ValueError('Stage the demo within builds/.work')
 env = os.environ.copy()
 env["PYTHONPATH"] = str(root / ".build-deps")
 subprocess.run([sys.executable, "-m", "PyInstaller", "--noconfirm", "--clean",
                 "--onedir", "--console", "--name", "YAC", "--distpath", args.dist_dir,
-                "--workpath", ".demo-build", "--specpath", ".demo-build",
+                "--workpath", "builds/.work/pyinstaller", "--specpath", "builds/.work/pyinstaller",
                 "--paths", str(root), "--hidden-import", "serial.tools.list_ports_windows",
                 "demo_launcher.py"], cwd=root, env=env, check=True)
 destination = root / args.dist_dir / "YAC"
@@ -27,6 +30,10 @@ for language in ("en", "de", "pl", "es"):
 shutil.copytree(root / "rad_cmds", destination / "rad_cmds", dirs_exist_ok=True)
 (destination / "yac.ini").write_text("[yac]\nplatform=\nlang=\ncall=\ndebug=true\n", encoding="utf-8")
 guides = {
+    "KEY-BINDINGS-English.txt": "KEY-BINDINGS-English.txt",
+    "TASTENBELEGUNG-Deutsch.txt": "TASTENBELEGUNG-Deutsch.txt",
+    "SKROTY-KLAWISZOWE-Polski.txt": "SKROTY-KLAWISZOWE-Polski.txt",
+    "TECLAS-Espanol.txt": "TECLAS-Espanol.txt",
     "demo-start-here.txt": "START-HERE-English.txt",
     "demo-start-here-de.txt": "HIER-STARTEN-Deutsch.txt",
     "demo-start-here-pl.txt": "ZACZNIJ-TUTAJ-Polski.txt",
@@ -40,5 +47,6 @@ if version_match is None:
     raise RuntimeError("Could not read the YAC version")
 version = re.sub(r"[^A-Za-z0-9]+", "-", version_match.group(1)).strip("-")
 (destination / "YAC.exe").replace(destination / ("YAC-" + version + ".exe"))
-subprocess.run([sys.executable, str(root / "package_demo.py"), "--date", args.date, "--source", str(destination)], cwd=root, check=True)
+subprocess.run([sys.executable, str(root / "package_demo.py"), "--date", args.date,
+                "--source", str(destination), "--include-demo"], cwd=root, check=True)
 

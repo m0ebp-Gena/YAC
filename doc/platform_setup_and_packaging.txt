@@ -1,41 +1,50 @@
 YAC platform setup and tester packaging
 =======================================
 
-This note describes a practical starting point for testers. It is not yet a
-tested release/build recipe. YAC still needs a clean packaging pass and testing
-on each target operating system.
+BUILD FOLDERS
 
-Windows executable for testers
-------------------------------
+Current ZIPs and checksums are in the project root. previous-builds/<date>
+preserves earlier releases, with numbered subfolders for repeat builds on
+one date. builds/runnable holds the runnable Windows folder; builds/.work
+holds temporary build output.
 
-PyInstaller can bundle the Python runtime and installed Python packages, so a
-tester should not need to install Python or pyserial. Build on Windows for
-Windows; PyInstaller does not make one build that runs on Windows, macOS, and
-Linux. Build and verify a separate package on each operating system.
+Packaging validates staged files before publishing. A new date, or a filename
+that would replace an existing release artifact, archives the current release
+first. Source and Windows packages from the same date can share the root.
+Only recorded release artifacts are archived; project files stay in place.
+Generated packages and previous-builds are excluded from Git.
 
-Start with an onedir build. It is easier to inspect and troubleshoot than a
-single-file executable. From the YAC project directory, in PowerShell:
+WINDOWS DEMO
 
-    py -3 -m venv .venv
-    .\.venv\Scripts\Activate.ps1
-    python -m pip install --upgrade pip
-    python -m pip install pyserial pyinstaller
-    pyinstaller --noconfirm --clean --onedir --console --name yac `
-      --add-data "lang;lang" --add-data "rad_cmds;rad_cmds" yac.py
+From the project root, with Python and the build dependencies available:
 
-The output will be under dist\yac. Give testers the complete dist\yac folder,
-not just yac.exe. Confirm that the language and radio-command data files are
-present and that YAC can create or update its configuration and log files from
-the packaged location. The final package should include a clean starter
-configuration, not the developer's personal settings or logs.
+    py -3 build_demo.py --date YYYY-MM-DD
 
-Before distributing it, test the folder on a Windows machine that does not
-have Python installed. Also test radio discovery, a supported radio, an
-unsupported/unknown radio, and the help and error paths. PyInstaller bundles
-Python packages; it does not supply a radio's USB-to-serial driver. A tester
-may still need the driver for their radio or USB adapter. Decide where user
-settings and logs should live before making an installer; a Windows protected
-application folder may not be writable by a normal user.
+The script expects PyInstaller and pyserial in .build-deps. It stages the demo,
+copies the public key charts and first-steps guides, validates the complete
+package, and publishes the ZIP, checksum and runnable folder together.
+Distribute the ZIP or the complete runnable folder, never the executable alone.
+A failed validation leaves the previous release in place.
+
+PORTABLE SOURCE
+
+    py -3 package_source.py --date YYYY-MM-DD
+
+This validates and publishes a source ZIP and SHA-256 checksum to the project root.
+It includes all four public key charts and the Linux/macOS setup instructions.
+Use the release date in place of YYYY-MM-DD, or omit --date for today's date.
+
+TESTS
+
+    python -m unittest discover -s tests -t .
+
+Offline tests live in tests. Manual checks live in tests/hardware and run as
+modules from the project root, for example:
+
+    python -m tests.hardware.radio_read_check
+
+Inspect hardware scripts before running them; some change radio settings.
+The folder reorganization does not build or publish a new release by itself.
 
 Linux (x64 computers and Raspberry Pi)
 ------------------------------------

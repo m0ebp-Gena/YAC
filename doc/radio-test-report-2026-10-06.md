@@ -66,13 +66,13 @@ Physical braille-display and screen-reader behaviour needs user verification.
 Run offline tests with any Python runtime:
 
 ```text
-python test_radio_responses.py
+python -m unittest tests.test_radio_responses
 ```
 
 Live helpers require pyserial. The test dependency was installed in .test-deps;
 set PYTHONPATH to that directory for the bundled Python runtime. Live helpers
 change radio settings and should be run only when those changes are intended:
-radio_live_check.py and radio_targeted_check.py. radio_read_check.py only queries
+tests/hardware/radio_live_check.py and tests/hardware/radio_targeted_check.py. tests/hardware/radio_read_check.py only queries
 the saved USB identities and leaves yac.ini unchanged.
 
 Evidence: logs/radio-live-check.json, logs/radio-targeted-check.json, and

@@ -1,0 +1,62 @@
+YAC — Key bindings
+
+Press one key at a time. Most commands do not need Enter.
+Commands depend on the connected radio's supported features.
+
+TOP LEVEL
+a          AF Gain
+b          Band selection
+e          New frequency in MHz; type a value such as 7.103, then Enter
+h          Help
+i          Tone/code input (CTCSS/DCS where supported); h gives help
+m          Mode selection
+o          Offset control: Receive, Transmit, Clear
+p          Cycle preamp stages and off
+q          Quit YAC
+r          RF Gain; Squelch in FM
+s          Open Settings
+u          Cycle attenuator levels and off
+v          Verify attenuator, preamp, power and supported tuner status
+w          Where am I? Signal strength, frequency and mode
+z          Round frequency to the nearest kilohertz
+Full stop  Increase frequency by the configured step
+Comma      Decrease frequency by the configured step
+
+SETTINGS — press s first
+s then p   Edit output power; type a value, then Enter. Blank cancels.
+s then s   Set the current mode's tuning step in hertz; value, then Enter
+s then t   Cycle supported tuner settings; repeat t for the next choice
+s then v   Select VFO A/B or Main/Sub, where supported
+q          Leave Settings
+
+INSIDE BAND OR MODE SELECTION
+Full stop  Move up
+Comma      Move down
+h          Help
+q          Return to the top level
+Another command key leaves the selection and starts that command.
+Mode selection starts at the radio's current mode and loops through the modes.
+Band selection starts at the current band. Icom and Kenwood band selection
+stops at each end; Yaesu follows the radio's band behavior.
+At an upper band limit, use comma to go down, or e to enter a frequency.
+
+INSIDE OFFSET CONTROL
+o          Cycle Receive, Transmit, Clear
+Full stop  Add 10 hertz
+Comma      Subtract 10 hertz
+In Clear, either movement key clears offsets.
+q          Return to the top level
+Opening Offset starts in Receive at zero hertz. Another command key exits.
+
+NOTES
+Settings q returns; top-level q quits. Changes take effect immediately.
+Default steps: SSB 1000 Hz, CW 500 Hz, AM 2500 Hz, FM 12500 Hz.
+Tuner status describes the radio setting; independent tuners are not detected.
+Selecting a tuner does not start tuning. Turning ATAS off deselects ATAS.
+Power: configured watts for Yaesu/Kenwood; relative percentage for Icom.
+Unknown means the setting could not be read. Unsupported tuners are omitted.
+Only implemented commands are listed. Press h for detailed help.
+
+a adjusts AF Gain. r adjusts Squelch in FM, RF Gain in other modes. Starts at the current radio value, shown as a rounded percentage. Full stop increases; comma decreases. Steps are about 3 percent. Stops at each end without looping. q leaves and keeps the setting. Another command key leaves and starts that command.
+
+Power edit: whole watts; h then Enter for help; blank Enter cancels. Icom watt entries are estimated and converted to a relative percentage; v reports that percentage. Success is silent. Leave Settings with q before v.

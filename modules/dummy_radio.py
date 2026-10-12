@@ -12,6 +12,12 @@ class DummySerial:
         self.receive = self.transmit = False
         self.tone = "000"
         self.tone_state = "0"
+        self.gains = {"AG0": 128, "RG0": 255, "SQ0": 0}
+        self.preamp = "0"
+        self.attenuator = "0"
+        self.power = "020"
+        self.tuner = "000"
+        self.tuner_selection = "0"
         self.buffer = bytearray()
         self.is_open = True
         self.timeout = 0.01
@@ -39,7 +45,12 @@ class DummySerial:
             if not command:
                 continue
             reply = "?"
-            if command == "FA":
+            if command in self.gains:
+                reply = f"{command}{self.gains[command]:03d}"
+            elif re.fullmatch(r"(?:AG0|RG0|SQ0)\d{3}", command):
+                self.gains[command[:3]] = int(command[3:])
+                reply = command
+            elif command == "FA":
                 reply = f"FA{self.frequency:09d}"
             elif re.fullmatch(r"FA\d{9}", command):
                 self.frequency = int(command[2:])
@@ -80,6 +91,31 @@ class DummySerial:
                 reply = f"CT0{self.tone_state}"
             elif re.fullmatch(r"CT0[012]", command):
                 self.tone_state = command[3]
+                reply = command
+            elif command == "PA0":
+                reply = "PA0" + self.preamp
+            elif re.fullmatch(r"PA0[012]", command):
+                self.preamp = command[-1]
+                reply = command
+            elif command == "RA0":
+                reply = "RA0" + self.attenuator
+            elif re.fullmatch(r"RA0[0123]", command):
+                self.attenuator = command[-1]
+                reply = command
+            elif command == "PC":
+                reply = "PC" + self.power
+            elif re.fullmatch(r"PC\d{3}", command):
+                self.power = command[2:]
+                reply = command
+            elif command == "AC":
+                reply = "AC" + self.tuner
+            elif re.fullmatch(r"AC00[01]", command):
+                self.tuner = command[2:]
+                reply = command
+            elif command == "EX030105":
+                reply = command + self.tuner_selection
+            elif re.fullmatch(r"EX030105[0123]", command):
+                self.tuner_selection = command[-1]
                 reply = command
             self.buffer.extend((reply + ";").encode("ascii"))
         return len(packet)

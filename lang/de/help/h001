@@ -2,10 +2,27 @@ b: Bandauswahl; Punkt/Komma ändern das Band, q beendet die Auswahl
 e: Frequenz in MHz eingeben, z. B. 7.2
 m: Modusauswahl; Punkt/Komma ändern den Modus, q beendet die Auswahl
 Punkt/Komma: Frequenz um die gespeicherte Schrittweite erhöhen/verringern
-w oder f: Signalstärke, Frequenz und Modus lesen
+w: Signalstärke, Frequenz und Modus lesen
 z: Frequenz auf das nächste Kilohertz runden
 s: Einstellungen; v wählt FTX-1 Main/Sub oder Icom VFO A/B (zuerst A); s speichert die Schrittweite
 o: Offset; o wählt Empfang/Senden/Löschen; Punkt/Komma ändern um 10 Hz; q beendet
 i: Toneingabe; i wechselt CTCSS/DCS N/DCS I; Wert eingeben, Enter, dann bei Abfrage t für TX oder b für Beide; q beendet, h hilft
 q: YAC beenden
 Radioauswahl: Nummer markieren, Leertaste bestätigt, q bricht ab
+p: Vorverstärkerstufen und aus durchschalten
+u: Abschwächerstufen und aus durchschalten
+v: Abschwächer, Vorverstärker, eingestellte Leistung und unterstützten Tunerstatus prüfen
+s dann t: unterstützte Tunereinstellungen durchschalten; t wiederholen, q verlässt Einstellungen
+Der Tunerstatus beschreibt die Einstellung des Funkgeräts. Unabhängige HF-gesteuerte Tuner werden nicht erkannt. Aus behält die Tunerauswahl bei, außer ATAS: zum Ausschalten muss ATAS abgewählt werden. Die Auswahl startet keinen Abstimmvorgang.
+Leistung: Watt bei Yaesu/Kenwood, relativer Einstellwert in Prozent bei Icom; keine gemessene Sendeleistung. Unbekannt bedeutet, dass eine unterstützte Einstellung nicht gelesen werden konnte.
+Offset beginnt bei Empfang mit null Hertz. Andere Befehlstaste: verlassen.
+Die Modusauswahl beginnt bei der aktuellen Betriebsart und läuft im Kreis.
+Die Bandauswahl beginnt beim aktuellen Band. Bei Icom und Kenwood endet
+sie an beiden Grenzen; bei Yaesu folgt sie dem Verhalten des Funkgeräts.
+An der oberen Bandgrenze mit Komma abwärts oder mit e eine Frequenz eingeben.
+
+a regelt AF-Verstärkung. r regelt in FM die Rauschsperre, sonst RF-Verstärkung. Start beim aktuellen Funkgerätewert, als gerundeter Prozentwert. Punkt erhöht; Komma verringert. Schritte etwa 3 Prozent. Kein Umlauf an den Grenzen. q beendet und behält den Wert. Eine andere Befehlstaste startet diesen Befehl.
+
+Einstellungen: s dann p öffnet die Leistungseingabe. Ganze Zahl in der angezeigten Einheit und im Bereich eingeben, dann Eingabetaste; leer bricht ab. Erfolgreiche Änderungen bleiben still. q verlässt Einstellungen; v prüft die Leistung.
+
+Leistungseingabe: ganze Watt; h und Eingabetaste für Hilfe; leere Eingabe bricht ab. Icom-Watteingaben sind geschätzt und werden in Prozent umgerechnet; v meldet Prozent. Erfolg bleibt still. Vor v Einstellungen mit q verlassen.

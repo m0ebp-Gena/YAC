@@ -18,6 +18,8 @@ venv/
 /.installer-verification/
 
 # Generated packages and build output.
+/builds/
+/previous-builds/
 /.demo-build/
 /demo-dist/
 /build/

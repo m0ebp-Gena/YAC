@@ -103,6 +103,10 @@ def main(source=None, home=None):
                             ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "*.zip"))
         if (source / "doc/linux-macos-setup.txt").is_file():
             shutil.copyfile(source / "doc/linux-macos-setup.txt", destination / "LINUX-MACOS-SETUP.txt")
+        for chart in ("KEY-BINDINGS-English.txt", "TASTENBELEGUNG-Deutsch.txt",
+                      "SKROTY-KLAWISZOWE-Polski.txt", "TECLAS-Espanol.txt"):
+            if (source / chart).is_file():
+                shutil.copyfile(source / chart, destination / chart)
         (destination / "yac.ini").write_text("[yac]\nplatform=\nlang=\ncall=\ndebug=true\n", encoding="utf-8")
         print("Creating the private Python environment...")
         try:

@@ -16,6 +16,7 @@ from modules import lang_sel
 from modules.find_rad import RadioConnection, find_radios
 from modules.signal_report import format_s_meter
 from modules.icom_profile import SUPPORTED_MODELS, load_profile
+from modules import verify_settings, gain_control, power_control
 
 
 DEBUG_LOG = logging.getLogger("yac")
@@ -1631,7 +1632,7 @@ def _dispatch(
     root: Path, radio: RadioConnection, language: str, command: str,
     argument: str | None, original_frequency: str | None = None,
 ) -> str | None:
-    if command in {"w", "f"}:
+    if command == "w":
         return _radio_status(root, radio, language)
     if command == "e" and argument is not None:
         return _set_frequency(root, radio, language, argument, original_frequency)
@@ -1893,6 +1894,16 @@ def main(argv: list[str] | None = None) -> int:
                         pending_key = band_key
                         break
                 response = None
+            elif key in {"a", "r"}:
+                pending_key = gain_control.control(
+                    sys.modules[__name__], root, radio, language, key,
+                    call, read_radio_key, watch)
+                response = None
+            elif key in {"p", "u", "v"}:
+                response = (verify_settings.verify(sys.modules[__name__], root, radio, language)
+                            if key == "v" else verify_settings.cycle(
+                                sys.modules[__name__], root, radio, language,
+                                "preamp" if key == "p" else "attenuator"))
             elif key == "s":
                 response = _read_label(root, language, "l068", "Settings")
                 chat_int.show_response(response)
@@ -1948,12 +1959,21 @@ def main(argv: list[str] | None = None) -> int:
                             )
                             break
                         settings[setting_key] = str(step_hz)
-                        saved_template = _read_label(
-                            root, language, "l070", "Step size {value} Hz saved.",
+                        applied_template = _read_label(
+                            root, language, "l070", "Step size {value} Hz applied.",
                         )
-                        response = saved_template.format(value=step_hz)
+                        response = applied_template.format(value=step_hz)
                         chat_int.show_response(response)
                         response = None
+                        continue
+                    if settings_key == "p":
+                        chat_int.show_request(call, settings_key)
+                        power_control.edit(sys.modules[__name__], root, radio, language)
+                        continue
+                    if settings_key == "t":
+                        chat_int.show_request(call, settings_key)
+                        chat_int.show_response(verify_settings.cycle(
+                            sys.modules[__name__], root, radio, language, "tuner"))
                         continue
                     if settings_key == "v":
                         global _yaesu_vfo_side

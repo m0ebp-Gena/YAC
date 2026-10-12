@@ -1,0 +1,63 @@
+YAC — Tastenbelegung
+
+Drücken Sie jeweils eine Taste. Meist ist keine Eingabetaste nötig.
+Befehle hängen von den unterstützten Funktionen des Funkgeräts ab.
+
+OBERSTE EBENE
+a          AF-Verstärkung
+b          Bandauswahl
+e          Neue Frequenz in MHz; z. B. 7.103 eingeben, dann Eingabetaste
+h          Hilfe
+i          Ton-/Codeeingabe (CTCSS/DCS, soweit unterstützt); h: Hilfe
+m          Betriebsart auswählen
+o          Frequenzablage: Empfang, Senden, Löschen
+p          Vorverstärkerstufen und aus durchschalten
+q          YAC beenden
+r          RF-Verstärkung; Rauschsperre in FM
+s          Einstellungen öffnen
+u          Abschwächerstufen und aus durchschalten
+v          Abschwächer, Vorverstärker, Leistung und Tunerstatus prüfen
+w          Standort? Signalstärke, Frequenz und Betriebsart
+z          Frequenz auf das nächste ganze Kilohertz runden
+Punkt      Frequenz um die eingestellte Schrittweite erhöhen
+Komma      Frequenz um die eingestellte Schrittweite verringern
+
+EINSTELLUNGEN — zuerst s drücken
+s dann p   Sendeleistung eingeben, dann Eingabetaste. Leer: Abbrechen.
+s dann s   Schrittweite der aktuellen Betriebsart in Hz; Wert, Eingabetaste
+s dann t   Tunereinstellungen durchschalten; t für die nächste Auswahl
+s dann v   VFO A/B oder Main/Sub auswählen, soweit unterstützt
+q          Einstellungen verlassen
+
+INNERHALB DER BAND- ODER BETRIEBSARTENAUSWAHL
+Punkt      Nach oben
+Komma      Nach unten
+h          Hilfe
+q          Zur obersten Ebene zurück
+Eine andere Befehlstaste verlässt die Auswahl und startet den Befehl.
+Die Modusauswahl beginnt bei der aktuellen Betriebsart und läuft im Kreis.
+Die Bandauswahl beginnt beim aktuellen Band. Bei Icom und Kenwood endet
+sie an beiden Grenzen; bei Yaesu folgt sie dem Verhalten des Funkgeräts.
+An der oberen Bandgrenze mit Komma abwärts oder mit e eine Frequenz eingeben.
+
+INNERHALB DER FREQUENZABLAGE
+o          Empfang, Senden, Löschen durchschalten
+Punkt      10 Hertz addieren
+Komma      10 Hertz abziehen
+Bei Löschen setzt jede Bewegungstaste die Ablagen zurück.
+q          Zur obersten Ebene zurück
+Offset beginnt bei Empfang mit null Hertz. Andere Befehlstaste: verlassen.
+
+HINWEISE
+q verlässt Einstellungen; auf der obersten Ebene beendet q YAC.
+Änderungen wirken sofort. Standardschritte: SSB 1000 Hz, CW 500 Hz,
+AM 2500 Hz, FM 12500 Hz.
+Tunerstatus: Einstellung des Funkgeräts; unabhängige Tuner sind nicht erkennbar.
+Die Auswahl startet keine Abstimmung. ATAS aus wählt ATAS ab.
+Leistung: eingestellte Watt bei Yaesu/Kenwood; relativer Prozentwert bei Icom.
+Unbekannt: Einstellung nicht lesbar. Nicht unterstützte Tuner werden ausgelassen.
+Nur implementierte Befehle sind aufgeführt. h zeigt ausführliche Hilfe.
+
+a regelt AF-Verstärkung. r regelt in FM die Rauschsperre, sonst RF-Verstärkung. Start beim aktuellen Funkgerätewert, als gerundeter Prozentwert. Punkt erhöht; Komma verringert. Schritte etwa 3 Prozent. Kein Umlauf an den Grenzen. q beendet und behält den Wert. Eine andere Befehlstaste startet diesen Befehl.
+
+Leistungseingabe: ganze Watt; h und Eingabetaste für Hilfe; leere Eingabe bricht ab. Icom-Watteingaben sind geschätzt und werden in Prozent umgerechnet; v meldet Prozent. Erfolg bleibt still. Vor v Einstellungen mit q verlassen.

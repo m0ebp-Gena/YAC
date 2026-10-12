@@ -1,0 +1,1 @@
+a adjusts AF Gain. r adjusts Squelch in FM, RF Gain in other modes. Starts at the current radio value, shown as a rounded percentage. Full stop increases; comma decreases. Steps are about 3 percent. Stops at each end without looping. q leaves and keeps the setting. Another command key leaves and starts that command.

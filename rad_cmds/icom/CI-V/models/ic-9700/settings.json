@@ -1,0 +1,83 @@
+{
+  "preamp": {
+    "protocol": "civ",
+    "read": "16 02",
+    "set": "16 02",
+    "states": {
+      "00": "l116",
+      "01": "l136",
+      "02": "l138",
+      "03": "l139"
+    }
+  },
+  "attenuator": {
+    "protocol": "civ",
+    "read": "11",
+    "set": "11",
+    "states": {
+      "00": "l111",
+      "10": "l112"
+    }
+  },
+  "power": {
+    "protocol": "civ",
+    "read": "14 0A",
+    "set": "14 0A",
+    "encoding": "bcd",
+    "input_minimum": 1,
+    "maximum": 100,
+    "watts_at_full_scale": 100,
+    "am_mode": "2",
+    "am_fraction": 0.25,
+    "band_watts": [
+      {
+        "minimum_mhz": 144,
+        "maximum_mhz": 148,
+        "watts": 100
+      },
+      {
+        "minimum_mhz": 430,
+        "maximum_mhz": 450,
+        "watts": 75
+      },
+      {
+        "minimum_mhz": 1240,
+        "maximum_mhz": 1300,
+        "watts": 10
+      }
+    ]
+  },
+  "af_gain": {
+    "protocol": "civ",
+    "minimum": 0,
+    "maximum": 255,
+    "step": 8,
+    "label": "l140",
+    "read": "14 01",
+    "set": "14 01",
+    "encoding": "bcd"
+  },
+  "rf_gain": {
+    "protocol": "civ",
+    "minimum": 0,
+    "maximum": 255,
+    "step": 8,
+    "label": "l141",
+    "read": "14 02",
+    "set": "14 02",
+    "encoding": "bcd",
+    "squelch_modes": [
+      "5"
+    ]
+  },
+  "squelch": {
+    "protocol": "civ",
+    "minimum": 0,
+    "maximum": 255,
+    "step": 8,
+    "label": "l142",
+    "read": "14 03",
+    "set": "14 03",
+    "encoding": "bcd"
+  }
+}

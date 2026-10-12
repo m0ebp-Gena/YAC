@@ -1,1 +1,2 @@
 El punto sube una banda; la coma baja. Pulsa q para salir de la selección de banda o h para ver esta ayuda. Cualquier otra tecla de comando sale y ejecuta ese comando.
+La selección de banda empieza en la banda actual. Icom y Kenwood se detienen en los extremos; Yaesu sigue la radio. En el límite superior, usa coma para bajar o e para introducir una frecuencia.

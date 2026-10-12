@@ -1,0 +1,1 @@
+a reguluje wzmocnienie AF. r reguluje blokadę szumów w FM, w innych trybach wzmocnienie RF. Początek od bieżącej wartości radia, w zaokrąglonych procentach. Kropka zwiększa; przecinek zmniejsza. Krok około 3 procent. Bez zapętlania na krańcach. q wychodzi i zachowuje wartość. Inny klawisz polecenia uruchamia to polecenie.

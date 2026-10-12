@@ -5,9 +5,26 @@ punto/coma: subir/bajar la frecuencia según el paso configurado
 z: redondear la frecuencia actual al kHz más cercano
 s: ajustes; v selecciona Main/Sub en FTX-1 o VFO A/B en Icom (la primera pulsación selecciona A)
 s y luego s: guardar el paso de sintonía en hercios para el modo actual
-w o f: leer intensidad de señal, frecuencia y modo
+w: leer intensidad de señal, frecuencia y modo
 q: salir de YAC
 o: desplazamiento; o alterna Recepción/Transmisión/Borrar; punto añade 10 Hz y coma resta 10 Hz; en Borrar, cualquiera borra; q sale. IC-9700 admite RIT en recepción, pero no XIT en transmisión.
 i: entrada de tonos; i alterna CTCSS/DCS N/DCS I; introduce un valor, pulsa Intro y luego t para TX o b para Ambos cuando se ofrezca; q sale, h muestra ayuda
 Perfiles: escribe un número para resaltar una radio, pulsa Espacio para seleccionarla o q para cancelar. h muestra esta ayuda.
 Si no se encuentra una radio, YAC carga un FT-DX10 simulado para explorar la interfaz. La señal y los ajustes son simulados.
+p: alternar etapas del preamplificador y apagado
+u: alternar niveles del atenuador y apagado
+v: verificar atenuador, preamplificador, potencia configurada y estado del sintonizador compatible
+s y luego t: alternar ajustes del sintonizador; repetir t, q sale de Ajustes
+El estado del sintonizador describe el ajuste de la radio. No se detectan sintonizadores independientes que reaccionan a RF. Apagado conserva la selección, excepto ATAS, que debe deseleccionarse para apagarlo. La selección no inicia la sintonización.
+Potencia en vatios para Yaesu/Kenwood y porcentaje relativo del ajuste para Icom; no es potencia transmitida medida. Desconocido indica que no se pudo leer un ajuste compatible.
+Desplazamiento empieza en Recepción a cero hercios. Otra tecla de comando sale.
+La selección de modo empieza en el modo actual y recorre los modos en bucle.
+La selección de banda empieza en la banda actual. Icom y Kenwood se detienen
+en ambos extremos; Yaesu sigue el comportamiento de la radio.
+En el límite superior, usa coma para bajar o e para introducir una frecuencia.
+
+a ajusta la ganancia AF. r ajusta el silenciador en FM y la ganancia RF en otros modos. Empieza con el valor actual de la radio, en porcentaje redondeado. Punto aumenta; coma disminuye. Pasos de unos 3 por ciento. Se detiene en los extremos. q sale y conserva el valor. Otra tecla de comando sale y ejecuta ese comando.
+
+Ajustes: s luego p abre el campo de potencia. Escribe un entero en las unidades y el rango indicados, luego Intro; vacío cancela. Los cambios correctos son silenciosos. q sale de Ajustes; v comprueba la potencia.
+
+Campo de potencia: vatios enteros; h e Intro para ayuda; Intro vacío cancela. Los vatios de Icom son estimados y convertidos a porcentaje; v informa porcentaje. Éxito silencioso. Sal de Ajustes con q antes de v.

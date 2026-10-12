@@ -1,0 +1,133 @@
+{
+  "preamp": {
+    "protocol": "cat",
+    "read": "PA{band};",
+    "pattern": "PA{band}([012]);",
+    "band_states": {
+      "0": {
+        "0": "l116",
+        "1": "l117",
+        "2": "l118"
+      },
+      "1": {
+        "0": "l116",
+        "1": "l136"
+      },
+      "2": {
+        "0": "l116",
+        "1": "l136"
+      }
+    },
+    "set": "PA{band}{value};",
+    "states": {
+      "0": "l116",
+      "1": "l117",
+      "2": "l118"
+    }
+  },
+  "attenuator": {
+    "protocol": "cat",
+    "read": "RA0;",
+    "pattern": "RA0([01]);",
+    "set": "RA0{value};",
+    "states": {
+      "0": "l111",
+      "1": "l112"
+    }
+  },
+  "power": {
+    "protocol": "cat",
+    "read": "PC;",
+    "pattern": "PC[12](\\d{3});",
+    "minimum": 5,
+    "maximum": 100,
+    "input_minimum": 5,
+    "set": "PC{selector}{value};",
+    "selector_pattern": "PC([12])\\d{3};",
+    "selector_maximum": {
+      "1": 10,
+      "2": 100
+    }
+  },
+  "tuner": {
+    "protocol": "cat",
+    "read": "AC;",
+    "pattern": "AC([01][02][013]);",
+    "selection": {
+      "protocol": "cat",
+      "read": "EX030104;",
+      "pattern": "EX030104([0123]);",
+      "set": "EX030104{value};",
+      "states": {
+        "0": "l122",
+        "1": "l137",
+        "2": "l123",
+        "3": "l124"
+      }
+    },
+    "atas_selection": "3",
+    "off": "{selection}0",
+    "enable": {
+      "0": "001",
+      "1": "001",
+      "2": "101",
+      "3": "120"
+    },
+    "cycle": [
+      "off",
+      "0",
+      "1",
+      "2",
+      "atas"
+    ],
+    "set": "AC{value};",
+    "states": {
+      "000": "l121",
+      "001": "l122",
+      "003": "l130",
+      "100": "l121",
+      "101": "l123",
+      "103": "l130",
+      "120": "l124",
+      "123": "l130"
+    },
+    "off_selection": "0",
+    "off_from_atas": "000"
+  },
+  "af_gain": {
+    "protocol": "cat",
+    "minimum": 0,
+    "maximum": 255,
+    "step": 8,
+    "label": "l140",
+    "read": "AG{side};",
+    "set": "AG{side}{value};",
+    "pattern": "AG{side}(\\d{3});"
+  },
+  "rf_gain": {
+    "protocol": "cat",
+    "minimum": 0,
+    "maximum": 255,
+    "step": 8,
+    "label": "l141",
+    "read": "RG{side};",
+    "set": "RG{side}{value};",
+    "pattern": "RG{side}(\\d{3});",
+    "squelch_modes": [
+      "4",
+      "A",
+      "B",
+      "F"
+    ]
+  },
+  "squelch": {
+    "protocol": "cat",
+    "minimum": 0,
+    "maximum": 255,
+    "step": 8,
+    "label": "l142",
+    "read": "SQ{side};",
+    "set": "SQ{side}{value};",
+    "pattern": "SQ{side}(\\d{3});"
+  }
+}

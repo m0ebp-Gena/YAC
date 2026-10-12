@@ -1,12 +1,29 @@
-b: Band Select (period/comma, h help; q or another command exits)
+b: Band Select (full stop or comma, h help; q or another command exits)
 e: frequency in MHz (e.g. 7.2)
-m: Mode Select (period/comma, h help; q or another command exits)
-period/comma: increase/decrease frequency by the configured step
+m: Mode Select (full stop or comma, h help; q or another command exits)
+full stop or comma: increase/decrease frequency by the configured step
 z: round the current frequency to the nearest 1 kHz
 s: Settings; v selects FTX-1 Main/Sub or Icom VFO A/B (first press selects A)
 s then s: save the step size in hertz for the current mode
-w or f: read signal strength, frequency and mode
+w: read signal strength, frequency and mode
 q: quit YAC
-o: Offset; o cycles Receive/Transmit/Clear; period adds 10 Hz, comma subtracts 10 Hz; either clears in Clear; q exits
+o: Offset; o cycles Receive/Transmit/Clear; full stop adds 10 Hz, comma subtracts 10 Hz; either clears in Clear; q exits
 i: Tone input; i cycles CTCSS/DCS N/DCS I; enter a value, Enter, then t for TX or b for Both when offered; q exits, h gives help
 Profile selection: enter a number to highlight a radio, Space to select it, or q to cancel. Press h on the profile screen for this help.
+p: cycle preamp stages and off
+u: cycle attenuator levels and off
+v: verify attenuator, preamp, configured power and supported tuner status
+s then t: cycle supported tuner settings; repeat t, q leaves Settings
+Tuner status describes the radio setting. Independent RF-sensing tuners are not detected. Off preserves the selected tuner except ATAS, which must be deselected to switch off. Tuner selection never starts tuning.
+Power is reported in watts for Yaesu/Kenwood and as the relative setting percentage for Icom; it is not measured transmitted power. Unknown means a supported setting could not be read.
+Opening Offset starts in Receive at zero hertz. Another command key exits.
+Mode selection starts at the radio's current mode and loops through the modes.
+Band selection starts at the current band. Icom and Kenwood band selection
+stops at each end; Yaesu follows the radio's band behavior.
+At an upper band limit, use comma to go down, or e to enter a frequency.
+
+a adjusts AF Gain. r adjusts Squelch in FM, RF Gain in other modes. Starts at the current radio value, shown as a rounded percentage. Full stop increases; comma decreases. Steps are about 3 percent. Stops at each end without looping. q leaves and keeps the setting. Another command key leaves and starts that command.
+
+Settings: s then p opens the power edit field. Enter a whole number in the displayed units and range, then Enter; blank cancels. Successful changes are silent. Leave Settings with q and press v to check power.
+
+Power edit: whole watts; h then Enter for help; blank Enter cancels. Icom watt entries are estimated and converted to a relative percentage; v reports that percentage. Success is silent. Leave Settings with q before v.

@@ -1,1 +1,2 @@
-Period moves up one band; comma moves down one band. Press q to leave Band Select. Press h for this help. Any other command key leaves Band Select and runs that command.
+Full stop moves up one band; comma moves down one band. Press q to leave Band Select. Press h for this help. Any other command key leaves Band Select and runs that command.
+Band selection starts at the current band. Icom and Kenwood stop at each end; Yaesu follows the radio's band behavior. At an upper limit, use comma to go down, or e to enter a frequency.

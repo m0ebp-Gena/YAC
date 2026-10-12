@@ -4,11 +4,13 @@ import argparse
 import re
 import hashlib
 from datetime import date
+from modules.build_outputs import publish
 
 root = Path(__file__).resolve().parent
 parser = argparse.ArgumentParser(description="Create and verify a dated YAC demo ZIP.")
 parser.add_argument('--date', default=date.today().isoformat())
-parser.add_argument("--source", type=Path, default=root / "demo-dist" / "YAC")
+parser.add_argument("--source", type=Path, default=root / "builds/.work/demo-dist/YAC")
+parser.add_argument("--include-demo", action="store_true", help="Publish the staged runnable folder with the ZIP")
 args = parser.parse_args()
 date.fromisoformat(args.date)
 source = args.source.resolve()
@@ -17,11 +19,15 @@ if version_match is None:
     raise RuntimeError('Could not read the YAC version from yac.py')
 version = re.sub(r'[^A-Za-z0-9]+', '-', version_match.group(1)).strip('-')
 folder = 'YAC-' + version + '-' + args.date
-archive = root / (folder + '.zip')
+staging = root / 'builds/.work/packages'
+staging.mkdir(parents=True, exist_ok=True)
+archive = staging / (folder + '.zip')
 expected_settings = b'[yac]\nplatform=\nlang=\ncall=\ndebug=true\n'
 if (source / 'yac.ini').read_bytes().replace(b'\r\n', b'\n') != expected_settings:
     raise RuntimeError('Package settings must be clean, with no personal preferences or radio devices')
 expected_files = {
+    'KEY-BINDINGS-English.txt', 'TASTENBELEGUNG-Deutsch.txt',
+    'SKROTY-KLAWISZOWE-Polski.txt', 'TECLAS-Espanol.txt',
     'YAC-' + version + '.exe', 'yac.ini', 'START-HERE-English.txt',
     'HIER-STARTEN-Deutsch.txt', 'ZACZNIJ-TUTAJ-Polski.txt', 'EMPIEZA-AQUI-Espanol.txt',
 }
@@ -50,6 +56,10 @@ with zipfile.ZipFile(archive) as package:
     assert package.testzip() is None
     assert {name.split('/')[0] for name in package.namelist()} == {folder}
     guides = {
+        "KEY-BINDINGS-English.txt": "KEY-BINDINGS-English.txt",
+        "TASTENBELEGUNG-Deutsch.txt": "TASTENBELEGUNG-Deutsch.txt",
+        "SKROTY-KLAWISZOWE-Polski.txt": "SKROTY-KLAWISZOWE-Polski.txt",
+        "TECLAS-Espanol.txt": "TECLAS-Espanol.txt",
         "START-HERE-English.txt": "demo-start-here.txt",
         "HIER-STARTEN-Deutsch.txt": "demo-start-here-de.txt",
         "ZACZNIJ-TUTAJ-Polski.txt": "demo-start-here-pl.txt",
@@ -65,4 +75,11 @@ with zipfile.ZipFile(archive) as package:
     assert folder + '/YAC-' + version + '.exe' in package.namelist()
 checksum = hashlib.sha256(archive.read_bytes()).hexdigest()
 archive.with_suffix('.sha256').write_text(checksum + '  ' + archive.name + '\n', encoding='ascii')
-print(f'Created and verified {archive.name}: {archive.stat().st_size:,} bytes')
+artifacts = [archive, archive.with_suffix('.sha256')]
+if args.include_demo:
+    artifacts.append(source)
+outputs = publish(root, args.date, artifacts)
+archive = outputs[0]
+print(f'Created and verified {archive}: {archive.stat().st_size:,} bytes')
+if args.include_demo:
+    print('Runnable demo: ' + str(outputs[-1]))

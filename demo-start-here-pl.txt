@@ -1,210 +1,40 @@
-YAC - Yet Another Controller
-Pierwsze kroki z wersją demonstracyjną dla 64-bitowego Windows
+YAC — Pierwsze kroki
+Wersja demonstracyjna dla 64-bitowego Windows
 
-Wersja 001 beta, 10 października 2026: uproszczony interfejs dla mowy i brajla.
-Odpowiedzi radia nie mają prefiksu yac:, a klawisze poleceń nie są wyświetlane.
-Zapisane imię pojawia się w powitaniu i pożegnaniu. Liczby pozostają widoczne
-podczas edycji; e: oznacza wprowadzanie częstotliwości.
+START
+1. Rozpakuj cały ZIP do folderu, w którym możesz zapisywać pliki.
+2. Zachowaj wszystkie pliki i podfoldery razem. Uruchom YAC-001-beta.exe
+   z rozpakowanego folderu. Nie musisz instalować Pythona.
+3. Zmaksymalizuj terminal: Alt+Spacja, zwolnij klawisze, potem x.
+4. Wybierz język i podaj imię/znak wywoławczy. Numer języka zatwierdź
+   Spacją: angielski 1, niemiecki 2, polski 3, hiszpański 4.
 
-Witamy w demonstracji Yet Another Controller. YAC umożliwia sterowanie
-radiem za pomocą klawiatury i został zaprojektowany z myślą o dostępie
-przez mowę i brajl. Ten przewodnik wyjaśnia, jak uruchomić program
-i korzystać z obecnie dostępnych funkcji.
+POŁĄCZENIE Z RADIEM
+Podłącz i włącz radio. Zamknij inne programy używające jego portu COM.
+W razie potrzeby zainstaluj sterownik USB producenta. Wyszukiwanie trwa
+około minuty; poczekaj także podczas przerw. Jeśli radio nie odpowie,
+YAC uruchomi symulowany FT-DX10 z symulowanym sygnałem i ustawieniami.
 
-Chętnie odpowiem na pytania dotyczące YAC. Możesz skontaktować się ze mną
-przez listy e-mailowe Active Elements lub Blind Hams albo bezpośrednio
-pod adresem gena@m0ebp.uk.
+SKRÓTY KLAWISZOWE
+Otwórz SKROTY-KLAWISZOWE-Polski.txt w osobnym oknie obok YAC.
+Zawiera wdrożone polecenia i sekwencje podmenu, np. “s potem t”.
+Lista jest aktualizowana po wdrożeniu nowych poleceń.
 
-URUCHAMIANIE YAC
+MOWA I BRAJL
+YAC korzysta z czytnika ekranu. Dla wejścia i wyjścia brajlowskiego wybierz
+North American Computer Braille. Kursor pozostaje na ostatniej odpowiedzi;
+wcześniejsze komunikaty są dostępne w historii terminala.
 
-1. Rozpakuj cały plik ZIP za pomocą funkcji Windows „Wyodrębnij wszystkie”.
-   Wybierz zwykły folder, w którym możesz zapisywać pliki, na przykład
-   Pobrane lub Dokumenty.
-2. Otwórz rozpakowany folder YAC i uruchom YAC-001-beta.exe. Nie uruchamiaj go
-   wewnątrz pliku ZIP ani nie przenoś samego pliku wykonywalnego.
-   Zachowaj wszystkie dostarczone pliki i podfoldery razem, tak jak
-   zostały rozpakowane. Oddzielna instalacja nie jest potrzebna.
-3. Zmaksymalizuj okno terminala przed wykonaniem poleceń wyświetlanych
-   przez program. Przytrzymaj Alt i naciśnij Spację, zwolnij oba klawisze,
-   a następnie naciśnij x. Otwiera to menu okna i wybiera maksymalizację.
+W RAZIE PROBLEMÓW
+Sprawdź zasilanie, kabel, port COM w Menedżerze urządzeń i sterownik USB.
+Zamknij inne programy na tym porcie. Sprawdź adres CI-V i szybkość transmisji.
+Windows może pokazywać Silicon Labs lub CP210x zamiast modelu radia.
+Przy utracie połączenia YAC czeka na to samo radio.
 
-PRZYGOTOWANIE RADIA
-
-Podłącz radio i zamknij inne programy sterujące, które korzystają z jego
-portu COM. Jeśli Windows wymaga sterownika USB do Twojego radia,
-zainstaluj sterownik dostarczony przez producenta przed uruchomieniem YAC.
-
-YAC spróbuje automatycznie znaleźć podłączone radio. Nowe wyszukiwanie
-zwykle trwa około minuty. Mogą wystąpić przerwy bez nowych komunikatów.
-W tym czasie YAC nadal pracuje. Pozostaw program uruchomiony i poczekaj
-na zakończenie wyszukiwania.
-
-JEŚLI YAC NIE ZNAJDUJE RADIA
-
-1. Sprawdź, czy radio jest włączone i podłączone.
-2. Sprawdź, czy jego port COM jest widoczny w Menedżerze urządzeń.
-3. Przy bezpośrednim połączeniu USB sprawdź sterownik zalecany przez
-   producenta radia. Zewnętrzny adapter CI-V może wymagać własnego sterownika.
-4. Zamknij inne programy korzystające z tego samego portu COM.
-5. Sprawdź adres CI-V i szybkość transmisji w ustawieniach radia.
-
-Windows może wyświetlać nazwę Silicon Labs lub CP210x zamiast modelu radia.
-Dziennik diagnostyczny zapisuje rozpoznane identyfikatory. Ich brak nie musi
-oznaczać braku sterownika; urządzenie może mieć inną nazwę. Pomożemy
-odczytać dziennik.
-
-OPCJONALNA INSTRUKCJA KLAWIATUROWA: SPRAWDZANIE PORTU COM
-
-Naciśnij klawisz Windows, wpisz Menedżer urządzeń i naciśnij Enter.
-W innym języku Windows użyj lokalnej nazwy Menedżera urządzeń.
-Po otwarciu naciskaj Tab, aż czytnik ekranu odczyta drzewo urządzeń lub
-nazwę komputera. Strzałką w dół znajdź Porty (COM i LPT). Rozwiń kategorię
-strzałką w prawo, następnie strzałką w dół odczytaj urządzenia i numery COM.
-Nazwy i komunikaty zależą od języka Windows i czytnika; liczba naciśnięć
-Tab nie jest stała. Podaj nam nazwę urządzenia i numer COM. Jeśli nie
-znajdziesz kategorii Porty, to również pomocna informacja; możesz tutaj
-zakończyć. Nie musisz niczego zmieniać ani odinstalowywać.
-
-JĘZYK I PYTANIA PRZY URUCHOMIENIU
-
-Postępuj zgodnie z pytaniami o język oraz imię lub znak wywoławczy.
-Dostępne języki to: 1 angielski, 2 niemiecki, 3 polski i 4 hiszpański. Każdy język jest
-przedstawiony w swoim własnym języku. Wybierz numer i naciśnij Spację,
-gdy program poprosi o potwierdzenie. Wybrany język jest używany w kolejnych
-komunikatach i pomocy YAC. Czytnik ekranu zapewnia mowę i/lub brajl
-przy odczytywaniu komunikatów YAC.
-
-KORZYSTANIE Z MOWY I BRAJLA
-
-YAC pozostawia kursor terminala na swojej ostatniej odpowiedzi, dzięki
-czemu monitor brajlowski śledzący kursor utrzymuje tę informację pod
-Twoimi palcami. Wcześniejsze komunikaty można odczytać w historii
-terminala znajdującej się powyżej.
-
-W ustawieniach czytnika ekranu wybierz North American Computer Braille
-jako tablice wejściową i wyjściową brajla. YAC oczekuje pojedynczych liter
-i znaków interpunkcyjnych. Tablica brajla skrótowego, która na przykład
-rozwija b do angielskiego słowa „but”, wysyła dane, których YAC nie
-rozpozna jako polecenia b.
-
-Większość poleceń wymaga jednej litery bez Enter. Gdy YAC prosi o wpisanie
-częstotliwości lub kroku strojenia, wpisz wartość i naciśnij Enter.
-
-Przecinek (,) przesuwa wybór w dół lub zmniejsza wartość. Kropka (.)
-przesuwa wybór w górę lub zwiększa wartość. Używaj tych znaków na
-klawiaturze zwykłej lub brajlowskiej.
-
-Przy wyborze pasma, emisji i przesunięcia częstotliwości q opuszcza daną
-funkcję i wraca do najwyższego poziomu. Inny klawisz polecenia opuszcza
-funkcję i uruchamia to polecenie. Zmiany pasma i emisji działają od razu.
-Na najwyższym poziomie q kończy YAC.
-
-KORZYSTANIE Z DEMO
-
-w - Where am I? (Gdzie jestem?) Odczytaj siłę sygnału, częstotliwość i emisję.
-
-b - Wybierz pasmo. Przecinek przesuwa w dół, a kropka w górę.
-Naciśnij h, aby uzyskać pomoc, q, aby wrócić, lub inny klawisz polecenia,
-aby kontynuować.
-
-e - Wpisz nową częstotliwość w megahercach, używając kropki dziesiętnej.
-Na przykład wpisz 7.103 i naciśnij Enter, aby ustawić 7.103 MHz.
-Jest to również szybki sposób przejścia na inne pasmo.
-
-m - Wybierz inną emisję. Przecinek i kropka przełączają emisje obsługiwane
-przez podłączone radio. Naciśnij h, aby uzyskać pomoc, lub q, aby wrócić.
-
-Przecinek lub kropka na najwyższym poziomie - Zmniejsz lub zwiększ
-częstotliwość o krok ustawiony w YAC dla bieżącej emisji.
-
-Możesz także stroić pokrętłem swojego radia. Użyj w, aby odczytać
-bieżącą częstotliwość.
-
-z - Zaokrąglij bieżącą częstotliwość VFO w górę lub w dół do najbliższego
-pełnego kiloherca. Po strojeniu pokrętłem naciśnij z, aby ustawić dokładną
-wartość w pełnych kilohercach bez wielokrotnego sprawdzania częstotliwości
-podczas obracania pokrętłem.
-
-o - Naciskaj o, aby przełączać Odbiór, Nadawanie i Kasowanie. Funkcje te
-ustawiają przesunięcia częstotliwości, nazywane przez producentów RIT,
-XIT lub Clarifier. Odbiór zmienia częstotliwość odbioru, a Nadawanie
-częstotliwość nadawania. Otwarcie funkcji przesunięcia zeruje przesunięcie.
-W Odbiorze lub Nadawaniu przecinek odejmuje 10 Hz, a kropka dodaje 10 Hz.
-W Kasowaniu każdy z tych klawiszy zeruje przesunięcia i wyłącza RIT/XIT
-lub funkcje Clarifier. Naciśnij q, aby wrócić, lub inny klawisz polecenia,
-aby kontynuować.
-
-YAC przypisuje często używanym poleceniom na najwyższym poziomie osobne
-litery. Niektóre litery otwierają podmenu z rzadziej używanymi poleceniami.
-
-s - Otwórz podmenu Ustawienia. Zawiera ono polecenia pozwalające dostosować
-działanie YAC, w tym krok strojenia.
-
-Aby ustawić krok strojenia dla bieżącej emisji, naciśnij s, aby otworzyć
-Ustawienia, a następnie ponownie s. Wpisz dodatnią liczbę całkowitą
-w hercach i naciśnij Enter. YAC zapisuje ustawienie. Domyślne kroki to:
-
-SSB: 1000 Hz (1 kHz)
-CW:   500 Hz (0,5 kHz)
-AM:  2500 Hz (2,5 kHz)
-FM: 12500 Hz (12,5 kHz)
-
-Są to kroki strojenia YAC. Możesz dostosować wartość dla każdej emisji
-do tego, jak chcesz poznawać pasma.
-
-v - W Ustawieniach zmień VFO sterowane przez YAC, jeśli jest to obsługiwane.
-Producenci używają nazw takich jak VFO A i VFO B lub Main i Sub dla tych
-wyborów. YAC podaje wybrane VFO, jego częstotliwość i emisję.
-Naciśnij q, aby opuścić Ustawienia, lub inny klawisz polecenia,
-aby kontynuować.
-
-h - Poproś o pomoc. YAC udostępnia pomoc zależną od kontekstu tam,
-gdzie jest ona dostępna.
-
-q - Zakończ YAC na najwyższym poziomie lub opuść bieżącą funkcję
-albo Ustawienia.
-
-ZAKRES DEMO
-
-Jest to działająca demonstracja o ograniczonym zakresie. Wypróbuj dostępne
-funkcje i powiedz nam, co działa dobrze i co można poprawić.
-
-Podczas prac nad programem demo zostało przetestowane z IC-705, FTX-1
-i FTDX10.
-
-Dostępne funkcje pozwalają zmieniać częstotliwość, emisję i przesunięcia
-częstotliwości.
-
-PLIKI I ZAPISANE USTAWIENIA
-
-YAC-001-beta.exe uruchamia program.
-_internal zawiera dołączone środowisko uruchomieniowe i biblioteki;
-pozostaw ten folder bez zmian.
-lang zawiera etykiety i pomoc w języku angielskim, niemieckim i polskim.
-rad_cmds zawiera definicje poleceń radia.
-YAC.ini zapisuje ustawienia i wykryte połączenia z radiami.
-logs zawiera zapis diagnostyczny tworzony automatycznie przez demo.
-START-HERE-English.txt zawiera angielską wersję tej instrukcji.
-ZACZNIJ-TUTAJ-Polski.txt zawiera tę polską wersję.
-
-Demo nie tworzy skrótu w menu Start ani nie instaluje plików w Windows.
-Przeniesienie całego rozpakowanego folderu YAC przenosi również zapisane
-ustawienia. Każda osobno rozpakowana kopia ma własne ustawienia.
-
-TWOJE UWAGI
-
-Dziękujemy za poświęcenie czasu na wypróbowanie YAC. Mamy nadzieję, że
-poznawanie programu sprawi Ci przyjemność. Chętnie przyjmiemy komentarze
-i sugestie. Każda uwaga jest mile widziana, nawet krótka. Możesz ją wysłać
-przez listy e-mailowe Active Elements lub Blind Hams albo bezpośrednio
-do mnie pod adresem gena@m0ebp.uk.
-
-Demo automatycznie zapisuje informacje diagnostyczne, więc nie musisz
-niczego dodatkowo ustawiać. Jeśli coś nie działa zgodnie z oczekiwaniami
-i chcesz pomóc nam to zbadać, wyślij plik YAC-debug.log z folderu logs
-wewnątrz rozpakowanego folderu YAC.
-
-Udostępnienie dziennika jest całkowicie dobrowolne. Może zawierać Twoje
-imię lub znak wywoławczy, informacje o urządzeniu i częstotliwości pracy.
-Udostępnij go tylko wtedy, gdy się na to zgadzasz.
-
+USTAWIENIA I POMOC
+yac.ini obok programu zapisuje preferencje i wykryte połączenia.
+Zachowaj _internal, lang i rad_cmds razem z programem.
+Pomoc i uwagi: Gena przez Active Elements lub Blind Hams, albo gena@m0ebp.uk.
+Podaj wersję YAC, system, model radia i opis problemu. Demo zapisuje
+logs/yac-debug.log. Przed dobrowolnym udostępnieniem sprawdź dane osobowe
+i częstotliwości w tym pliku.

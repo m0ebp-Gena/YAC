@@ -1,0 +1,62 @@
+YAC — Skróty klawiszowe
+
+Naciskaj po jednym klawiszu. Większość poleceń nie wymaga Enter.
+Polecenia zależą od funkcji obsługiwanych przez podłączone radio.
+
+POZIOM GŁÓWNY
+a          Wzmocnienie AF
+b          Wybór pasma
+e          Nowa częstotliwość w MHz; wpisz np. 7.103, potem Enter
+h          Pomoc
+i          Wprowadzanie tonu/kodu (CTCSS/DCS, jeśli obsługiwane); h: pomoc
+m          Wybór emisji
+o          Przesunięcie częstotliwości: Odbiór, Nadawanie, Kasowanie
+p          Przełączaj stopnie przedwzmacniacza i wyłączenie
+q          Zakończ YAC
+r          Wzmocnienie RF; blokada szumów w FM
+s          Otwórz Ustawienia
+u          Przełączaj poziomy tłumika i wyłączenie
+v          Sprawdź tłumik, przedwzmacniacz, moc i obsługiwany tuner
+w          Gdzie jestem? Siła sygnału, częstotliwość i emisja
+z          Zaokrąglij częstotliwość do najbliższego kiloherca
+Kropka     Zwiększ częstotliwość o ustawiony krok
+Przecinek  Zmniejsz częstotliwość o ustawiony krok
+
+USTAWIENIA — najpierw naciśnij s
+s potem p  Wpisz moc wyjściową i Enter. Puste pole anuluje.
+s potem s  Krok dla bieżącej emisji w hercach; wpisz wartość, potem Enter
+s potem t  Przełączaj ustawienia tunera; kolejne t wybiera następną opcję
+s potem v  Wybierz VFO A/B lub Main/Sub, jeśli obsługiwane
+q          Opuść Ustawienia
+
+PODCZAS WYBORU PASMA LUB EMISJI
+Kropka     W górę
+Przecinek  W dół
+h          Pomoc
+q          Wróć do poziomu głównego
+Inny klawisz polecenia opuszcza wybór i uruchamia to polecenie.
+Wybór emisji zaczyna od bieżącej emisji radia i zapętla listę emisji.
+Wybór pasma zaczyna od bieżącego pasma. Icom i Kenwood zatrzymują się
+na obu końcach; Yaesu działa zgodnie z zachowaniem radia.
+Na górnej granicy użyj przecinka w dół lub e, aby wpisać częstotliwość.
+
+PODCZAS USTAWIANIA PRZESUNIĘCIA
+o          Przełączaj Odbiór, Nadawanie, Kasowanie
+Kropka     Dodaj 10 herców
+Przecinek  Odejmij 10 herców
+Przy Kasowaniu każdy klawisz ruchu zeruje przesunięcia.
+q          Wróć do poziomu głównego
+Przesunięcie zaczyna w Odbiorze od zera herców. Inny klawisz polecenia wychodzi.
+
+UWAGI
+q opuszcza Ustawienia; na poziomie głównym kończy YAC. Zmiany działają od razu.
+Domyślne kroki: SSB 1000 Hz, CW 500 Hz, AM 2500 Hz, FM 12500 Hz.
+Stan tunera opisuje ustawienie radia; niezależne tunery nie są wykrywane.
+Wybór nie rozpoczyna strojenia. Wyłączenie ATAS usuwa wybór ATAS.
+Moc: ustawione waty dla Yaesu/Kenwood; względny procent dla Icom.
+Nieznany: ustawienie nieczytelne. Nieobsługiwane tunery są pomijane.
+Lista zawiera tylko wdrożone polecenia. h: szczegółowa pomoc.
+
+a reguluje wzmocnienie AF. r reguluje blokadę szumów w FM, w innych trybach wzmocnienie RF. Początek od bieżącej wartości radia, w zaokrąglonych procentach. Kropka zwiększa; przecinek zmniejsza. Krok około 3 procent. Bez zapętlania na krańcach. q wychodzi i zachowuje wartość. Inny klawisz polecenia uruchamia to polecenie.
+
+Pole mocy: całe waty; h i Enter daje pomoc; puste Enter anuluje. Waty dla Icom są szacowane i przeliczane na procent; v podaje procent. Sukces jest cichy. Przed v opuść Ustawienia przez q.

@@ -9,6 +9,13 @@ Linux includes ordinary x64 computers and Raspberry Pi systems. The same
 source setup applies to both: use Python installed for that machine's OS
 and architecture. On a Mac, use Terminal with Python for that Mac.
 
+KEY BINDINGS
+
+Keep KEY-BINDINGS-English.txt open in a separate window while using YAC.
+German: TASTENBELEGUNG-Deutsch.txt; Polish: SKROTY-KLAWISZOWE-Polski.txt;
+Spanish: TECLAS-Espanol.txt. These short charts list implemented commands
+and submenu sequences. The installer copies them beside the program.
+
 INSTALLING
 
 1. Download and extract the YAC source ZIP. Keep its files together.

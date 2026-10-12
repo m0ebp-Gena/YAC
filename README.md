@@ -5,7 +5,9 @@ braille access in mind. It runs in a terminal and uses your screen reader for
 speech and braille output. The current version is **001 beta**.
 
 Controls include reading signal strength, frequency and mode; tuning; band and
-mode selection; and receive/transmit offsets where supported. English, German, Spanish
+mode selection; AF Gain, RF Gain/squelch; preamp and attenuator selection;
+editable output power; supported tuner settings; and receive/transmit offsets.
+English, German, Spanish
 and Polish labels and help are included. Press `h` for help and `q` to quit
 from the top level.
 
@@ -34,7 +36,13 @@ callsign prompts. Automatic radio discovery can take about a minute. If no radio
 loads an in-memory FT-DX10 demo so you can explore the controls. Signal strength
 and radio settings are simulated; no demo connection is saved in yac.ini.
 
-For the controls and braille settings, read [the English demo guide](demo-start-here.txt).
+Keep [the English key binding chart](KEY-BINDINGS-English.txt) open in a separate
+window while using YAC. It lists implemented commands and submenu sequences.
+[German](TASTENBELEGUNG-Deutsch.txt), [Polish](SKROTY-KLAWISZOWE-Polski.txt) and
+[Spanish](TECLAS-Espanol.txt) charts are also available. Update these public
+charts whenever a command is implemented.
+
+For startup, braille settings and troubleshooting, read [the English first-steps guide](demo-start-here.txt).
 [German](demo-start-here-de.txt) and [Polish](demo-start-here-pl.txt) guides are
 also available, along with [Spanish](demo-start-here-es.txt). The executable instructions in those guides apply to the
 packaged Windows demo; the commands above apply to this source repository.
@@ -82,13 +90,23 @@ sharing. See [debugging instructions](doc/debugging.txt).
 Offline regression tests can be run without a connected radio:
 
 ```powershell
-.\.venv\Scripts\python.exe -m unittest test_install_yac test_radio_responses test_icom_7300 test_tone_input test_demo_and_ic9700 test_ic7600
+.\.venv\Scripts\python.exe -m unittest discover -s tests -t .
 ```
 
-The `radio_*_check.py` scripts are hardware checks; inspect them before use.
+Tests live in `tests/`. Manual radio and braille checks live in `tests/hardware/`;
+inspect them before use and run them as modules, for example
+`python -m tests.hardware.radio_read_check`.
 `build_demo.py`, `package_demo.py` and `package_source.py` prepare distribution
 packages. See [platform and packaging notes](doc/platform_setup_and_packaging.txt)
 and [planned work](TODO.md).
+
+Find current release ZIPs and checksums in the project root. Older releases
+are preserved in `previous-builds/<date>/`, with numbered subfolders for repeat
+builds on the same date. Successful packaging archives the current release
+before replacing it. Source and Windows packages from the same date can share
+the root until a filename would be replaced. Runnable Windows files are kept
+in `builds/runnable/`; temporary build files are in `builds/.work/`.
+Generated packages and previous builds remain excluded from Git.
 
 ## Feedback
 

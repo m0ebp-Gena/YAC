@@ -2,10 +2,27 @@ b: wybór pasma; kropka/przecinek zmieniają pasmo, q kończy wybór
 e: częstotliwość w MHz, np. 7.2
 m: wybór trybu; kropka/przecinek zmieniają tryb, q kończy wybór
 Kropka/przecinek: zwiększenie/zmniejszenie częstotliwości o zapisany krok
-w lub f: odczyt siły sygnału, częstotliwości i trybu
+w: odczyt siły sygnału, częstotliwości i trybu
 z: zaokrąglenie częstotliwości do najbliższego kiloherca
 s: ustawienia; v wybiera FTX-1 Main/Sub lub Icom VFO A/B (najpierw A); s zapisuje krok strojenia
 o: przesunięcie; o wybiera odbiór/nadawanie/kasowanie; kropka/przecinek zmieniają o 10 Hz; q kończy
 i: Ton; i przełącza CTCSS/DCS N/DCS I; wpisz wartość, Enter, potem, jeśli pojawi się pytanie, t dla TX lub b dla Oba; q wychodzi, h pomaga
 q: zakończenie YAC
 Wybór radia: numer zaznacza profil, spacja zatwierdza, q anuluje
+p: przełączaj stopnie przedwzmacniacza i wyłączenie
+u: przełączaj poziomy tłumika i wyłączenie
+v: sprawdź tłumik, przedwzmacniacz, ustawioną moc i obsługiwany stan tunera
+s, potem t: przełączaj obsługiwane ustawienia tunera; powtarzaj t, q opuszcza Ustawienia
+Stan tunera opisuje ustawienie radia. Niezależne tunery wykrywające sygnał RF nie są wykrywane. Wyłączenie zachowuje wybór tunera z wyjątkiem ATAS, który trzeba odłączyć w ustawieniach. Wybór nie rozpoczyna strojenia.
+Moc: waty dla Yaesu/Kenwood, względne ustawienie w procentach dla Icom; nie jest to zmierzona moc nadawania. Stan nieznany oznacza, że nie można odczytać obsługiwanego ustawienia.
+Przesunięcie zaczyna w Odbiorze od zera herców. Inny klawisz polecenia wychodzi.
+Wybór emisji zaczyna od bieżącej emisji radia i zapętla listę emisji.
+Wybór pasma zaczyna od bieżącego pasma. Icom i Kenwood zatrzymują się
+na obu końcach; Yaesu działa zgodnie z zachowaniem radia.
+Na górnej granicy użyj przecinka w dół lub e, aby wpisać częstotliwość.
+
+a reguluje wzmocnienie AF. r reguluje blokadę szumów w FM, w innych trybach wzmocnienie RF. Początek od bieżącej wartości radia, w zaokrąglonych procentach. Kropka zwiększa; przecinek zmniejsza. Krok około 3 procent. Bez zapętlania na krańcach. q wychodzi i zachowuje wartość. Inny klawisz polecenia uruchamia to polecenie.
+
+Ustawienia: s potem p otwiera pole mocy. Wpisz liczbę całkowitą w pokazanej jednostce i zakresie, potem Enter; puste pole anuluje. Udana zmiana jest cicha. q opuszcza Ustawienia; v sprawdza moc.
+
+Pole mocy: całe waty; h i Enter daje pomoc; puste Enter anuluje. Waty dla Icom są szacowane i przeliczane na procent; v podaje procent. Sukces jest cichy. Przed v opuść Ustawienia przez q.

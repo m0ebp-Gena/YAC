@@ -1,0 +1,158 @@
+"""Model-specific settings, with live readback and language-file labels.
+
+No state is cached: controls on the radio can change these values at any time.
+An absent catalog feature means unsupported; a failed read means unknown.
+"""
+import json
+import re
+
+
+def catalog(root, radio):
+    path = root / radio.radio_id_path / 'settings.json'
+    return json.loads(path.read_text(encoding='utf-8')) if path.exists() else {}
+
+
+def _command(spec, name, band):
+    return spec[name].replace('{band}', str(band))
+
+
+def band(yac, radio):
+    frequency = yac._current_frequency(yac.project_root(), radio)
+    if frequency is None:
+        return None
+    hz = float(frequency) * 1_000_000
+    return 0 if hz < 100_000_000 else 1 if hz < 300_000_000 else 2
+
+
+def read(yac, radio, spec, selected_band=0):
+    if spec['protocol'] == 'civ':
+        command = bytes.fromhex(spec['read'])
+        sub = command[1] if len(command) > 1 else None
+        response = yac._civ_exchange(radio, command[0], sub)
+        data = yac._civ_response_data(response, radio.civ_address, command[0], sub)
+        if data is None:
+            return None
+        if spec.get('encoding') == 'bcd':
+            if len(data) != 2 or any(b >> 4 > 9 or b & 15 > 9 for b in data):
+                return None
+            value = int(data.hex())
+            return value if 0 <= value <= 255 else None
+        return data.hex().upper() if len(data) == 1 else None
+    response = yac._cat_exchange(radio, _command(spec, 'read', selected_band))
+    match = re.search(_command(spec, 'pattern', selected_band), response)
+    if not match:
+        return None
+    value = match.group(1)
+    if 'minimum' in spec and not spec['minimum'] <= int(value) <= spec['maximum']:
+        return None
+    return value
+
+
+def _write(yac, radio, spec, value, selected_band=0):
+    if spec['protocol'] == 'civ':
+        command = bytes.fromhex(spec['set'])
+        result = yac._civ_send(radio, command[0], command[1:] + bytes.fromhex(value))
+        return bytes((254, 254, 224, radio.civ_address, 251, 253)) in result
+    yac._cat_exchange(radio, _command(spec, 'set', selected_band).replace('{value}', value))
+    return True  # CAT setters need not reply; the caller always reads back.
+
+
+def _label(yac, root, language, token, **values):
+    return yac._read_label(root, language, token, '').format(**values)
+
+
+def _states(spec, selected_band):
+    return spec.get('band_states', {}).get(str(selected_band), spec.get('states', {}))
+
+
+def _tuner_state(yac, radio, spec):
+    value = read(yac, radio, spec)
+    if value is None:
+        return None
+    if spec.get('selection'):
+        selection = read(yac, radio, spec['selection'])
+        if selection not in spec['selection']['states']:
+            return None
+        if value not in spec['states']:
+            return None
+        if spec['states'][value] == 'l130':
+            return 'tuning'
+        if selection == spec.get('atas_selection'):
+            return 'atas'
+        if spec['states'][value] == 'l121':
+            return 'off'
+        return selection
+    return spec.get('aliases', {}).get(value, value) if value in spec['states'] else None
+
+
+def describe(yac, root, radio, language, name, spec):
+    selected_band = band(yac, radio) if spec.get('band_states') else 0
+    value = (_tuner_state(yac, radio, spec) if name == 'tuner' else
+             read(yac, radio, spec, selected_band) if selected_band is not None else None)
+    if name == 'power' and value is not None:
+        if spec.get('encoding') == 'bcd':
+            return _label(yac, root, language, 'l120', value=round(value * 100 / 255))
+        return _label(yac, root, language, 'l119', value=int(value))
+    states = _states(spec, selected_band)
+    if name == 'tuner' and spec.get('selection'):
+        states = dict(spec['selection']['states'], off='l121', atas='l124', tuning='l130')
+    if value in states:
+        return _label(yac, root, language, states[value])
+    return _label(yac, root, language, {'attenuator':'l125', 'preamp':'l126',
+                                     'power':'l127', 'tuner':'l128'}[name])
+
+
+def verify(yac, root, radio, language):
+    features = catalog(root, radio)
+    return ', '.join(describe(yac, root, radio, language, name, features[name])
+                     for name in ('attenuator', 'preamp', 'power', 'tuner') if name in features) or _label(yac, root, language, 'l129')
+
+
+def cycle(yac, root, radio, language, name):
+    spec = catalog(root, radio).get(name)
+    if spec is None:
+        return _label(yac, root, language, 'l129')
+    selected_band = band(yac, radio) if spec.get('band_states') else 0
+    if selected_band is None:
+        return describe(yac, root, radio, language, name, spec)
+    current = _tuner_state(yac, radio, spec) if name == 'tuner' else read(yac, radio, spec, selected_band)
+    choices = spec.get('cycle', list(_states(spec, selected_band)))
+    if current not in choices:
+        # Unknown or actively tuning: do not invent a starting state.
+        return describe(yac, root, radio, language, name, spec)
+    target = choices[(choices.index(current) + 1) % len(choices)]
+    if name == 'tuner' and spec.get('selection'):
+        # Disable before changing the selected tuner; never request a tune here.
+        raw = read(yac, radio, spec)
+        if raw is None:
+            return _label(yac, root, language, 'l128')
+        off = spec['off'].replace('{selection}', raw[:2])
+        if not _write(yac, radio, spec, off):
+            return _label(yac, root, language, 'l131')
+        if read(yac, radio, spec) != off:
+            return _label(yac, root, language, 'l131')
+        if target == 'off' and current == 'atas':
+            # ATAS has tuning stop, not a bypass flag. Leave ATAS selection
+            # and select a disabled internal tuner to obtain a real off state.
+            selection = spec['off_selection']
+            if (not _write(yac, radio, spec['selection'], selection)
+                    or read(yac, radio, spec['selection']) != selection
+                    or not _write(yac, radio, spec, spec['off_from_atas'])):
+                return _label(yac, root, language, 'l131')
+        if target != 'off':
+            selection = spec.get('atas_selection') if target == 'atas' else target
+            if not _write(yac, radio, spec['selection'], selection):
+                return _label(yac, root, language, 'l131')
+            if read(yac, radio, spec['selection']) != selection:
+                return _label(yac, root, language, 'l131')
+            enabled = spec['enable'][selection]
+            if not _write(yac, radio, spec, enabled):
+                return _label(yac, root, language, 'l131')
+            if read(yac, radio, spec) != enabled:
+                return _label(yac, root, language, 'l131')
+    elif not _write(yac, radio, spec, target, selected_band):
+        return _label(yac, root, language, 'l131')
+    actual = _tuner_state(yac, radio, spec) if name == 'tuner' else read(yac, radio, spec, selected_band)
+    if actual != target:
+        return _label(yac, root, language, 'l131')
+    return describe(yac, root, radio, language, name, spec)

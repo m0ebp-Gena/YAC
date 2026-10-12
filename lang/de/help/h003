@@ -1,1 +1,2 @@
 Punkt wählt den nächsten Modus, Komma den vorherigen. q beendet die Modusauswahl, h zeigt diese Hilfe. Eine andere Befehlstaste beendet die Auswahl und führt den Befehl aus.
+Die Modusauswahl beginnt bei der aktuellen Betriebsart und läuft durch die verfügbaren Betriebsarten im Kreis.
