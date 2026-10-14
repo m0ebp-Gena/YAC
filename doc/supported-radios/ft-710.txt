@@ -1,6 +1,19 @@
 Yaesu FT-710
 ============
 
+PURPOSE AND MANUFACTURER GUIDANCE
+This file supplements the radio manufacturer's user guide; it does not replace
+it. Consult that guide for the complete procedure, precautions and details for
+your model, firmware, microphone and operating mode. Manufacturer references
+are listed below.
+
+YAC exists to remove visual barriers. For microphone adjustment, its purpose
+is to make the gain setting and transmitter meter feedback available through
+speech and braille, so the user can follow the manufacturer's procedure and
+make their own adjustments without having to inspect the radio display.
+Accessible guidance should explain a reading where the model-specific mapping
+has been verified; unverified estimates must remain clearly identified.
+
 BROAD GUIDANCE - USER CHOOSES WHETHER TO TRY IT
 Prepared 14 October 2026 for YAC beta testing.
 
