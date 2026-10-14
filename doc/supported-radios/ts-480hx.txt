@@ -1,0 +1,57 @@
+Kenwood TS-480HX
+================
+
+BROAD GUIDANCE - USER CHOOSES WHETHER TO TRY IT
+Prepared 14 October 2026 for YAC beta testing.
+
+These notes are a starting point, not a calibrated pass/fail test. Read the
+manufacturer manual for your exact model, firmware, microphone and mode.
+YAC support does not mean every feature has been tested on physical hardware.
+
+Before any transmitting test, connect an antenna correctly matched for the
+test frequency or a suitable dummy load. An unsuitable load can damage the
+transmitter. YAC cannot verify the load. Lower power does not make it safe.
+Set an appropriate RF power yourself and speak normally. Shouting is not
+necessary and can overdrive the audio. Keep PTT under your control.
+
+ALC is transmitter Automatic Level Control. AGC normally concerns receiver
+Automatic Gain Control. Mic gain and speech processing are separate controls.
+A raw ALC number is neither watts nor a microphone-gain percentage.
+
+YAC s m changes only mic gain when you press full stop or comma. It does not
+change RF power, frequency, mode or speech processing and never keys TX.
+For basic adjustment, turn the speech processor/compressor off yourself.
+Hold PTT and speak normally, then release it to hear the sampled peak ALC.
+Brief peaks may fall between samples. No Good/Low/High judgement is currently
+made. An unavailable reading is unknown, not zero. Restore any preparation
+settings you changed yourself when finished.
+
+MIC GAIN AND ALC
+With the speech processor off, use SSB, hold PTT and speak normally. Adjust
+mic gain so the ALC meter responds to speech but remains within its marked
+limit. The documented mic-gain setting is 0-100; YAC uses one-point steps.
+
+CAT ALC readings are meter dots, 0-10. They are not percentages, watts,
+or the mic-gain value. The CAT data range does not establish the raw dot
+count at the recommended operating boundary. No calibrated raw threshold is
+provided here.
+
+YAC reads RM without changing the meter selection. If ALC is unavailable,
+select the ALC meter yourself and repeat. Missing readings are not zero.
+
+AM uses the power-meter response to speech rather than this SSB ALC procedure.
+FM uses separate microphone-gain choices. Neither procedure is enabled by the
+first s m module. Refer to the operating manual rather than reusing an SSB
+ALC target. Physical-radio testing and meter-zone calibration remain pending.
+
+MODEL IDENTIFICATION
+The TS-480 and QMX share CAT ID020. YAC requires a valid TY identification
+before enabling TS-480 mic-gain commands. Japanese 50W/20W variants are handled
+as TS-480 variants; consult their exact regional manual for output limits.
+
+MANUFACTURER REFERENCES
+Operating manual:
+https://kasc.kenwood.com/files/images/products/product_id_258/file_category_10/TS-480HX-TS-480SAT_Instruction_Manual.pdf
+
+Command reference:
+https://www.kenwood.com/i/products/info/amateur/ts_480/pdf/ts_480_pc.pdf

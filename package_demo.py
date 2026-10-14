@@ -31,9 +31,11 @@ expected_files = {
     'YAC-' + version + '.exe', 'yac.ini', 'START-HERE-English.txt',
     'HIER-STARTEN-Deutsch.txt', 'ZACZNIJ-TUTAJ-Polski.txt', 'EMPIEZA-AQUI-Espanol.txt',
 }
-if {path.name for path in source.iterdir()} != expected_files | {'_internal', 'lang', 'rad_cmds'}:
+if {path.name for path in source.iterdir()} != expected_files | {'_internal', 'lang', 'rad_cmds', 'doc'}:
     raise RuntimeError('Unexpected files in the demo folder; build a clean package before distributing')
-for directory in ('lang', 'rad_cmds'):
+if {path.name for path in (source / 'doc').iterdir()} != {'supported-radios'}:
+    raise RuntimeError('Unexpected documentation in the demo folder')
+for directory in ('lang', 'rad_cmds', 'doc/supported-radios'):
     expected_data = {
         path.relative_to(root / directory)
         for path in (root / directory).rglob('*')

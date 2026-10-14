@@ -28,6 +28,7 @@ destination = root / args.dist_dir / "YAC"
 for language in ("en", "de", "pl", "es"):
     shutil.copytree(root / "lang" / language, destination / "lang" / language, dirs_exist_ok=True)
 shutil.copytree(root / "rad_cmds", destination / "rad_cmds", dirs_exist_ok=True)
+shutil.copytree(root / "doc/supported-radios", destination / "doc/supported-radios", dirs_exist_ok=True)
 (destination / "yac.ini").write_text("[yac]\nplatform=\nlang=\ncall=\ndebug=true\n", encoding="utf-8")
 guides = {
     "KEY-BINDINGS-English.txt": "KEY-BINDINGS-English.txt",

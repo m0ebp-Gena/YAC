@@ -1,0 +1,45 @@
+YAC SUPPORTED RADIO GUIDES - BROAD USER GUIDANCE
+Prepared 14 October 2026.
+
+These notes describe development-beta features; some may not yet be in a
+published release. Check the help in the version you are running.
+
+One plain-text file per model below. These are broad reading guides, not
+calibrated instructions or an obligation to transmit. The user decides whether
+to try a procedure after reading the exact manufacturer manual.
+
+The numbers 36-60 are only an unverified linear-scale illustration for certain
+Icom SSB meters. FT Talk's 65-70 suggestion is for FT-991A, not all Yaesu radios.
+No universal ALC threshold is established. Physical testing remains necessary.
+
+FILES
+
+ftdx10.txt - Yaesu FTDX10
+
+ft-710.txt - Yaesu FT-710
+
+ftx-1.txt - Yaesu FTX-1 Field / Optima
+
+ic-705.txt - Icom IC-705
+
+ic-7300.txt - Icom IC-7300
+
+ic-7300mk2.txt - Icom IC-7300MK2
+
+ic-9700.txt - Icom IC-9700
+
+ic-7600.txt - Icom IC-7600
+
+ts-590sg.txt - Kenwood TS-590SG
+
+ts-480hx.txt - Kenwood TS-480HX
+
+ts-480sat.txt - Kenwood TS-480SAT
+
+qmx.txt - QRP Labs QMX
+
+qmx-plus.txt - QRP Labs QMX Plus
+
+TS-480 regional 50W/20W variants are noted in both TS-480 guides.
+QMX guides explicitly describe partial support and unavailable s m control.
+The FT-991A is referenced for context but has no current YAC model profile.

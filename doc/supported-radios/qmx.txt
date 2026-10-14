@@ -1,0 +1,44 @@
+QRP Labs QMX
+============
+
+BROAD GUIDANCE - USER CHOOSES WHETHER TO TRY IT
+Prepared 14 October 2026 for YAC beta testing.
+
+These notes are a starting point, not a calibrated pass/fail test. Read the
+manufacturer manual for your exact model, firmware, microphone and mode.
+YAC support does not mean every feature has been tested on physical hardware.
+
+Before any transmitting test, connect an antenna correctly matched for the
+test frequency or a suitable dummy load. An unsuitable load can damage the
+transmitter. YAC cannot verify the load. Lower power does not make it safe.
+Set an appropriate RF power yourself and speak normally. Shouting is not
+necessary and can overdrive the audio. Keep PTT under your control.
+
+ALC is transmitter Automatic Level Control. AGC normally concerns receiver
+Automatic Gain Control. Mic gain and speech processing are separate controls.
+A raw ALC number is neither watts nor a microphone-gain percentage.
+
+YAC s m changes only mic gain when you press full stop or comma. It does not
+change RF power, frequency, mode or speech processing and never keys TX.
+For basic adjustment, turn the speech processor/compressor off yourself.
+Hold PTT and speak normally, then release it to hear the sampled peak ALC.
+Brief peaks may fall between samples. No Good/Low/High judgement is currently
+made. An unavailable reading is unknown, not zero. Restore any preparation
+settings you changed yourself when finished.
+
+MICROPHONE GUIDANCE AND YAC LIMITATION
+YAC has partial QMX-family support, including existing filter handling.
+The new s m module is not enabled for QMX or QMX Plus. Sharing CAT ID020
+with the TS-480 does not establish compatible mic-gain or ALC commands.
+
+The QRP Labs operating manual for firmware 1_03_002 describes a microphone
+test tool displaying average and peak audio amplitude. It adjusts microphone
+gain in dB and suggests normal speech peaks reaching the tool's red region.
+That is microphone-audio guidance, not a Yaesu/Icom ALC target. Use the manual
+for your installed firmware; do not apply the 36-60 or 65-70 numbers here.
+
+YAC microphone control, meter interpretation and physical validation for these
+radios require separate work. Do not try to force a TS-480 identification.
+
+MANUFACTURER REFERENCE
+https://www.qrp-labs.com/images/qmx/manuals/operation_1_03_002.pdf

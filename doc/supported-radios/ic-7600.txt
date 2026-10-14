@@ -1,0 +1,51 @@
+Icom IC-7600
+============
+
+BROAD GUIDANCE - USER CHOOSES WHETHER TO TRY IT
+Prepared 14 October 2026 for YAC beta testing.
+
+These notes are a starting point, not a calibrated pass/fail test. Read the
+manufacturer manual for your exact model, firmware, microphone and mode.
+YAC support does not mean every feature has been tested on physical hardware.
+
+Before any transmitting test, connect an antenna correctly matched for the
+test frequency or a suitable dummy load. An unsuitable load can damage the
+transmitter. YAC cannot verify the load. Lower power does not make it safe.
+Set an appropriate RF power yourself and speak normally. Shouting is not
+necessary and can overdrive the audio. Keep PTT under your control.
+
+ALC is transmitter Automatic Level Control. AGC normally concerns receiver
+Automatic Gain Control. Mic gain and speech processing are separate controls.
+A raw ALC number is neither watts nor a microphone-gain percentage.
+
+YAC s m changes only mic gain when you press full stop or comma. It does not
+change RF power, frequency, mode or speech processing and never keys TX.
+For basic adjustment, turn the speech processor/compressor off yourself.
+Hold PTT and speak normally, then release it to hear the sampled peak ALC.
+Brief peaks may fall between samples. No Good/Low/High judgement is currently
+made. An unavailable reading is unknown, not zero. Restore any preparation
+settings you changed yourself when finished.
+
+MIC GAIN AND ALC
+The CI-V command allows a 0-255 data range, but documents ALC minimum as 0
+and maximum as 120. Do not treat 255 as the full-scale ALC reading.
+
+The microphone-gain procedure is to speak during transmission and keep the
+meter indication inside the marked ALC range. Do not apply the separate
+DRIVE-gain procedure as though it were the same adjustment.
+
+YAC microphone gain uses the radio's 0-255 scale, displayed as a rounded
+percentage; navigation changes the native value by 3, about one percentage
+point. This gain percentage is separate from the ALC reading.
+
+This first module provides SSB and AM raw ALC feedback. In AM, audio clarity
+needs its own check with monitoring or another station; the SSB target should
+not be assumed to apply. Other modes are not enabled in s m. Physical-radio
+validation and calibration remain pending.
+
+MANUFACTURER REFERENCES
+Operating manual:
+https://www.icomeurope.com/wp-content/uploads/2020/11/IC-7600_IM_D_upgrade_20151103.pdf
+
+CI-V reference:
+CI-V command table is included in the operating manual.
