@@ -7,6 +7,7 @@ OBERSTE EBENE
 a          AF-Verstärkung
 b          Bandauswahl
 e          Neue Frequenz in MHz; z. B. 7.103 eingeben, dann Eingabetaste
+f          Filter öffnen
 h          Hilfe
 i          Ton-/Codeeingabe (CTCSS/DCS, soweit unterstützt); h: Hilfe
 m          Betriebsart auswählen
@@ -60,4 +61,33 @@ Nur implementierte Befehle sind aufgeführt. h zeigt ausführliche Hilfe.
 
 a regelt AF-Verstärkung. r regelt in FM die Rauschsperre, sonst RF-Verstärkung. Start beim aktuellen Funkgerätewert, als gerundeter Prozentwert. Punkt erhöht; Komma verringert. Schritte etwa 3 Prozent. Kein Umlauf an den Grenzen. q beendet und behält den Wert. Eine andere Befehlstaste startet diesen Befehl.
 
-Leistungseingabe: ganze Watt; h und Eingabetaste für Hilfe; leere Eingabe bricht ab. Icom-Watteingaben sind geschätzt und werden in Prozent umgerechnet; v meldet Prozent. Erfolg bleibt still. Vor v Einstellungen mit q verlassen.
+Leistungseingabe: ganze Watt; h und Eingabetaste für Hilfe; leere Eingabe bricht ab. Icom-Watteingaben sind geschätzt und werden in Prozent umgerechnet; v meldet Prozent. Nach erfolgreichem Schreiben und Rücklesen wird die Eingabe bestätigt, zum Beispiel 33W Gesetzt. Dies bestätigt den angeforderten Wert, keine gemessene Ausgangsleistung. Vor v Einstellungen mit q verlassen.
+
+FILTER — zuerst f drücken
+f dann p   Bandbreite
+f dann l   Untere Grenzfrequenz
+f dann u   Obere Grenzfrequenz
+Punkt      Wert erhöhen
+Komma      Wert verringern
+h          Filterhilfe
+q          Einstellung verlassen; erneut q zur Hauptebene
+
+Störaustaster: f dann b schaltet den aktuellen Zustand um und meldet Ein oder Aus. Im Regler schaltet b erneut um. Punkt erhöht die Stufe; Komma verringert sie. Bei Aus meldet Navigation Aus und lässt die Stufe unverändert. q kehrt zu Filter zurück; erneut q zur Hauptebene. h gibt Hilfe. Werte folgen der Geräteskala oder definierten Prozentwerten. Bei unbekanntem Status wird nicht geschaltet. FTX-1 merkt sich die zuletzt beobachtete Stufe getrennt für Main/Sub; ohne bekannte Stufe wird 1 verwendet. TS-590SG merkt sich NB1/NB2; ohne bekannte Auswahl wird NB1 verwendet. Nicht unterstützte Geräte oder Modi werden gemeldet.
+
+Rauschunterdrückung: f dann r schaltet den aktuellen Zustand um; r im Regler erneut. Punkt erhöht; Komma verringert; kein Umlauf. Bei Aus bleibt der Wert unverändert. q kehrt zu Filter zurück; erneut q zur Hauptebene. h gibt Hilfe. FTDX10/FT-710: Stufen 1-15; FTX-1: 1-10, getrennt für Main/Sub gespeichert, ohne bekannten Wert wird 1 verwendet. Icom verwendet Prozentwerte. Kenwood behält die zuletzt beobachtete NR1/NR2-Auswahl; ohne bekannte Auswahl wird NR1 verwendet. TS-590SG NR1: 1-10. TS-480 NR1: Automatisch, dann 1-9; Komma bei 1 wählt Automatisch. NR2: Nachführzeit 2-20 Millisekunden. Navigation folgt dem aktuellen Typ; einen anderen Typ am Funkgerät wählen. Nicht unterstützte Funktionen werden gemeldet; unbekannter Status verhindert das Umschalten.
+
+Im Kenwood-FM-Modus wird beim Einschalten NR1 gewählt.
+
+Kerbfilter: f dann a schaltet Auto Notch um; a im Regler erneut. TS-480 verwendet Beat Cancel und merkt sich BC1/BC2, sonst BC1. f dann n schaltet Manual Notch um; n im Regler erneut. Punkt/Komma erhöhen/verringern Frequenz oder Position bei Ein, ohne Umlauf. w im manuellen Regler wechselt die Breite. Bei Aus bleiben Werte unverändert. q kehrt zu Filter zurück; erneut q zur Hauptebene; h gibt Hilfe. Yaesu: 10-3200 Hertz; Icom: Position 0-255; TS-590SG: Position 0-127. Breiten folgen den Herstellernamen. Gegenseitig ausschließende Auto/Manual-Funktionen werden entsprechend umgeschaltet. TS-590SG stellt die zuletzt beobachtete Breite wieder her; sonst wird beim ersten Einschalten Normal verwendet und gemeldet. BC1/BC2 bei Bedarf am TS-480 wählen. Nicht unterstützte Funktionen werden gemeldet; unbekannter Status verhindert Umschalten. QMX hat keine dokumentierte Kerbsteuerung.
+
+Contour: f c toggles On/Off. Navigation adjusts current frequency (10-3200 hertz). Inside Contour, l selects Contour level (-40 to +20, spoken as Dip/Neutral/Peak); w selects Contour width (1-11); c returns to frequency. When already on frequency, c toggles On/Off. Full stop increases and comma decreases the selected setting, stopping at endpoints. Off leaves settings unchanged. q returns to Filters, where l means Low Cut; q again returns to top level. Current settings are preserved on switching. FT-DX10, FT-710 and FTX-1 only; FTX-1 frequency/state follow selected Main/Sub, level/width are shared menu settings. APF is separate and is not altered.
+
+Filterprüfung: f v nennt die aktuell eingeschalteten schaltbaren Filter der Betriebsart und des Empfängers. v innerhalb einer Filtereinstellung prüft, ohne die Einstellung zu verlassen. Ausgeschaltete oder nicht unterstützte Filter werden ausgelassen; unbekannte Zustände werden genannt. Bandbreite und untere/obere Grenzfrequenzen werden nicht als Ein/Aus-Filter gezählt. FTX-1 nennt Haupt- oder Nebenempfänger. Die Prüfung ändert keine Einstellungen.
+
+Wiederholte v-Prüfung: Das erste v zeigt die Übersicht eingeschalteter Filter. Weitere aufeinanderfolgende v zeigen jeweils einen unterstützten Filter, auch Aus oder unbekannt, und danach wieder die Übersicht. Jeder Zustand wird neu gelesen. Andere Befehle oder ein Wechsel der Betriebsart/des Empfängers starten wieder bei der Übersicht. q verlässt das Filtermenü; innerhalb einer Einstellung führt q zuerst zum Filtermenü. Das Haupt-v bleibt unverändert.
+
+s dann m   Mikrofonverstärkung: Vorbereitung, manuelle PTT, Punkt/Komma einstellen; h hilft. YAC ändert nur Mikrofonverstärkung.
+
+s dann a   Unterstützte AGC-Stufen durchschalten; a wiederholen. Rücklesen geprüft. s h gibt Einstellungshilfe.
+
+s dann e   Sprachprozessor: nur lesen beim Öffnen; e schaltet; Punkt/Komma bei Ein. Kenwood i/o Eingang/Ausgang. n verwirft und stellt wieder her; q behält; h hilft.

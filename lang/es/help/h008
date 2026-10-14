@@ -1,0 +1,11 @@
+Ganancia de micrófono: s m abre el ajuste guiado bajo control del usuario.
+
+Antes de transmitir conecta una antena adaptada a la frecuencia o una carga ficticia adecuada. Una carga inadecuada puede dañar el transmisor. YAC no puede verificarla. Espacio confirma; q cancela; h lee ayuda.
+
+Ajusta tú la potencia según el manual y desactiva el procesador para el ajuste básico. Una potencia baja no hace segura una carga inadecuada. Espacio en el segundo aviso continúa. YAC no cambia potencia, frecuencia, modo ni procesador y nunca inicia transmisión. Debes restaurar tú los ajustes de preparación que cambies.
+
+Empieza en recepción. Se admite SSB; AM en Yaesu/Icom da ALC bruto y en Icom AM debes comprobar claridad mediante monitor u otra estación. Kenwood AM y FM no están habilitados aquí.
+
+Mantén PTT y habla normalmente, luego suéltalo. YAC anuncia el pico ALC muestreado; puede perder picos breves. No grites: el exceso de audio produce distorsión. Con PTT suelto, punto aumenta y coma reduce ganancia. Cada cambio correcto se verifica por lectura y reinicia el pico. Icom: paso 3 en 0-255; Yaesu/Kenwood: paso 1 en 0-100. Se detiene en extremos. v lee ganancia; espacio reinicia pico; h ayuda; q vuelve con Atrás a Ajustes y conserva la ganancia elegida. Suelta PTT tú mismo.
+
+Icom SSB recomienda aproximadamente 30-50 por ciento de la escala ALC; Yaesu/Kenwood la zona marcada. Los datos CAT son valores brutos, no porcentajes ni vatios. No hay juicio automático porque los umbrales no están verificados. En Kenwood selecciona el medidor ALC si hace falta. Lecturas ausentes son desconocidas, no cero. Faltan pruebas físicas y calibración.

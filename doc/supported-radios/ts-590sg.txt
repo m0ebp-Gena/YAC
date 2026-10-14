@@ -62,3 +62,13 @@ Operating manual:
 https://www.kenwood.com/usa/Support/pdf/B5A-0180-00.pdf
 
 Kenwood TS-590S/TS-590SG PC command reference: ts_590_g_pc_command_e.pdf
+
+AGC - RECEIVER GAIN RECOVERY
+YAC s a cycles Fast, Slow, Off. It is unavailable in FM and preserves custom time constants. TS-480 requires verified TY identification.
+Fast recovers sooner after a strong signal; Slow holds gain reduction longer.
+Choose by listening and consult the manufacturer user guide. Off disables
+automatic gain regulation, so received audio may vary more widely. No
+transmission is required. Physical-radio validation remains pending.
+
+SPEECH PROCESSOR - DEVELOPMENT BETA
+Speech Processor s e opens by reading current settings. e toggles; navigation adjusts strength while On. n cancels and verifies restoration of original processor settings; q keeps changes. No power, frequency, mode, mic gain, equalizer or AMC changes are made. PTT remains manual. h gives complete model-family guidance. Meter readings are sampled raw units; physical tests/calibration remain pending. Input and Output are separate; i and o select them. Input feedback is COMP, Output feedback is ALC. Both native levels are saved for cancellation.

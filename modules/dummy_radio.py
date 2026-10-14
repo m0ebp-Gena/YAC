@@ -8,6 +8,16 @@ class DummySerial:
     def __init__(self):
         self.frequency = 7_159_000
         self.mode = "1"
+        self.bandwidth = "20"
+        self.noise_blanker = '0'
+        self.nb_level = '005'
+        self.noise_reduction = '0'
+        self.nr_level = '05'
+        self.auto_notch = '0'
+        self.manual_notch = '000'
+        self.notch_position = '120'
+        self.notch_width = '0'
+        self.contour = {'CO00': '0000', 'CO01': '1200', 'EX030202': '-15', 'EX030203': '10'}
         self.offset = 0
         self.receive = self.transmit = False
         self.tone = "000"
@@ -16,6 +26,10 @@ class DummySerial:
         self.preamp = "0"
         self.attenuator = "0"
         self.power = "020"
+        self.mic_gain = 50
+        self.agc = '6'
+        self.processor_on = False
+        self.processor_level = 25
         self.tuner = "000"
         self.tuner_selection = "0"
         self.buffer = bytearray()
@@ -45,10 +59,58 @@ class DummySerial:
             if not command:
                 continue
             reply = "?"
-            if command in self.gains:
+            prefix = next((p for p in self.contour if command.startswith(p)), None)
+            if prefix:
+                if command != prefix:
+                    self.contour[prefix] = command[len(prefix):]
+                reply = prefix + self.contour[prefix]
+            elif command in self.gains:
                 reply = f"{command}{self.gains[command]:03d}"
             elif re.fullmatch(r"(?:AG0|RG0|SQ0)\d{3}", command):
                 self.gains[command[:3]] = int(command[3:])
+                reply = command
+            elif command == 'BC0':
+                reply = 'BC0' + self.auto_notch
+            elif re.fullmatch(r'BC0[01]', command):
+                self.auto_notch = command[-1]
+                reply = command
+            elif command in {'BP00', 'BP01'}:
+                reply = command + (self.manual_notch if command == 'BP00' else self.notch_position)
+            elif re.fullmatch(r'BP00(?:000|001)', command):
+                self.manual_notch = command[4:]
+                reply = command
+            elif re.fullmatch(r'BP01\d{3}', command):
+                self.notch_position = command[4:]
+                reply = command
+            elif command == 'EX030204':
+                reply = command + self.notch_width
+            elif re.fullmatch(r'EX030204[01]', command):
+                self.notch_width = command[-1]
+                reply = command
+            elif command == 'NR0':
+                reply = 'NR0' + self.noise_reduction
+            elif re.fullmatch(r'NR0[01]', command):
+                self.noise_reduction = command[-1]
+                reply = command
+            elif command == 'RL0':
+                reply = 'RL0' + self.nr_level
+            elif re.fullmatch(r'RL0\d{2}', command):
+                self.nr_level = command[3:]
+                reply = command
+            elif command == 'NB0':
+                reply = 'NB0' + self.noise_blanker
+            elif re.fullmatch(r'NB0[01]', command):
+                self.noise_blanker = command[-1]
+                reply = command
+            elif command == 'NL0':
+                reply = 'NL0' + self.nb_level
+            elif re.fullmatch(r'NL0\d{3}', command):
+                self.nb_level = command[3:]
+                reply = command
+            elif command == "SH0":
+                reply = "SH00" + self.bandwidth
+            elif re.fullmatch(r"SH00\d{2}", command):
+                self.bandwidth = command[4:]
                 reply = command
             elif command == "FA":
                 reply = f"FA{self.frequency:09d}"
@@ -102,6 +164,32 @@ class DummySerial:
             elif re.fullmatch(r"RA0[0123]", command):
                 self.attenuator = command[-1]
                 reply = command
+            elif command == "PR0":
+                reply = 'PR0' + ('2' if self.processor_on else '1')
+            elif command in {'PR01', 'PR02'}:
+                self.processor_on = command[-1] == '2'
+                reply = command
+            elif command == "PL":
+                reply = f'PL{self.processor_level:03d}'
+            elif re.fullmatch(r'PL\d{3}', command):
+                self.processor_level = int(command[2:])
+                reply = command
+            elif command == "RM3":
+                reply = 'RM3000000'
+            elif command == "GT0":
+                reply = 'GT0' + self.agc
+            elif re.fullmatch(r'GT0[01234]', command):
+                self.agc = '6' if command[-1] == '4' else command[-1]
+                reply = 'GT0' + self.agc
+            elif command == "MG":
+                reply = f"MG{self.mic_gain:03d}"
+            elif re.fullmatch(r"MG\d{3}", command):
+                self.mic_gain = int(command[2:])
+                reply = command
+            elif command == "TX":
+                reply = "TX0"
+            elif command == "RM4":
+                reply = "RM4000000"
             elif command == "PC":
                 reply = "PC" + self.power
             elif re.fullmatch(r"PC\d{3}", command):

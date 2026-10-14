@@ -7,6 +7,7 @@ POZIOM GŁÓWNY
 a          Wzmocnienie AF
 b          Wybór pasma
 e          Nowa częstotliwość w MHz; wpisz np. 7.103, potem Enter
+f          Otwórz Filtry
 h          Pomoc
 i          Wprowadzanie tonu/kodu (CTCSS/DCS, jeśli obsługiwane); h: pomoc
 m          Wybór emisji
@@ -59,4 +60,33 @@ Lista zawiera tylko wdrożone polecenia. h: szczegółowa pomoc.
 
 a reguluje wzmocnienie AF. r reguluje blokadę szumów w FM, w innych trybach wzmocnienie RF. Początek od bieżącej wartości radia, w zaokrąglonych procentach. Kropka zwiększa; przecinek zmniejsza. Krok około 3 procent. Bez zapętlania na krańcach. q wychodzi i zachowuje wartość. Inny klawisz polecenia uruchamia to polecenie.
 
-Pole mocy: całe waty; h i Enter daje pomoc; puste Enter anuluje. Waty dla Icom są szacowane i przeliczane na procent; v podaje procent. Sukces jest cichy. Przed v opuść Ustawienia przez q.
+Pole mocy: całe waty; h i Enter daje pomoc; puste Enter anuluje. Waty dla Icom są szacowane i przeliczane na procent; v podaje procent. Po udanym zapisie i odczycie pojawia się potwierdzenie wpisanej wartości, na przykład 33W Ustawiono. Potwierdza ono żądane ustawienie, a nie zmierzoną moc wyjściową. Przed v opuść Ustawienia przez q.
+
+FILTRY — najpierw naciśnij f
+f potem p  Szerokość pasma
+f potem l  Dolna granica
+f potem u  Górna granica
+Kropka     Zwiększ wartość
+Przecinek  Zmniejsz wartość
+h          Pomoc filtrów
+q          Opuść regulację; kolejne q wraca do poziomu głównego
+
+Eliminator zakłóceń: f potem b przełącza bieżący stan i zgłasza włączony lub wyłączony. W regulacji b przełącza ponownie. Kropka zwiększa poziom; przecinek zmniejsza. Gdy wyłączony, nawigacja zgłasza ten stan i zachowuje poziom. q wraca do Filtrów; kolejne q do poziomu głównego. h wyświetla pomoc. Poziomy używają skali radia lub zdefiniowanych procentów. Nieznany stan blokuje przełączenie. FTX-1 pamięta ostatni poziom obserwowany przez YAC osobno dla Main/Sub; jeśli nieznany, używa 1. TS-590SG pamięta NB1/NB2; jeśli nieznany, używa NB1. Nieobsługiwane radia lub tryby są zgłaszane.
+
+Redukcja szumów: f potem r przełącza bieżący stan; r w regulacji przełącza ponownie. Kropka zwiększa; przecinek zmniejsza; bez zapętlania. Gdy wyłączona, wartość pozostaje bez zmian. q wraca do Filtrów; kolejne q do poziomu głównego. h wyświetla pomoc. FTDX10/FT-710: poziomy 1-15; FTX-1: 1-10, pamiętane osobno dla Main/Sub, z wartością 1 jeśli poprzednia jest nieznana. Icom używa procentów. Kenwood zachowuje ostatni typ NR1/NR2; jeśli nieznany, używa NR1. TS-590SG NR1: 1-10. TS-480 NR1: Auto, potem 1-9; przecinek z 1 wybiera Auto. NR2: czas śledzenia 2-20 milisekund. Nawigacja używa bieżącego typu; inny typ wybierz w radiu. Nieobsługiwane funkcje są zgłaszane; nieznany stan blokuje przełączenie.
+
+W trybie FM Kenwood włączenie wybiera NR1.
+
+Notch: f potem a przełącza Auto Notch; a w regulacji ponownie. TS-480 używa usuwania dudnień, pamiętając BC1/BC2 albo wybierając BC1, jeśli nieznane. f potem n przełącza Manual Notch; n w regulacji ponownie. Kropka/przecinek zwiększają/zmniejszają częstotliwość lub pozycję, gdy włączony, bez zapętlania. w w regulacji ręcznej zmienia szerokość. Gdy wyłączony, ustawienia pozostają bez zmian. q wraca do Filtrów; kolejne q do poziomu głównego; h daje pomoc. Yaesu: 10-3200 herców; Icom: pozycja 0-255; TS-590SG: pozycja 0-127. Szerokości używają nazw producenta. Jeśli Auto/Manual się wykluczają, włączenie jednego wyłącza drugi. TS-590SG przywraca ostatnią obserwowaną szerokość; jeśli nieznana, pierwsze włączenie używa i zgłasza Normalną. Inny typ BC1/BC2 wybierz w radiu TS-480. Nieobsługiwane funkcje są zgłaszane; nieznany stan blokuje przełączenie. QMX nie ma udokumentowanego sterowania notch.
+
+Contour: f c toggles On/Off. Navigation adjusts current frequency (10-3200 hertz). Inside Contour, l selects Contour level (-40 to +20, spoken as Dip/Neutral/Peak); w selects Contour width (1-11); c returns to frequency. When already on frequency, c toggles On/Off. Full stop increases and comma decreases the selected setting, stopping at endpoints. Off leaves settings unchanged. q returns to Filters, where l means Low Cut; q again returns to top level. Current settings are preserved on switching. FT-DX10, FT-710 and FTX-1 only; FTX-1 frequency/state follow selected Main/Sub, level/width are shared menu settings. APF is separate and is not altered.
+
+Weryfikacja filtrów: f v odczytuje z radia włączone przełączane filtry dla bieżącego trybu i odbiornika. v podczas regulacji podaje ten sam raport bez opuszczania regulacji. Wyłączone i nieobsługiwane filtry są pomijane; nieznane stany są zgłaszane. Szerokość pasma oraz dolna i górna granica nie są liczone jako filtry włączane/wyłączane. FTX-1 podaje odbiornik główny lub pomocniczy. Weryfikacja nie zmienia ustawień.
+
+Przegląd przez kolejne v: pierwsze v podaje włączone filtry. Następne kolejne v pokazują po jednym obsługiwanym filtrze, również wyłączonym lub o nieznanym stanie, potem wracają do podsumowania. Stan jest odczytywany na bieżąco. Inne polecenie lub zmiana trybu/odbiornika rozpoczyna od podsumowania. q opuszcza menu filtrów; podczas regulacji pierwsze q wraca do menu filtrów. Główne v pozostaje bez zmian.
+
+s potem m  Mikrofon: przygotowanie, ręczny PTT, kropka/przecinek regulują; h daje pomoc. YAC zmienia tylko wzmocnienie mikrofonu.
+
+s potem a  Przełącz obsługiwane opcje AGC; powtarzaj a. Odczyt sprawdzany. s h daje pomoc Ustawień.
+
+s potem e  Procesor: otwiera bez zmian; e przełącza; kropka/przecinek gdy włączony. Kenwood i/o Wejście/Wyjście. n anuluje i przywraca; q zachowuje; h pomaga.

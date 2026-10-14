@@ -1,0 +1,192 @@
+{
+  "preamp": {
+    "protocol": "cat",
+    "read": "PA;",
+    "pattern": "PA([01])0;",
+    "set": "PA{value};",
+    "states": {
+      "0": "l116",
+      "1": "l136"
+    }
+  },
+  "attenuator": {
+    "protocol": "cat",
+    "read": "RA;",
+    "pattern": "RA(0[01])00;",
+    "set": "RA{value};",
+    "states": {
+      "00": "l111",
+      "01": "l112"
+    }
+  },
+  "power": {
+    "protocol": "cat",
+    "read": "PC;",
+    "pattern": "PC(\\d{3});",
+    "minimum": 5,
+    "maximum": 200,
+    "input_minimum": 5,
+    "set": "PC{value};"
+  },
+  "tuner": {
+    "protocol": "cat",
+    "read": "AC;",
+    "pattern": "AC([01][01]0);",
+    "cycle": [
+      "000",
+      "110"
+    ],
+    "set": "AC{value};",
+    "states": {
+      "000": "l121",
+      "010": "l122",
+      "100": "l121",
+      "110": "l122"
+    },
+    "aliases": {
+      "100": "000",
+      "010": "110"
+    }
+  },
+  "af_gain": {
+    "protocol": "cat",
+    "minimum": 0,
+    "maximum": 255,
+    "step": 8,
+    "label": "l140",
+    "read": "AG0;",
+    "set": "AG0{value};",
+    "pattern": "AG0(\\d{3});"
+  },
+  "rf_gain": {
+    "protocol": "cat",
+    "minimum": 0,
+    "maximum": 100,
+    "step": 3,
+    "label": "l141",
+    "read": "RG;",
+    "set": "RG{value};",
+    "pattern": "RG(\\d{3});",
+    "squelch_modes": [
+      "4"
+    ]
+  },
+  "squelch": {
+    "protocol": "cat",
+    "minimum": 0,
+    "maximum": 255,
+    "step": 8,
+    "label": "l142",
+    "read": "SQ0;",
+    "set": "SQ0{value};",
+    "pattern": "SQ0(\\d{3});"
+  },
+  "noise_blanker": {
+    "modes": [
+      "1",
+      "2",
+      "3",
+      "5",
+      "6",
+      "7",
+      "9"
+    ],
+    "state": {
+      "protocol": "cat",
+      "read": "NB;",
+      "pattern": "NB([01]);",
+      "set": "NB{value};",
+      "off": "0",
+      "on_values": [
+        "1"
+      ]
+    },
+    "level": {
+      "protocol": "cat",
+      "read": "NL;",
+      "pattern": "NL(\\d{3});",
+      "set": "NL{value};",
+      "minimum": 1,
+      "maximum": 10,
+      "step": 1
+    }
+  },
+  "noise_reduction": {
+    "modes": [
+      "1",
+      "2",
+      "3",
+      "5",
+      "6",
+      "7",
+      "9",
+      "4"
+    ],
+    "state": {
+      "protocol": "cat",
+      "read": "NR;",
+      "pattern": "NR([012]);",
+      "set": "NR{value};",
+      "off": "0",
+      "on_values": [
+        "1",
+        "2"
+      ]
+    },
+    "levels": {
+      "1": {
+        "protocol": "cat",
+        "read": "RL;",
+        "pattern": "RL(\\d{2});",
+        "set": "RL{value};",
+        "minimum": 0,
+        "maximum": 9,
+        "step": 1,
+        "digits": 2,
+        "auto": 0
+      },
+      "2": {
+        "protocol": "cat",
+        "read": "RL;",
+        "pattern": "RL(\\d{2});",
+        "set": "RL{value};",
+        "minimum": 0,
+        "maximum": 9,
+        "step": 1,
+        "digits": 2,
+        "following_time": true
+      }
+    },
+    "on_labels": {
+      "1": "l167",
+      "2": "l168"
+    },
+    "on_by_mode": {
+      "4": [
+        "1"
+      ]
+    }
+  },
+  "notch": {
+    "a": {
+      "modes": [
+        "1",
+        "2",
+        "4",
+        "5"
+      ],
+      "beat_cancel": true,
+      "state": {
+        "protocol": "cat",
+        "read": "BC;",
+        "pattern": "BC([012]);",
+        "set": "BC{value};",
+        "off": "0",
+        "on_values": [
+          "1",
+          "2"
+        ]
+      }
+    }
+  }
+}

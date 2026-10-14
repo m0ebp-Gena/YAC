@@ -1,0 +1,158 @@
+{
+  "bandwidth": {
+    "kind": "ts480_qmx",
+    "modes": {
+      "3": "profile1",
+      "7": "profile1",
+      "6": "profile2",
+      "9": "profile2",
+      "1": "profile3",
+      "2": "profile3",
+      "5": "profile4"
+    },
+    "width_profile": {
+      "protocol": "cat",
+      "read": "SL;",
+      "pattern": "SL(\\d{2});",
+      "set": "SL{value};",
+      "values": {
+        "00": 50,
+        "01": 100,
+        "02": 250,
+        "03": 500,
+        "04": 1000,
+        "05": 1500,
+        "06": 2400
+      }
+    },
+    "qmx_modes": {
+      "1": "profile5",
+      "2": "profile5",
+      "3": "profile6",
+      "7": "profile6"
+    },
+    "profiles": {
+      "profile1": {
+        "protocol": "cat",
+        "read": "FW;",
+        "pattern": "FW(\\d{4});",
+        "set": "FW{value};",
+        "values": {
+          "0050": 50,
+          "0080": 80,
+          "0100": 100,
+          "0150": 150,
+          "0200": 200,
+          "0300": 300,
+          "0400": 400,
+          "0500": 500,
+          "0600": 600,
+          "1000": 1000,
+          "2000": 2000
+        }
+      },
+      "profile2": {
+        "protocol": "cat",
+        "read": "FW;",
+        "pattern": "FW(\\d{4});",
+        "set": "FW{value};",
+        "values": {
+          "0250": 250,
+          "0500": 500,
+          "1000": 1000,
+          "1500": 1500
+        }
+      },
+      "profile3": {
+        "protocol": "cat",
+        "read": "SH;",
+        "pattern": "SH(\\d{2});",
+        "set": "SH{value};",
+        "values": {
+          "00": 1000,
+          "01": 1200,
+          "02": 1400,
+          "03": 1600,
+          "04": 1800,
+          "05": 2000,
+          "06": 2200,
+          "07": 2400,
+          "08": 2600,
+          "09": 2800,
+          "10": 3000,
+          "11": 3400,
+          "12": 4000,
+          "13": 5000
+        },
+        "low_read": "SL;",
+        "low_pattern": "SL(\\d{2});",
+        "low_values": {
+          "00": 0,
+          "01": 50,
+          "02": 100,
+          "03": 200,
+          "04": 300,
+          "05": 400,
+          "06": 500,
+          "07": 600,
+          "08": 700,
+          "09": 800,
+          "10": 900,
+          "11": 1000
+        }
+      },
+      "profile4": {
+        "protocol": "cat",
+        "read": "SH;",
+        "pattern": "SH(\\d{2});",
+        "set": "SH{value};",
+        "values": {
+          "00": 2500,
+          "01": 3000,
+          "02": 4000,
+          "03": 5000
+        },
+        "low_read": "SL;",
+        "low_pattern": "SL(\\d{2});",
+        "low_values": {
+          "00": 0,
+          "01": 100,
+          "02": 200,
+          "03": 500
+        }
+      },
+      "profile5": {
+        "protocol": "cat",
+        "read": "MMSSB|Filter RX;",
+        "pattern": "MM([^;]+);",
+        "set": "MMSSB|Filter RX={value};",
+        "values": {
+          "2500": 2500,
+          "2700": 2700,
+          "2900": 2900,
+          "3200": 3200
+        },
+        "apply": "MU;"
+      },
+      "profile6": {
+        "protocol": "cat",
+        "read": "MMCW|CW passband;",
+        "pattern": "MM([^;]+);",
+        "set": "MMCW|CW passband={value};",
+        "values": {
+          "50": 50,
+          "100": 100,
+          "150": 150,
+          "200": 200,
+          "250": 250,
+          "300": 300,
+          "400": 400,
+          "500": 500,
+          "None": 3050
+        },
+        "apply": "MU;",
+        "enabled_read": "MMCW|Choose filters|{index};"
+      }
+    }
+  }
+}

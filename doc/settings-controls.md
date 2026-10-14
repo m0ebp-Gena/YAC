@@ -11,6 +11,8 @@ configured power and tuner status in that order. Example in the demo:
     Attenuator off, preamp 2, power 20 watts, tuner off
 
 `s`, then `t`, cycles tuner settings. Repeat `t` to advance; `q` leaves Settings.
+Each `q` that returns from a submenu displays `Back`, including each level of
+nested filter controls. At the top level, `q` exits with `Bye` and the user name.
 Settings `v` continues to select a VFO. Changing tuner selection does not start
 tuning. This change does not implement the separate top-level Tune command.
 
@@ -57,8 +59,11 @@ Power and preamps
 
 `s`, then `p`, opens a whole-watt power edit. Blank Enter cancels; `h` followed
 by Enter displays power help and returns to the field. Invalid entries leave
-the field open. Successful changes are silent: leave Settings with `q` and
-use top-level `v` for readback. Icom entries are converted to an estimated
+the field open. After a successful write and readback, YAC repeats the entered
+value, for example `33W Set`. This confirms the requested setting, not an exact
+measurement of transmitted watts. Blank cancellation and failed changes do not
+show this confirmation. Leave Settings with `q` and use top-level `v` to report
+the radio setting. Icom entries are converted to an estimated
 relative setting using model/band ratings, rather than measured output.
 IC-705 uses a 10-watt scale, with a 5-watt battery entry limit read from its
 supply status. IC-9700 uses 100/75/10-watt scales by selected band. AM limits

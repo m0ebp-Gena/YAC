@@ -7,6 +7,20 @@ import subprocess
 import sys
 
 
+def copy_changed(source, target):
+    """Merge shipped files, preserving identical files and unrelated user data."""
+    if target.is_symlink():
+        raise OSError("Refusing to overwrite symbolic link: " + str(target))
+    if source.is_dir():
+        target.mkdir(parents=True, exist_ok=True)
+        for item in source.iterdir():
+            if item.name == "__pycache__" or item.suffix in {".pyc", ".zip"}:
+                continue
+            copy_changed(item, target / item.name)
+    elif not target.is_file() or source.read_bytes() != target.read_bytes():
+        shutil.copyfile(source, target)
+
+
 def ask(question):
     try:
         return input(question + " [y/N] ").strip().casefold() in {"y", "yes"}
@@ -27,6 +41,7 @@ def install_shortcut(launcher, home):
     # Never replace another command, including a broken symbolic link.
     if system_target.exists() or system_target.is_symlink():
         print("An existing /usr/local/bin/yac was left unchanged.")
+        return
     elif system_directory.is_dir():
         writable = os.access(system_directory, os.W_OK)
         sudo = shutil.which("sudo")
@@ -84,33 +99,39 @@ def main(source=None, home=None):
         if not (source / name).exists():
             print("Missing " + name + ". Extract the complete YAC source package, not the Windows executable package.")
             return 1
-    if destination.exists() or destination.is_symlink():
-        print(str(destination) + " already exists and has been left unchanged.")
-        print("If YAC is installed there, run ~/yac/run-yac.")
-        print("For a fresh installation, move the existing folder somewhere safe and run this installer again.")
+    if destination.is_symlink() or (destination.exists() and not destination.is_dir()):
+        print(str(destination) + " is not a regular installation directory; left unchanged.")
+        return 1
+    updating = destination.exists()
+    if updating and not (destination / "yac.py").is_file():
+        print(str(destination) + " does not contain a YAC installation; left unchanged.")
         return 1
     print("Python " + sys.version.split()[0] + " is available.")
-    print("Setup creates ~/yac, copies YAC's source and data, and creates a private .venv.")
-    print("It downloads pyserial using pip. Your operating system's Python packages are unchanged.")
-    if not ask("Create " + str(destination) + " and set up YAC?"):
+    print("Setup updates changed YAC files and preserves existing settings, logs and .venv.")
+    print("It installs pyserial only if a compatible version is missing from the private environment.")
+    if not ask(("Update " if updating else "Create ") + str(destination) + " and set up YAC?"):
         print("No installation was made.")
         return 0
     try:
-        destination.mkdir()
-        shutil.copyfile(source / "yac.py", destination / "yac.py")
+        destination.mkdir(exist_ok=True)
+        copy_changed(source / "yac.py", destination / "yac.py")
         for name in ("modules", "lang", "rad_cmds"):
-            shutil.copytree(source / name, destination / name,
-                            ignore=shutil.ignore_patterns("__pycache__", "*.pyc", "*.zip"))
+            copy_changed(source / name, destination / name)
+        if (source / 'doc/supported-radios').is_dir():
+            copy_changed(source / 'doc/supported-radios', destination / 'doc/supported-radios')
         if (source / "doc/linux-macos-setup.txt").is_file():
-            shutil.copyfile(source / "doc/linux-macos-setup.txt", destination / "LINUX-MACOS-SETUP.txt")
+            copy_changed(source / "doc/linux-macos-setup.txt", destination / "LINUX-MACOS-SETUP.txt")
         for chart in ("KEY-BINDINGS-English.txt", "TASTENBELEGUNG-Deutsch.txt",
                       "SKROTY-KLAWISZOWE-Polski.txt", "TECLAS-Espanol.txt"):
             if (source / chart).is_file():
-                shutil.copyfile(source / chart, destination / chart)
-        (destination / "yac.ini").write_text("[yac]\nplatform=\nlang=\ncall=\ndebug=true\n", encoding="utf-8")
-        print("Creating the private Python environment...")
+                copy_changed(source / chart, destination / chart)
+        if not (destination / "yac.ini").exists():
+            (destination / "yac.ini").write_text("[yac]\nplatform=\nlang=\ncall=\ndebug=true\n", encoding="utf-8")
+        python = destination / ".venv/bin/python"
         try:
-            subprocess.run([sys.executable, "-m", "venv", str(destination / ".venv")], check=True)
+            if not python.is_file():
+                print("Creating the private Python environment...")
+                subprocess.run([sys.executable, "-m", "venv", str(destination / ".venv")], check=True)
         except subprocess.CalledProcessError:
             print("Could not create the environment. Consult your package manager's Python venv/pip instructions.")
             print("On Debian, Ubuntu and Raspberry Pi OS, the required package is usually python3-venv.")
@@ -118,10 +139,20 @@ def main(source=None, home=None):
             print('Then run: ~/yac/.venv/bin/python -m pip install "pyserial>=3.5,<4"')
             print("Start YAC with: ~/yac/.venv/bin/python ~/yac/yac.py")
             return 1
-        python = destination / ".venv/bin/python"
-        print("Installing pyserial...")
         try:
-            subprocess.run([str(python), "-m", "pip", "install", "pyserial>=3.5,<4"], check=True)
+            if updating and python.is_file():
+                dependency = subprocess.run([str(python), "-c",
+                    "import serial; from serial.tools import list_ports; from importlib.metadata import version; "
+                    "v=tuple(int(p) for p in version('pyserial').split('.')[:2]); "
+                    "raise SystemExit(0 if (3,5) <= v < (4,0) else 1)"], capture_output=True)
+                ready = dependency.returncode == 0
+            else:
+                ready = False
+            if ready:
+                print("Compatible pyserial is already installed; skipping pip.")
+            else:
+                print("Installing pyserial...")
+                subprocess.run([str(python), "-m", "pip", "install", "pyserial>=3.5,<4"], check=True)
             # Import check only; no serial ports are opened.
             subprocess.run([str(python), "-c", "import yac, serial; from serial.tools import list_ports"], cwd=destination, check=True)
         except subprocess.CalledProcessError:
@@ -130,7 +161,11 @@ def main(source=None, home=None):
             print("To run YAC afterwards: ~/yac/.venv/bin/python ~/yac/yac.py")
             return 1
         launcher = destination / "run-yac"
-        launcher.write_text(launcher_text(destination), encoding="utf-8", newline="\n")
+        text = launcher_text(destination)
+        if launcher.is_symlink():
+            raise OSError("Refusing to overwrite symbolic link: " + str(launcher))
+        if not launcher.is_file() or launcher.read_text(encoding="utf-8") != text:
+            launcher.write_text(text, encoding="utf-8", newline="\n")
         launcher.chmod(0o755)
         print("YAC is installed. Start it in your terminal with: ~/yac/run-yac")
         install_shortcut(launcher, home)

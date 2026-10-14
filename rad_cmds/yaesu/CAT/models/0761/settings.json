@@ -103,5 +103,271 @@
     "read": "SQ0;",
     "set": "SQ0{value};",
     "pattern": "SQ0(\\d{3});"
+  },
+  "bandwidth": {
+    "kind": "yaesu",
+    "modes": {
+      "1": "profile1",
+      "2": "profile1",
+      "3": "profile2",
+      "7": "profile2",
+      "6": "profile2",
+      "9": "profile2",
+      "8": "profile2",
+      "C": "profile2",
+      "E": "profile2"
+    },
+    "profiles": {
+      "profile1": {
+        "protocol": "cat",
+        "read": "SH{side};",
+        "pattern": "SH{side}0(\\d{2});",
+        "set": "SH{side}0{value};",
+        "default": "00",
+        "values": {
+          "01": 300,
+          "02": 400,
+          "03": 600,
+          "04": 850,
+          "05": 1100,
+          "06": 1200,
+          "07": 1500,
+          "08": 1650,
+          "09": 1800,
+          "10": 1950,
+          "11": 2100,
+          "12": 2250,
+          "13": 2400,
+          "14": 2450,
+          "15": 2500,
+          "16": 2600,
+          "17": 2700,
+          "18": 2800,
+          "19": 2900,
+          "20": 3000,
+          "21": 3200,
+          "22": 3500,
+          "23": 4000
+        }
+      },
+      "profile2": {
+        "protocol": "cat",
+        "read": "SH{side};",
+        "pattern": "SH{side}0(\\d{2});",
+        "set": "SH{side}0{value};",
+        "default": "00",
+        "values": {
+          "01": 50,
+          "02": 100,
+          "03": 150,
+          "04": 200,
+          "05": 250,
+          "06": 300,
+          "07": 350,
+          "08": 400,
+          "09": 450,
+          "10": 500,
+          "11": 600,
+          "12": 800,
+          "13": 1200,
+          "14": 1400,
+          "15": 1700,
+          "16": 2000,
+          "17": 2400,
+          "18": 3000,
+          "19": 3200,
+          "20": 3500,
+          "21": 4000
+        }
+      }
+    }
+  },
+  "noise_blanker": {
+    "modes": [
+      "1",
+      "2",
+      "3",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "C",
+      "D",
+      "E"
+    ],
+    "state": {
+      "protocol": "cat",
+      "read": "NB0;",
+      "pattern": "NB0([01]);",
+      "set": "NB0{value};",
+      "off": "0",
+      "on_values": [
+        "1"
+      ]
+    },
+    "level": {
+      "protocol": "cat",
+      "read": "NL0;",
+      "pattern": "NL0(\\d{3});",
+      "set": "NL0{value};",
+      "minimum": 0,
+      "maximum": 10,
+      "step": 1
+    },
+    "combined": false
+  },
+  "noise_reduction": {
+    "modes": [
+      "1",
+      "2",
+      "3",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "C",
+      "D",
+      "E"
+    ],
+    "state": {
+      "protocol": "cat",
+      "read": "NR0;",
+      "pattern": "NR0([01]);",
+      "set": "NR0{value};",
+      "off": "0",
+      "on_values": [
+        "1"
+      ]
+    },
+    "level": {
+      "protocol": "cat",
+      "read": "RL0;",
+      "pattern": "RL0(\\d{2});",
+      "set": "RL0{value};",
+      "minimum": 1,
+      "maximum": 15,
+      "step": 1,
+      "digits": 2
+    },
+    "combined": false
+  },
+  "notch": {
+    "a": {
+      "modes": [
+        "1",
+        "2",
+        "5",
+        "D"
+      ],
+      "state": {
+        "protocol": "cat",
+        "read": "BC0;",
+        "pattern": "BC0([01]);",
+        "set": "BC0{value};",
+        "off": "0",
+        "on_values": [
+          "1"
+        ]
+      }
+    },
+    "n": {
+      "modes": [
+        "1",
+        "2",
+        "3",
+        "6",
+        "7",
+        "8",
+        "9",
+        "C",
+        "E"
+      ],
+      "state": {
+        "protocol": "cat",
+        "read": "BP00;",
+        "pattern": "BP00(00[01]);",
+        "set": "BP00{value};",
+        "off": "000",
+        "on_values": [
+          "001"
+        ]
+      },
+      "position": {
+        "protocol": "cat",
+        "read": "BP01;",
+        "pattern": "BP01(\\d{3});",
+        "set": "BP01{value};",
+        "minimum": 1,
+        "maximum": 320,
+        "step": 1,
+        "digits": 3,
+        "hertz_multiplier": 10
+      },
+      "width": {
+        "protocol": "cat",
+        "read": "EX030204;",
+        "pattern": "EX030204([01]);",
+        "set": "EX030204{value};",
+        "choices": [
+          "0",
+          "1"
+        ],
+        "labels": {
+          "0": "l177",
+          "1": "l178"
+        }
+      }
+    }
+  },
+  "contour": {
+    "modes": [
+      "1",
+      "2",
+      "5",
+      "6",
+      "8",
+      "9",
+      "C",
+      "D",
+      "E"
+    ],
+    "state": {
+      "protocol": "cat",
+      "read": "CO00;",
+      "pattern": "CO00(000[01]);",
+      "set": "CO00{value};"
+    },
+    "frequency": {
+      "protocol": "cat",
+      "read": "CO01;",
+      "pattern": "CO01(\\d{4});",
+      "set": "CO01{value};",
+      "minimum": 10,
+      "maximum": 3200,
+      "step": 10,
+      "digits": 4
+    },
+    "level": {
+      "protocol": "cat",
+      "read": "EX030202;",
+      "pattern": "EX030202([+-]\\d{2});",
+      "set": "EX030202{value};",
+      "minimum": -40,
+      "maximum": 20,
+      "step": 1,
+      "digits": 3
+    },
+    "width": {
+      "protocol": "cat",
+      "read": "EX030203;",
+      "pattern": "EX030203(\\d{2});",
+      "set": "EX030203{value};",
+      "minimum": 1,
+      "maximum": 11,
+      "step": 1,
+      "digits": 2
+    }
   }
 }

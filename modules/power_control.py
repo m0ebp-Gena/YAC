@@ -6,10 +6,22 @@ from modules import chat_int, help_int, verify_settings as settings
 
 
 def prepare(yac, root, radio):
-    original = settings.catalog(root, radio).get('power')
+    original = settings.catalog(root, radio, yac).get('power')
     if not original or 'set' not in original:
         return None
     spec = dict(original)
+    if spec.get('band_maximum'):
+        frequency = yac._current_frequency(root, radio)
+        if frequency is None:
+            return None
+        for limit in spec['band_maximum']:
+            if float(frequency) >= limit['minimum_mhz']:
+                spec['maximum'] = min(spec['maximum'], limit['watts'])
+    if spec.get('mode_fraction'):
+        mode = yac._current_mode_code(radio)
+        if mode is None:
+            return None
+        spec['maximum'] = int(spec['maximum'] * spec['mode_fraction'].get(str(mode), 1))
     if spec.get('encoding') == 'bcd':
         scale = spec['watts_at_full_scale']
         if spec.get('band_watts'):
@@ -96,5 +108,8 @@ def edit(yac, root, radio, language):
                 return
         error = set_value(yac, radio, spec, entered)
         if not error:
+            if entered.strip():
+                chat_int.show_response(settings._label(
+                    yac, root, language, 'l208', value=entered.strip()))
             return
         chat_int.show_response(settings._label(yac, root, language, error))

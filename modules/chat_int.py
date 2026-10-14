@@ -70,3 +70,7 @@ def show_goodbye(root: Path, language: str, call: str = "") -> None:
     goodbye = label(root, language, "l032", "Bye")
     print(f"{goodbye} {call.strip()}".rstrip())
 
+
+
+def show_back(root: Path, language: str) -> None:
+    show_response(label(root, language, "l207", "Back"))

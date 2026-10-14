@@ -1,0 +1,44 @@
+Speech Processor - implementation notes
+======================================
+
+The control lives in modules/speech_processor.py. yac.py only routes Settings
+s e to it. Existing mic_gain helpers supply read-only TX status and sampled
+peak collection. No automatic TX, power, mode, frequency, microphone, AMC or
+equalizer changes are made.
+
+Entry reads switch state and exact native strength(s). e toggles; full stop
+and comma adjust while On. Kenwood i/o selects Input/Output, preserving the
+other live value. v reads; h provides complete help in all four languages.
+
+q keeps changes. n means No changes: restore and read back the original
+processor state and native level(s). No edits means no setters on cancellation.
+Possible partial writes retain the snapshot even if acknowledgement fails.
+Interrupted sessions attempt restoration only in receive, in the same mode,
+frequency and selected receiver context. Connection loss does not trigger
+restoration setters. Unverified restoration is announced and the snapshot
+remains on the current radio connection object for retry during this run.
+Diagnostic logging records original values. A crash/restart cannot guarantee
+recovery; the user can consult the log and radio settings. Never claim a failed
+restore succeeded. Physical changes to an Icom VFO with identical frequency
+and mode may not be detectable by the existing YAC selection tracking; avoid
+switching receivers on the radio during adjustment.
+
+An Off Yaesu read can hide its retained strength as zero. When the initial
+level cannot be safely restored, edits are refused. Turning On at the radio
+and reopening the control is an explicit user action, not a YAC default.
+Known, positive entry levels can be restored on cancellation. Hardware tests
+must confirm the PL/PR interactions before broadening this behaviour.
+
+Optional meter monitoring begins with Space and preparation acknowledgement.
+Manual PTT and normal speech produce sampled COMP peaks after PTT release.
+Kenwood Output selection uses sampled ALC instead. No meter selection writes
+are made. Meter values are raw; they are not processor strength, dB or watts.
+Model-specific calibration remains pending. Missing readings are unknown.
+
+Yaesu and Icom are enabled for LSB/USB. Kenwood is enabled for LSB/USB/AM/FM.
+TS-480 requires TY identity. QMX/QMX Plus remain unsupported in this module.
+The manufacturer's complete user guide is authoritative; YAC help and the
+radio files supplement it by making visual settings and readings accessible.
+
+See doc/speech-processor-survey.txt for manufacturer references and differences.
+Automated tests use simulated devices; physical-radio tests remain pending.

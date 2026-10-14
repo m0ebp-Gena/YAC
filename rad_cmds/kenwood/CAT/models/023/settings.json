@@ -80,5 +80,271 @@
     "read": "SQ0;",
     "set": "SQ0{value};",
     "pattern": "SQ0(\\d{3});"
+  },
+  "bandwidth": {
+    "kind": "kenwood",
+    "modes": {
+      "3": "profile1",
+      "7": "profile1",
+      "6": "profile2",
+      "9": "profile2",
+      "1": "profile3",
+      "2": "profile3",
+      "5": "profile4"
+    },
+    "width_profile": {
+      "protocol": "cat",
+      "read": "SL;",
+      "pattern": "SL(\\d{2});",
+      "set": "SL{value};",
+      "values": {
+        "00": 50,
+        "01": 80,
+        "02": 100,
+        "03": 150,
+        "04": 200,
+        "05": 250,
+        "06": 300,
+        "07": 400,
+        "08": 500,
+        "09": 600,
+        "10": 1000,
+        "11": 1500,
+        "12": 2000,
+        "13": 2500
+      }
+    },
+    "profiles": {
+      "profile1": {
+        "protocol": "cat",
+        "read": "FW;",
+        "pattern": "FW(\\d{4});",
+        "set": "FW{value};",
+        "values": {
+          "0050": 50,
+          "0080": 80,
+          "0100": 100,
+          "0150": 150,
+          "0200": 200,
+          "0250": 250,
+          "0300": 300,
+          "0400": 400,
+          "0500": 500,
+          "0600": 600,
+          "1000": 1000,
+          "1500": 1500,
+          "2000": 2000,
+          "2500": 2500
+        }
+      },
+      "profile2": {
+        "protocol": "cat",
+        "read": "FW;",
+        "pattern": "FW(\\d{4});",
+        "set": "FW{value};",
+        "values": {
+          "0250": 250,
+          "0500": 500,
+          "1000": 1000,
+          "1500": 1500
+        }
+      },
+      "profile3": {
+        "protocol": "cat",
+        "read": "SH;",
+        "pattern": "SH(\\d{2});",
+        "set": "SH{value};",
+        "values": {
+          "00": 1000,
+          "01": 1200,
+          "02": 1400,
+          "03": 1600,
+          "04": 1800,
+          "05": 2000,
+          "06": 2200,
+          "07": 2400,
+          "08": 2600,
+          "09": 2800,
+          "10": 3000,
+          "11": 3400,
+          "12": 4000,
+          "13": 5000
+        },
+        "low_read": "SL;",
+        "low_pattern": "SL(\\d{2});",
+        "low_values": {
+          "00": 0,
+          "01": 50,
+          "02": 100,
+          "03": 200,
+          "04": 300,
+          "05": 400,
+          "06": 500,
+          "07": 600,
+          "08": 700,
+          "09": 800,
+          "10": 900,
+          "11": 1000
+        }
+      },
+      "profile4": {
+        "protocol": "cat",
+        "read": "SH;",
+        "pattern": "SH(\\d{2});",
+        "set": "SH{value};",
+        "values": {
+          "00": 2500,
+          "01": 3000,
+          "02": 4000,
+          "03": 5000
+        },
+        "low_read": "SL;",
+        "low_pattern": "SL(\\d{2});",
+        "low_values": {
+          "00": 0,
+          "01": 100,
+          "02": 200,
+          "03": 300
+        }
+      }
+    }
+  },
+  "noise_blanker": {
+    "modes": [
+      "1",
+      "2",
+      "3",
+      "5",
+      "6",
+      "7",
+      "9"
+    ],
+    "state": {
+      "protocol": "cat",
+      "read": "NB;",
+      "pattern": "NB([012]);",
+      "set": "NB{value};",
+      "off": "0",
+      "on_values": [
+        "1",
+        "2"
+      ]
+    },
+    "level": {
+      "protocol": "cat",
+      "read": "NL;",
+      "pattern": "NL(\\d{3});",
+      "set": "NL{value};",
+      "minimum": 1,
+      "maximum": 10,
+      "step": 1
+    }
+  },
+  "noise_reduction": {
+    "modes": [
+      "1",
+      "2",
+      "3",
+      "5",
+      "6",
+      "7",
+      "9",
+      "4"
+    ],
+    "state": {
+      "protocol": "cat",
+      "read": "NR;",
+      "pattern": "NR([012]);",
+      "set": "NR{value};",
+      "off": "0",
+      "on_values": [
+        "1",
+        "2"
+      ]
+    },
+    "levels": {
+      "1": {
+        "protocol": "cat",
+        "read": "RL;",
+        "pattern": "RL(\\d{2});",
+        "set": "RL{value};",
+        "minimum": 1,
+        "maximum": 10,
+        "step": 1,
+        "digits": 2
+      },
+      "2": {
+        "protocol": "cat",
+        "read": "RL;",
+        "pattern": "RL(\\d{2});",
+        "set": "RL{value};",
+        "minimum": 0,
+        "maximum": 9,
+        "step": 1,
+        "digits": 2,
+        "following_time": true
+      }
+    },
+    "on_labels": {
+      "1": "l167",
+      "2": "l168"
+    },
+    "on_by_mode": {
+      "4": [
+        "1"
+      ]
+    }
+  },
+  "notch": {
+    "a": {
+      "modes": [
+        "1",
+        "2"
+      ],
+      "shared": true,
+      "state": {
+        "protocol": "cat",
+        "read": "NT;",
+        "pattern": "NT([012][01]);",
+        "set": "NT{value};"
+      }
+    },
+    "n": {
+      "modes": [
+        "1",
+        "2",
+        "3",
+        "6",
+        "7",
+        "9"
+      ],
+      "shared": true,
+      "state": {
+        "protocol": "cat",
+        "read": "NT;",
+        "pattern": "NT([012][01]);",
+        "set": "NT{value};"
+      },
+      "position": {
+        "protocol": "cat",
+        "read": "BP;",
+        "pattern": "BP(\\d{3});",
+        "set": "BP{value};",
+        "minimum": 0,
+        "maximum": 127,
+        "step": 1,
+        "digits": 3
+      },
+      "width": {
+        "choices": [
+          "0",
+          "1"
+        ],
+        "labels": {
+          "0": "l180",
+          "1": "l178"
+        }
+      }
+    }
   }
 }

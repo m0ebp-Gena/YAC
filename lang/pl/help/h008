@@ -1,0 +1,11 @@
+Wzmocnienie mikrofonu: s m otwiera regulację prowadzoną przez użytkownika.
+
+Przed nadawaniem podłącz antenę dopasowaną do częstotliwości lub odpowiednie sztuczne obciążenie. Złe obciążenie może uszkodzić nadajnik. YAC nie może go sprawdzić. Spacja potwierdza; q anuluje; h czyta pomoc.
+
+Sam ustaw moc według instrukcji i wyłącz procesor mowy do podstawowej regulacji. Mała moc nie czyni złego obciążenia bezpiecznym. Spacja przy drugim komunikacie kontynuuje. YAC nie zmienia mocy, częstotliwości, emisji ani procesora i nigdy nie rozpoczyna nadawania. Sam przywróć zmienione ustawienia przygotowania.
+
+Zacznij na odbiorze. Obsługiwane jest SSB; AM Yaesu/Icom daje surowe ALC, w Icom AM sprawdź audio monitorem lub z inną stacją. Kenwood AM i FM nie są tutaj włączone.
+
+Trzymaj PTT, mów normalnie i zwolnij PTT. YAC podaje próbkowany szczyt ALC; krótkie szczyty mogą zostać pominięte. Nie krzycz: nadmierne audio zniekształca sygnał. Po zwolnieniu PTT kropka zwiększa, przecinek zmniejsza wzmocnienie. Udana zmiana jest odczytywana i zeruje szczyt. Icom: krok 3 na 0-255; Yaesu/Kenwood: krok 1 na 0-100. Zatrzymuje się na końcach. v odczytuje; spacja zeruje szczyt; h daje pomoc; q wraca z Wstecz do Ustawień i zachowuje wybrane wzmocnienie. Sam zwolnij PTT.
+
+Icom SSB zaleca około 30-50 procent skali ALC; Yaesu/Kenwood oznaczony zakres. CAT podaje surowe wartości, nie procenty ani waty. Bez automatycznej oceny, bo progi nie są zweryfikowane. Kenwood: sam wybierz miernik ALC, jeśli trzeba. Brak odczytu to nieznane, nie zero. Potrzebne są testy fizyczne i kalibracja.

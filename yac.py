@@ -16,7 +16,8 @@ from modules import lang_sel
 from modules.find_rad import RadioConnection, find_radios
 from modules.signal_report import format_s_meter
 from modules.icom_profile import SUPPORTED_MODELS, load_profile
-from modules import verify_settings, gain_control, power_control
+from modules import verify_settings, gain_control, power_control, filter_control, ts480_control, mic_gain, agc_control
+from modules import speech_processor
 
 
 DEBUG_LOG = logging.getLogger("yac")
@@ -431,6 +432,8 @@ def _tone_radio_kind(radio: RadioConnection) -> str | None:
             return "ftdx10" if radio.model_id == "0761" else "ftx1"
     if radio.protocol == "CAT" and radio.manufacturer_key == "kenwood" and radio.model_id == "023":
         return "ts590"
+    if ts480_control.variant(sys.modules[__name__], radio) is not None:
+        return "ts480"
     return None
 
 
@@ -448,6 +451,9 @@ def _tone_band_supported(kind: str, frequency: str | None) -> bool:
                 or 1_240_000_000 <= hz <= 1_300_000_000)
     if kind == "ts590":
         return 28_000_000 <= hz <= 29_700_000
+    if kind == "ts480":
+        return (28_000_000 <= hz <= 29_700_000
+                or 50_000_000 <= hz <= 54_000_000)
     if kind == "ftx1":
         return (
             28_000_000 <= hz <= 29_700_000
@@ -499,7 +505,7 @@ def _tone_command(
     """Apply a validated tone to a supported radio; target is TX or Both."""
     if tone_kind == "CTCSS":
         tone_index = CTCSS_TONES.index(value)
-        if kind == "ts590":
+        if kind in {"ts590", "ts480"}:
             # TS-590's CN/TN list has 42 entries, with its own numbering.
             if value not in TS590_CTCSS:
                 return False
@@ -686,6 +692,7 @@ def _tone_control(root: Path, radio: RadioConnection, language: str, call: str) 
         chat_int.show_response(_read_label(root, language, labels[selection], selection))
         action, value = _edit_tone(selection, value)
         if action == "q":
+            chat_int.show_back(root, language)
             chat_int.show_request(call, action)
             return
         if action == "i":
@@ -702,7 +709,7 @@ def _tone_control(root: Path, radio: RadioConnection, language: str, call: str) 
             sys.stdout.write("\n")
             continue
         parsed = _tone_value(value, kind in {"ftx1", "ic705", "ic9700"}, selection)
-        if parsed is None or (kind == "ts590" and parsed[1] not in TS590_CTCSS):
+        if parsed is None or (kind in {"ts590", "ts480"} and parsed[1] not in TS590_CTCSS):
             sys.stdout.write("\n")
             chat_int.show_response(_read_label(root, language, "l093", "Invalid tone/code. h: help"))
             sys.stdout.write("\n")
@@ -720,6 +727,7 @@ def _tone_control(root: Path, radio: RadioConnection, language: str, call: str) 
             if not automatic_both:
                 chat_int.show_request(call, key)
             if key == "q":
+                chat_int.show_back(root, language)
                 return
             if key == "h":
                 chat_int.show_response(help_int.get_help(root, language, "h004"))
@@ -810,6 +818,8 @@ def _set_yaesu_offset(radio: RadioConnection, offset_hz: int) -> None:
 
 def _zero_offsets(radio: RadioConnection) -> bool:
     """Start a clarifier adjustment session with receive and transmit at zero."""
+    if radio.protocol == "CAT" and radio.model_id == "020":
+        return ts480_control.zero_offsets(sys.modules[__name__], radio)
     if _icom_supported(radio):
         _set_icom_offset(radio, 0)
         return _icom_offset_hz(radio) == 0
@@ -945,6 +955,8 @@ def _offset_action(
     root: Path, radio: RadioConnection, language: str,
     selection: int, direction: int,
 ) -> str:
+    if radio.protocol == "CAT" and radio.model_id == "020":
+        return ts480_control.offset(sys.modules[__name__], root, radio, language, selection, direction)
     """Adjust the selected clarifier by 10 Hz, or clear both offsets."""
     icom = _icom_supported(radio)
     yaesu = _yaesu_clarifier(radio)
@@ -1178,8 +1190,12 @@ def _current_frequency(root: Path, radio: RadioConnection) -> str | None:
         match = re.search(rf"{prefix}(\d{{5,11}});", response)
         return _frequency_mhz(match.group(1)) if match else None
     if radio.protocol == "CAT" and radio.manufacturer_key == "kenwood":
-        response = _cat_exchange(radio, "FA;")
-        match = re.search(r"FA(\d{11});", response)
+        side = ts480_control.vfo(sys.modules[__name__], radio) if radio.model_id == "020" else '0'
+        if side is None:
+            return None
+        prefix = 'FB' if side == '1' else 'FA'
+        response = _cat_exchange(radio, prefix + ';')
+        match = re.search(rf"{prefix}(\d{{11}});", response)
         return _frequency_mhz(match.group(1)) if match else None
     return None
 
@@ -1309,6 +1325,8 @@ def _band_change(root: Path, radio: RadioConnection, language: str, direction: i
         DEBUG_LOG.warning("Icom band change failed (frequency query, boundary, or missing CI-V ACK)")
         return _read_label(root, language, "l061", "Could not change the band.")
     if radio.protocol == "CAT" and radio.manufacturer_key == "kenwood":
+        if radio.model_id == "020" and ts480_control.variant(sys.modules[__name__], radio) is None:
+            return _read_label(root, language, "l129", "Not supported")
         command_path = _radio_command_file(root, radio, "set", "b")
         current_frequency = _current_frequency(root, radio)
         if command_path is None or current_frequency is None:
@@ -1429,7 +1447,7 @@ def _set_frequency(
     if radio.protocol == "CAT" and radio.manufacturer_key == "yaesu":
         minimum_hz = 30_000
         maximum_hz = 75_000_000 if radio.model_id == "0761" else 470_000_000 if radio.model_id == "0840" else 0
-    elif radio.protocol == "CAT" and radio.manufacturer_key == "kenwood" and radio.model_id == "023":
+    elif radio.protocol == "CAT" and radio.manufacturer_key == "kenwood" and radio.model_id in {"023", "020"}:
         minimum_hz, maximum_hz = 30_000, 60_000_000
     elif _icom_supported(radio):
         profile = _icom_profile(radio)
@@ -1476,6 +1494,11 @@ def _set_frequency(
         except OSError:
             return _read_label(root, language, "l053", "Could not read the radio command file.")
         if radio.manufacturer_key == "kenwood":
+            if radio.model_id == "020":
+                side = ts480_control.vfo(sys.modules[__name__], radio)
+                if side is None:
+                    return _read_label(root, language, "l066", "")
+                template = re.sub(r'^FA', 'FB' if side == '1' else 'FA', template)
             digits = f"{hz:011d}"
             cat_command = re.sub(r"\?{11}", digits, template, count=1)
         else:
@@ -1583,6 +1606,12 @@ def _radio_status(root: Path, radio: RadioConnection, language: str) -> str:
             root, language, "l050", "Could not read frequency and mode from the radio."
         )
     if radio.manufacturer_key == "kenwood":
+        if radio.model_id == "020":
+            frequency = _current_frequency(root, radio)
+            mode = _current_mode(radio)
+            match = re.search(r'SM0(\d{4});', _cat_exchange(radio, 'SM0;'))
+            signal = f'S {int(match.group(1))}' if match else 'S ?'
+            return f'{signal} {frequency} {mode}' if frequency and mode else _read_label(root, language, 'l050', '')
         command_path = _radio_command_file(root, radio, "read", "w")
         if command_path is None:
             return _read_label(root, language, "l050", "Could not read frequency and mode from the radio.")
@@ -1758,7 +1787,12 @@ def main(argv: list[str] | None = None) -> int:
         )
         chat_int.show_response(_read_label(root, language, key, fallback))
     watch = ConnectionWatch(radio, lambda: _current_frequency(root, radio), announce_connection)
-    def read_radio_key():
+    def read_radio_key(idle_callback=None):
+        if idle_callback is not None:
+            def idle():
+                watch.tick()
+                idle_callback()
+            return lang_sel.read_key(idle_callback=idle)
         if radio.is_dummy:
             return lang_sel.read_key()
         return lang_sel.read_key(idle_callback=watch.tick)
@@ -1854,6 +1888,7 @@ def main(argv: list[str] | None = None) -> int:
                         chat_int.show_response(help_int.get_help(root, language, "h003"))
                         continue
                     if mode_key == "q":
+                        chat_int.show_back(root, language)
                         chat_int.show_request(call, mode_key)
                         break
                     DEBUG_LOG.debug(
@@ -1887,12 +1922,18 @@ def main(argv: list[str] | None = None) -> int:
                         chat_int.show_request(call, band_key)
                         chat_int.show_response(help_int.get_help(root, language, "h002"))
                     elif band_key == "q":
+                        chat_int.show_back(root, language)
                         chat_int.show_request(call, band_key)
                         break
                     else:
                         DEBUG_LOG.debug("Leaving band adjustment and queueing command key=%r", band_key)
                         pending_key = band_key
                         break
+                response = None
+            elif key == "f":
+                pending_key = filter_control.control(
+                    sys.modules[__name__], root, radio, language,
+                    call, read_radio_key, watch)
                 response = None
             elif key in {"a", "r"}:
                 pending_key = gain_control.control(
@@ -1966,6 +2007,19 @@ def main(argv: list[str] | None = None) -> int:
                         chat_int.show_response(response)
                         response = None
                         continue
+                    if settings_key == "e":
+                        speech_processor.control(sys.modules[__name__], root, radio, language, read_radio_key, watch)
+                        continue
+                    if settings_key == "a":
+                        chat_int.show_response(agc_control.cycle(sys.modules[__name__], root, radio, language))
+                        continue
+                    if settings_key == "h":
+                        from modules import help_int
+                        chat_int.show_response(help_int.get_help(root, language, "h009"))
+                        continue
+                    if settings_key == "m":
+                        mic_gain.control(sys.modules[__name__], root, radio, language, read_radio_key, watch)
+                        continue
                     if settings_key == "p":
                         chat_int.show_request(call, settings_key)
                         power_control.edit(sys.modules[__name__], root, radio, language)
@@ -1977,6 +2031,10 @@ def main(argv: list[str] | None = None) -> int:
                         continue
                     if settings_key == "v":
                         global _yaesu_vfo_side
+                        if radio.protocol == "CAT" and radio.model_id == "020":
+                            chat_int.show_response(ts480_control.select_vfo(
+                                sys.modules[__name__], root, radio, language))
+                            continue
                         if _icom_supported(radio):
                             chat_int.show_request(call, settings_key)
                             chat_int.show_response(_icom_select_vfo(root, radio, language))
@@ -1998,6 +2056,7 @@ def main(argv: list[str] | None = None) -> int:
                         response = None
                         continue
                     if settings_key == "q":
+                        chat_int.show_back(root, language)
                         chat_int.show_request(call, settings_key)
                         response = None
                         break
@@ -2061,6 +2120,7 @@ def main(argv: list[str] | None = None) -> int:
                         chat_int.show_response(offset_response)
                         continue
                     if offset_key == "q":
+                        chat_int.show_back(root, language)
                         chat_int.show_request(call, offset_key)
                         break
                     DEBUG_LOG.debug(

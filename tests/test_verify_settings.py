@@ -164,8 +164,15 @@ class VerifySettingsTests(unittest.TestCase):
                 self.assertEqual(fields(english), fields(text))
         for path in (ROOT/'rad_cmds').rglob('settings.json'):
             config = json.loads(path.read_text())
-            self.assertIn('preamp', config)
-            self.assertIn('attenuator', config)
+            # A model may support filters without exposing gain/tuner settings
+            # (notably CAT ID020, shared by the TS-480 and QMX).
+            self.assertTrue(config)
+            self.assertTrue(set(config) <= {'preamp', 'attenuator', 'power', 'tuner',
+                                           'af_gain', 'rf_gain', 'squelch', 'bandwidth',
+                                           'noise_blanker', 'noise_reduction', 'notch', 'contour'})
+            if path.parent.name != '020':
+                self.assertIn('preamp', config)
+                self.assertIn('attenuator', config)
 
 
 if __name__ == '__main__':

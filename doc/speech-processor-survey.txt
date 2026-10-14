@@ -1,0 +1,91 @@
+Speech processor documentation survey - 14 October 2026
+
+This is an implementation survey, not a replacement for each radio user guide.
+No speech-processor code has been added by this survey.
+
+PROPOSED COMMON INTERFACE
+s e reads the processor state and level(s) without changing them.
+e toggles On/Off; full stop/comma adjust the selected level while On.
+Kenwood needs explicit Input and Output selections (suggest i and o).
+q retains changes; n cancels and restores the saved native state and level(s),
+with readback verification. If no edits occurred, n must send no setters.
+PTT and all non-processor settings remain under user control.
+
+YAESU FTDX10, FT-710, FTX-1
+PR0 reads processor status (1 Off, 2 On); PL reads the single strength setting.
+PR1 concerns the microphone equalizer and must not be changed.
+PL uses a 0/1-100 model-specific range. FT-710 documents setters 001-100 but
+readback 000 for Off; FTX-1 explicitly documents 000 as Off. These differences
+need adapter-specific handling and physical confirmation of PL/PR interaction.
+Off readback may not expose a retained underlying level. Do not promise exact
+undo of hidden state until hardware behaviour is established. If the entry
+snapshot is incomplete, prevent changes that cannot be reliably undone.
+Speech processing is for LSB/USB; AMC is separate and is not part of this control.
+COMP is read with RM3 and is a raw 0-255 meter, not the strength setting.
+Do not reuse a suggested AMC 10dB ceiling as an automatically established
+processor target. Follow the model's processor procedure.
+
+ICOM IC-705, IC-7300, IC-7300MK2, IC-7600, IC-9700
+16 44 reads/writes compressor On/Off; 14 0E reads/writes COMP strength.
+Strength is the radio's 0-10 control, carried as BCD 0-255. Preserve the exact
+native entry value for cancellation rather than a rounded display value.
+The voice compressor procedure is SSB. Published operating guidance is
+approximately 10-20dB on the COMP meter, following basic mic-gain adjustment.
+15 14 reads the COMP meter. Published calibration points are model-specific:
+IC-705 documents raw 130=15dB and 210=25.5dB; IC-7300MK2 documents 130=15dB
+and 210=30dB. Do not assume one interpolation for every Icom.
+Snapshot status and native strength, restore strength and status, then read both.
+Actual radio acknowledgement/readback and firmware behaviour still need tests.
+
+KENWOOD TS-590SG, TS-480HX/SAT AND IDENTIFIED REGIONAL VARIANTS
+PR reads/writes On/Off. PL contains two separate 0-100 values: Input and Output.
+A PL write sends both values, so read live values and preserve the unselected
+one on every adjustment. Cancel restores both values and processor status.
+Do not use microphone-gain MG as though it were processor-output PL.
+Operating guides permit SSB, AM and FM. Input adjustment uses COMP around
+10dB; output adjustment uses ALC within its marked limit. These are two tasks.
+RM provides raw meter dots (TS-590SG 0-30, TS-480 0-10); these are not dB.
+TS-480 requires TY identification; CAT ID020 alone is insufficient.
+
+QRP LABS QMX AND QMX PLUS
+Partial YAC profiles exist, but the proposed processor adapter is not established.
+Their firmware has compression/CESSB/audio processing, with different controls.
+Do not send TS-480 PR/PL commands merely because ID020 is shared.
+Keep s e unsupported until firmware-specific read/write and undo are verified.
+
+UNDO AND SESSION RULES
+A verified entry snapshot is required before changing anything. Record radio,
+receiver/VFO and mode context. Do not restore into a different context or claim
+successful cancellation after a connection loss/readback failure. Report failure
+and retain recovery information. Require PTT released before writes or restoration.
+Cancel touches only settings this module manages; it cannot undo unrelated
+changes the user makes on the radio. Unknown reads never justify guessed setters.
+
+REFERENCES
+Yaesu FTDX10 CAT: local manufacturer reference FTDX10_CAT_OM_ENG_2308-F.pdf.
+FT-710 CAT:
+https://www.yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/FT-710_CAT_OM_ENG_2306-C.pdf
+FTX-1 operating guide, Speech Processor, page 39:
+https://www.yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/FTX-1_OM_ENG_EH084M201_2506E-DS.pdf
+Icom IC-705 operating guide:
+https://www.icomfrance.com/uploads/files/produit/not-IC-705_ENG_Basic_3-en.pdf
+Icom IC-7300 operating guide:
+https://www.icomfrance.com/uploads/files/produit/not-IC-7300_ENG_FM_12-en.pdf
+Icom IC-7300MK2 operating guide:
+https://www.icomeurope.com/wp-content/uploads/2026/02/IC-7300MK2_ENG_IM_Basic_1.pdf
+Icom IC-9700 operating guide:
+https://www.icomeurope.com/wp-content/uploads/2019/07/IC-9700_ENG_Basic_0a.pdf
+Icom IC-9700 CI-V:
+https://www.icomfrance.com/uploads/files/produit/not-IC-9700_ENG_CI-V_3a-en.pdf
+Icom IC-7600 operating guide and CI-V:
+https://www.icomeurope.com/wp-content/uploads/2020/11/IC-7600_IM_D_upgrade_20151103.pdf
+Kenwood TS-590SG operating guide:
+https://www.kenwood.com/usa/Support/pdf/B5A-0180-00.pdf
+Kenwood TS-590SG CAT:
+https://www.kenwood.com/i/products/info/amateur/pdf/ts590_g_pc_command_e_rev2.pdf
+Kenwood TS-480 operating guide:
+https://kasc.kenwood.com/files/images/products/product_id_258/file_category_10/TS-480HX-TS-480SAT_Instruction_Manual.pdf
+Kenwood TS-480 CAT:
+https://www.kenwood.com/i/products/info/amateur/ts_480/pdf/ts_480_pc.pdf
+QRP Labs firmware/audio processing:
+https://www.qrp-labs.com/qmxp/ssbbeta

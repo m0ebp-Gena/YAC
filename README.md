@@ -6,7 +6,10 @@ speech and braille output. The current version is **001 beta**.
 
 Controls include reading signal strength, frequency and mode; tuning; band and
 mode selection; AF Gain, RF Gain/squelch; preamp and attenuator selection;
-editable output power; supported tuner settings; and receive/transmit offsets.
+editable output power; guided mic gain with sampled peak ALC; model-specific AGC preset selection; supported tuner settings; receive/transmit offsets;
+receive bandwidth with separate low/upper cut controls, and Noise Blanker
+and Noise Reduction toggle/adjustment controls; Auto/Manual Notch with width
+selection, and TS-480 Beat Cancel where supported.
 English, German, Spanish
 and Polish labels and help are included. Press `h` for help and `q` to quit
 from the top level.
@@ -15,6 +18,10 @@ The Windows demo has been tested during development with the Icom IC-705,
 Yaesu FTX-1 and Yaesu FTDX10. Other radio definitions are present in the source;
 their presence does not establish hardware compatibility. Linux and macOS
 radio discovery, keyboard input and screen reader access need practical testing.
+
+Kenwood TS-480 support is now implemented from the manufacturer's command
+reference, with automated checks; physical-radio validation is pending.
+See [TS-480 coverage and QMX ID handling](doc/ts-480-support.md).
 
 ## Run from source on Windows
 
@@ -55,8 +62,9 @@ From the downloaded or cloned repository, run:
 sh install-yac.sh
 ```
 
-The installer asks before creating `~/yac`, creates a private Python
-environment and installs pyserial. See [Linux and macOS setup](doc/linux-macos-setup.txt)
+The installer asks before creating or updating `~/yac`, preserves existing
+settings and logs, and reuses its private Python environment and compatible
+pyserial. Only new or changed program/data files are copied. See [Linux and macOS setup](doc/linux-macos-setup.txt)
 for requirements, launch commands and radio access details.
 
 For braille and console speech, see [BRLTTY display commands](BRAILLE-FS-START-HERE.txt)

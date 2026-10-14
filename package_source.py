@@ -19,6 +19,9 @@ files = [root / name for name in (
     "doc/linux-macos-setup.txt", "doc/debian-trixie-setup.txt",
     "BRAILLE-FS-START-HERE.txt", "doc/ic-7600-support.md", "doc/ic-9700-support.md",
     "doc/pi-brltty-speech.txt",
+    "doc/filter-controls.md",
+    "doc/ts-480-support.md",
+    "doc/mic-gain.md", "doc/speech-processor.txt", "doc/settings-controls.md",
 )]
 for directory in [root / "modules", root / "rad_cmds", root / "doc/supported-radios", *(root / "lang" / language for language in ("en", "de", "pl", "es"))]:
     files.extend(path for path in directory.rglob("*") if path.is_file() and "__pycache__" not in path.parts and path.suffix != ".pyc")

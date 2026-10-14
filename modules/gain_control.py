@@ -5,9 +5,11 @@ from modules import chat_int, help_int, verify_settings as settings
 
 
 def adjust(yac, root, radio, language, key, direction=0):
-    features = settings.catalog(root, radio)
+    features = settings.catalog(root, radio, yac)
     name = 'af_gain'
     if key == 'r':
+        if 'rf_gain' not in features:
+            return settings._label(yac, root, language, 'l129')
         mode = yac._current_mode_code(radio)
         if mode is None:
             return settings._label(yac, root, language, 'l143')
@@ -57,6 +59,7 @@ def control(yac, root, radio, language, key, call, read_key, watch):
             chat_int.show_request(call, pressed)
             chat_int.show_response(help_int.get_help(root, language, 'h005'))
         elif pressed == 'q':
+            chat_int.show_back(root, language)
             chat_int.show_request(call, pressed)
             return None
         else:

@@ -1,4 +1,4 @@
-"""Output-power edit validation, native frames and silent keyboard success."""
+"""Output-power edit validation, native frames and confirmed keyboard success."""
 import io
 import unittest
 from pathlib import Path
@@ -49,7 +49,7 @@ class PowerTests(unittest.TestCase):
         serial.reject_setting=True
         self.assertEqual(power.set_value(yac,radio,spec,'50'),'l131')
 
-    def test_settings_power_stays_in_settings_and_success_is_silent(self):
+    def test_settings_power_stays_in_settings_and_confirms_success(self):
         radio=create_dummy_radio()
         keys=iter(['s','p','q','v','q'])
         output=io.StringIO()
@@ -58,6 +58,9 @@ class PowerTests(unittest.TestCase):
         self.assertEqual(radio.serial.preamp,'0')
         self.assertEqual(radio.serial.power,'033')
         self.assertEqual(output.getvalue().count('power 33 watts'),1)
+        self.assertIn('33W Set',output.getvalue())
+        self.assertEqual(output.getvalue().count('Back'),1)
+        self.assertIn('Bye test',output.getvalue())
 
     def test_705_battery_is_a_limit_not_a_rescaled_percentage(self):
         serial=SettingsSerial(0xA4)

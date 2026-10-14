@@ -129,5 +129,332 @@
     "read": "SQ{side};",
     "set": "SQ{side}{value};",
     "pattern": "SQ{side}(\\d{3});"
+  },
+  "bandwidth": {
+    "kind": "yaesu",
+    "modes": {
+      "1": "profile1",
+      "2": "profile1",
+      "3": "profile2",
+      "7": "profile2",
+      "6": "profile2",
+      "9": "profile2",
+      "8": "profile2",
+      "C": "profile2",
+      "E": "profile2",
+      "D": "profile3",
+      "5": "profile4",
+      "B": "profile4",
+      "F": "profile4",
+      "4": "profile5",
+      "A": "profile5"
+    },
+    "profiles": {
+      "profile1": {
+        "protocol": "cat",
+        "read": "SH{side};",
+        "pattern": "SH{side}0(\\d{2});",
+        "set": "SH{side}0{value};",
+        "default": "00",
+        "values": {
+          "01": 300,
+          "02": 400,
+          "03": 600,
+          "04": 850,
+          "05": 1100,
+          "06": 1200,
+          "07": 1500,
+          "08": 1650,
+          "09": 1800,
+          "10": 1950,
+          "11": 2100,
+          "12": 2250,
+          "13": 2400,
+          "14": 2450,
+          "15": 2500,
+          "16": 2600,
+          "17": 2700,
+          "18": 2800,
+          "19": 2900,
+          "20": 3000,
+          "21": 3200,
+          "22": 3500,
+          "23": 4000
+        }
+      },
+      "profile2": {
+        "protocol": "cat",
+        "read": "SH{side};",
+        "pattern": "SH{side}0(\\d{2});",
+        "set": "SH{side}0{value};",
+        "default": "00",
+        "values": {
+          "01": 50,
+          "02": 100,
+          "03": 150,
+          "04": 200,
+          "05": 250,
+          "06": 300,
+          "07": 350,
+          "08": 400,
+          "09": 450,
+          "10": 500,
+          "11": 600,
+          "12": 800,
+          "13": 1200,
+          "14": 1400,
+          "15": 1700,
+          "16": 2000,
+          "17": 2400,
+          "18": 3000,
+          "19": 3200,
+          "20": 3500,
+          "21": 4000
+        }
+      },
+      "profile3": {
+        "protocol": "cat",
+        "read": "SH{side};",
+        "pattern": "SH{side}0(\\d{2});",
+        "set": "SH{side}0{value};",
+        "default": "00",
+        "values": {
+          "01": 6000
+        }
+      },
+      "profile4": {
+        "protocol": "cat",
+        "read": "SH{side};",
+        "pattern": "SH{side}0(\\d{2});",
+        "set": "SH{side}0{value};",
+        "default": "00",
+        "values": {
+          "02": 9000
+        }
+      },
+      "profile5": {
+        "protocol": "cat",
+        "read": "SH{side};",
+        "pattern": "SH{side}0(\\d{2});",
+        "set": "SH{side}0{value};",
+        "default": "00",
+        "values": {
+          "03": 16000
+        }
+      }
+    }
+  },
+  "noise_blanker": {
+    "modes": [
+      "1",
+      "2",
+      "3",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "C",
+      "D",
+      "E"
+    ],
+    "state": {
+      "protocol": "cat",
+      "read": "NL{side};",
+      "pattern": "NL{side}(\\d{3});",
+      "set": "NL{side}{value};",
+      "minimum": 0,
+      "maximum": 10,
+      "step": 1,
+      "off": "000",
+      "on_values": [
+        "001",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "007",
+        "008",
+        "009",
+        "010"
+      ]
+    },
+    "level": {
+      "protocol": "cat",
+      "read": "NL{side};",
+      "pattern": "NL{side}(\\d{3});",
+      "set": "NL{side}{value};",
+      "minimum": 1,
+      "maximum": 10,
+      "step": 1
+    },
+    "combined": true
+  },
+  "noise_reduction": {
+    "modes": [
+      "1",
+      "2",
+      "3",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "C",
+      "D",
+      "E"
+    ],
+    "state": {
+      "protocol": "cat",
+      "read": "RL{side};",
+      "pattern": "RL{side}(\\d{2});",
+      "set": "RL{side}{value};",
+      "minimum": 0,
+      "maximum": 10,
+      "step": 1,
+      "digits": 2,
+      "off": "00",
+      "on_values": [
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "10"
+      ]
+    },
+    "level": {
+      "protocol": "cat",
+      "read": "RL{side};",
+      "pattern": "RL{side}(\\d{2});",
+      "set": "RL{side}{value};",
+      "minimum": 1,
+      "maximum": 10,
+      "step": 1,
+      "digits": 2
+    },
+    "combined": true
+  },
+  "notch": {
+    "a": {
+      "modes": [
+        "1",
+        "2",
+        "5",
+        "D"
+      ],
+      "state": {
+        "protocol": "cat",
+        "read": "BC{side};",
+        "pattern": "BC{side}([01]);",
+        "set": "BC{side}{value};",
+        "off": "0",
+        "on_values": [
+          "1"
+        ]
+      }
+    },
+    "n": {
+      "modes": [
+        "1",
+        "2",
+        "3",
+        "6",
+        "7",
+        "8",
+        "9",
+        "C",
+        "E"
+      ],
+      "state": {
+        "protocol": "cat",
+        "read": "BP{side}0;",
+        "pattern": "BP{side}0(00[01]);",
+        "set": "BP{side}0{value};",
+        "off": "000",
+        "on_values": [
+          "001"
+        ]
+      },
+      "position": {
+        "protocol": "cat",
+        "read": "BP{side}1;",
+        "pattern": "BP{side}1(\\d{3});",
+        "set": "BP{side}1{value};",
+        "minimum": 1,
+        "maximum": 320,
+        "step": 1,
+        "digits": 3,
+        "hertz_multiplier": 10
+      },
+      "width": {
+        "protocol": "cat",
+        "read": "EX030301;",
+        "pattern": "EX030301([01]);",
+        "set": "EX030301{value};",
+        "choices": [
+          "0",
+          "1"
+        ],
+        "labels": {
+          "0": "l177",
+          "1": "l178"
+        }
+      }
+    }
+  },
+  "contour": {
+    "modes": [
+      "1",
+      "2",
+      "5",
+      "6",
+      "8",
+      "9",
+      "C",
+      "D",
+      "E"
+    ],
+    "state": {
+      "protocol": "cat",
+      "read": "CO{side}0;",
+      "pattern": "CO{side}0(000[01]);",
+      "set": "CO{side}0{value};"
+    },
+    "frequency": {
+      "protocol": "cat",
+      "read": "CO{side}1;",
+      "pattern": "CO{side}1(\\d{4});",
+      "set": "CO{side}1{value};",
+      "minimum": 10,
+      "maximum": 3200,
+      "step": 10,
+      "digits": 4
+    },
+    "level": {
+      "protocol": "cat",
+      "read": "EX030305;",
+      "pattern": "EX030305([+-]\\d{2});",
+      "set": "EX030305{value};",
+      "minimum": -40,
+      "maximum": 20,
+      "step": 1,
+      "digits": 3
+    },
+    "width": {
+      "protocol": "cat",
+      "read": "EX030306;",
+      "pattern": "EX030306(\\d{2});",
+      "set": "EX030306{value};",
+      "minimum": 1,
+      "maximum": 11,
+      "step": 1,
+      "digits": 2
+    }
   }
 }

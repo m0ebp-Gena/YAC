@@ -7,9 +7,23 @@ import json
 import re
 
 
-def catalog(root, radio):
+def catalog(root, radio, yac=None):
     path = root / radio.radio_id_path / 'settings.json'
-    return json.loads(path.read_text(encoding='utf-8')) if path.exists() else {}
+    data = json.loads(path.read_text(encoding='utf-8')) if path.exists() else {}
+    if radio.protocol == 'CAT' and radio.model_id == '020' and yac is not None:
+        from modules import ts480_control
+        variant = ts480_control.variant(yac, radio)
+        if variant is not None:
+            extra = path.with_name('ts480-settings.json')
+            data.update(json.loads(extra.read_text(encoding='utf-8')))
+            maximum = ts480_control.profile(yac, radio)['maximum_watts'][variant]
+            data['power']['maximum'] = maximum
+            data['power']['mode_fraction'] = {'5': 0.25}
+            if variant == '0':
+                data['power']['band_maximum'] = [{'minimum_mhz': 50, 'watts': 100}]
+            if variant != '1':
+                data.pop('tuner', None)
+    return data
 
 
 def _command(spec, name, band):
@@ -103,13 +117,13 @@ def describe(yac, root, radio, language, name, spec):
 
 
 def verify(yac, root, radio, language):
-    features = catalog(root, radio)
+    features = catalog(root, radio, yac)
     return ', '.join(describe(yac, root, radio, language, name, features[name])
                      for name in ('attenuator', 'preamp', 'power', 'tuner') if name in features) or _label(yac, root, language, 'l129')
 
 
 def cycle(yac, root, radio, language, name):
-    spec = catalog(root, radio).get(name)
+    spec = catalog(root, radio, yac).get(name)
     if spec is None:
         return _label(yac, root, language, 'l129')
     selected_band = band(yac, radio) if spec.get('band_states') else 0

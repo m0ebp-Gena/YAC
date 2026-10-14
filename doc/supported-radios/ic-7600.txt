@@ -62,3 +62,13 @@ https://www.icomeurope.com/wp-content/uploads/2020/11/IC-7600_IM_D_upgrade_20151
 
 CI-V reference:
 CI-V command table is included in the operating manual.
+
+AGC - RECEIVER GAIN RECOVERY
+YAC s a cycles Fast, Mid, Slow presets. In fixed FM/WFM/DV/DD modes it reports Fast fixed and sends no AGC change. Existing custom preset time constants, including Off, are not edited. These are preset names, not measured recovery times.
+Fast recovers sooner after a strong signal; Slow holds gain reduction longer.
+Choose by listening and consult the manufacturer user guide. Off disables
+automatic gain regulation, so received audio may vary more widely. No
+transmission is required. Physical-radio validation remains pending.
+
+SPEECH PROCESSOR - DEVELOPMENT BETA
+Speech Processor s e opens by reading current settings. e toggles; navigation adjusts strength while On. n cancels and verifies restoration of original processor settings; q keeps changes. No power, frequency, mode, mic gain, equalizer or AMC changes are made. PTT remains manual. h gives complete model-family guidance. Meter readings are sampled raw units; physical tests/calibration remain pending.

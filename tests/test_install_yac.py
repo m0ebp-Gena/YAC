@@ -55,6 +55,42 @@ class Installer(unittest.TestCase):
         self.assertEqual((destination / "yac.ini").read_text(), "keep")
         commands.assert_not_called()
 
+    def test_update_preserves_settings_logs_and_environment_without_pip(self):
+        destination = self.home / "yac"
+        destination.mkdir()
+        (destination / "yac.py").write_text("# old source\n")
+        (destination / "yac.ini").write_text("lang=en\ncall=Gena\n")
+        (destination / "logs").mkdir()
+        (destination / "logs/test.log").write_text("keep log")
+        python = destination / ".venv/bin/python"
+        python.parent.mkdir(parents=True)
+        python.write_text("existing environment")
+        result, commands, _, output = self.run_setup(
+            [True], [subprocess.CompletedProcess([], 0), None])
+        self.assertEqual(result, 0)
+        self.assertEqual((destination / "yac.py").read_bytes(), (self.source / "yac.py").read_bytes())
+        self.assertEqual((destination / "yac.ini").read_text(), "lang=en\ncall=Gena\n")
+        self.assertEqual((destination / "logs/test.log").read_text(), "keep log")
+        self.assertEqual(python.read_text(), "existing environment")
+        self.assertEqual(commands.call_count, 2)
+        self.assertIn("skipping pip", output)
+        before = (destination / "yac.py").stat().st_mtime_ns
+        self.run_setup([True], [subprocess.CompletedProcess([], 0), None])
+        self.assertEqual((destination / "yac.py").stat().st_mtime_ns, before)
+
+    def test_update_installs_missing_dependency(self):
+        destination = self.home / "yac"
+        destination.mkdir()
+        (destination / "yac.py").write_text("# old\n")
+        python = destination / ".venv/bin/python"
+        python.parent.mkdir(parents=True)
+        python.write_text("existing environment")
+        result, commands, _, _ = self.run_setup(
+            [True], [subprocess.CompletedProcess([], 1), None, None])
+        self.assertEqual(result, 0)
+        self.assertEqual(commands.call_args_list[1].args[0],
+                         [str(python), "-m", "pip", "install", "pyserial>=3.5,<4"])
+
     def test_install_copies_data_and_uses_only_private_pip(self):
         result, commands, shortcut, output = self.run_setup([True])
         destination = self.home / "yac"

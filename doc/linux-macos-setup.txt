@@ -33,11 +33,16 @@ your package manager's installation instructions and exits. On macOS,
 Python is also available from https://www.python.org/downloads/macos/.
 The script does not install or replace system Python.
 
-It asks before creating ~/yac. Agreeing creates that folder, copies only
-YAC's source and data, and creates a private environment in ~/yac/.venv.
-It installs pyserial there using pip, which requires internet access. It
-does not copy the developer's settings or logs and does not start YAC or
-open any serial ports. An existing ~/yac is left unchanged.
+It asks before creating or updating ~/yac. It copies new or changed YAC
+source and data files, leaving identical files untouched. Updates preserve
+your yac.ini (including language and name), logs, other personal files and
+the private environment in ~/yac/.venv. It creates that environment if missing.
+On updates, compatible pyserial is reused without running pip; otherwise pip
+installs it and requires internet access. Setup does not start YAC or open
+serial ports. An existing yac command is left unchanged.
+
+For first-run language/name testing, back up yac.ini and clear only its lang
+and call values while YAC is closed. You do not need to delete ~/yac or .venv.
 
 Some Linux distributions provide venv/pip support in a separate package.
 On Debian, Ubuntu and Raspberry Pi OS this is usually python3-venv.

@@ -383,6 +383,8 @@ def _cat_model_name(model_id: str, port_info: Any) -> str:
     text = _port_text(port_info)
     if model_id == "020":
         if "qmx" in text or "qrp labs" in text:
+            if any(name in text for name in ('qmx+', 'qmx plus', 'qmxplus')):
+                return "QRP Labs QMX Plus (Kenwood-compatible CAT ID 020)"
             return "QRP Labs QMX (Kenwood-compatible CAT ID 020)"
         return "CAT radio ID 020 (Kenwood TS-480/QMX-compatible ID)"
     if model_id in CAT_MODELS:

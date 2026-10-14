@@ -1,0 +1,26 @@
+{
+  "type_read": "TY;",
+  "type_pattern": "TY\\d{2}([0-3]);",
+  "names": {
+    "0": "Kenwood TS-480HX",
+    "1": "Kenwood TS-480SAT",
+    "2": "Kenwood TS-480 (50 W)",
+    "3": "Kenwood TS-480 (20 W)"
+  },
+  "maximum_watts": {
+    "0": 200,
+    "1": 100,
+    "2": 50,
+    "3": 20
+  },
+  "vfo_read": "FR;",
+  "vfo_pattern": "FR([01]);",
+  "vfo_set": "FR{value};",
+  "offset_read": "IF;",
+  "offset_pattern": "IF\\d{11} {5}([+-]\\d{4})([01])([01])0\\d{2}[01][12345679][012]([0-9])[01][012]\\d{2} ;",
+  "offset_clear": "RC;",
+  "offset_up": "RU{value:05d};",
+  "offset_down": "RD{value:05d};",
+  "receive_set": "RT{value};",
+  "transmit_set": "XT{value};"
+}

@@ -55,3 +55,13 @@ radios require separate work. Do not try to force a TS-480 identification.
 
 MANUFACTURER REFERENCE
 https://www.qrp-labs.com/images/qmx/manuals/operation_1_03_002.pdf
+
+AGC - RECEIVER GAIN RECOVERY
+YAC s a AGC control is not implemented for this profile. Do not use TS-480 commands solely because CAT ID020 is shared.
+Fast recovers sooner after a strong signal; Slow holds gain reduction longer.
+Choose by listening and consult the manufacturer user guide. Off disables
+automatic gain regulation, so received audio may vary more widely. No
+transmission is required. Physical-radio validation remains pending.
+
+SPEECH PROCESSOR - DEVELOPMENT BETA
+Speech Processor s e remains unavailable for this profile; sharing TS-480 CAT ID020 is not sufficient.
