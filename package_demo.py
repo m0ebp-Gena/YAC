@@ -33,8 +33,13 @@ expected_files = {
 }
 if {path.name for path in source.iterdir()} != expected_files | {'_internal', 'lang', 'rad_cmds', 'doc'}:
     raise RuntimeError('Unexpected files in the demo folder; build a clean package before distributing')
-if {path.name for path in (source / 'doc').iterdir()} != {'supported-radios'}:
+release_guides = {'CWKit-LICENSE.txt', 'AUDIO-LICENSES.txt', 'decoder-controls.md', 'split-controls.md',
+                  'antenna-controls.md', 'tuner-controls.md'}
+if {path.name for path in (source / 'doc').iterdir()} != {'supported-radios'} | release_guides:
     raise RuntimeError('Unexpected documentation in the demo folder')
+for name in release_guides:
+    if (source / 'doc' / name).read_bytes() != (root / 'doc' / name).read_bytes():
+        raise RuntimeError('Missing or stale release guide: ' + name)
 for directory in ('lang', 'rad_cmds', 'doc/supported-radios'):
     expected_data = {
         path.relative_to(root / directory)

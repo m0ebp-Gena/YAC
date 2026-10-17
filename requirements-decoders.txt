@@ -1,0 +1,2 @@
+# Optional live audio CW capture; CAT CW and native RTTY need no extra package.
+sounddevice>=0.5,<1

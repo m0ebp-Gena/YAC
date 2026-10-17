@@ -129,6 +129,23 @@ class NoiseReductionTests(unittest.TestCase):
         self.assertIn('Noise Reduction Off',output.getvalue())
         self.assertIn('Noise Reduction Level 6',output.getvalue())
 
+    def test_each_q_keeps_back_visible_until_the_next_key(self):
+        radio = create_dummy_radio()
+        keys = iter(['f', 'r', 'q', 'q', 's', 'q', 'q'])
+        output = io.StringIO()
+        before_keys = []
+        def read_key():
+            before_keys.append(output.getvalue().splitlines()[-1] if output.getvalue() else '')
+            return next(keys)
+        with patch.object(yac, 'connect_radio', return_value=radio), \
+             patch.object(yac, '_read_settings', return_value={'call':'test', 'lang':'en'}), \
+             patch.object(lang_sel, 'read_key', side_effect=read_key), redirect_stdout(output):
+            self.assertEqual(yac.main([]), 0)
+        # Each submenu exit leaves its own Back response under the cursor.
+        for index in (3, 4, 6):
+            self.assertEqual(before_keys[index], 'Back')
+        self.assertEqual(output.getvalue().splitlines().count('Back'), 3)
+
     def test_translated_labels_have_matching_fields(self):
         fields=lambda s:{f for _,f,_,_ in string.Formatter().parse(s) if f}
         for number in range(160,171):

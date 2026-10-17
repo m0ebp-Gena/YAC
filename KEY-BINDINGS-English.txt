@@ -6,19 +6,24 @@ Commands depend on the connected radio's supported features.
 TOP LEVEL
 a          AF Gain
 b          Band selection
+d          Decoders: c CW, r RTTY, h help, q Back; e inside stops/restarts capture
 e          New frequency in MHz; type a value such as 7.103, then Enter
 f          Open Filters
 h          Help
 i          Tone/code input (CTCSS/DCS where supported); h gives help
+l          Split/repeater setup; l again turns it off. h then Enter inside for help
 m          Mode selection
 o          Offset control: Receive, Transmit, Clear
 p          Cycle preamp stages and off
 q          Quit YAC
 r          RF Gain; Squelch in FM
 s          Open Settings
+t          Start tuning with the configured tuner
 u          Cycle attenuator levels and off
 v          Verify attenuator, preamp, power and supported tuner status
-w          Where am I? Signal strength, frequency and mode
+w          Where am I? Signal strength, frequency, mode and active FM tone/code
+x          Antennas: entry reads routing; repeat x cycles main antenna, r receive path, h help, q Back
+Repeat w   Split/repeater receive/transmit frequencies and active FM tone/code; alternates with normal status
 z          Round frequency to the nearest kilohertz
 Full stop  Increase frequency by the configured step
 Comma      Decrease frequency by the configured step
@@ -90,3 +95,7 @@ s then m   Mic Gain: guided preparation, manual PTT, full stop/comma adjust gain
 s then a   Cycle supported AGC choices; repeat a. Readback is verified. s h gives Settings help.
 
 s then e   Speech Processor: read-only entry; e toggles; full stop/comma adjust while On. Kenwood i/o Input/Output. n cancels and restores; q keeps. h gives help.
+
+In FM, w also reads active CTCSS/DCS on radios supported by i: tone/code, TX or Both, and DCS polarity. Off adds nothing. Unreadable signalling reports Tone/code unknown. FTX-1 follows Main/Sub. No settings are changed.
+
+d then a: Receive audio setup. Full stop/comma browse inputs; c channel; v one-second level check; e save; q Back. Decoders: e stop/restart, v latest text, comma/full stop review, n clear; q leaves capture running. Native CW: TS-590SG. Native RTTY: IC-705. Audio CW is experimental; see doc/decoder-controls.md.

@@ -90,3 +90,5 @@ s potem m  Mikrofon: przygotowanie, ręczny PTT, kropka/przecinek regulują; h d
 s potem a  Przełącz obsługiwane opcje AGC; powtarzaj a. Odczyt sprawdzany. s h daje pomoc Ustawień.
 
 s potem e  Procesor: otwiera bez zmian; e przełącza; kropka/przecinek gdy włączony. Kenwood i/o Wejście/Wyjście. n anuluje i przywraca; q zachowuje; h pomaga.
+
+Nowe funkcje: l split/przemiennik; kolejne w pokazuje RX/TX i ton; x anteny (x główna, r odbiorcza, h pomoc, q Wstecz); t strojenie wybranym tunerem. d dekodery: c CW, r RTTY, a audio odbioru, h pomoc, q Wstecz. W dekoderze: e start/stop, v tekst, przecinek/kropka historia, n usuń; q pozostawia odbiór. Audio: kropka/przecinek urządzenia, c kanał, v poziom, e zapisz, q Wstecz. CW z audio jest eksperymentalne; przeczytaj pomoc.

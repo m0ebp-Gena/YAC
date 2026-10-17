@@ -48,3 +48,15 @@ Einstellungen s m öffnet die geführte Mikrofonverstärkung. Nur Punkt/Komma ä
 Einstellungen s a schaltet unterstützte AGC-Stufen weiter; a wiederholen. s h liest Einstellungshilfe. AGC regelt Empfang; kein Senden nötig.
 
 Einstellungen s e öffnet Sprachprozessor ohne Änderung. e schaltet, Punkt/Komma regeln. Kenwood i/o Eingang/Ausgang. n verwirft und stellt Originalwerte wieder her; q behält. h hilft.
+
+In FM liest w auch aktive CTCSS/DCS bei den von i unterstützten Funkgeräten: Ton/Code, TX oder Beide und DCS-Polarität. Aus fügt nichts hinzu. Nicht lesbare Signalisierung wird als unbekannt gemeldet. FTX-1 folgt Main/Sub. Einstellungen bleiben unverändert.
+
+l: Split/Relais einrichten; l erneut schaltet aus. h im Eingabefeld für Hilfe.
+
+Wiederholtes w wechselt zwischen normalem Status und aktuellen Split-/Relaisdetails: Empfangsfrequenz, Sendefrequenz und aktivem FM-Ton/Code. Aus wird angesagt; Lesefehler sind unbekannt. Jeder andere Befehl setzt die Folge zurück.
+
+x: Antennen. Einstieg liest Wege; x Hauptantenne, r Empfangseingang, q Zurück, h Hilfe. Soweit unterstützt.
+
+t: Abstimmung mit dem gewählten Tuner starten. Bei Aus zuerst in Einstellungen einschalten. Das Ende bestätigt keine erfolgreiche Anpassung.
+
+d: Decoder; c CW, r RTTY, h Hilfe, q Zurück. Im Decoder stoppt/startet e; q lässt die Erfassung laufen.

@@ -14,7 +14,7 @@ configured power and tuner status in that order. Example in the demo:
 Each `q` that returns from a submenu displays `Back`, including each level of
 nested filter controls. At the top level, `q` exits with `Bye` and the user name.
 Settings `v` continues to select a VFO. Changing tuner selection does not start
-tuning. This change does not implement the separate top-level Tune command.
+tuning. Top-level `t` starts the configured tuner; see `tuner-controls.md`.
 
 Capabilities and live state
 ---------------------------

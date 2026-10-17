@@ -9,10 +9,23 @@ def main():
     root = Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else Path(__file__).resolve().parent
     yac.project_root = lambda: root
     if "--check-package" in sys.argv:
+        import sounddevice
+        from modules.cw_audio import ToneDecoder
+        from modules.decoder_text import TextBuffer
+        assert sounddevice.get_portaudio_version()[0] > 0
+        decoded = TextBuffer()
+        decoder = ToneDecoder(decoded)
+        decoder.feed([0.0] * 800)
+        assert decoded.snapshot() == ''
+        assert (root / 'doc/CWKit-LICENSE.txt').is_file()
         import serial
         from serial.tools import list_ports
         assert (root / "yac.ini").is_file(), "Missing yac.ini"
         for language in yac.lang_sel.LANGUAGE_CODES:
+            for number in range(247, 295):
+                assert yac._read_label(root, language, f'l{number:03d}', ''), (language, number)
+            for help_tag in ('h011', 'h012', 'h013', 'h014'):
+                assert (root / 'lang' / language / 'help' / help_tag).is_file()
             assert (root / "lang" / language / "labels" / "l000").is_file(), language
             for token in ("l070", "l120", "l140", "l141", "l142", "l143", "l144", "l146",
                           "l065", "l082", "l083", "l147", "l148", "l149", "l150", "l151", "l152",

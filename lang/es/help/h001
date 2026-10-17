@@ -50,3 +50,15 @@ Ajustes s m abre la ganancia de micrófono guiada. Solo punto/coma cambian ganan
 Ajustes s a cambia los presets AGC admitidos; repite a. s h lee ayuda. AGC controla recepción y no requiere transmitir.
 
 Ajustes s e abre Procesador sin cambios. e conmuta, punto/coma ajustan. Kenwood i/o Entrada/Salida. n cancela y restaura originales; q conserva. h ayuda.
+
+En FM, w también lee CTCSS/DCS activos en radios compatibles con i: tono/código, TX o Ambos y polaridad DCS. Si está desactivado no añade nada. Un fallo de lectura indica tono/código desconocido. FTX-1 sigue Main/Sub. No cambia ajustes.
+
+l: Configurar split/repetidor; otra l desactiva. h dentro da ayuda.
+
+Pulsaciones consecutivas de w alternan estado normal y detalles actuales de split/repetidor: frecuencia de recepción, transmisión y tono/código FM activo. Se anuncia desactivado; los fallos de lectura son desconocidos. Otro comando reinicia la secuencia.
+
+x: Antenas. Entrada lee rutas; x antena principal, r entrada RX, q vuelve, h ayuda. Si compatible.
+
+t: Inicia la sintonización con el sintonizador configurado. Si está apagado, actívelo en Ajustes. El fin del ciclo no garantiza una adaptación correcta.
+
+d: Decodificadores; c CW, r RTTY, h ayuda, q Atrás. Dentro, e detiene/reinicia; q mantiene la captura.

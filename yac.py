@@ -17,7 +17,7 @@ from modules.find_rad import RadioConnection, find_radios
 from modules.signal_report import format_s_meter
 from modules.icom_profile import SUPPORTED_MODELS, load_profile
 from modules import verify_settings, gain_control, power_control, filter_control, ts480_control, mic_gain, agc_control
-from modules import speech_processor
+from modules import speech_processor, split_control, antenna_control
 
 
 DEBUG_LOG = logging.getLogger("yac")
@@ -297,6 +297,9 @@ TS590_CTCSS = (
 
 def _cat_exchange(radio: RadioConnection, command: str) -> str:
     """Send a CAT command and return its semicolon-terminated response."""
+    stream = getattr(radio, "_decoder_cat", None)
+    if stream is not None:
+        return stream.exchange(command)
     serial = radio.serial
     DEBUG_LOG.debug("CAT TX port=%s baud=%s command=%r", radio.port, radio.baudrate, command)
     serial.reset_input_buffer()
@@ -1661,8 +1664,14 @@ def _dispatch(
     root: Path, radio: RadioConnection, language: str, command: str,
     argument: str | None, original_frequency: str | None = None,
 ) -> str | None:
+    if command == "t":
+        from modules import tuner_control
+        return tuner_control.tune(sys.modules[__name__], root, radio, language)
     if command == "w":
-        return _radio_status(root, radio, language)
+        from modules import tone_status
+        status = _radio_status(root, radio, language)
+        tone = tone_status.report(sys.modules[__name__], root, radio, language)
+        return f"{status}, {tone}" if tone else status
     if command == "e" and argument is not None:
         return _set_frequency(root, radio, language, argument, original_frequency)
     if command == "h":
@@ -1787,16 +1796,23 @@ def main(argv: list[str] | None = None) -> int:
         )
         chat_int.show_response(_read_label(root, language, key, fallback))
     watch = ConnectionWatch(radio, lambda: _current_frequency(root, radio), announce_connection)
+    from modules.decoder_control import DecoderManager
+    decoders = DecoderManager(sys.modules[__name__], root, radio, language)
     def read_radio_key(idle_callback=None):
         if idle_callback is not None:
             def idle():
+                decoders.tick()
                 watch.tick()
                 idle_callback()
             return lang_sel.read_key(idle_callback=idle)
         if radio.is_dummy:
             return lang_sel.read_key()
-        return lang_sel.read_key(idle_callback=watch.tick)
+        def idle():
+            decoders.tick()
+            watch.tick()
+        return lang_sel.read_key(idle_callback=idle)
     prompt_open = True
+    where_details_next = False
     try:
         while True:
             if pending_key is not None:
@@ -1810,6 +1826,8 @@ def main(argv: list[str] | None = None) -> int:
             if not key:
                 continue
             key = key.casefold()
+            if key != "w":
+                where_details_next = False
             DEBUG_LOG.debug("Top-level key=%r", key)
             chat_int.show_request(call, key, prompt_open=prompt_open)
             prompt_open = False
@@ -1822,7 +1840,11 @@ def main(argv: list[str] | None = None) -> int:
                 else:
                     announce_connection("lost")
                 continue
-            if key == "e":
+            if key == "w":
+                response = (split_control.report(sys.modules[__name__], root, radio, language)
+                            if where_details_next else _dispatch(root, radio, language, key, None))
+                where_details_next = not where_details_next
+            elif key == "e":
                 original_frequency = _current_frequency(root, radio)
                 if original_frequency is None:
                     response = _read_label(
@@ -2064,6 +2086,16 @@ def main(argv: list[str] | None = None) -> int:
                     pending_key = settings_key
                     response = None
                     break
+            elif key == "d":
+                decoders.control(read_radio_key)
+                response = None
+            elif key == "x":
+                pending_key = antenna_control.control(
+                    sys.modules[__name__], root, radio, language, read_radio_key, watch)
+                response = None
+            elif key == "l":
+                split_control.control(sys.modules[__name__], root, radio, language)
+                response = None
             elif key == "i":
                 response = None
                 try:
@@ -2140,6 +2172,7 @@ def main(argv: list[str] | None = None) -> int:
                 response = _dispatch(root, radio, language, key, None)
             chat_int.show_response(response or "")
     finally:
+        decoders.close()
         radio.close()
     return 0
 

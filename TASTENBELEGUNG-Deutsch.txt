@@ -91,3 +91,5 @@ s dann m   Mikrofonverstärkung: Vorbereitung, manuelle PTT, Punkt/Komma einstel
 s dann a   Unterstützte AGC-Stufen durchschalten; a wiederholen. Rücklesen geprüft. s h gibt Einstellungshilfe.
 
 s dann e   Sprachprozessor: nur lesen beim Öffnen; e schaltet; Punkt/Komma bei Ein. Kenwood i/o Eingang/Ausgang. n verwirft und stellt wieder her; q behält; h hilft.
+
+Neue Funktionen: l Split/Relais; wiederholtes w zeigt RX/TX und Ton; x Antennen (x Hauptantenne, r Empfang, h Hilfe, q Zurück); t Abstimmung mit gewähltem Tuner. d Decoder: c CW, r RTTY, a Empfangsaudio einrichten, h Hilfe, q Zurück. Im Decoder e Start/Stopp, v Text, Komma/Punkt Textverlauf, n Löschen; q lässt Empfang laufen. Audioeinrichtung: Punkt/Komma Geräte, c Kanal, v Pegelprüfung, e Speichern, q Zurück. Audio-CW experimentell; Hilfe lesen.

@@ -152,7 +152,6 @@ def control(yac, root, radio, language, call, read_key, watch):
             if not adjusting:
                 return None
             adjusting = None
-            chat_int.show_response(settings._label(yac, root, language, 'l065'))
         elif key == 'h':
             chat_int.show_response(help_int.get_help(root, language, 'h007'))
         elif key == 'v':

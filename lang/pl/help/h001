@@ -48,3 +48,15 @@ Ustawienia s m otwiera regulację mikrofonu. Tylko kropka/przecinek zmieniają w
 Ustawienia s a przełącza obsługiwane presety AGC; powtarzaj a. s h czyta pomoc. AGC steruje odbiorem, bez nadawania.
 
 Ustawienia s e otwiera Procesor bez zmian. e przełącza, kropka/przecinek regulują. Kenwood i/o Wejście/Wyjście. n anuluje i przywraca oryginał; q zachowuje. h pomaga.
+
+W FM w odczytuje też aktywne CTCSS/DCS w radiach obsługiwanych przez i: ton/kod, TX lub Oba i polaryzację DCS. Wyłączone nic nie dodaje. Błąd odczytu zgłasza nieznany ton/kod. FTX-1 używa Main/Sub. Bez zmiany ustawień.
+
+l: Split/przemiennik; kolejne l wyłącza. h w polu daje pomoc.
+
+Kolejne w przełączają zwykły status i bieżące szczegóły split/przemiennika: częstotliwość odbioru, nadawania oraz aktywny ton/kod FM. Wyłączenie jest zgłaszane; błędy odczytu jako nieznane. Inne polecenie resetuje kolejność.
+
+x: Anteny. Wejście odczytuje tory; x antena główna, r wejście odbiorcze, q wraca, h pomoc. Jeśli obsługiwane.
+
+t: Rozpoczyna strojenie wybranym tunerem. Wyłączony tuner należy najpierw włączyć w Ustawieniach. Koniec cyklu nie potwierdza poprawnego dopasowania.
+
+d: Dekodery; c CW, r RTTY, h pomoc, q Wstecz. W dekoderze e zatrzymuje/wznawia; q pozostawia odbiór.

@@ -1,0 +1,9 @@
+Dekodery: c otwiera CW; r otwiera RTTY. Odbiór zaczyna się po wejściu, jeżeli konfiguracja na to pozwala. Działa jeden dekoder naraz.
+W dekoderze: e jawnie zatrzymuje lub ponownie uruchamia odbiór. q mówi Wstecz i pozostawia odbiór włączony. Kolejne q wraca na główny poziom. Zmiana dekodera zatrzymuje poprzedni. Wyjście z YAC zatrzymuje odbiór i przywraca ustawienia radia.
+v odczytuje najnowszy tekst; przecinek wcześniejszy; kropka późniejszy. Fragmenty mają 60 znaków. n usuwa tekst. Nowy tekst pojawia się automatycznie tylko w widoku dekodera; poza nim odbiór trwa po cichu. Mowę i brajl zapewnia dostępność terminala. h to pomoc.
+TS-590SG: najpierw wybierz CW. Szybkość jest śledzona automatycznie. Plus/minus regulują próg 1 do 30. Stan dekodera i Auto Information są przywracane po zatrzymaniu.
+Inne obsługiwane radia: eksperymentalne dekodowanie CW z audio, ze stałą częstotliwością tonu i automatycznym pomiarem czasu. Zainstaluj opcjonalne zależności requirements-decoders.txt. Ustaw jawnie cw_audio_device w yac.ini, dopasuj cw_audio_pitch_hz do tonu i cw_audio_channel do Main/Sub. Nie wybiera domyślnego mikrofonu. Pauzuje po wykryciu nadawania lub nieznanego stanu; odpytywanie nie jest natychmiastowe. Możliwe są błędy odbioru.
+IC-705 RTTY: najpierw wybierz RTTY. Używa jednoznacznie powiązanego portu USB B i przywraca jego funkcję. Odmawia przy DV/Weather oraz SEND/kluczowaniu na B. Przy niejednoznaczności ustaw rtty_port na zweryfikowany port B tego radia. Inne modele RTTY nie są jeszcze obsługiwane.
+Przy błędzie startu sprawdź tryb, audio, porty i CAT. Szczegóły są w dzienniku debugowania. Dekoder nie nadaje i nie zmienia częstotliwości, trybu ani mocy.
+
+d potem a: konfiguracja audio odbioru; h wyjaśnia wybór i poziom.

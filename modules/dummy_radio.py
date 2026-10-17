@@ -8,6 +8,9 @@ class DummySerial:
     def __init__(self):
         self.frequency = 7_159_000
         self.mode = "1"
+        self.split_settings = {'VS': '0', 'ST': '0', 'FT': '0',
+                               'FB': '007159000', 'MD1': '1', 'OS0': '0',
+                               'EX010317': '0100', 'EX010318': '0600'}
         self.bandwidth = "20"
         self.noise_blanker = '0'
         self.nb_level = '005'
@@ -60,7 +63,21 @@ class DummySerial:
                 continue
             reply = "?"
             prefix = next((p for p in self.contour if command.startswith(p)), None)
-            if prefix:
+            if command in {'IF', 'OI'}:
+                other = command == 'OI'
+                frequency = self.split_settings['FB'] if other else f'{self.frequency:09d}'
+                mode = self.split_settings['MD1'] if other else self.mode
+                reply = command + '000' + frequency + '+000000' + mode + '00000'
+            elif command in self.split_settings:
+                reply = command + self.split_settings[command]
+            elif any(command.startswith(key) for key in self.split_settings):
+                key = next(key for key in sorted(self.split_settings, key=len, reverse=True) if command.startswith(key))
+                value = command[len(key):]
+                if key == 'FT':
+                    value = {'2': '0', '3': '1'}.get(value, value)
+                self.split_settings[key] = value
+                reply = command
+            elif prefix:
                 if command != prefix:
                     self.contour[prefix] = command[len(prefix):]
                 reply = prefix + self.contour[prefix]

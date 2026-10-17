@@ -154,6 +154,51 @@ class VerifySettingsTests(unittest.TestCase):
         self.assertNotIn('AC123;', commands)  # Selection never initiates tuning.
         self.assertEqual(state['selection'], '0')  # ATAS stop is not tuner bypass.
 
+    def test_ftx_verify_only_reads_tuner(self):
+        radio = create_dummy_radio()
+        radio.model_id = '0840'
+        replies = {'AC;': 'AC001;', 'EX030104;': 'EX0301041;'}
+        with patch.object(yac, '_current_frequency', return_value='14.2'), \
+             patch.object(yac, '_cat_exchange', side_effect=lambda r,c: replies.get(c, '?;')) as exchange:
+            self.assertIn('tuner internal fast', controls.verify(yac, ROOT, radio, 'en').lower())
+        self.assertEqual([c.args[1] for c in exchange.call_args_list if c.args[1].startswith(('AC', 'EX'))],
+                         ['AC;', 'EX030104;'])
+
+    def test_ftx_failed_selection_or_enable_restores_enabled_tuner(self):
+        for rejected in ('EX0301042;', 'AC101;'):
+            with self.subTest(rejected=rejected):
+                radio = create_dummy_radio()
+                radio.model_id = '0840'
+                state = {'ac': '001', 'selection': '1'}
+                commands = []
+                def exchange(radio, command):
+                    commands.append(command)
+                    if command == 'AC;': return 'AC' + state['ac'] + ';'
+                    if command == 'EX030104;': return 'EX030104' + state['selection'] + ';'
+                    if command == rejected: return '?;'
+                    if command.startswith('EX030104'): state['selection'] = command[-2]
+                    elif command.startswith('AC'): state['ac'] = command[2:-1]
+                    return ''
+                with patch.object(yac, '_cat_exchange', side_effect=exchange):
+                    self.assertEqual(controls.cycle(yac, ROOT, radio, 'en', 'tuner'), 'Setting change failed')
+                self.assertEqual(state, {'ac': '001', 'selection': '1'})
+                self.assertFalse(any(c.startswith('AC') and c.endswith('3;') for c in commands))
+
+    def test_ftx_enabling_already_selected_internal_skips_disable_and_menu_write(self):
+        radio = create_dummy_radio()
+        radio.model_id = '0840'
+        state = {'ac': '000'}
+        commands = []
+        def exchange(radio, command):
+            commands.append(command)
+            if command == 'AC;': return 'AC' + state['ac'] + ';'
+            if command == 'EX030104;': return 'EX0301040;'
+            if command.startswith('AC'): state['ac'] = command[2:-1]
+            return ''
+        with patch.object(yac, '_cat_exchange', side_effect=exchange):
+            self.assertEqual(controls.cycle(yac, ROOT, radio, 'en', 'tuner'), 'tuner internal')
+        self.assertEqual([c for c in commands if c not in ('AC;', 'EX030104;')], ['AC001;'])
+
     def test_all_catalog_labels_exist_and_translate_placeholders(self):
         formatter = string.Formatter()
         for number in range(111, 140):

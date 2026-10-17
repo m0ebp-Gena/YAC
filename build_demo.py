@@ -23,12 +23,17 @@ subprocess.run([sys.executable, "-m", "PyInstaller", "--noconfirm", "--clean",
                 "--onedir", "--console", "--name", "YAC", "--distpath", args.dist_dir,
                 "--workpath", "builds/.work/pyinstaller", "--specpath", "builds/.work/pyinstaller",
                 "--paths", str(root), "--hidden-import", "serial.tools.list_ports_windows",
+                "--exclude-module", "numpy",
                 "demo_launcher.py"], cwd=root, env=env, check=True)
 destination = root / args.dist_dir / "YAC"
 for language in ("en", "de", "pl", "es"):
     shutil.copytree(root / "lang" / language, destination / "lang" / language, dirs_exist_ok=True)
 shutil.copytree(root / "rad_cmds", destination / "rad_cmds", dirs_exist_ok=True)
 shutil.copytree(root / "doc/supported-radios", destination / "doc/supported-radios", dirs_exist_ok=True)
+shutil.copyfile(root / "doc/CWKit-LICENSE.txt", destination / "doc/CWKit-LICENSE.txt")
+shutil.copyfile(root / "doc/decoder-controls.md", destination / "doc/decoder-controls.md")
+for guide in ('split-controls.md', 'antenna-controls.md', 'tuner-controls.md', 'AUDIO-LICENSES.txt'):
+    shutil.copyfile(root / 'doc' / guide, destination / 'doc' / guide)
 (destination / "yac.ini").write_text("[yac]\nplatform=\nlang=\ncall=\ndebug=true\n", encoding="utf-8")
 guides = {
     "KEY-BINDINGS-English.txt": "KEY-BINDINGS-English.txt",

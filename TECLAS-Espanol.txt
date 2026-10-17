@@ -90,3 +90,5 @@ s luego m  Ganancia de micrófono: preparación, PTT manual, punto/coma ajustan;
 s luego a  Cambia opciones AGC admitidas; repite a. Lectura verificada. s h da ayuda de Ajustes.
 
 s luego e  Procesador: abre sin cambios; e conmuta; punto/coma ajustan activo. Kenwood i/o Entrada/Salida. n cancela y restaura; q conserva; h ayuda.
+
+Nuevos controles: l split/repetidor; w repetido muestra RX/TX y tono; x antenas (x principal, r recepción, h ayuda, q Atrás); t sintoniza con el sintonizador elegido. d decodificadores: c CW, r RTTY, a audio de recepción, h ayuda, q Atrás. Dentro: e inicio/parada, v texto, coma/punto historial, n borrar; q mantiene la captura. Audio: punto/coma dispositivos, c canal, v nivel, e guardar, q Atrás. CW por audio es experimental; lea la ayuda.

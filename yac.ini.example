@@ -8,3 +8,20 @@ step_ssb=1000
 step_cw=500
 step_am=2500
 step_fm=12500
+
+# Optional signed FM repeater offsets in hertz. Blank prompts; choose local values.
+repeater_offset_10m_hz=
+repeater_offset_6m_hz=
+repeater_offset_2m_hz=
+repeater_offset_70cm_hz=
+repeater_offset_23cm_hz=
+
+# Optional CW audio decoder. Select a radio input explicitly; no default microphone.
+# Install requirements-decoders.txt first. Numeric device index or unique device name.
+cw_audio_device=
+cw_audio_channel=1
+cw_audio_pitch_hz=600
+cw_audio_threshold=0.01
+cw_audio_wpm=20
+# Optional verified IC-705 companion USB B port, only needed if identification fails.
+rtty_port=

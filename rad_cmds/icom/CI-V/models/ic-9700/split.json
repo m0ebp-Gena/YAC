@@ -1,0 +1,5 @@
+{
+  "protocol": "civ",
+  "maximum_hz": 1300000000,
+  "minimum_hz": 144000000
+}

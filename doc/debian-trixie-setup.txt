@@ -1,13 +1,41 @@
 YAC 001 beta - Debian Trixie quick start
 ======================================
 
-Transfer YAC-source-2026-10-11.zip to your home directory on the mini PC.
-For example, from PowerShell in the folder containing the ZIP:
+Transfer the downloaded YAC source ZIP to your home directory on the
+Raspberry Pi or mini PC. You can use its hostname; you do not need to find
+its IP address if the hostname works on your network.
 
-    scp YAC-source-2026-10-11.zip user@mini-pc:~/
+From Windows:
 
-Replace user and mini-pc with your Debian username and hostname or IP address.
-Log in to the mini PC, then run:
+1. Press Windows+R, type cmd and press Enter.
+2. If the ZIP is in your Downloads folder, type this and press Enter:
+
+    cd /d "%USERPROFILE%\Downloads"
+
+   Otherwise, change to the folder where you saved it.
+3. Type scp followed by a space, then YAC-sou and press Tab. This should
+   complete the filename. If several files match, press Tab again until
+   the correct ZIP is selected. You can also type the full filename.
+4. After the completed filename, press Space and type the destination.
+   For example, if your Pi username is john and its hostname is raspberrypi:
+
+    scp YAC-source-2026-10-11.zip john@raspberrypi:/home/john/
+
+   Replace the ZIP filename with the one you downloaded. Replace john in
+   both places with your own Pi username, and raspberrypi with your Pi's
+   hostname. raspberrypi.local may also work if raspberrypi does not resolve.
+5. Press Enter. On a first connection, check the host fingerprint against
+   the Pi's before accepting it. If asked for your password, enter your Pi
+   account password and press Enter. No characters appear as you type it.
+   Once the transfer completes, the ZIP is in your Pi home folder.
+
+To log in from the same Windows command window, use your username and hostname:
+
+    ssh john@raspberrypi
+
+Enter your Pi password if requested. The commands below now run on the Pi
+or mini PC. Run each separately, using your downloaded ZIP's actual filename
+and extracted folder name in place of the dated examples:
 
     sudo apt update
     sudo apt install python3 python3-venv unzip

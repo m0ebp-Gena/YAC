@@ -99,6 +99,47 @@ def _tuner_state(yac, radio, spec):
     return spec.get('aliases', {}).get(value, value) if value in spec['states'] else None
 
 
+def _select_tuner(yac, radio, spec, current, target):
+    """Change selection with readback; recover the previous idle state on failure."""
+    raw = read(yac, radio, spec)
+    selection = read(yac, radio, spec['selection'])
+    if raw not in spec['states'] or selection not in spec['selection']['states']:
+        return False
+    if spec['states'][raw] == 'l130':
+        return False  # Never restore a tuning-start command.
+
+    def write_checked(setting, value):
+        return _write(yac, radio, setting, value) and read(yac, radio, setting) == value
+
+    def restore():
+        if read(yac, radio, spec['selection']) == selection and read(yac, radio, spec) == raw:
+            return
+        # Stop if selection cannot be restored: enabling another tuner is unsafe.
+        if write_checked(spec['selection'], selection):
+            write_checked(spec, raw)
+
+    off = spec['off'].replace('{selection}', raw[:2])
+    if raw != off and not write_checked(spec, off):
+        restore()
+        return False
+    selected = (spec['off_selection'] if target == 'off' and current == 'atas'
+                else selection if target == 'off'
+                else spec.get('atas_selection') if target == 'atas' else target)
+    if selected != selection and not write_checked(spec['selection'], selected):
+        restore()
+        return False
+    enabled = (spec['off_from_atas'] if target == 'off' and current == 'atas'
+               else off if target == 'off' else spec['enable'][selected])
+    if enabled != off or selected != selection:
+        if not write_checked(spec, enabled):
+            restore()
+            return False
+    if _tuner_state(yac, radio, spec) != target:
+        restore()
+        return False
+    return True
+
+
 def describe(yac, root, radio, language, name, spec):
     selected_band = band(yac, radio) if spec.get('band_states') else 0
     value = (_tuner_state(yac, radio, spec) if name == 'tuner' else
@@ -136,34 +177,8 @@ def cycle(yac, root, radio, language, name):
         return describe(yac, root, radio, language, name, spec)
     target = choices[(choices.index(current) + 1) % len(choices)]
     if name == 'tuner' and spec.get('selection'):
-        # Disable before changing the selected tuner; never request a tune here.
-        raw = read(yac, radio, spec)
-        if raw is None:
-            return _label(yac, root, language, 'l128')
-        off = spec['off'].replace('{selection}', raw[:2])
-        if not _write(yac, radio, spec, off):
+        if not _select_tuner(yac, radio, spec, current, target):
             return _label(yac, root, language, 'l131')
-        if read(yac, radio, spec) != off:
-            return _label(yac, root, language, 'l131')
-        if target == 'off' and current == 'atas':
-            # ATAS has tuning stop, not a bypass flag. Leave ATAS selection
-            # and select a disabled internal tuner to obtain a real off state.
-            selection = spec['off_selection']
-            if (not _write(yac, radio, spec['selection'], selection)
-                    or read(yac, radio, spec['selection']) != selection
-                    or not _write(yac, radio, spec, spec['off_from_atas'])):
-                return _label(yac, root, language, 'l131')
-        if target != 'off':
-            selection = spec.get('atas_selection') if target == 'atas' else target
-            if not _write(yac, radio, spec['selection'], selection):
-                return _label(yac, root, language, 'l131')
-            if read(yac, radio, spec['selection']) != selection:
-                return _label(yac, root, language, 'l131')
-            enabled = spec['enable'][selection]
-            if not _write(yac, radio, spec, enabled):
-                return _label(yac, root, language, 'l131')
-            if read(yac, radio, spec) != enabled:
-                return _label(yac, root, language, 'l131')
     elif not _write(yac, radio, spec, target, selected_band):
         return _label(yac, root, language, 'l131')
     actual = _tuner_state(yac, radio, spec) if name == 'tuner' else read(yac, radio, spec, selected_band)

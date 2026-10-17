@@ -1,0 +1,84 @@
+# Split and repeater control
+
+Implemented 17 October 2026; automated checks only, physical-radio testing
+pending. No installer build made.
+
+Press `l` at the top level. If split or repeater operation is already active,
+it switches off and reports the receive/transmit base frequencies.
+
+Outside FM, enter the transmit frequency in MHz, for example `14.200` while
+receiving on 14.195. YAC writes the other VFO's frequency and copies the
+receive mode into it (including Icom data/filter bytes), then enables split.
+This intentionally replaces the other VFO frequency/mode. It leaves the
+receive VFO selected and does not copy or equalize the whole VFO. A successful
+disable leaves the prepared other-VFO frequency/mode available for later use.
+
+In FM, YAC uses native repeater shift instead of two-VFO split. Enter an offset
+in signed whole hertz: `-600000` means transmit 600 kHz below receive. Tone/code
+settings and other-VFO contents are left alone. Setup reports the resulting
+receive and transmit base frequencies. The radio's repeater-offset menu value
+remains configured after repeater operation is disabled.
+
+Blank or `q` followed by Enter cancels the entry and announces Back. `h`
+followed by Enter reads split help. There is no nested adjustment mode;
+normal frequency stepping continues to control receive as before. Press `l`
+again to disable. Nothing keys the transmitter.
+
+Consecutive top-level `w` presses alternate the usual status and live
+split/repeater details. Any other command resets the next `w` to normal status.
+The details report identifies receive/transmit frequencies and active FM
+tone/code. Off says `Split/repeater Off`; unreadable or unsupported details
+are reported as unknown. It reads the radio's actual offset, not INI defaults.
+Yaesu automatic repeater shift (ARS) reports unknown because its effective
+direction cannot be inferred reliably from OS alone. An externally configured
+two-VFO FM split reports tone/code unknown rather than assuming the receive
+VFO's tone is the transmit tone. Native FM repeater operation reads its tone.
+
+## Optional defaults
+
+Under `[yac]` in `yac.ini`, set any needed signed offsets in hertz:
+
+```ini
+repeater_offset_10m_hz=
+repeater_offset_6m_hz=
+repeater_offset_2m_hz=-600000
+repeater_offset_70cm_hz=
+repeater_offset_23cm_hz=
+```
+
+The 2 m value above is an example, not a regional recommendation. No defaults
+are guessed. Blank or absent values prompt each time; entered values are not
+saved to the INI. A configured value is applied directly when enabling FM
+repeater operation; edit/clear that INI entry to choose a different value.
+Invalid configured values cause an error without writes.
+
+## Profiles and limits
+
+Native profiles: FT-DX10, FT-710, FTX-1, IC-705, IC-7300, IC-7300MK2,
+IC-7600 and IC-9700. Unreadable/rejected commands stop setup; profiles are not
+a claim that every firmware version has been physically tested. Kenwood and
+QMX are currently unavailable for this command.
+
+Enabling requires readable VFO context and inactive RIT/XIT/clarifiers so the
+announced base frequencies do not omit an active clarifier offset. Restricted
+Icom memory/DR/satellite contexts are rejected by unselected-VFO access; no
+automatic VFO-mode selection or memory changes are attempted. IC-9700 25/26
+operates on MAIN A/B, not Main/Sub satellite operation. FTX-1's YAC Main/Sub
+control target must agree with the radio's live VS selection.
+
+FTX-1 FM offsets use kHz menu units on 10/6 m (10 kHz increments), and 50 kHz
+units on 2 m/70 cm. Requests must be exactly representable; YAC rejects rather
+than rounds them. The VHF/UHF unit interpretation is corroborated by the
+[Hamlib FTX-1 backend](https://github.com/Hamlib/Hamlib/blob/master/rigs/yaesu/ftx1/ftx1_freq.c)
+because the manufacturer's 2508-C table is ambiguous. Physical confirmation
+on the user's firmware remains necessary. FT-DX10/FT-710 use documented kHz
+menu values with 10 kHz steps. Icom duplex offsets use 100 Hz units.
+
+Every setter is checked by live readback. Failure attempts to disable split,
+restore changed fields, and restore the former split state only after recovery
+checks pass. A failed recovery is explicitly reported; inspect the radio
+before further operation. No automatic retry or transmitting test is performed.
+
+Model-specific mappings live in each radio's `split.json`; the control and
+protocol handling live in `modules/split_control.py`. Manufacturer reference
+links and the FT Talk comparison are in `split-control-survey.md`.

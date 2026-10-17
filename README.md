@@ -9,7 +9,10 @@ mode selection; AF Gain, RF Gain/squelch; preamp and attenuator selection;
 editable output power; guided mic gain with sampled peak ALC; model-specific AGC preset selection; supported tuner settings; receive/transmit offsets;
 receive bandwidth with separate low/upper cut controls, and Noise Blanker
 and Noise Reduction toggle/adjustment controls; Auto/Manual Notch with width
-selection, and TS-480 Beat Cancel where supported.
+selection, and TS-480 Beat Cancel where supported. New controls include split/repeater setup,
+repeated Where Am I details, antenna routing and tune activation. The Decoders
+submenu provides TS-590SG native CW, IC-705 native RTTY and experimental audio
+CW with guided receive-input selection. See [decoder setup and limits](doc/decoder-controls.md).
 English, German, Spanish
 and Polish labels and help are included. Press `h` for help and `q` to quit
 from the top level.

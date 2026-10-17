@@ -49,3 +49,15 @@ Settings s m opens guided Mic Gain adjustment. YAC changes only mic gain in resp
 Settings s a cycles the supported AGC presets; repeat a. s h reads Settings help. AGC is a receiver control and needs no transmission.
 
 Settings s e opens Speech Processor without changes. e toggles; full stop/comma adjust. Kenwood i/o choose Input/Output. n cancels and restores entry processor settings; q keeps changes. h gives full help.
+
+In FM, w also reads active CTCSS/DCS on radios supported by i: tone/code, TX or Both, and DCS polarity. Off adds nothing. Unreadable signalling reports Tone/code unknown. FTX-1 follows Main/Sub. No settings are changed.
+
+l: Split/repeater setup; l again turns it off. h inside gives details.
+
+Consecutive w presses alternate normal status and live split/repeater details: receive frequency, transmit frequency and active FM tone/code. Off is announced; failed reads are unknown. Any other command resets the sequence.
+
+x: Antennas. Entry reads routing; repeat x cycles main antennas, r receive input, q Back, h help. Where supported.
+
+t: Start tuning with the configured tuner. Off must first be enabled in Settings. Reports the cycle ending, not a guaranteed antenna match.
+
+d: Decoders; c for CW, r for RTTY, h for help, q Back. Inside, e stops/restarts; q keeps capture running.
