@@ -96,3 +96,32 @@ IC-705/IC-7300/IC-7300MK2 command manuals, plus the manufacturer's
 [FT-991A CAT manual](https://www.yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/FT-991A_CAT_OM_ENG_1711-D.pdf),
 [IC-9700 CI-V guide](https://www.icomfrance.com/uploads/files/produit/not-IC-9700_ENG_CI-V_3a-en.pdf)
 and [IC-7600 manual](https://www.icomeurope.com/wp-content/uploads/2020/11/IC-7600_IM_D_upgrade_20151103.pdf).
+
+FTX-1 hardware-log correction
+-----------------------------
+The user's 40 m Optima trace (17 October) reports AC100, EX0301040 and
+rejects AC001 with ?. This confirms the AC P1 error in Carl Obermeier's
+hardware-tested FTX-1 CAT Manual Errors, item 2. EX030104 is OPTION/ATAS,
+not the four tuner types (document-only errata item 13). Tuner type is selected
+through EX030701 (ANT1) or EX030702 (ANT2), using EX030704/030703 to choose
+the transmitting antenna. Separate RX routing still uses TX ANT1.
+
+modules/ftx_tuner.py now owns FTX-1 selection/status/tuning. Settings t cycles
+INT/INT FAST/EXT/ATAS on Optima; Field offers EXT/ATAS. It checks readback,
+restores changed menus on failure and never sends AC enable/tune commands
+while selecting. The general routing menu only receives 0 (OPTION) or 1 (ATAS).
+A selected tuner type and an idle cycle are reported separately: AC100 does
+not establish bypass Off, so a persistent Off choice is not fabricated.
+Top-level t sends AC103 for both Optima internal and external paths, AC123
+for ATAS; stop uses AC000 or AC120. Idle after observed activity reports
+cycle finished, not successful matching. All previous FTX-1 AC001/AC003
+assumptions and global four-choice menu definitions are superseded.
+
+References:
+https://github.com/captobie/ftx1-remote/blob/main/FTX-1%20CAT%20Manual%20Errors.md
+https://github.com/captobie/ftx1-remote/blob/main/ftx1-cat-manual-errata.md
+https://github.com/Hamlib/Hamlib/blob/master/rigs/yaesu/ftx1/ftx1_ext.c
+https://github.com/Hamlib/Hamlib/blob/master/rigs/yaesu/ftx1/ftx1_tx.c
+
+The trace proves the old rejection; corrected menu writes and tuning still
+need a physical-radio retest. No live radio was accessed during this fix.

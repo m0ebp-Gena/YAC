@@ -118,7 +118,7 @@ def control(yac, root, radio, language, read_key, watch):
         return
     started = False
     try:
-        if not choice('l209') or not choice('l210'):
+        if not choice('l209'):
             return
         mode = yac._current_mode(radio)
         if mode not in {'LSB', 'USB', 'AM'} or (spec['family'] == 'kenwood' and mode == 'AM'):
@@ -129,7 +129,6 @@ def control(yac, root, radio, language, read_key, watch):
             say('l217')
             return
         say('l211', value=round(int(current) * 100 / spec['maximum']))
-        say('l218' if spec['family'] == 'icom' and mode != 'AM' else 'l219')
         say('l212')
         started = True
         peak = Peak()

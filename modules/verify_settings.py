@@ -141,6 +141,9 @@ def _select_tuner(yac, radio, spec, current, target):
 
 
 def describe(yac, root, radio, language, name, spec):
+    if name == 'tuner' and spec.get('kind') == 'ftx1':
+        from modules import ftx_tuner
+        return ftx_tuner.describe(yac, root, radio, language)
     selected_band = band(yac, radio) if spec.get('band_states') else 0
     value = (_tuner_state(yac, radio, spec) if name == 'tuner' else
              read(yac, radio, spec, selected_band) if selected_band is not None else None)
@@ -167,6 +170,9 @@ def cycle(yac, root, radio, language, name):
     spec = catalog(root, radio, yac).get(name)
     if spec is None:
         return _label(yac, root, language, 'l129')
+    if name == 'tuner' and spec.get('kind') == 'ftx1':
+        from modules import ftx_tuner
+        return ftx_tuner.cycle(yac, root, radio, language)
     selected_band = band(yac, radio) if spec.get('band_states') else 0
     if selected_band is None:
         return describe(yac, root, radio, language, name, spec)

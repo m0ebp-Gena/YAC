@@ -144,7 +144,8 @@ def show_language_menu(root: Path) -> str | None:
     choices = {str(number): code for number, code in enumerate(LANGUAGE_CODES, start=1)}
     while True:
         for number, code in enumerate(LANGUAGE_CODES, start=1):
-            print(f"{number} {prompts[code]} {names[code]}")
+            print(f"{number} {prompts[code]} {names[code]}",
+                  end="" if number == len(LANGUAGE_CODES) else "\n", flush=True)
         while True:
             key = read_key()
             if key.casefold() == "q" or key in ("\x03", "\x04"):
@@ -152,14 +153,16 @@ def show_language_menu(root: Path) -> str | None:
             if key in choices:
                 selected = choices[key]
                 print()
-                print(names[selected])
-                print(confirmations[selected])
+                # Keep the prompt under the terminal cursor, matching the main
+                # interface's speech/braille feedback. Flush before raw input.
+                print(f"{names[selected]}: {confirmations[selected]}", end="", flush=True)
                 while True:
                     confirm_key = read_key()
                     if confirm_key == " ":
+                        print(flush=True)
                         return selected
                     if confirm_key.casefold() == "n":
-                        print()
+                        print(flush=True)
                         break
                     if confirm_key.casefold() == "q" or confirm_key in ("\x03", "\x04"):
                         return None

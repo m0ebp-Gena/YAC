@@ -60,3 +60,5 @@ x: Anteny. Wejście odczytuje tory; x antena główna, r wejście odbiorcze, q w
 t: Rozpoczyna strojenie wybranym tunerem. Wyłączony tuner należy najpierw włączyć w Ustawieniach. Koniec cyklu nie potwierdza poprawnego dopasowania.
 
 d: Dekodery; c CW, r RTTY, h pomoc, q Wstecz. W dekoderze e zatrzymuje/wznawia; q pozostawia odbiór.
+
+Poprawka FTX-1: Ustawienia t zmienia typ tunera anteny nadawczej (Optima: wewnętrzny, szybki wewnętrzny, zewnętrzny, ATAS; Field: zewnętrzny/ATAS). Spoczynkowy stan AC nie oznacza wyłączonego tunera. Wybór nie rozpoczyna strojenia. Główne t używa poprawionego polecenia. Weryfikacja podaje typ, a nie potwierdzenie obejścia ani poprawnego dopasowania.

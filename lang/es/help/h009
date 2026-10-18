@@ -1,3 +1,13 @@
-Ajustes: a cambia AGC; m micrófono; p potencia; s paso; t sintonizador; v VFO; q vuelve. Repite a para la siguiente opción, verificada por lectura. AGC controla la recuperación de ganancia del receptor, no micrófono ni ALC de transmisión. Rápido recupera antes, Lento mantiene la reducción más tiempo. Elige escuchando y consulta el manual. Yaesu: Rápido, Medio, Lento, Auto, Desactivado; Auto anuncia su velocidad. FTX-1 sigue Main/Sub. Icom: Rápido, Medio, Lento; AGC fijo de FM/digital queda sin cambios. No se editan tiempos ni presets configurados desactivados. Kenwood TS-590SG/TS-480 identificado: Rápido, Lento, Desactivado; FM no disponible. Desactivado permite mayores cambios de volumen. Lecturas desconocidas impiden cambios; fallos se anuncian. No requiere transmitir. QMX no implementado. h lee esta ayuda; dentro de micrófono lee su procedimiento completo.
+Ajustes: a AGC; m ganancia de micrófono; p potencia; s paso; t sintonizador; v VFO/receptor; e procesador de voz. q vuelve y anuncia Atrás. h lee esta ayuda.
 
-Ajustes s e abre Procesador sin cambios. e conmuta, punto/coma ajustan. Kenwood i/o Entrada/Salida. n cancela y restaura originales; q conserva. h ayuda.
+a selecciona el siguiente ajuste AGC y confirma la opción. Rápido recupera antes tras una señal fuerte; Lento mantiene la reducción más tiempo. Elige escuchando. Desactivado permite mayores cambios de volumen. No requiere transmitir.
+
+m abre el ajuste guiado del micrófono. Sigue las indicaciones previas; h dentro explica teclas, prueba y lectura ALC. Tú accionas el PTT.
+
+p anuncia la potencia actual y el intervalo de entrada. Introduce vatios enteros y pulsa Enter; Enter vacío cancela. La confirmación indica el valor introducido y Establecido. Es un ajuste, no potencia transmitida medida. h y Enter dan ayuda de potencia.
+
+s abre el paso para el modo actual. t recorre opciones del sintonizador y confirma el ajuste; no inicia la sintonización. Sal de Ajustes y pulsa t para iniciarla. v selecciona el VFO o receptor admitido y anuncia la selección.
+
+e abre el procesador y lee ajustes. e dentro conmuta; punto aumenta y coma disminuye. n restaura los ajustes iniciales del procesador; q conserva cambios. h dentro explica controles y respuestas.
+
+Las opciones, límites y excepciones de cada modelo están en doc/supported-radios, en el archivo de texto con el nombre de tu radio. READ-ME.txt explica estas notas. Las respuestas habladas también aparecen como texto para la línea braille. Se anuncian funciones no admitidas y lecturas desconocidas o fallidas.

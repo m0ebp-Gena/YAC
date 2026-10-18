@@ -60,3 +60,5 @@ x: Antennen. Einstieg liest Wege; x Hauptantenne, r Empfangseingang, q Zurück, 
 t: Abstimmung mit dem gewählten Tuner starten. Bei Aus zuerst in Einstellungen einschalten. Das Ende bestätigt keine erfolgreiche Anpassung.
 
 d: Decoder; c CW, r RTTY, h Hilfe, q Zurück. Im Decoder stoppt/startet e; q lässt die Erfassung laufen.
+
+FTX-1-Korrektur: Einstellungen t wechselt den Tunertyp der Sendeantenne (Optima: intern, intern schnell, extern, ATAS; Field: extern/ATAS). Der ruhende AC-Status wird nicht als Tuner Aus ausgegeben. Die Auswahl startet keine Abstimmung. t auf Hauptebene nutzt den korrigierten Startbefehl. Die Prüfung nennt den Typ, bestätigt aber weder Bypass noch erfolgreiche Anpassung.

@@ -62,3 +62,5 @@ x: Antenas. Entrada lee rutas; x antena principal, r entrada RX, q vuelve, h ayu
 t: Inicia la sintonización con el sintonizador configurado. Si está apagado, actívelo en Ajustes. El fin del ciclo no garantiza una adaptación correcta.
 
 d: Decodificadores; c CW, r RTTY, h ayuda, q Atrás. Dentro, e detiene/reinicia; q mantiene la captura.
+
+Corrección FTX-1: Ajustes t cambia el tipo de sintonizador de la antena transmisora (Optima: interno, interno rápido, externo, ATAS; Field: externo/ATAS). Un estado AC en reposo no se anuncia como apagado. La selección no inicia la sintonización. t principal usa el comando corregido. Verificar indica el tipo, sin confirmar bypass ni adaptación correcta.

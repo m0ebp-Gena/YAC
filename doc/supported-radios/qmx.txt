@@ -65,3 +65,6 @@ transmission is required. Physical-radio validation remains pending.
 
 SPEECH PROCESSOR - DEVELOPMENT BETA
 Speech Processor s e remains unavailable for this profile; sharing TS-480 CAT ID020 is not sufficient.
+
+SETTINGS HELP - MODEL DETAILS
+AGC adjustment is not implemented for this model. Unknown readings prevent AGC changes; rejected or unconfirmed changes report failure. See in-command h for the operating procedure and feedback.

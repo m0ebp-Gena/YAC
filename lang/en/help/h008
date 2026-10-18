@@ -1,15 +1,9 @@
-Mic Gain: s then m opens a guided, user-operated adjustment.
+Mic Gain: read this sequence before continuing. Space accepts the readiness prompt; q cancels. h opens help.
 
-Before transmitting, connect an antenna correctly matched for the test frequency or a suitable dummy load. An unsuitable load can damage the transmitter. YAC cannot verify your antenna or load. Press Space to acknowledge readiness or q to cancel. h reads this help at either preparation prompt.
+Connect a correctly matched antenna or suitable dummy load. YAC cannot check the load. Lower power does not make an unsuitable load safe. Set suitable power yourself and switch speech processing off for basic adjustment. YAC changes only microphone gain; it does not change power, frequency or mode, or start transmission.
 
-Set an appropriate RF power yourself, following your radio manual. Lower power does not make an unsuitable load safe. Turn the speech processor/compressor off for basic mic-gain adjustment. Press Space at the second prompt to proceed or q to cancel. YAC never changes RF power, frequency, mode or processor state and never starts transmission. Any preparation settings you change yourself remain your responsibility to restore.
+Start in receive. YAC announces current gain. Hold physical PTT, speak normally, then release PTT. YAC announces sampled peak ALC, or unknown if readings failed. Brief peaks may be missed. These are raw meter units, not watts or calibrated percentages; no Good/Low/High judgement is made.
 
-Start in receive. SSB guidance is available for all supported profiles. Yaesu and Icom AM provide raw ALC feedback; Icom AM audio clarity must be checked with monitoring or another station. Kenwood AM and FM require different procedures and are not enabled here. Unsupported modes are left unchanged.
+With PTT released, full stop increases gain; comma decreases it. Each confirmed change announces gain and resets the peak. Values stop at the ends. v reads gain; Space clears the peak; h reads help. Release PTT and press q to return to Settings with Back, keeping gain. Restore any preparation settings you changed yourself.
 
-YAC announces current mic gain. Hold PTT and speak in your normal voice at the microphone distance recommended by your manual. Do not shout: excessive audio can cause overdrive and distortion. Release PTT; YAC announces the sampled peak ALC. Sampling can miss brief peaks; this is not a continuous peak-hold instrument.
-
-With PTT released, full stop increases gain, comma decreases it. Each successful adjustment reads back the setting, announces gain and resets the captured peak. Icom uses native steps of 3 on its 0-255 scale (about one percentage point); Yaesu/Kenwood use one step on 0-100. Values stop at endpoints. v reads current gain. Space resets the peak for another attempt. h reads help. q returns to Settings with Back and keeps your chosen mic gain. Release PTT before leaving; YAC does not release a physical PTT for you.
-
-Icom SSB manuals recommend approximately 30-50 percent of the ALC scale; Yaesu and Kenwood SSB use the marked ALC zone/limit. CAT values reported here are raw meter units, not percentages or watts. No automatic Good/Low/High judgement is made because the recommended-zone mapping has not been verified. Kenwood users must select the ALC meter themselves if the read command does not return it. Missing or partial readings are reported as unknown, never as zero.
-
-This module has automated protocol coverage; physical-radio and CAT-meter calibration tests remain necessary. It does not implement AGC or speech-processor adjustment.
+Model-specific modes, scales, meter setup and recommended ALC zones are in your radio's text file under doc/supported-radios.

@@ -22,7 +22,7 @@ def main():
         from serial.tools import list_ports
         assert (root / "yac.ini").is_file(), "Missing yac.ini"
         for language in yac.lang_sel.LANGUAGE_CODES:
-            for number in range(247, 295):
+            for number in range(247, 296):
                 assert yac._read_label(root, language, f'l{number:03d}', ''), (language, number)
             for help_tag in ('h011', 'h012', 'h013', 'h014'):
                 assert (root / 'lang' / language / 'help' / help_tag).is_file()

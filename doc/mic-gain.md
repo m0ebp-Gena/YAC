@@ -6,11 +6,9 @@ and only in response to full stop/comma. PTT, RF power, frequency, mode and
 speech processing remain under the user's control. There is no automatic
 transmission, low-power change, AM selection or automatic gain adjustment.
 
-Two Space acknowledgements cover a correctly matched antenna/suitable dummy
-load, then user-selected power and speech processor Off for basic adjustment.
-`q` cancels either prompt. `h` provides the full procedure at either prompt
-and within adjustment. Instructions and labels exist in all four languages.
-YAC cannot verify the load; reducing power does not make an unsuitable load safe.
+One short readiness prompt directs users to h for the preparation sequence.
+Space proceeds; q cancels. The full procedure is in help, with model-specific
+scales and exceptions in doc/supported-radios.
 
 Start in receive. Hold physical PTT and speak normally, then release it.
 During idle keyboard input, YAC reads TX status and samples ALC about every

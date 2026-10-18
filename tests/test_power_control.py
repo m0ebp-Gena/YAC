@@ -40,6 +40,21 @@ class PowerTests(unittest.TestCase):
                 self.assertIsNone(power.set_value(yac,radio,spec,str(maximum)))
                 self.assertEqual(writes,[f'PC{selector}{maximum:03d};'])
 
+    def test_ftx_prompt_reads_current_power_after_edit(self):
+        radio=RadioConnection(None,'test',38400,'CAT','0840','FTX-1')
+        state=['PC2010;']
+        def exchange(radio,command):
+            if command!='PC;':
+                state[0]=command
+            return state[0]
+        output=io.StringIO()
+        with patch.object(yac,'_cat_exchange',side_effect=exchange),patch('builtins.input',side_effect=['5','']),redirect_stdout(output):
+            power.edit(yac,ROOT,radio,'en')
+            power.edit(yac,ROOT,radio,'en')
+        self.assertIn('power 10 watts. Power in watts (5–100)?',output.getvalue())
+        self.assertIn('power 5 watts. Power in watts (5–100)?',output.getvalue())
+        self.assertEqual(state[0],'PC2005;')
+
     def test_icom_relative_power_and_rejected_write(self):
         serial=SettingsSerial(0x94)
         radio=RadioConnection(serial,'test',115200,'CI-V','IC-7300','IC-7300',civ_address=0x94)

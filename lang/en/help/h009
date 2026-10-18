@@ -1,3 +1,13 @@
-Settings: a cycles AGC; m opens Mic Gain; p edits Power; s edits Step Size; t cycles Tuner; v selects VFO; q returns with Back. Repeat a for the next AGC choice; each change is read back. AGC controls receiver recovery after signal strength changes, not microphone gain or transmitter ALC. Fast recovers sooner; Slow holds gain reduction longer. Choose by listening and consult the radio user guide. Yaesu cycles Fast, Mid, Slow, Auto, Off; Auto selects recovery for the mode and YAC announces the returned Auto speed. FTX-1 uses the selected Main/Sub receiver. Icom cycles Fast, Mid, Slow presets; FM and digital voice/data modes with fixed AGC report Fast fixed without writes. Icom preset timing, including a preset configured Off, is left unchanged. Kenwood TS-590SG/verified TS-480 cycle Fast, Slow, Off; FM is unavailable. Custom time constants are not edited. Off disables automatic gain regulation and received audio can vary more widely; adjust listening volume as needed. Unknown readings prevent changes; rejected or unconfirmed changes report failure. No transmission is required. QMX AGC is not implemented. h reads Settings help; h inside Mic Gain reads its full procedure.
+Settings: a AGC; m Mic Gain; p Power; s Step Size; t Tuner; v VFO/receiver; e Speech Processor. q returns and announces Back. h reads this help.
 
-Settings s e opens Speech Processor without changes. e toggles; full stop/comma adjust. Kenwood i/o choose Input/Output. n cancels and restores entry processor settings; q keeps changes. h gives full help.
+a selects the next AGC setting and announces the confirmed choice. Fast recovers sooner after a strong signal; Slow holds gain reduction longer. Choose by listening. Off allows larger changes in received volume. No transmission is needed.
+
+m opens guided microphone adjustment. Follow the preparation prompts; h inside explains the test, keys and ALC feedback. You operate PTT yourself.
+
+p announces current power and the entry range. Type whole watts and press Enter; blank Enter cancels. A confirmed change announces the entered value followed by Set. This is a setting, not measured transmitted power. h then Enter gives power help.
+
+s opens tuning step entry for the current mode. t cycles tuner choices and announces the confirmed setting; it does not start tuning. Leave Settings and press t to start a tuning cycle. v selects the supported VFO or receiver and reports the selection.
+
+e opens Speech Processor and reads its settings. e inside toggles it; full stop increases and comma decreases the selected level. n cancels and restores entry processor settings; q keeps changes. h inside explains the available controls and feedback.
+
+Model-specific choices, limits and exceptions are in doc/supported-radios: open the text file named for your radio. READ-ME.txt explains these notes. Spoken responses are also written as text for the braille display. Unsupported controls and failed or unknown readings are reported.

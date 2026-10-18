@@ -1,3 +1,13 @@
-Einstellungen: a schaltet AGC weiter; m Mikrofonverstärkung; p Leistung; s Schrittweite; t Tuner; v VFO; q zurück. Wiederholtes a wählt die nächste AGC-Stufe mit Rückleseprüfung. AGC regelt die Erholung der Empfangsverstärkung, nicht Mikrofon oder Sender-ALC. Schnell erholt sich früher, Langsam hält länger. Nach Gehör wählen und Geräteanleitung lesen. Yaesu: Schnell, Mittel, Langsam, Auto, Aus; Auto meldet die gewählte Geschwindigkeit. FTX-1 folgt Main/Sub. Icom: Schnell, Mittel, Langsam; feste FM/Digital-AGC bleibt unverändert. Benutzerdefinierte Zeiten und auf Aus konfigurierte Presets bleiben erhalten. Kenwood TS-590SG/erkannter TS-480: Schnell, Langsam, Aus; FM nicht verfügbar. Aus deaktiviert die automatische Regelung; Lautstärke kann stärker schwanken. Unbekannte Werte verhindern Änderungen; Rücklesefehler werden gemeldet. Kein Senden nötig. QMX nicht implementiert. h liest diese Hilfe; in Mikrofonverstärkung die vollständige Anleitung.
+Einstellungen: a AGC; m Mikrofonverstärkung; p Leistung; s Schrittweite; t Tuner; v VFO/Empfänger; e Sprachprozessor. q kehrt zurück und meldet Zurück. h liest diese Hilfe.
 
-Einstellungen s e öffnet Sprachprozessor ohne Änderung. e schaltet, Punkt/Komma regeln. Kenwood i/o Eingang/Ausgang. n verwirft und stellt Originalwerte wieder her; q behält. h hilft.
+a wählt die nächste AGC-Einstellung und bestätigt sie. Schnell erholt sich früher nach einem starken Signal, Langsam hält die Verstärkungsreduzierung länger. Nach Gehör wählen. Aus erlaubt größere Lautstärkeschwankungen. Kein Senden nötig.
+
+m öffnet die geführte Mikrofoneinstellung. Vorbereitungshinweise befolgen; h darin erklärt Tasten, Test und ALC-Rückmeldung. PTT bedienen Sie selbst.
+
+p meldet aktuelle Leistung und Eingabebereich. Ganze Watt eingeben und Enter drücken; leeres Enter bricht ab. Bestätigung nennt den eingegebenen Wert und Gesetzt. Das ist eine Einstellung, keine gemessene Sendeleistung. h und Enter geben Leistungshilfe.
+
+s öffnet die Schrittweite für die aktuelle Betriebsart. t schaltet Tuner-Auswahl weiter und bestätigt sie; es startet keine Abstimmung. Einstellungen verlassen und t drücken, um abzustimmen. v wählt den unterstützten VFO oder Empfänger und meldet die Auswahl.
+
+e öffnet den Sprachprozessor und liest Einstellungen. e darin schaltet; Punkt erhöht, Komma verringert. n stellt ursprüngliche Prozessorwerte wieder her; q behält Änderungen. h darin erklärt Bedienung und Rückmeldungen.
+
+Modellspezifische Auswahl, Grenzen und Ausnahmen stehen in doc/supported-radios in der nach Ihrem Radio benannten Textdatei. READ-ME.txt erklärt diese Hinweise. Sprachausgaben erscheinen auch als Text für die Braillezeile. Nicht unterstützte Funktionen und fehlgeschlagene oder unbekannte Abfragen werden gemeldet.

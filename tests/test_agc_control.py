@@ -87,6 +87,6 @@ class AgcTests(unittest.TestCase):
             self.assertEqual(yac.main([]), 0)
         self.assertIn('AGC Off', output.getvalue())
         self.assertIn('AGC Fast', output.getvalue())
-        self.assertIn('AGC controls receiver recovery', output.getvalue())
+        self.assertIn('a selects the next AGC setting', output.getvalue())
         self.assertIn('Back', output.getvalue())
         self.assertIn('Bye test', output.getvalue())

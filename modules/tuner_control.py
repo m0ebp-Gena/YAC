@@ -7,6 +7,9 @@ from modules import verify_settings as settings
 def tune(yac, root, radio, language, *, polls=120, interval=0.5):
     label = lambda token: settings._label(yac, root, language, token)
     spec = settings.catalog(root, radio, yac).get('tuner')
+    if spec and spec.get('kind') == 'ftx1':
+        from modules import ftx_tuner
+        return ftx_tuner.tune(yac, root, radio, language, polls=polls, interval=interval)
     if not spec or not spec.get('tune'):
         return label('l129')
     config = spec['tune']

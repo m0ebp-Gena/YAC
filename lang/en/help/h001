@@ -61,3 +61,5 @@ x: Antennas. Entry reads routing; repeat x cycles main antennas, r receive input
 t: Start tuning with the configured tuner. Off must first be enabled in Settings. Reports the cycle ending, not a guaranteed antenna match.
 
 d: Decoders; c for CW, r for RTTY, h for help, q Back. Inside, e stops/restarts; q keeps capture running.
+
+FTX-1 correction: Settings t cycles configured tuner types for the transmitting antenna (internal, internal fast, external, ATAS on Optima; external/ATAS on Field). Idle AC status is not reported as tuner Off. Selection does not start tuning. Top-level t uses the corrected native start command. Verify reports the configured type, not proof of bypass or successful matching.

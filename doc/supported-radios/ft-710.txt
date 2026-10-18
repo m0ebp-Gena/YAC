@@ -72,3 +72,9 @@ transmission is required. Physical-radio validation remains pending.
 
 SPEECH PROCESSOR - DEVELOPMENT BETA
 Speech Processor s e opens by reading current settings. e toggles; navigation adjusts strength while On. n cancels and verifies restoration of original processor settings; q keeps changes. No power, frequency, mode, mic gain, equalizer or AMC changes are made. PTT remains manual. h gives complete model-family guidance. Meter readings are sampled raw units; physical tests/calibration remain pending. If an Off read hides the saved strength (zero), edits are refused because exact cancellation cannot be guaranteed. You may turn it On on the radio and reopen s e.
+
+SETTINGS HELP - MODEL DETAILS
+AGC cycles Fast, Mid, Slow, Auto, Off. Auto announces the returned recovery speed. Custom time constants are not edited. Unknown readings prevent AGC changes; rejected or unconfirmed changes report failure. See in-command h for the operating procedure and feedback.
+
+MIC GAIN - MODEL DETAILS
+Use the marked SSB ALC zone/limit in the radio manual. Raw CAT readings are not yet calibrated to that zone. Gain steps are 1 on 0-100. SSB and AM raw ALC are supported; FM is not enabled.

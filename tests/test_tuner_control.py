@@ -56,9 +56,6 @@ class TunerTests(unittest.TestCase):
         profiles = [
             ('yaesu/CAT/models/0761', '001', '002', '002', '0'),
             ('yaesu/CAT/models/0800', '001', '002', '002', None),
-            ('yaesu/CAT/models/0840', '001', '003', '003', '0'),
-            ('yaesu/CAT/models/0840', '101', '103', '103', '2'),
-            ('yaesu/CAT/models/0840', '120', '123', '123', 'atas'),
             ('kenwood/CAT/models/023', '110', '111', '111', None),
         ]
         for model in ('ic-705', 'ic-7300', 'ic-7300mk2', 'ic-7600'):

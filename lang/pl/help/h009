@@ -1,3 +1,13 @@
-Ustawienia: a przełącza AGC; m mikrofon; p moc; s krok; t tuner; v VFO; q wraca. Powtórz a dla następnej opcji, sprawdzanej odczytem. AGC steruje powrotem wzmocnienia odbiornika, nie mikrofonem ani nadawczym ALC. Szybkie wraca wcześniej, Wolne utrzymuje redukcję dłużej. Wybieraj słuchając i czytaj instrukcję radia. Yaesu: Szybkie, Średnie, Wolne, Auto, Wyłączone; Auto podaje wybraną szybkość. FTX-1 obsługuje wybrany Main/Sub. Icom: Szybkie, Średnie, Wolne; stałe AGC w FM/cyfrowych emisjach bez zmian. Czasy i presety ustawione jako wyłączone pozostają bez zmian. Kenwood TS-590SG/rozpoznany TS-480: Szybkie, Wolne, Wyłączone; FM niedostępne. Wyłączenie pozwala na większe zmiany głośności. Nieznane odczyty blokują zmiany; błędy są zgłaszane. Bez nadawania. QMX niezaimplementowane. h czyta tę pomoc; w mikrofonie pełną procedurę.
+Ustawienia: a AGC; m wzmocnienie mikrofonu; p moc; s krok; t tuner; v VFO/odbiornik; e procesor mowy. q wraca i ogłasza Wstecz. h czyta tę pomoc.
 
-Ustawienia s e otwiera Procesor bez zmian. e przełącza, kropka/przecinek regulują. Kenwood i/o Wejście/Wyjście. n anuluje i przywraca oryginał; q zachowuje. h pomaga.
+a wybiera następne ustawienie AGC i potwierdza wybór. Szybkie szybciej przywraca wzmocnienie po silnym sygnale; Wolne dłużej utrzymuje redukcję. Wybieraj słuchając. Wyłączenie pozwala na większe zmiany głośności. Bez nadawania.
+
+m otwiera prowadzone ustawianie mikrofonu. Wykonaj przygotowania; h wewnątrz wyjaśnia klawisze, próbę i odczyt ALC. PTT obsługujesz samodzielnie.
+
+p podaje aktualną moc i zakres wpisywania. Wpisz całe waty i Enter; pusty Enter anuluje. Potwierdzenie podaje wpisaną wartość i Ustawiono. To ustawienie, nie zmierzona moc nadawania. h i Enter czytają pomoc mocy.
+
+s otwiera krok dla bieżącej emisji. t przełącza wybór tunera i potwierdza ustawienie; nie rozpoczyna strojenia. Wyjdź z Ustawień i naciśnij t, aby stroić. v wybiera obsługiwany VFO lub odbiornik i podaje wybór.
+
+e otwiera procesor i czyta ustawienia. e wewnątrz przełącza; kropka zwiększa, przecinek zmniejsza. n przywraca początkowe ustawienia procesora; q zachowuje zmiany. h wewnątrz wyjaśnia obsługę i komunikaty.
+
+Wybory, ograniczenia i wyjątki danego modelu są w doc/supported-radios, w pliku tekstowym nazwanym jak Twoje radio. READ-ME.txt wyjaśnia te notatki. Komunikaty głosowe pojawiają się także jako tekst dla monitora brajlowskiego. Funkcje nieobsługiwane oraz nieznane lub nieudane odczyty są zgłaszane.

@@ -82,7 +82,8 @@ def edit(yac, root, radio, language):
         chat_int.show_response(settings._label(yac, root, language, 'l127'))
         return
     while True:
-        prompt = settings._label(yac, root, language, 'l144',
+        current = settings.describe(yac, root, radio, language, 'power', spec)
+        prompt = current + '. ' + settings._label(yac, root, language, 'l144',
                                  minimum=spec['input_minimum'], maximum=spec['maximum'])
         chat_int.finish_response()
         sys.stdout.write(prompt + ' ')

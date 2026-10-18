@@ -26,7 +26,7 @@ class MicGainTests(unittest.TestCase):
         return radio, output.getvalue()
 
     def test_cancel_at_either_preparation_prompt_writes_nothing(self):
-        for keys in [['q'], [' ', 'q']]:
+        for keys in [['q']]:
             with patch.object(yac, '_cat_exchange') as exchange:
                 _, output = self.run_control(keys)
                 exchange.assert_not_called()
@@ -46,7 +46,7 @@ class MicGainTests(unittest.TestCase):
             commands.append(command)
             return original(radio, command)
         with patch.object(yac, '_cat_exchange', side_effect=exchange):
-            _, output = self.run_control([' ', ' ', '.', 'v', 'q'], radio)
+            _, output = self.run_control([' ', '.', 'v', 'q'], radio)
         self.assertEqual(radio.serial.mic_gain, 51)
         self.assertEqual(radio.serial.power, '020')
         self.assertEqual(radio.serial.frequency, 7159000)
@@ -105,19 +105,19 @@ class MicGainTests(unittest.TestCase):
 
     def test_initial_tx_blocks_adjustment(self):
         with patch.object(mic, 'tx_state', return_value=True), patch.object(mic, 'adjust') as adjust:
-            _, output = self.run_control([' ', ' '])
+            _, output = self.run_control([' '])
             adjust.assert_not_called()
         self.assertIn('Release PTT', output)
 
     def test_mode_change_blocks_writes(self):
         with patch.object(yac, '_current_mode', side_effect=['LSB', 'CW']), patch.object(mic, 'adjust') as adjust:
-            _, output = self.run_control([' ', ' ', '.'])
+            _, output = self.run_control([' ', '.'])
             adjust.assert_not_called()
         self.assertIn('Select SSB', output)
 
     def test_settings_route_returns_to_settings(self):
         radio = create_dummy_radio()
-        keys = iter(['s', 'm', ' ', ' ', '.', 'q', 'q', 'q'])
+        keys = iter(['s', 'm', ' ', '.', 'q', 'q', 'q'])
         with patch.object(yac, 'connect_radio', return_value=radio), patch.object(yac, '_read_settings', return_value={'call':'test','lang':'en'}), patch.object(lang_sel, 'read_key', side_effect=lambda **kwargs: next(keys)), redirect_stdout(io.StringIO()) as output:
             self.assertEqual(yac.main([]), 0)
         self.assertEqual(output.getvalue().count('Back'), 2)
@@ -125,7 +125,7 @@ class MicGainTests(unittest.TestCase):
 
     def test_idle_polling_reports_peak_after_ptt_release(self):
         radio = create_dummy_radio()
-        keys = iter([' ', ' ', 'q'])
+        keys = iter([' ', 'q'])
         def read_key(idle_callback=None):
             if idle_callback:
                 idle_callback()

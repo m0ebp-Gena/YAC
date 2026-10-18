@@ -87,6 +87,20 @@ class DemoTests(unittest.TestCase):
                 self.assertEqual(fields(english.read_text(encoding='utf-8-sig')),
                                  fields(spanish.read_text(encoding='utf-8-sig')))
 
+    def test_language_reselection_keeps_confirmation_under_cursor(self):
+        output = io.StringIO()
+        keys = iter(['2', 'n', '1', ' '])
+        expected = iter([None, 'de', None, 'en'])
+        def read():
+            language = next(expected)
+            self.assertFalse(output.getvalue().endswith('\n'))
+            if language:
+                self.assertTrue(output.getvalue().endswith(
+                    lang_sel.read_label(ROOT, language, 'l005')))
+            return next(keys)
+        with patch.object(lang_sel, 'read_key', side_effect=read), redirect_stdout(output):
+            self.assertEqual(lang_sel.show_language_menu(ROOT), 'en')
+
 
 class IC9700Tests(unittest.TestCase):
     def setUp(self):

@@ -72,3 +72,9 @@ transmission is required. Physical-radio validation remains pending.
 
 SPEECH PROCESSOR - DEVELOPMENT BETA
 Speech Processor s e opens by reading current settings. e toggles; navigation adjusts strength while On. n cancels and verifies restoration of original processor settings; q keeps changes. No power, frequency, mode, mic gain, equalizer or AMC changes are made. PTT remains manual. h gives complete model-family guidance. Meter readings are sampled raw units; physical tests/calibration remain pending.
+
+SETTINGS HELP - MODEL DETAILS
+AGC cycles Fast, Mid, Slow presets. Fixed AGC in FM/digital voice or data modes reports Fast fixed without writing. Preset timings, including a preset configured Off, are preserved. Unknown readings prevent AGC changes; rejected or unconfirmed changes report failure. See in-command h for the operating procedure and feedback.
+
+MIC GAIN - MODEL DETAILS
+SSB manuals recommend speech peaks around 30-50 percent of the ALC scale; YAC raw CAT readings are not calibrated to that zone. Native gain steps are 3 on 0-255, displayed as rounded percentages. AM clarity needs independent monitoring.
