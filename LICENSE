@@ -1,0 +1,13 @@
+YAC - Yet Another Controller
+
+YAC is licensed under the GNU General Public License, version 3
+(SPDX-License-Identifier: GPL-3.0-only).
+
+You may redistribute and modify YAC under the terms of that licence.
+YAC is distributed without any warranty; see COPYING for the complete terms.
+
+Third-party components retain their own copyright and licence notices.
+In particular, the adapted CWKit code retains the MIT notice in
+doc/CWKit-LICENSE.txt, and bundled audio components have notices in
+doc/AUDIO-LICENSES.txt. Other bundled runtimes and libraries retain their
+respective licence terms. This project licence does not replace those notices.

@@ -36,6 +36,8 @@ for guide in ('split-controls.md', 'antenna-controls.md', 'tuner-controls.md', '
     shutil.copyfile(root / 'doc' / guide, destination / 'doc' / guide)
 (destination / "yac.ini").write_text("[yac]\nplatform=\nlang=\ncall=\ndebug=true\n", encoding="utf-8")
 guides = {
+    "LICENSE": "LICENSE",
+    "COPYING": "COPYING",
     "KEY-BINDINGS-English.txt": "KEY-BINDINGS-English.txt",
     "TASTENBELEGUNG-Deutsch.txt": "TASTENBELEGUNG-Deutsch.txt",
     "SKROTY-KLAWISZOWE-Polski.txt": "SKROTY-KLAWISZOWE-Polski.txt",

@@ -130,3 +130,9 @@ hardware validation is still required. See [IC-9700 support notes](doc/ic-9700-s
 
 [IC-7600 support notes](doc/ic-7600-support.md) describe Main/Sub controls and
 the firmware 2.00 requirement for RIT/Delta-TX. Hardware testing is pending.
+
+## Licence
+
+YAC is licensed under [GNU GPL version 3](COPYING) (GPL-3.0-only).
+See [LICENSE](LICENSE) for the project notice. Third-party components retain
+their own licences and attribution notices.

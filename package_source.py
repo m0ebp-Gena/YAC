@@ -13,7 +13,7 @@ args = parser.parse_args()
 date.fromisoformat(args.date)
 folder = "YAC-source-" + args.date
 files = [root / name for name in (
-    "yac.py", "install-yac.sh", "install_yac.py", "requirements.txt", "requirements-decoders.txt",
+    "LICENSE", "COPYING", "yac.py", "install-yac.sh", "install_yac.py", "requirements.txt", "requirements-decoders.txt",
     "doc/decoder-controls.md", "doc/CWKit-LICENSE.txt",
     "doc/AUDIO-LICENSES.txt",
     "doc/split-controls.md", "doc/antenna-controls.md", "doc/tuner-controls.md",

@@ -26,6 +26,7 @@ expected_settings = b'[yac]\nplatform=\nlang=\ncall=\ndebug=true\n'
 if (source / 'yac.ini').read_bytes().replace(b'\r\n', b'\n') != expected_settings:
     raise RuntimeError('Package settings must be clean, with no personal preferences or radio devices')
 expected_files = {
+    'LICENSE', 'COPYING',
     'KEY-BINDINGS-English.txt', 'TASTENBELEGUNG-Deutsch.txt',
     'SKROTY-KLAWISZOWE-Polski.txt', 'TECLAS-Espanol.txt',
     'YAC-' + version + '.exe', 'yac.ini', 'START-HERE-English.txt',
@@ -63,6 +64,8 @@ with zipfile.ZipFile(archive) as package:
     assert package.testzip() is None
     assert {name.split('/')[0] for name in package.namelist()} == {folder}
     guides = {
+        "LICENSE": "LICENSE",
+        "COPYING": "COPYING",
         "KEY-BINDINGS-English.txt": "KEY-BINDINGS-English.txt",
         "TASTENBELEGUNG-Deutsch.txt": "TASTENBELEGUNG-Deutsch.txt",
         "SKROTY-KLAWISZOWE-Polski.txt": "SKROTY-KLAWISZOWE-Polski.txt",
