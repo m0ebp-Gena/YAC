@@ -17,7 +17,7 @@ from modules.find_rad import RadioConnection, find_radios
 from modules.signal_report import format_s_meter
 from modules.icom_profile import SUPPORTED_MODELS, load_profile
 from modules import verify_settings, gain_control, power_control, filter_control, ts480_control, mic_gain, agc_control
-from modules import speech_processor, split_control, antenna_control
+from modules import speech_processor, split_control, antenna_control, access_control, update_control, wifi_control
 
 
 DEBUG_LOG = logging.getLogger("yac")
@@ -695,7 +695,7 @@ def _tone_control(root: Path, radio: RadioConnection, language: str, call: str) 
         chat_int.show_response(_read_label(root, language, labels[selection], selection))
         action, value = _edit_tone(selection, value)
         if action == "q":
-            chat_int.show_back(root, language)
+            chat_int.show_done(root, language)
             chat_int.show_request(call, action)
             return
         if action == "i":
@@ -730,7 +730,7 @@ def _tone_control(root: Path, radio: RadioConnection, language: str, call: str) 
             if not automatic_both:
                 chat_int.show_request(call, key)
             if key == "q":
-                chat_int.show_back(root, language)
+                chat_int.show_done(root, language)
                 return
             if key == "h":
                 chat_int.show_response(help_int.get_help(root, language, "h004"))
@@ -1732,13 +1732,12 @@ def connect_radio(ini_path: Path | None = None) -> RadioConnection | None:
     DEBUG_LOG.info("Radio discovery returned %d radio(s)", len(radios))
     if not radios:
         from modules.dummy_radio import create_dummy_radio
-        print(_read_label(root, language, "l009", "No radio found. Loading the FT-DX10 demo."))
         DEBUG_LOG.info("Loading in-memory FT-DX10 demo")
         return create_dummy_radio()
     return _choose_radio(radios, root, language)
 
 
-def main(argv: list[str] | None = None) -> int:
+def _main(argv: list[str] | None = None) -> int:
     argument_parser = argparse.ArgumentParser(description="Yet Another Controller")
     argument_parser.add_argument(
         "--debug", action="store_true",
@@ -1771,9 +1770,7 @@ def main(argv: list[str] | None = None) -> int:
 
     settings = _read_settings(root / "yac.ini")
     language = settings.get("lang", "en") or "en"
-    label = _read_label(root, language, "l107", "Demo mode: simulated FT-DX10. No radio is connected.") if radio.is_dummy else _read_label(root, language, "l008", "Radio Connected")
-    if radio.is_dummy:
-        print(label)
+    label = _read_label(root, language, "l107", "No radio detected. Using simulated FT-DX10.") if radio.is_dummy else _read_label(root, language, "l008", "Radio Connected")
     DEBUG_LOG.info(
         "Radio ready model=%s id=%s protocol=%s port=%s baud=%s address=%s",
         radio.model_name, radio.model_id, radio.protocol, radio.port,
@@ -1785,7 +1782,7 @@ def main(argv: list[str] | None = None) -> int:
     call = settings.get("call", "YAC")
     chat_int.show_prompt(call)
     if radio.is_dummy:
-        chat_int.show_response(_read_label(root, language, "l055", "Simulated Mode"))
+        chat_int.show_response(label)
     else:
         chat_int.show_response(f"{label} {radio.model_name}")
     from modules.connection_watch import ConnectionWatch
@@ -1832,6 +1829,9 @@ def main(argv: list[str] | None = None) -> int:
             chat_int.show_request(call, key, prompt_open=prompt_open)
             prompt_open = False
             if key == "q":
+                from modules import quit_control
+                if not quit_control.confirm(root, language, read_radio_key):
+                    continue
                 chat_int.show_goodbye(root, language, call)
                 break
             if watch.lost:
@@ -1910,7 +1910,7 @@ def main(argv: list[str] | None = None) -> int:
                         chat_int.show_response(help_int.get_help(root, language, "h003"))
                         continue
                     if mode_key == "q":
-                        chat_int.show_back(root, language)
+                        chat_int.show_done(root, language)
                         chat_int.show_request(call, mode_key)
                         break
                     DEBUG_LOG.debug(
@@ -1944,7 +1944,7 @@ def main(argv: list[str] | None = None) -> int:
                         chat_int.show_request(call, band_key)
                         chat_int.show_response(help_int.get_help(root, language, "h002"))
                     elif band_key == "q":
-                        chat_int.show_back(root, language)
+                        chat_int.show_done(root, language)
                         chat_int.show_request(call, band_key)
                         break
                     else:
@@ -1984,6 +1984,17 @@ def main(argv: list[str] | None = None) -> int:
                     if not settings_key:
                         continue
                     settings_key = settings_key.casefold()
+                    if settings_key == "w":
+                        wifi_control.control(root, language, read_radio_key, watch)
+                        continue
+                    if settings_key == "u":
+                        if update_control.confirm(root, language, read_radio_key):
+                            return update_control.REQUEST
+                        continue
+                    if settings_key in {"b", "o"}:
+                        access_control.control(root, language, read_radio_key, watch,
+                                               modes=settings_key == "b")
+                        continue
                     if settings_key == "s":
                         DEBUG_LOG.debug("Settings key=%r", settings_key)
                         chat_int.show_request(call, settings_key)
@@ -2152,7 +2163,7 @@ def main(argv: list[str] | None = None) -> int:
                         chat_int.show_response(offset_response)
                         continue
                     if offset_key == "q":
-                        chat_int.show_back(root, language)
+                        chat_int.show_done(root, language)
                         chat_int.show_request(call, offset_key)
                         break
                     DEBUG_LOG.debug(
@@ -2175,6 +2186,19 @@ def main(argv: list[str] | None = None) -> int:
         decoders.close()
         radio.close()
     return 0
+
+
+def main(argv: list[str] | None = None) -> int:
+    from modules.update_lock import application_lock
+    try:
+        with application_lock(project_root()):
+            result = _main(argv)
+        if result == update_control.REQUEST:
+            return update_control.run(project_root())
+        return result
+    except RuntimeError as error:
+        print(str(error), file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":
