@@ -225,7 +225,7 @@ class Icom7300Tests(unittest.TestCase):
     def test_keyboard_loop_uses_new_radio_controls(self):
         for radio, serial in self.radios():
             keys = iter(['w', 'e', '.', ',', 'm', '.', 'q', 'b', '.', 'q',
-                         'o', '.', 'o', ',', 'o', '.', 'q', 'z', 's', 's', 'v', 'v', 'q', 'q'])
+                         'o', '.', 'o', ',', 'o', '.', 'q', 'z', 's', 's', 'v', 'v', 'q', 'q', 'y'])
             output = io.StringIO()
             with patch.object(yac, 'connect_radio', return_value=radio), \
                  patch.object(yac, '_read_settings', return_value={'call':'test','lang':'en'}), \

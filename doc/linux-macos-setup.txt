@@ -33,16 +33,21 @@ your package manager's installation instructions and exits. On macOS,
 Python is also available from https://www.python.org/downloads/macos/.
 The script does not install or replace system Python.
 
-It asks before creating or updating ~/yac. It copies new or changed YAC
+The installer detects the operating system: macOS uses ~/Applications/yac;
+Linux uses ~/.local/yac. The Linux paths below become ~/Applications/yac
+on macOS. Older ~/yac installations are left unchanged; this does not
+automatically migrate them.
+
+It asks before creating or updating the selected directory. It copies new or changed YAC
 source and data files, leaving identical files untouched. Updates preserve
 your yac.ini (including language and name), logs, other personal files and
-the private environment in ~/yac/.venv. It creates that environment if missing.
+the private environment in ~/.local/yac/.venv. It creates that environment if missing.
 On updates, compatible pyserial is reused without running pip; otherwise pip
 installs it and requires internet access. Setup does not start YAC or open
 serial ports. An existing yac command is left unchanged.
 
 For first-run language/name testing, back up yac.ini and clear only its lang
-and call values while YAC is closed. You do not need to delete ~/yac or .venv.
+and call values while YAC is closed. You do not need to delete ~/.local/yac or .venv.
 
 Some Linux distributions provide venv/pip support in a separate package.
 On Debian, Ubuntu and Raspberry Pi OS this is usually python3-venv.
@@ -50,7 +55,7 @@ Consult the instructions for your distribution. If environment creation
 or dependency installation fails, the script prints recovery commands.
 Files already created remain available; they are not deleted automatically.
 
-Once installed, the script creates ~/yac/run-yac. It separately offers to
+Once installed, the script creates ~/.local/yac/run-yac. It separately offers to
 create /usr/local/bin/yac if that directory exists. If administrator
 permission is required, it explains this before asking and uses sudo only
 to install the launcher. You may be asked for your login password; the
@@ -65,14 +70,14 @@ RUNNING YAC
 
 Open a terminal and run:
 
-    ~/yac/run-yac
+    ~/.local/yac/run-yac
 
 If the optional shortcut's directory is in your PATH, you can instead run:
 
     yac
 
 The launcher uses the private Python environment directly. You do not need
-to activate it first. Settings and logs remain inside ~/yac regardless of
+to activate it first. Settings and logs remain inside ~/.local/yac regardless of
 the directory from which you start the launcher.
 
 Follow the language and name/callsign prompts. Close any other program
@@ -146,7 +151,7 @@ From an extracted source directory with Python 3.10 or newer available:
     .venv/bin/python yac.py
 
 Keep modules, lang and rad_cmds beside yac.py. This approach keeps YAC in
-the extracted directory rather than copying it to ~/yac. Settings and logs
+the extracted directory rather than copying it to ~/.local/yac. Settings and logs
 will be stored beside that copy of yac.py.
 
 References
@@ -157,3 +162,33 @@ Python on macOS:
 https://docs.python.org/3/using/mac.html
 pyserial platform support and installation:
 https://pyserial.readthedocs.io/en/latest/pyserial.html
+
+UPDATING YAC (NEXT RELEASE)
+
+After installing a package with the updater, type update-yac in your terminal.
+It checks published GitHub releases, including betas, without requiring Git.
+It says YAC is up to date when the installed release matches. Otherwise:
+
+A new YAC update is available. r read changes; q cancel; Space install.
+
+r reads the release notes and returns to the prompt. q cancels. Space downloads,
+checks the SHA-256 checksum, extracts source and runs the installer. It does not
+ask a second time. The installed changelog.txt contains the shipped changes.
+The updater uses Python's ZIP support; unzip is not required.
+
+Close YAC first. Running YAC and updating share a lock on Linux/macOS, preventing
+simultaneous use. A failed installer restores the previous program files while
+leaving yac.ini, logs and the private environment alone. Keep error messages if
+setup fails. The checksum verifies consistency with the published release; it
+is not an independent signature.
+
+Initial setup separately offers /usr/local/bin/update-yac and may ask for sudo
+only to create that shortcut. The shortcut points to your personal installation.
+An existing command is left unchanged. If the shortcut is declined, run the
+update-yac script inside your installation folder. Do not run updates with sudo.
+
+Next releases use yac-source.zip with a dated folder inside. The updater also
+recognises the older dated YAC-source ZIP names. Existing installations without
+release metadata will be offered the newest published release once. Pre-updater
+versions must be updated manually first. Until a package containing this updater
+is released, existing public downloads do not provide this command.

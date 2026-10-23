@@ -7,7 +7,7 @@ z: zaokrąglenie częstotliwości do najbliższego kiloherca
 s: ustawienia; v wybiera FTX-1 Main/Sub lub Icom VFO A/B (najpierw A); s zapisuje krok strojenia
 o: przesunięcie; o wybiera odbiór/nadawanie/kasowanie; kropka/przecinek zmieniają o 10 Hz; q kończy
 i: Ton; i przełącza CTCSS/DCS N/DCS I; wpisz wartość, Enter, potem, jeśli pojawi się pytanie, t dla TX lub b dla Oba; q wychodzi, h pomaga
-q: zakończenie YAC
+q: zakończenie YAC; y potwierdza, n lub q anuluje. W podmenu q wraca natychmiast.
 Wybór radia: numer zaznacza profil, spacja zatwierdza, q anuluje
 p: przełączaj stopnie przedwzmacniacza i wyłączenie
 u: przełączaj poziomy tłumika i wyłączenie

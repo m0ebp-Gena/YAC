@@ -11,6 +11,7 @@ parser = argparse.ArgumentParser(description="Create and verify a dated YAC demo
 parser.add_argument('--date', default=date.today().isoformat())
 parser.add_argument("--source", type=Path, default=root / "builds/.work/demo-dist/YAC")
 parser.add_argument("--include-demo", action="store_true", help="Publish the staged runnable folder with the ZIP")
+parser.add_argument('--stage-only', action='store_true', help='Verify and stage without publishing release artifacts')
 args = parser.parse_args()
 date.fromisoformat(args.date)
 source = args.source.resolve()
@@ -26,16 +27,18 @@ expected_settings = b'[yac]\nplatform=\nlang=\ncall=\ndebug=true\n'
 if (source / 'yac.ini').read_bytes().replace(b'\r\n', b'\n') != expected_settings:
     raise RuntimeError('Package settings must be clean, with no personal preferences or radio devices')
 expected_files = {
-    'LICENSE', 'COPYING',
+    'LICENSE', 'COPYING', 'changelog.txt',
     'KEY-BINDINGS-English.txt', 'TASTENBELEGUNG-Deutsch.txt',
     'SKROTY-KLAWISZOWE-Polski.txt', 'TECLAS-Espanol.txt',
-    'YAC-' + version + '.exe', 'yac.ini', 'START-HERE-English.txt',
+    'YAC-' + version + '.exe', 'yac.ini', 'release.json', 'START-HERE-English.txt',
     'HIER-STARTEN-Deutsch.txt', 'ZACZNIJ-TUTAJ-Polski.txt', 'EMPIEZA-AQUI-Espanol.txt',
 }
 if {path.name for path in source.iterdir()} != expected_files | {'_internal', 'lang', 'rad_cmds', 'doc'}:
     raise RuntimeError('Unexpected files in the demo folder; build a clean package before distributing')
 release_guides = {'CWKit-LICENSE.txt', 'AUDIO-LICENSES.txt', 'decoder-controls.md', 'split-controls.md',
                   'antenna-controls.md', 'tuner-controls.md'}
+release_guides.update(path.name for path in (root / 'doc').iterdir()
+                     if path.is_file() and path.suffix in {'.md', '.html'})
 if {path.name for path in (source / 'doc').iterdir()} != {'supported-radios'} | release_guides:
     raise RuntimeError('Unexpected documentation in the demo folder')
 for name in release_guides:
@@ -66,6 +69,7 @@ with zipfile.ZipFile(archive) as package:
     guides = {
         "LICENSE": "LICENSE",
         "COPYING": "COPYING",
+        "changelog.txt": "changelog.txt",
         "KEY-BINDINGS-English.txt": "KEY-BINDINGS-English.txt",
         "TASTENBELEGUNG-Deutsch.txt": "TASTENBELEGUNG-Deutsch.txt",
         "SKROTY-KLAWISZOWE-Polski.txt": "SKROTY-KLAWISZOWE-Polski.txt",
@@ -88,7 +92,7 @@ archive.with_suffix('.sha256').write_text(checksum + '  ' + archive.name + '\n',
 artifacts = [archive, archive.with_suffix('.sha256')]
 if args.include_demo:
     artifacts.append(source)
-outputs = publish(root, args.date, artifacts)
+outputs = artifacts if args.stage_only else publish(root, args.date, artifacts)
 archive = outputs[0]
 print(f'Created and verified {archive}: {archive.stat().st_size:,} bytes')
 if args.include_demo:

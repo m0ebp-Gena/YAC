@@ -34,21 +34,48 @@ class Installer(unittest.TestCase):
         cache.mkdir()
         (cache / "old.pyc").write_bytes(b"old")
 
-    def run_setup(self, answers, failure=None):
-        with patch.object(install_yac.sys, "platform", "linux"), patch.object(install_yac.os, "geteuid", return_value=1000, create=True), patch.object(install_yac, "ask", side_effect=answers), patch.object(install_yac.subprocess, "run", side_effect=failure) as commands, patch.object(install_yac, "install_shortcut") as shortcut, redirect_stdout(io.StringIO()) as output:
+    def run_setup(self, answers, failure=None, platform="linux"):
+        with patch.object(install_yac.sys, "platform", platform), patch.object(install_yac.os, "geteuid", return_value=1000, create=True), patch.object(install_yac, "ask", side_effect=answers), patch.object(install_yac.subprocess, "run", side_effect=failure) as commands, patch.object(install_yac, "install_shortcut") as shortcut, redirect_stdout(io.StringIO()) as output:
             result = install_yac.main(self.source, self.home)
         return result, commands, shortcut, output.getvalue()
+
+    def test_mac_uses_applications_and_leaves_legacy_installation(self):
+        legacy = self.home / "yac"
+        legacy.mkdir()
+        (legacy / "yac.ini").write_text("old settings")
+        result, commands, shortcut, output = self.run_setup([True], platform="darwin")
+        destination = self.home / "Applications/yac"
+        self.assertEqual(result, 0)
+        self.assertTrue((destination / "yac.py").is_file())
+        self.assertIn(str(destination / "run-yac"), output)
+        self.assertIn(str(destination / ".venv/bin/python"), (destination / "run-yac").read_text())
+        self.assertEqual((legacy / "yac.ini").read_text(), "old settings")
+        shortcut.assert_called_once_with(destination / "run-yac", self.home)
+
+    def test_updater_install_preserves_settings_without_more_confirmation(self):
+        (self.source / 'update_yac.py').write_text('# updater')
+        (self.source / 'changelog.txt').write_text('changes')
+        (self.source / 'LICENSE').write_text('licence')
+        (self.source / 'release.json').write_text('{"tag":"test"}')
+        with patch.object(install_yac.sys, 'platform', 'linux'), patch.object(install_yac.os, 'geteuid', return_value=1000, create=True), patch.object(install_yac, 'ask') as ask, patch.object(install_yac.subprocess, 'run'), patch.object(install_yac, 'install_shortcut') as shortcut, redirect_stdout(io.StringIO()):
+            self.assertEqual(install_yac.main(self.source, self.home, update=True), 0)
+        destination = self.home / '.local/yac'
+        self.assertTrue((destination / 'update-yac').is_file())
+        self.assertTrue((destination / 'LICENSE').is_file())
+        self.assertEqual((destination / 'release.json').read_text(), '{"tag":"test"}')
+        ask.assert_not_called()
+        shortcut.assert_not_called()
 
     def test_decline_creates_nothing(self):
         result, commands, shortcut, _ = self.run_setup([False])
         self.assertEqual(result, 0)
-        self.assertFalse((self.home / "yac").exists())
+        self.assertFalse((self.home / ".local/yac").exists())
         commands.assert_not_called()
         shortcut.assert_not_called()
 
     def test_existing_install_is_unchanged(self):
-        destination = self.home / "yac"
-        destination.mkdir()
+        destination = self.home / ".local/yac"
+        destination.mkdir(parents=True)
         (destination / "yac.ini").write_text("keep")
         result, commands, _, _ = self.run_setup([])
         self.assertEqual(result, 1)
@@ -56,8 +83,8 @@ class Installer(unittest.TestCase):
         commands.assert_not_called()
 
     def test_update_preserves_settings_logs_and_environment_without_pip(self):
-        destination = self.home / "yac"
-        destination.mkdir()
+        destination = self.home / ".local/yac"
+        destination.mkdir(parents=True)
         (destination / "yac.py").write_text("# old source\n")
         (destination / "yac.ini").write_text("lang=en\ncall=Gena\n")
         (destination / "logs").mkdir()
@@ -79,8 +106,8 @@ class Installer(unittest.TestCase):
         self.assertEqual((destination / "yac.py").stat().st_mtime_ns, before)
 
     def test_update_installs_missing_dependency(self):
-        destination = self.home / "yac"
-        destination.mkdir()
+        destination = self.home / ".local/yac"
+        destination.mkdir(parents=True)
         (destination / "yac.py").write_text("# old\n")
         python = destination / ".venv/bin/python"
         python.parent.mkdir(parents=True)
@@ -93,7 +120,7 @@ class Installer(unittest.TestCase):
 
     def test_install_copies_data_and_uses_only_private_pip(self):
         result, commands, shortcut, output = self.run_setup([True])
-        destination = self.home / "yac"
+        destination = self.home / ".local/yac"
         self.assertEqual(result, 0)
         self.assertNotIn("personal settings", (destination / "yac.ini").read_text())
         self.assertEqual((destination / "KEY-BINDINGS-English.txt").read_bytes(),
@@ -127,7 +154,7 @@ class Installer(unittest.TestCase):
         with patch.object(install_yac.sys, "platform", "linux"), patch.object(install_yac.os, "geteuid", return_value=0, create=True), patch.object(install_yac, "ask") as ask, redirect_stdout(io.StringIO()):
             self.assertEqual(install_yac.main(self.source, self.home), 1)
         ask.assert_not_called()
-        self.assertFalse((self.home / "yac").exists())
+        self.assertFalse((self.home / ".local/yac").exists())
 
 
 if __name__ == "__main__":

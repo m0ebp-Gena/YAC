@@ -59,7 +59,7 @@ def control(yac, root, radio, language, key, call, read_key, watch):
             chat_int.show_request(call, pressed)
             chat_int.show_response(help_int.get_help(root, language, 'h005'))
         elif pressed == 'q':
-            chat_int.show_back(root, language)
+            chat_int.show_done(root, language)
             chat_int.show_request(call, pressed)
             return None
         else:

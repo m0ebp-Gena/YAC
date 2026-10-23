@@ -7,7 +7,7 @@ z: Frequenz auf das nächste Kilohertz runden
 s: Einstellungen; v wählt FTX-1 Main/Sub oder Icom VFO A/B (zuerst A); s speichert die Schrittweite
 o: Offset; o wählt Empfang/Senden/Löschen; Punkt/Komma ändern um 10 Hz; q beendet
 i: Toneingabe; i wechselt CTCSS/DCS N/DCS I; Wert eingeben, Enter, dann bei Abfrage t für TX oder b für Beide; q beendet, h hilft
-q: YAC beenden
+q: YAC beenden; y bestätigt, n oder q bricht ab. In Untermenüs kehrt q sofort zurück.
 Radioauswahl: Nummer markieren, Leertaste bestätigt, q bricht ab
 p: Vorverstärkerstufen und aus durchschalten
 u: Abschwächerstufen und aus durchschalten

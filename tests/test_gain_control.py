@@ -65,7 +65,7 @@ class GainTests(unittest.TestCase):
         import io
         from contextlib import redirect_stdout
         r=create_dummy_radio()
-        keys=iter(['a','.','q','r',',','w','q'])
+        keys=iter(['a','.','q','r',',','w','q', 'y'])
         with patch.object(yac,'connect_radio',return_value=r),patch.object(yac,'_read_settings',return_value={'call':'test','lang':'en'}),patch.object(lang_sel,'read_key',side_effect=lambda:next(keys)),redirect_stdout(io.StringIO()):
             self.assertEqual(yac.main([]),0)
         self.assertEqual(r.serial.gains['AG0'],136)

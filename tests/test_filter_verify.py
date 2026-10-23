@@ -75,7 +75,7 @@ class FilterVerifyTests(unittest.TestCase):
             self.assertEqual(exchange.call_count,1)
     def test_verify_keeps_adjustment_and_nested_q(self):
         radio=create_dummy_radio()
-        keys=iter(['f','c','l','v','.','q','v','q','v','q'])
+        keys=iter(['f','c','l','v','.','q','v','q','v','q', 'y'])
         output=io.StringIO()
         with patch.object(yac,'connect_radio',return_value=radio),patch.object(yac,'_read_settings',return_value={'call':'test','lang':'en'}),patch.object(lang_sel,'read_key',side_effect=lambda:next(keys)),redirect_stdout(output):
             self.assertEqual(yac.main([]),0)
@@ -114,7 +114,7 @@ class FilterVerifyTests(unittest.TestCase):
 
     def test_keyboard_repeated_v_q_and_other_key_reset(self):
         radio=create_dummy_radio()
-        keys=iter(['f','v','v','v','h','v','q','f','v','v','q','q'])
+        keys=iter(['f','v','v','v','h','v','q','f','v','v','q','q', 'y'])
         output=io.StringIO()
         with patch.object(yac,'connect_radio',return_value=radio),patch.object(yac,'_read_settings',return_value={'call':'test','lang':'en'}),patch.object(lang_sel,'read_key',side_effect=lambda:next(keys)),redirect_stdout(output):
             self.assertEqual(yac.main([]),0)

@@ -6,12 +6,14 @@ import subprocess
 import sys
 import argparse
 import re
+import json
 from datetime import date
 
 root = Path(__file__).resolve().parent
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--date", default=date.today().isoformat(), help="Release date (YYYY-MM-DD)")
 parser.add_argument("--dist-dir", default="builds/.work/demo-dist", help="Staging directory within builds")
+parser.add_argument('--stage-only', action='store_true', help='Build and verify without publishing release artifacts')
 args = parser.parse_args()
 date.fromisoformat(args.date)
 staging = (root / args.dist_dir).resolve()
@@ -34,10 +36,16 @@ shutil.copyfile(root / "doc/CWKit-LICENSE.txt", destination / "doc/CWKit-LICENSE
 shutil.copyfile(root / "doc/decoder-controls.md", destination / "doc/decoder-controls.md")
 for guide in ('split-controls.md', 'antenna-controls.md', 'tuner-controls.md', 'AUDIO-LICENSES.txt'):
     shutil.copyfile(root / 'doc' / guide, destination / 'doc' / guide)
+for guide in (root / 'doc').iterdir():
+    if guide.is_file() and guide.suffix in {'.md', '.html'}:
+        shutil.copyfile(guide, destination / 'doc' / guide.name)
 (destination / "yac.ini").write_text("[yac]\nplatform=\nlang=\ncall=\ndebug=true\n", encoding="utf-8")
+(destination / 'release.json').write_text(json.dumps({'tag': 'v001-beta-' + args.date,
+                                                    'published_at': args.date + 'T00:00:00Z'}))
 guides = {
     "LICENSE": "LICENSE",
     "COPYING": "COPYING",
+    "changelog.txt": "changelog.txt",
     "KEY-BINDINGS-English.txt": "KEY-BINDINGS-English.txt",
     "TASTENBELEGUNG-Deutsch.txt": "TASTENBELEGUNG-Deutsch.txt",
     "SKROTY-KLAWISZOWE-Polski.txt": "SKROTY-KLAWISZOWE-Polski.txt",
@@ -56,5 +64,5 @@ if version_match is None:
 version = re.sub(r"[^A-Za-z0-9]+", "-", version_match.group(1)).strip("-")
 (destination / "YAC.exe").replace(destination / ("YAC-" + version + ".exe"))
 subprocess.run([sys.executable, str(root / "package_demo.py"), "--date", args.date,
-                "--source", str(destination), "--include-demo"], cwd=root, check=True)
+                "--source", str(destination), *(['--stage-only'] if args.stage_only else ['--include-demo'])], cwd=root, check=True)
 

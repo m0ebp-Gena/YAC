@@ -60,7 +60,7 @@ class VerifySettingsTests(unittest.TestCase):
 
     def test_keyboard_routes_top_level_and_settings_keys(self):
         radio = create_dummy_radio()
-        keys = iter(['v','p','p','u','s','t','t','q','v','q'])
+        keys = iter(['v','p','p','u','s','t','t','q','v','q', 'y'])
         output = io.StringIO()
         with patch.object(yac, 'connect_radio', return_value=radio), \
              patch.object(yac, '_read_settings', return_value={'call':'test','lang':'en'}), \

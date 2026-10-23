@@ -1,6 +1,13 @@
 Settings controls
 =================
 
+`s`, then `u`, opens Update YAC. Space confirms the handover after closing the
+radio; `q` cancels. The updater offers release notes and a separate explicit
+install choice. See [Updating YAC](updating-yac.md) for platform details.
+
+`s`, then `w`, opens Wi-Fi setup on the configured Raspberry Pi image only.
+Other installations use their operating system's Wi-Fi controls.
+
 `p` cycles the supported preamp stages and off. `u` cycles the supported
 attenuator levels and off. Radios with a single attenuator level toggle on/off;
 FT-DX10 and IC-7600 also expose 6, 12 and 18 dB.

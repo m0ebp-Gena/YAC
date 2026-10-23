@@ -11,3 +11,12 @@ s abre el paso para el modo actual. t recorre opciones del sintonizador y confir
 e abre el procesador y lee ajustes. e dentro conmuta; punto aumenta y coma disminuye. n restaura los ajustes iniciales del procesador; q conserva cambios. h dentro explica controles y respuestas.
 
 Las opciones, límites y excepciones de cada modelo están en doc/supported-radios, en el archivo de texto con el nombre de tu radio. READ-ME.txt explica estas notas. Las respuestas habladas también aparecen como texto para la línea braille. Se anuncian funciones no admitidas y lecturas desconocidas o fallidas.
+
+
+s b: h Ayuda; b alterna Voz y braille, Solo braille, Solo voz, como el selector de desplazamiento. Explorar no cambia el modo. Punto o coma aplica y guarda el modo seleccionado. Solo braille silencia Speakup. La voz requiere su servicio activo. El braille conectado sigue disponible en todos los modos. q vuelve y descarta la selección no aplicada.
+s o: h Ayuda; o siguiente opción; . aumentar; , disminuir; q Volver. t Prueba; d Valores predeterminados. Los cambios se aplican y guardan inmediatamente.
+h Ayuda; o alterna Velocidad, Volumen, Tono y Puntuación, como el selector de desplazamiento. Al entrar se selecciona Velocidad. Punto aumenta; coma disminuye. Cada ajuste se aplica y guarda inmediatamente; q conserva los cambios y vuelve. t Prueba; d aplica los valores de YAC: velocidad 2, volumen 5, tono 5, puntuación Alguna. Velocidad y tono de 0 a 9; volumen de 1 a 9.
+
+s u: Actualizar YAC. Espacio cierra la conexion con la radio y abre el actualizador; q vuelve a Ajustes.
+
+s w: La configuración Wi-Fi solo está disponible en la imagen Raspberry Pi. Aquí use los ajustes Wi-Fi del sistema. Configuración Wi-Fi: país, nombre de red y contraseña. Ctrl+C cancela; puntuación y letras de comandos son caracteres normales.

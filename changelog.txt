@@ -1,0 +1,21 @@
+YAC changes
+
+23 October 2026
+- Mac source installations use ~/Applications/yac; Linux uses ~/.local/yac.
+- update-yac checks published GitHub beta releases without requiring Git.
+- r reads changes, q cancels, Space installs a verified source download.
+- The source download is yac-source.zip with a dated extracted folder.
+- GPLv3 licence information is included in source and Windows packages.
+- Settings u opens the updater after releasing the radio connection.
+- Top-level q asks for confirmation; cancelling keeps YAC running.
+- Individual controls finish with Done; Settings, Filters and CW menus return with Back.
+- Existing English, German, Spanish and Polish interfaces are retained.
+
+18 October 2026
+- Corrected FTX-1 Optima tuner selection and recognition of tuning completion.
+- Restored language-selection feedback for speech and braille.
+- Power entry announces the current setting before its allowed range.
+- Shortened microphone preparation to one acknowledgement; details are in help.
+- Moved model-specific Settings and microphone information into radio notes.
+- Mic gain, tuner selection and tuning tested on Gena's FTX-1 Optima.
+- ALC readings still require comparison with the visual recommended zone.

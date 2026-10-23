@@ -1,0 +1,11 @@
+s w: Konfiguracja Wi-Fi jest dostępna tylko w obrazie Raspberry Pi. Tutaj użyj ustawień Wi-Fi systemu.
+Konfiguracja Wi-Fi: kraj, nazwa sieci i hasło. Ctrl+C anuluje wpisywanie; interpunkcja i litery poleceń są zwykłymi znakami.
+Kraj WLAN: GB. Wpisz dwie litery, na przykład GB, DE, ES lub PL. Pusty Enter zachowuje obecny kraj:
+Nieprawidłowy kraj. Wpisz dwuliterowy kod; UK jest akceptowane jako GB.
+Nazwa sieci (SSID), dokładnie jak ustawiono w routerze:
+Hasło. Wpisywanie jest ukryte, echo klawiszy Speakup chwilowo wyłączone. Pusty Enter dla sieci otwartej. Ctrl+C anuluje:
+Nieprawidłowa nazwa sieci. Użyj od 1 do 32 bajtów UTF-8 bez znaków sterujących.
+Nieprawidłowe hasło dla tej sieci. Sprawdź długość i rodzaj zabezpieczeń.
+Kraj GB, sieć S S I D. Spacja łączy i zapisuje; e edytuje; q wraca bez łączenia.
+Łączenie z Wi-Fi. Może potrwać do dwóch minut.
+Wi-Fi połączone i zapisane. Aktualizator sprawdza dostęp do internetu osobno.

@@ -35,19 +35,21 @@ def launcher_text(destination):
     return "#!/bin/sh\nexec " + executable + " " + program + ' "$@"\n'
 
 
-def install_shortcut(launcher, home):
+def install_shortcut(launcher, home, command_name="yac"):
+    if command_name not in {"yac", "update-yac"}:
+        raise ValueError("Unexpected launcher name")
     system_directory = Path("/usr/local/bin")
-    system_target = system_directory / "yac"
+    system_target = system_directory / command_name
     # Never replace another command, including a broken symbolic link.
     if system_target.exists() or system_target.is_symlink():
-        print("An existing /usr/local/bin/yac was left unchanged.")
+        print("An existing " + str(system_target) + " was left unchanged.")
         return
     elif system_directory.is_dir():
         writable = os.access(system_directory, os.W_OK)
         sudo = shutil.which("sudo")
         if writable or sudo:
             explanation = "" if writable else " (requires sudo; you may be asked for your password)"
-            if ask("Create /usr/local/bin/yac" + explanation + "?"):
+            if ask("Create " + str(system_target) + explanation + "?"):
                 try:
                     if writable:
                         with system_target.open("x", encoding="utf-8", newline="\n") as stream:
@@ -58,7 +60,7 @@ def install_shortcut(launcher, home):
                         # noclobber also protects against an intervening new file.
                         command = 'set -C; umask 022; cat "$1" > "$2" && chmod 755 "$2"'
                         subprocess.run([sudo, "sh", "-c", command, "yac-launcher", str(launcher), str(system_target)], check=True)
-                    print("Launcher installed. Type yac in your terminal.")
+                    print("Launcher installed. Type " + command_name + " in your terminal.")
                     print("This shortcut points to your personal YAC installation.")
                     return
                 except (OSError, subprocess.CalledProcessError):
@@ -66,9 +68,9 @@ def install_shortcut(launcher, home):
     else:
         print("/usr/local/bin is unavailable; YAC's own launcher remains usable.")
 
-    local_target = home / ".local/bin/yac"
+    local_target = home / ".local/bin" / command_name
     if local_target.exists() or local_target.is_symlink():
-        print("An existing personal yac command was left unchanged.")
+        print("An existing personal " + command_name + " command was left unchanged.")
         return
     if ask("Create a personal shortcut at " + str(local_target) + " instead?"):
         local_target.parent.mkdir(parents=True, exist_ok=True)
@@ -76,10 +78,15 @@ def install_shortcut(launcher, home):
             stream.write(launcher.read_text(encoding="utf-8"))
         local_target.chmod(0o755)
         print("Personal shortcut created: " + str(local_target))
-        print("If ~/.local/bin is in your PATH, type yac. Otherwise use ~/yac/run-yac.")
+        print("If ~/.local/bin is in your PATH, type " + command_name + ". Otherwise use " + shlex.quote(str(launcher)) + ".")
 
 
-def main(source=None, home=None):
+def installation_directory(home, platform):
+    """Keep application files in the platform-specific personal directory."""
+    return Path(home) / ("Applications" if platform == "darwin" else ".local") / "yac"
+
+
+def main(source=None, home=None, update=False):
     if sys.version_info < (3, 10):
         print("Install Python 3.10 or newer using your package manager, then try again.")
         return 1
@@ -94,7 +101,7 @@ def main(source=None, home=None):
     if source.is_file():
         source = source.parent
     home = Path(home or Path.home()).resolve()
-    destination = home / "yac"
+    destination = installation_directory(home, sys.platform)
     for name in ("yac.py", "modules", "lang", "rad_cmds"):
         if not (source / name).exists():
             print("Missing " + name + ". Extract the complete YAC source package, not the Windows executable package.")
@@ -109,16 +116,19 @@ def main(source=None, home=None):
     print("Python " + sys.version.split()[0] + " is available.")
     print("Setup updates changed YAC files and preserves existing settings, logs and .venv.")
     print("It installs pyserial only if a compatible version is missing from the private environment.")
-    if not ask(("Update " if updating else "Create ") + str(destination) + " and set up YAC?"):
+    if not update and not ask(("Update " if updating else "Create ") + str(destination) + " and set up YAC?"):
         print("No installation was made.")
         return 0
     try:
-        destination.mkdir(exist_ok=True)
+        destination.mkdir(parents=True, exist_ok=True)
         copy_changed(source / "yac.py", destination / "yac.py")
         for name in ("modules", "lang", "rad_cmds"):
             copy_changed(source / name, destination / name)
         if (source / 'doc/supported-radios').is_dir():
             copy_changed(source / 'doc/supported-radios', destination / 'doc/supported-radios')
+        for guide in (source / 'doc').glob('*'):
+            if guide.is_file() and guide.suffix in {'.md', '.html'}:
+                copy_changed(guide, destination / 'doc' / guide.name)
         if (source / "doc/linux-macos-setup.txt").is_file():
             copy_changed(source / "doc/linux-macos-setup.txt", destination / "LINUX-MACOS-SETUP.txt")
         for chart in ("KEY-BINDINGS-English.txt", "TASTENBELEGUNG-Deutsch.txt",
@@ -135,9 +145,9 @@ def main(source=None, home=None):
         except subprocess.CalledProcessError:
             print("Could not create the environment. Consult your package manager's Python venv/pip instructions.")
             print("On Debian, Ubuntu and Raspberry Pi OS, the required package is usually python3-venv.")
-            print("After installing it, run: python3 -m venv ~/yac/.venv")
-            print('Then run: ~/yac/.venv/bin/python -m pip install "pyserial>=3.5,<4"')
-            print("Start YAC with: ~/yac/.venv/bin/python ~/yac/yac.py")
+            print("After installing it, run: python3 -m venv " + shlex.quote(str(destination / ".venv")))
+            print('Then run: ' + shlex.quote(str(python)) + ' -m pip install "pyserial>=3.5,<4"')
+            print("Start YAC with: " + shlex.quote(str(python)) + " " + shlex.quote(str(destination / "yac.py")))
             return 1
         try:
             if updating and python.is_file():
@@ -157,9 +167,12 @@ def main(source=None, home=None):
             subprocess.run([str(python), "-c", "import yac, serial; from serial.tools import list_ports"], cwd=destination, check=True)
         except subprocess.CalledProcessError:
             print("Dependency installation or the import check failed. Check the messages above.")
-            print('To retry the dependency install: ~/yac/.venv/bin/python -m pip install "pyserial>=3.5,<4"')
-            print("To run YAC afterwards: ~/yac/.venv/bin/python ~/yac/yac.py")
+            print('To retry the dependency install: ' + shlex.quote(str(python)) + ' -m pip install "pyserial>=3.5,<4"')
+            print("To run YAC afterwards: " + shlex.quote(str(python)) + " " + shlex.quote(str(destination / "yac.py")))
             return 1
+        for name in ("LICENSE", "COPYING", "changelog.txt", "update_yac.py"):
+            if (source / name).is_file():
+                copy_changed(source / name, destination / name)
         launcher = destination / "run-yac"
         text = launcher_text(destination)
         if launcher.is_symlink():
@@ -167,8 +180,21 @@ def main(source=None, home=None):
         if not launcher.is_file() or launcher.read_text(encoding="utf-8") != text:
             launcher.write_text(text, encoding="utf-8", newline="\n")
         launcher.chmod(0o755)
-        print("YAC is installed. Start it in your terminal with: ~/yac/run-yac")
-        install_shortcut(launcher, home)
+        print("YAC is installed. Start it in your terminal with: " + shlex.quote(str(launcher)))
+        if not update:
+            install_shortcut(launcher, home)
+        if (destination / 'update_yac.py').is_file():
+            updater = destination / 'update-yac'
+            if updater.is_symlink():
+                raise OSError('Refusing to overwrite symbolic link: ' + str(updater))
+            updater.write_text('#!/bin/sh\nexec ' + shlex.quote(str(python)) + ' ' +
+                               shlex.quote(str(destination / 'update_yac.py')) + ' "$@"\n', encoding='utf-8', newline='\n')
+            updater.chmod(0o755)
+            if not update:
+                install_shortcut(updater, home, command_name='update-yac')
+            print("Alternatively, inside YAC press s for Settings, then u for Update.")
+        if (source / 'release.json').is_file():
+            copy_changed(source / 'release.json', destination / 'release.json')
         print("Settings and logs stay in " + str(destination))
         print("Setup has not opened any radio ports or started YAC.")
         return 0
@@ -179,4 +205,7 @@ def main(source=None, home=None):
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--update', action='store_true', help='Update after confirmation by update-yac')
+    sys.exit(main(update=parser.parse_args().update))

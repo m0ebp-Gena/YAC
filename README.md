@@ -71,9 +71,20 @@ pyserial. Only new or changed program/data files are copied. See [Linux and macO
 for requirements, launch commands and radio access details.
 
 For braille and console speech, see [BRLTTY display commands](BRAILLE-FS-START-HERE.txt)
-and the [Pi BRLTTY speech guide](doc/pi-brltty-speech.txt). Initial Linux testing
+for display commands. Pi image-builder documents are supplied separately in
+the Pi kit. Initial Linux testing
 has confirmed usable Freedom Scientific braille and the simulated-radio startup
 line; broader hardware and sleep/wake testing remains ongoing.
+
+On the configured Pi image, Settings `s o` opens Speakup speech options.
+`s b` selects the saved speech/braille mode. Speech adjustments apply and save
+immediately; `q` returns and keeps changes. `s s` remains tuning step. These require the
+image-only helper, supplied and documented in the separate Pi kit.
+Normal source, Windows and macOS launches leave external screen-reader settings
+alone. Accessible documentation starts at [the HTML index](doc/index.html).
+
+Settings `s u` opens the updater on installed Linux/macOS source versions and
+portable Windows builds. See [Updating YAC](doc/updating-yac.html).
 
 Real connections are checked quietly every five seconds while waiting for
 command keys. After repeated failures, YAC attempts to reconnect to the same

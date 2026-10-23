@@ -11,3 +11,12 @@ s opens tuning step entry for the current mode. t cycles tuner choices and annou
 e opens Speech Processor and reads its settings. e inside toggles it; full stop increases and comma decreases the selected level. n cancels and restores entry processor settings; q keeps changes. h inside explains the available controls and feedback.
 
 Model-specific choices, limits and exceptions are in doc/supported-radios: open the text file named for your radio. READ-ME.txt explains these notes. Spoken responses are also written as text for the braille display. Unsupported controls and failed or unknown readings are reported.
+
+
+s b: h Help; b cycles Speech and braille, Braille only, Speech only, like the offset selector. Browsing does not change the mode. Full stop or comma applies and saves the selected mode. Braille only mutes Speakup. Speech choices require its service to be running. Attached braille remains available in every mode. q returns; unapplied browsing is discarded.
+s o: h Help; o next option; . increase; , decrease; q Back. t Test; d Defaults. Changes apply and save immediately.
+h Help; o cycles Rate, Volume, Pitch, Punctuation, like the offset selector. Rate is selected on entry. Full stop increases; comma decreases. Each adjustment applies and saves immediately; q keeps changes and returns. t Test; d immediately applies YAC defaults: rate 2, volume 5, pitch 5, punctuation Some. Rate and pitch range 0 to 9, volume 1 to 9. Punctuation: None, Some, Most, All.
+
+s u: Update YAC. Space closes the radio connection and opens the updater; q returns to Settings.
+
+s w: Wi-Fi setup is available only on the Raspberry Pi image. Use your operating system Wi-Fi settings here. Wi-Fi setup. Country, network name and password. Ctrl+C cancels entry; punctuation and command letters are literal.

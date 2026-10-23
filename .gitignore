@@ -5,6 +5,7 @@
 /yac.ini
 /github_url.txt
 /logs/
+/.update.lock
 *.log
 
 # Python environments, caches and downloaded build dependencies.

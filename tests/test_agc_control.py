@@ -82,7 +82,7 @@ class AgcTests(unittest.TestCase):
 
     def test_keyboard_stays_in_settings_and_help(self):
         radio = create_dummy_radio()
-        keys = iter(['s', 'a', 'a', 'h', 'q', 'q'])
+        keys = iter(['s', 'a', 'a', 'h', 'q', 'q', 'y'])
         with patch.object(yac, 'connect_radio', return_value=radio), patch.object(yac, '_read_settings', return_value={'call':'test','lang':'en'}), patch.object(lang_sel, 'read_key', side_effect=lambda: next(keys)), redirect_stdout(io.StringIO()) as output:
             self.assertEqual(yac.main([]), 0)
         self.assertIn('AGC Off', output.getvalue())

@@ -11,3 +11,12 @@ s öffnet die Schrittweite für die aktuelle Betriebsart. t schaltet Tuner-Auswa
 e öffnet den Sprachprozessor und liest Einstellungen. e darin schaltet; Punkt erhöht, Komma verringert. n stellt ursprüngliche Prozessorwerte wieder her; q behält Änderungen. h darin erklärt Bedienung und Rückmeldungen.
 
 Modellspezifische Auswahl, Grenzen und Ausnahmen stehen in doc/supported-radios in der nach Ihrem Radio benannten Textdatei. READ-ME.txt erklärt diese Hinweise. Sprachausgaben erscheinen auch als Text für die Braillezeile. Nicht unterstützte Funktionen und fehlgeschlagene oder unbekannte Abfragen werden gemeldet.
+
+
+s b: h Hilfe; b wechselt zwischen Sprache und Braille, Nur Braille, Nur Sprache, wie bei der Offset-Auswahl. Die Auswahl allein ändert nichts. Punkt oder Komma wendet den gewählten Modus an und speichert ihn. Nur Braille schaltet Speakup stumm. Sprache erfordert einen laufenden Sprachdienst. Angeschlossenes Braille bleibt in jedem Modus verfügbar. q kehrt zurück und verwirft eine nicht angewendete Auswahl.
+s o: h Hilfe; o nächste Option; . erhöhen; , verringern; q Zurück. t Test; d Standardwerte. Änderungen werden sofort angewendet und gespeichert.
+h Hilfe; o wechselt zwischen Geschwindigkeit, Lautstärke, Tonhöhe und Zeichensetzung, wie bei Offset. Anfangs ist Geschwindigkeit gewählt. Punkt erhöht; Komma verringert. Jede Änderung gilt sofort und wird gespeichert; q behält Änderungen und kehrt zurück. t Test; d YAC-Standardwerte sofort anwenden: Geschwindigkeit 2, Lautstärke 5, Tonhöhe 5, Zeichensetzung Einige. Geschwindigkeit und Tonhöhe 0 bis 9, Lautstärke 1 bis 9.
+
+s u: YAC aktualisieren. Leertaste schliesst die Funkgeraeteverbindung und oeffnet die Aktualisierung; q kehrt zu Einstellungen zurueck.
+
+s w: WLAN-Einrichtung ist nur im Raspberry-Pi-Abbild verfügbar. Hier die WLAN-Einstellungen des Betriebssystems verwenden. WLAN-Einrichtung: Land, Netzwerkname und Passwort. Strg+C bricht die Eingabe ab; Satzzeichen und Befehlsbuchstaben sind normale Zeichen.

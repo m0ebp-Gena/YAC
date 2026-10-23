@@ -66,7 +66,7 @@ class PowerTests(unittest.TestCase):
 
     def test_settings_power_stays_in_settings_and_confirms_success(self):
         radio=create_dummy_radio()
-        keys=iter(['s','p','q','v','q'])
+        keys=iter(['s','p','q','v','q', 'y'])
         output=io.StringIO()
         with patch.object(yac,'connect_radio',return_value=radio),patch.object(yac,'_read_settings',return_value={'call':'test','lang':'en'}),patch.object(lang_sel,'read_key',side_effect=lambda:next(keys)),patch('builtins.input',return_value='33'),redirect_stdout(output):
             self.assertEqual(yac.main([]),0)

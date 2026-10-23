@@ -119,7 +119,7 @@ class NoiseReductionTests(unittest.TestCase):
 
     def test_keyboard_nested_navigation_and_repeat_toggle(self):
         radio=create_dummy_radio()
-        keys=iter(['f','r','.','f','r','.','r',',','q','q','q'])
+        keys=iter(['f','r','.','f','r','.','r',',','q','q','q', 'y'])
         output=io.StringIO()
         with patch.object(yac,'connect_radio',return_value=radio),patch.object(yac,'_read_settings',return_value={'call':'test','lang':'en'}),patch.object(lang_sel,'read_key',side_effect=lambda:next(keys)),redirect_stdout(output):
             self.assertEqual(yac.main([]),0)
@@ -131,7 +131,7 @@ class NoiseReductionTests(unittest.TestCase):
 
     def test_each_q_keeps_back_visible_until_the_next_key(self):
         radio = create_dummy_radio()
-        keys = iter(['f', 'r', 'q', 'q', 's', 'q', 'q'])
+        keys = iter(['f', 'r', 'q', 'q', 's', 'q', 'q', 'y'])
         output = io.StringIO()
         before_keys = []
         def read_key():
@@ -141,10 +141,12 @@ class NoiseReductionTests(unittest.TestCase):
              patch.object(yac, '_read_settings', return_value={'call':'test', 'lang':'en'}), \
              patch.object(lang_sel, 'read_key', side_effect=read_key), redirect_stdout(output):
             self.assertEqual(yac.main([]), 0)
-        # Each submenu exit leaves its own Back response under the cursor.
-        for index in (3, 4, 6):
+        # Finishing an adjustment says Done; leaving menus says Back.
+        self.assertEqual(before_keys[3], 'Done')
+        for index in (4, 6):
             self.assertEqual(before_keys[index], 'Back')
-        self.assertEqual(output.getvalue().splitlines().count('Back'), 3)
+        self.assertEqual(output.getvalue().splitlines().count('Done'), 1)
+        self.assertEqual(output.getvalue().splitlines().count('Back'), 2)
 
     def test_translated_labels_have_matching_fields(self):
         fields=lambda s:{f for _,f,_,_ in string.Formatter().parse(s) if f}

@@ -74,3 +74,7 @@ def show_goodbye(root: Path, language: str, call: str = "") -> None:
 
 def show_back(root: Path, language: str) -> None:
     show_response(label(root, language, "l207", "Back"))
+
+
+def show_done(root: Path, language: str) -> None:
+    show_response(label(root, language, "l354", "Done"))

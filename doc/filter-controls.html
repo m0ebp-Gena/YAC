@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Receive filters — YAC documentation</title><style>
+:root { color-scheme: light dark; font: 120%/1.65 system-ui, sans-serif; }
+body { max-width: 76ch; margin: auto; padding: 1rem; }
+a { text-decoration: underline; text-underline-offset: .15em; }
+a:focus-visible { outline: .2rem solid currentColor; outline-offset: .2rem; }
+pre { padding: 1rem; border: 1px solid; white-space: pre-wrap; overflow-wrap: anywhere; }
+code { font-size: 1em; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid; padding: .5rem; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+h1, h2, h3, h4 { line-height: 1.3; }
+@media print { nav, .skip { display: none; } body { max-width: none; } }
+</style></head>
+<body><a class="skip" href="#main">Skip to main content</a>
+<nav aria-label="Document navigation"><p><a href="index.html">All documents</a></p><p>On this page:</p><ul><li><a href="#section-2">Model coverage</a></li><li><a href="#section-3">Command references</a></li></ul></nav>
+<main id="main" tabindex="-1"><h1 id="section-1">Receive filters</h1>
+<p><code>f</code> opens Filters. <code>p</code> opens Bandwidth, <code>l</code> Low Cut, and <code>u</code> Upper Cut.
+Full stop increases the selected value; comma decreases it. Each control reads
+the current radio setting on entry and before adjustments, stops at its endpoints,
+and verifies changes by reading back. Opening a control never writes a setting.
+<code>q</code> keeps the setting and returns to Filters; another <code>q</code> returns to the top level.
+<code>h</code> gives filter help. Other command keys leave the adjustment for the top level.
+<code>f b</code> toggles Noise Blanker and opens its level control. Inside it, <code>b</code> toggles
+again. Full stop/comma adjust level only while On; while Off they report Off
+without altering the level. Unknown status prevents toggling; changes require
+readback. <code>q</code> returns to Filters, then another <code>q</code> to the top level.
+Contour is not implemented.</p>
+<p><code>f a</code> toggles Auto Notch; repeated <code>a</code> inside toggles again. On TS-480 it instead
+toggles Beat Cancel and announces BC1 or BC2, retaining the last observed type
+and using BC1 if none is known. <code>f n</code> toggles Manual Notch; repeated <code>n</code> inside
+toggles again. Full stop/comma adjust its current frequency or native position
+while On, stopping at endpoints. <code>w</code> inside Manual Notch cycles supported widths.
+While Off, navigation and width commands leave settings unchanged. <code>q</code> returns
+to Filters, then another <code>q</code> to the top level. Unknown state prevents toggling;
+readback verifies every change.</p>
+<p>Yaesu manual notch reports 10–3200 Hz in 10 Hz steps, with Narrow/Wide width.
+FTX-1 targets the selected Main/Sub side; its menu width is a radio-wide setting.
+Icom reports native position 0–255, with Wide/Mid/Narrow widths. TS-590SG reports
+position 0–127, with Normal/Wide widths. These positions are not represented as
+calibrated frequencies or strength percentages. Selecting an Icom/TS-590SG Auto
+or Manual Notch respects their mutually exclusive operation. Separate Yaesu
+Auto/Manual controls are left independent. Entering the control preserves width
+where separately readable. TS-590SG hides width while not in Manual: YAC restores
+the last manual width it has observed during the connection; if none is known,
+first On uses Normal and announces it. Width cycling does not adjust position.</p>
+<p>TS-590SG Auto Notch is supported in SSB, Manual in SSB/CW/FSK. Its separate BC1/BC2
+function is not assigned here. TS-480 supports Beat Cancel in SSB/FM/AM and has no
+documented tunable Manual Notch; QMX/QMX Plus notch controls remain unsupported.
+Icom Auto covers SSB/AM/FM, Manual SSB/CW/RTTY/AM and IC-7600 PSK. Yaesu coverage
+currently exposes Auto in SSB/AM, Manual in SSB/CW/RTTY/PSK/DATA. Unimplemented
+modes report Not supported without sending a setter. No notch settings are
+imposed at startup.</p>
+<p><code>f r</code> toggles Noise Reduction; repeated <code>r</code> inside toggles again. Full stop/comma
+adjust the current setting only while On. Off navigation reports Off and leaves
+the setting unchanged. Unknown state prevents toggling; every change requires
+readback. <code>q</code> returns to Filters, and another <code>q</code> to the top level.</p>
+<p>FTDX10/FT-710 use separate On/Off and level 1–15. FTX-1 combines Off (00) and
+level 1–10, retaining the last on level observed during the connection per
+Main/Sub; On uses level 1 if none is known. The five Icom profiles report their
+manufacturer-defined percentage. TS-590SG and TS-480 remember the last observed
+NR1/NR2 selection, using NR1 if none is known. TS-590SG NR1 is level 1–10;
+TS-480 NR1 offers Auto, then levels 1–9. Comma from level 1 selects Auto.
+Kenwood NR2 adjusts following time from 2 to 20 milliseconds, not strength.
+YAC uses NR1 in Kenwood FM mode, even if the remembered type is NR2.
+Navigation never switches between NR1 and NR2; select the other type on the
+radio if required. QMX/QMX Plus remain unsupported for Noise Reduction.
+Yaesu FM/digital voice and Icom digital voice/wide FM/DD modes are outside
+this control&#39;s implemented coverage. No reduction settings are imposed at startup.</p>
+<p>Noise Blanker covers the Yaesu FTDX10/FT-710/FTX-1, five Icom profiles below,
+TS-590SG and positively identified TS-480 variants. FM/digital voice modes and
+the QMX/QMX Plus are unsupported by this control. Yaesu and Kenwood levels use
+their numeric scale; Icom uses its documented percentage scale. FTX-1 combines
+Off (0) and levels (1–10) in NL: YAC remembers its last observed on level per
+Main/Sub during the connection, defaulting to level 1 if none is known.
+TS-590SG remembers its last observed NB1/NB2 choice, defaulting to NB1 when
+none is known. No settings are imposed at program startup.</p>
+<h2 id="section-2">Model coverage</h2>
+<ul>
+<li>Yaesu FTDX10 (0761), FT-710 (0800), FTX-1 (0840): numbered SH width values,
+translated to hertz by mode. FTX-1 uses the selected Main/Sub side. FT-710 and
+FTX-1 AM/FM widths are fixed; movement leaves them unchanged. FTDX10 AM/FM
+adjustment is unsupported. A response of 00 is a symbolic manufacturer default,
+not 2400 Hz: it is announced as default and requires selection of a numeric
+width on the radio before YAC can make an ordered adjustment.</li>
+<li>Icom IC-705, IC-7300, IC-7300MK2, IC-7600, IC-9700: CI-V 1A 03 adjusts the
+selected filter&#39;s width, using the mode-specific BCD values. SSB/CW are 50–3600
+Hz, RTTY 50–2700 Hz, AM 200–10000 Hz; IC-7600 PSK uses the SSB/CW table.
+FM and digital voice modes are unsupported by this width control. The radio
+may reset Twin PBT when its filter width is changed.</li>
+<li>Kenwood TS-590SG: FW for CW/FSK; SSB reads DATA status and menus 028/029
+before choosing the appropriate SH/SL meaning. In WIDTH/SHIFT configuration,
+p adjusts SL width; in HIGH/LOW configuration, p directs the user to l or u.
+AM uses the edge controls. Changing one edge leaves the other unchanged.</li>
+<li>TS-480/QMX (shared CAT ID 020): a QMX-only menu read identifies the QMX;
+a valid TS-480 menu 045 read is required before using its command tables.
+Unidentified variants remain read-only and report unknown. TS-480 uses FW in
+CW/FSK, SH/SL cuts in SSB/AM, or SL width when menu 045 enables WIDTH/SHIFT.
+QMX uses MM SSB|Filter RX for 2500/2700/2900/3200 Hz, or MM CW|CW passband
+for enabled CW filters (50/100/150/200/250/300/400/500 Hz and None/wide).
+FW is never used to set QMX bandwidth. MM writes save settings in the radio;
+MU applies the new configuration. QMX may adjust CW centre, offset and
+sidetone according to its own configuration. Old firmware without the menu
+interface reports unknown; Digi mode adjustment is unsupported.</li>
+</ul>
+<p>The independent edge controls currently cover the Kenwood high/low-cut
+configurations above. They report unsupported for the other model profiles.
+Other IDs recognised by discovery do not thereby have implemented filter tables.
+Physical validation remains necessary; automated protocol checks do not establish
+hardware compatibility.</p>
+<h2 id="section-3">Command references</h2>
+<p>Model tables were checked against the local FTDX10 2308-F, FTX-1 2508-C,
+IC-705 CI-V 20200721, IC-7300 full manual 12b, IC-7300MK2 CI-V revision 0,
+TS-590S/SG PC command guide and QMX CAT 1_04_004 manuals, and these manufacturer
+references:</p>
+<ul>
+<li><a href="https://www.yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/FT-710_CAT_OM_ENG_2306-C.pdf">FT-710 CAT guide</a></li>
+<li><a href="https://icomuk.co.uk/files/icom/PDF/productManual/IC-7600_ENG_3.pdf">IC-7600 manual</a></li>
+<li><a href="https://www.icomfrance.com/uploads/files/produit/not-IC-9700_ENG_CI-V_3a-en.pdf">IC-9700 CI-V guide</a></li>
+<li><a href="https://www.kenwood.com/i/products/info/amateur/ts_480/pdf/ts_480_pc.pdf">TS-480 PC commands</a></li>
+<li><a href="https://www.qrp-labs.com/images/qmx/manuals/operation_1_04_004.pdf">QMX operating manual 1_04_004</a></li>
+</ul>
+<p>Contour: f c toggles On/Off. Navigation adjusts current frequency (10-3200 hertz). Inside Contour, l selects Contour level (-40 to +20, spoken as Dip/Neutral/Peak); w selects Contour width (1-11); c returns to frequency. When already on frequency, c toggles On/Off. Full stop increases and comma decreases the selected setting, stopping at endpoints. Off leaves settings unchanged. q returns to Filters, where l means Low Cut; q again returns to top level. Current settings are preserved on switching. FT-DX10, FT-710 and FTX-1 only; FTX-1 frequency/state follow selected Main/Sub, level/width are shared menu settings. APF is separate and is not altered.</p>
+<p>Filter Verify: f v lists switchable filters currently On for the current mode/receiver, using live readback. v inside any filter adjustment gives the same report without leaving the control. Off and unsupported filters are omitted; unreadable states are announced as unknown. If every applicable state is known and Off, says No switchable filters On. Bandwidth/low/upper cuts have no switchable On/Off state and are not included. FTX-1 reports Main or Sub. Verify changes no settings.</p>
+<p>Repeated v review: first v gives the filters-On summary. Further consecutive v presses show one applicable filter at a time, including Off or unknown, then return to the summary. Each status is read live. Any other command restarts the next v at the summary; a receive-mode or receiver change also restarts review. q leaves Filters when at the submenu; inside an adjustment, q first returns to Filters. Main v is unchanged.</p>
+</main>
+<footer><p>YAC documentation. <a href="index.html">All documents</a></p></footer>
+</body></html>

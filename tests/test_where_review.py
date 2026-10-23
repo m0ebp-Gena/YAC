@@ -13,7 +13,7 @@ from tests.test_split_control import ROOT, Cat, Civ
 class WhereReviewTests(unittest.TestCase):
     def test_alternation_and_any_other_key_resets_even_when_returned_from_submenu(self):
         radio=create_dummy_radio()
-        keys=iter(['w','w','w','w','h','w','s','q','w','q'])
+        keys=iter(['w','w','w','w','h','w','s','q','w','q', 'y'])
         output=io.StringIO()
         with patch.object(yac,'connect_radio',return_value=radio), \
              patch.object(yac,'_read_settings',return_value={'call':'test','lang':'en'}), \

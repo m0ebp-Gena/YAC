@@ -190,4 +190,4 @@ def control(yac, root, radio, language, read_key, watch):
     finally:
         if started:
             say('l220')
-        chat_int.show_back(root, language)
+        chat_int.show_done(root, language)

@@ -69,7 +69,7 @@ def control(yac, root, language, read_key):
     while True:
         key = read_key().casefold()
         if key == 'q':
-            chat_int.show_back(root, language)
+            chat_int.show_done(root, language)
             return
         if key == 'h':
             chat_int.show_response(help_int.get_help(root, language, 'h014'))

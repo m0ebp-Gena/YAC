@@ -135,17 +135,17 @@ class AntennaTests(unittest.TestCase):
         self.assertEqual(ant.operate(yac,ROOT,radio,'en'),'Not supported')
 
     def test_menu_entry_help_back_and_command_passthrough(self):
-        keys=iter(['h','q'])
+        keys=iter(['h','q', 'y'])
         radio=create_dummy_radio()
         output=io.StringIO()
         with redirect_stdout(output):
             self.assertIsNone(ant.control(yac,ROOT,radio,'en',lambda:next(keys),SimpleNamespace(lost=False)))
         self.assertIn('Antennas:',output.getvalue())
-        self.assertTrue(output.getvalue().endswith('Back'))
+        self.assertTrue(output.getvalue().endswith('Done'))
         self.assertEqual(ant.control(yac,ROOT,radio,'en',lambda:'w',SimpleNamespace(lost=False)),'w')
 
     def test_top_level_x_dispatch_and_localized_help_and_fields(self):
-        keys=iter(['x','q'])
+        keys=iter(['x','q', 'y'])
         with patch.object(yac,'connect_radio',return_value=create_dummy_radio()), \
              patch.object(yac,'_read_settings',return_value={'call':'test','lang':'en'}), \
              patch.object(lang_sel,'read_key',side_effect=lambda:next(keys)), \

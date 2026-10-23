@@ -30,7 +30,7 @@ class MicGainTests(unittest.TestCase):
             with patch.object(yac, '_cat_exchange') as exchange:
                 _, output = self.run_control(keys)
                 exchange.assert_not_called()
-            self.assertIn('Back', output)
+            self.assertIn('Done', output)
 
     def test_preparation_help_does_not_acknowledge_readiness(self):
         with patch.object(yac, '_cat_exchange') as exchange:
@@ -117,15 +117,16 @@ class MicGainTests(unittest.TestCase):
 
     def test_settings_route_returns_to_settings(self):
         radio = create_dummy_radio()
-        keys = iter(['s', 'm', ' ', '.', 'q', 'q', 'q'])
+        keys = iter(['s', 'm', ' ', '.', 'q', 'q', 'q', 'y'])
         with patch.object(yac, 'connect_radio', return_value=radio), patch.object(yac, '_read_settings', return_value={'call':'test','lang':'en'}), patch.object(lang_sel, 'read_key', side_effect=lambda **kwargs: next(keys)), redirect_stdout(io.StringIO()) as output:
             self.assertEqual(yac.main([]), 0)
-        self.assertEqual(output.getvalue().count('Back'), 2)
+        self.assertEqual(output.getvalue().count('Done'), 1)
+        self.assertEqual(output.getvalue().count('Back'), 1)
         self.assertIn('Bye test', output.getvalue())
 
     def test_idle_polling_reports_peak_after_ptt_release(self):
         radio = create_dummy_radio()
-        keys = iter([' ', 'q'])
+        keys = iter([' ', 'q', 'y'])
         def read_key(idle_callback=None):
             if idle_callback:
                 idle_callback()

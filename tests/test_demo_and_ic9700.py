@@ -22,25 +22,30 @@ class DemoTests(unittest.TestCase):
         radio.model_name = 'IC-705'
         output = io.StringIO()
         def first_command(**kwargs):
+            if 'Quit' in output.getvalue():
+                return 'y'
             self.assertTrue(output.getvalue().endswith('Radio Connected IC-705'))
             return 'q'
         with patch.object(yac, 'connect_radio', return_value=radio), \
              patch.object(yac, '_read_settings', return_value={'call': 'TEST', 'lang': 'en'}), \
              patch.object(lang_sel, 'read_key', side_effect=first_command), redirect_stdout(output):
             self.assertEqual(yac.main([]), 0)
-        self.assertIn('Radio Connected IC-705\nBye TEST', output.getvalue())
+        self.assertIn('Bye TEST', output.getvalue())
 
     def test_simulated_label_stays_under_cursor_until_first_command(self):
         radio = create_dummy_radio()
         output = io.StringIO()
         def first_command():
-            self.assertTrue(output.getvalue().endswith('Simulated Mode'))
+            if 'Quit' in output.getvalue():
+                return 'y'
+            self.assertTrue(output.getvalue().endswith('No radio detected. Using simulated FT-DX10.'))
             return 'q'
         with patch.object(yac, 'connect_radio', return_value=radio), \
              patch.object(yac, '_read_settings', return_value={'call': 'TEST', 'lang': 'en'}), \
              patch.object(lang_sel, 'read_key', side_effect=first_command), redirect_stdout(output):
             self.assertEqual(yac.main([]), 0)
-        self.assertIn('Simulated Mode\nBye TEST', output.getvalue())
+        self.assertIn('Bye TEST', output.getvalue())
+        self.assertEqual(output.getvalue().count('No radio detected.'), 1)
 
     def test_failed_discovery_enters_spanish_interface_without_saving_fake_radio(self):
         with tempfile.TemporaryDirectory(dir=ROOT/'local_storage') as directory:
@@ -52,14 +57,14 @@ class DemoTests(unittest.TestCase):
                 radio = yac.connect_radio(ini)
             self.assertTrue(radio.is_dummy)
             self.assertEqual(ini.read_bytes(), original)
-            self.assertIn('simulada FT-DX10', output.getvalue())
+            self.assertNotIn('FT-DX10', output.getvalue())
             keys = iter(['w', '.', ',', 'm', '.', 'q', 'b', '.', 'q',
-                         'o', '.', 'o', ',', 'o', '.', 'q', 'z', 'q'])
+                         'o', '.', 'o', ',', 'o', '.', 'q', 'z', 'q', 'y'])
             with patch.object(yac, 'connect_radio', return_value=radio), \
                  patch.object(yac, '_read_settings', return_value={'call':'EA3GZA','lang':'es'}), \
                  patch.object(lang_sel, 'read_key', side_effect=lambda: next(keys)), redirect_stdout(output):
                 self.assertEqual(yac.main([]), 0)
-            self.assertIn('Modo de demostración', output.getvalue())
+            self.assertEqual(output.getvalue().count('Ninguna radio detectada. Usando un FT-DX10 simulado.'), 1)
             self.assertIn('Hasta luego EA3GZA', output.getvalue())
             self.assertNotIn('Falló', output.getvalue())
             self.assertFalse(radio.serial.is_open)

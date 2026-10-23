@@ -123,7 +123,7 @@ class NoiseBlankerTests(unittest.TestCase):
 
     def test_keyboard_repeat_f_b_and_b_navigation_and_q(self):
         radio=create_dummy_radio()
-        keys=iter(['f','b','.','f','b','.','b',',','q','q','q'])
+        keys=iter(['f','b','.','f','b','.','b',',','q','q','q', 'y'])
         output=io.StringIO()
         with patch.object(yac,'connect_radio',return_value=radio),patch.object(yac,'_read_settings',return_value={'call':'test','lang':'en'}),patch.object(lang_sel,'read_key',side_effect=lambda:next(keys)),redirect_stdout(output):
             self.assertEqual(yac.main([]),0)

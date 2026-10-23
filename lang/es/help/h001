@@ -6,7 +6,7 @@ z: redondear la frecuencia actual al kHz más cercano
 s: ajustes; v selecciona Main/Sub en FTX-1 o VFO A/B en Icom (la primera pulsación selecciona A)
 s y luego s: guardar el paso de sintonía en hercios para el modo actual
 w: leer intensidad de señal, frecuencia y modo
-q: salir de YAC
+q: salir de YAC; y confirma, n o q cancela. Dentro de los controles, q vuelve inmediatamente.
 o: desplazamiento; o alterna Recepción/Transmisión/Borrar; punto añade 10 Hz y coma resta 10 Hz; en Borrar, cualquiera borra; q sale. IC-9700 admite RIT en recepción, pero no XIT en transmisión.
 i: entrada de tonos; i alterna CTCSS/DCS N/DCS I; introduce un valor, pulsa Intro y luego t para TX o b para Ambos cuando se ofrezca; q sale, h muestra ayuda
 Perfiles: escribe un número para resaltar una radio, pulsa Espacio para seleccionarla o q para cancelar. h muestra esta ayuda.

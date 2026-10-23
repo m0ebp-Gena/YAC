@@ -144,10 +144,11 @@ class ProcessorTests(unittest.TestCase):
 
     def test_keyboard_routes_and_returns_to_settings(self):
         radio = create_dummy_radio()
-        keys = iter(['s', 'e', 'e', '.', 'n', 'q', 'q'])
+        keys = iter(['s', 'e', 'e', '.', 'n', 'q', 'q', 'y'])
         with patch.object(yac, 'connect_radio', return_value=radio), patch.object(yac, '_read_settings', return_value={'call':'test','lang':'en'}), patch.object(lang_sel, 'read_key', side_effect=lambda **kwargs: next(keys)), redirect_stdout(io.StringIO()) as output:
             self.assertEqual(yac.main([]), 0)
-        self.assertEqual(output.getvalue().count('Back'), 2)
+        self.assertEqual(output.getvalue().count('Done'), 1)
+        self.assertEqual(output.getvalue().count('Back'), 1)
         self.assertFalse(radio.serial.processor_on)
 
     def test_n_in_meter_preparation_cancels_control(self):
@@ -163,14 +164,14 @@ class ProcessorTests(unittest.TestCase):
             original_write(yac, radio, spec, levels)
             return False  # Acknowledgement lost, but the radio changed.
         with patch.object(proc, 'set_levels', side_effect=uncertain):
-            keys = iter(['e', '.', 'n', 'q'])
+            keys = iter(['e', '.', 'n', 'q', 'y'])
             self.run_control(keys, radio)
         # Even the failed restore write is kept for retry, never claimed restored.
         self.assertEqual(radio.serial.processor_level, 25)
 
     def test_monitor_captures_comp_peak_with_manual_ptt(self):
         radio = create_dummy_radio()
-        keys = iter([' ', ' ', 'q'])
+        keys = iter([' ', ' ', 'q', 'y'])
         def read_key(idle_callback=None):
             if idle_callback:
                 idle_callback()

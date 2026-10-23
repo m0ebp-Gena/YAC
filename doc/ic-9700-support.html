@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Icom IC-9700 — YAC documentation</title><style>
+:root { color-scheme: light dark; font: 120%/1.65 system-ui, sans-serif; }
+body { max-width: 76ch; margin: auto; padding: 1rem; }
+a { text-decoration: underline; text-underline-offset: .15em; }
+a:focus-visible { outline: .2rem solid currentColor; outline-offset: .2rem; }
+pre { padding: 1rem; border: 1px solid; white-space: pre-wrap; overflow-wrap: anywhere; }
+code { font-size: 1em; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid; padding: .5rem; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+h1, h2, h3, h4 { line-height: 1.3; }
+@media print { nav, .skip { display: none; } body { max-width: none; } }
+</style></head>
+<body><a class="skip" href="#main">Skip to main content</a>
+<nav aria-label="Document navigation"><p><a href="index.html">All documents</a></p></nav>
+<main id="main" tabindex="-1"><h1 id="section-1">Icom IC-9700</h1>
+<p>The IC-9700 profile is based on the manufacturer&#39;s <a href="https://www.icomfrance.com/uploads/files/produit/not-IC-9700_ENG_CI-V_3a-en.pdf">CI-V Reference Guide,
+revision 3a</a>
+and <a href="https://www.icomjapan.com/lineup/products/IC-9700/">official specifications</a>.
+It has offline simulation coverage; physical IC-9700 testing is still needed.</p>
+<p>Discovery recognises the factory address A2 and reads the transceiver ID with
+19 00, including when the user changes its CI-V address. Existing USB/serial
+discovery and saved connection profiles apply.</p>
+<p>The profile provides frequency and mode reading/setting, S-meter reports,
+frequency steps, band navigation across 2 m/70 cm/23 cm, VFO A/B selection,
+receive RIT, FM CTCSS/DTCS tones and frequency rounding. Commands 03/04/05/06, 07 00/01,
+15 02 and 21 00/01 are documented in the guide. A/B selects VFOs within the
+current band; it does not select MAIN/SUB. In satellite mode, the radio may
+reject VFO B selection; YAC keeps its previous selection unless acknowledged.</p>
+<p>RIT is supported; XIT is not. YAC reports unsupported transmit offset without
+sending 21 02. Clearing offsets clears RIT. Signal conversion uses the documented
+0=S0, 120=S9, 241=S9+60 endpoints with approximate intermediate interpolation.</p>
+<p>Frequency entry rejects gaps between the three bands. The profile allows the
+widest documented USA ranges (144–148, 430–450, 1240–1300 MHz). European and
+other regional radios impose their own narrower ranges; rejected settings are
+reported and restored using YAC&#39;s normal acknowledgement/readback checks.</p>
+<p>Modes are LSB, USB, AM, CW, RTTY, FM, CW-R, RTTY-R, DV and DD (22).
+DD is offered only on 23 cm after command 16 5A confirms satellite mode OFF.
+No WFM is offered. The radio&#39;s acknowledgement and mode readback still determine
+whether any requested mode change succeeded.</p>
+<p>Shared command files 25/26 address selected/unselected VFOs on MAIN only;
+they are not a satellite or SUB-band control implementation. Satellite tracking,
+D-STAR callsign configuration, memory programming and MAIN/SUB selection are
+outside the current interface. This profile does not add transmission controls.</p>
+<p>FM tone commands follow 1B 00/01/02 and 16 5D, with CTCSS/DTCS
+readback verification. The interface offers TX or Both, including normal/inverted
+DTCS polarity, on the three supported bands.</p>
+</main>
+<footer><p>YAC documentation. <a href="index.html">All documents</a></p></footer>
+</body></html>

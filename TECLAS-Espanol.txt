@@ -92,3 +92,11 @@ s luego a  Cambia opciones AGC admitidas; repite a. Lectura verificada. s h da a
 s luego e  Procesador: abre sin cambios; e conmuta; punto/coma ajustan activo. Kenwood i/o Entrada/Salida. n cancela y restaura; q conserva; h ayuda.
 
 Nuevos controles: l split/repetidor; w repetido muestra RX/TX y tono; x antenas (x principal, r recepción, h ayuda, q Atrás); t sintoniza con el sintonizador elegido. d decodificadores: c CW, r RTTY, a audio de recepción, h ayuda, q Atrás. Dentro: e inicio/parada, v texto, coma/punto historial, n borrar; q mantiene la captura. Audio: punto/coma dispositivos, c canal, v nivel, e guardar, q Atrás. CW por audio es experimental; lea la ayuda.
+
+s b: h Ayuda; b Voz y braille; r Solo braille; s Solo voz; q Atrás. Cada opción se aplica y guarda al instante para futuros inicios. r silencia Speakup y mantiene la entrada y salida braille. b o s restaura la voz. La línea braille conectada sigue disponible en todos los modos. q vuelve conservando el modo.
+s o: h Ayuda; . aumenta; , reduce; q Atrás. r Velocidad; v Volumen; p Tono; u Puntuación; t Prueba; d Predeterminados. Los cambios se aplican y guardan al instante.
+h Ayuda; r Velocidad; v Volumen; p Tono; u Puntuación; . aumenta; , reduce; t Prueba; d Predeterminados; q Atrás. Cada ajuste se aplica y guarda al instante. Velocidad está seleccionada al entrar. Velocidad y tono: 0 a 9; volumen: 1 a 9. Puntuación: Ninguna, Alguna, Mayoría o Toda. q conserva los cambios. d restaura al instante los valores YAC: velocidad 2, volumen 5, tono 5, Alguna puntuación. t muestra una frase de prueba con los ajustes actuales. El volumen del sistema, braille y otros ajustes Speakup no cambian.
+
+s u: Actualizar YAC. Espacio cierra la conexion con la radio y abre el actualizador; q vuelve a Ajustes.
+
+s w: La configuración Wi-Fi solo está disponible en la imagen Raspberry Pi. Aquí use los ajustes Wi-Fi del sistema. Configuración Wi-Fi: país, nombre de red y contraseña. Ctrl+C cancela; puntuación y letras de comandos son caracteres normales.

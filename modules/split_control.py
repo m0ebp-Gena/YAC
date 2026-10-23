@@ -321,7 +321,7 @@ def control(yac, root, radio, language):
                 print()
                 return
             if not entered or entered.casefold() == 'q':
-                chat_int.show_back(root, language)
+                chat_int.show_done(root, language)
                 return
             if entered.casefold() == 'h':
                 chat_int.show_response(help_int.get_help(root, language, 'h011'))

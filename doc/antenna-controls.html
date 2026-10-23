@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Antenna control — 17 October 2026 — YAC documentation</title><style>
+:root { color-scheme: light dark; font: 120%/1.65 system-ui, sans-serif; }
+body { max-width: 76ch; margin: auto; padding: 1rem; }
+a { text-decoration: underline; text-underline-offset: .15em; }
+a:focus-visible { outline: .2rem solid currentColor; outline-offset: .2rem; }
+pre { padding: 1rem; border: 1px solid; white-space: pre-wrap; overflow-wrap: anywhere; }
+code { font-size: 1em; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid; padding: .5rem; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+h1, h2, h3, h4 { line-height: 1.3; }
+@media print { nav, .skip { display: none; } body { max-width: none; } }
+</style></head>
+<body><a class="skip" href="#main">Skip to main content</a>
+<nav aria-label="Document navigation"><p><a href="index.html">All documents</a></p><p>On this page:</p><ul><li><a href="#section-2">Model behaviour</a></li><li><a href="#section-3">Verification and failure behaviour</a></li></ul></nav>
+<main id="main" tabindex="-1"><h1 id="section-1">Antenna control — 17 October 2026</h1>
+<p>Top-level x opens Antennas and reads current TX/RX routing without changes.
+Repeat x cycles supported main antennas. r controls the optional receive path.
+h reads antenna help; q leaves with Back. Another command exits and is passed
+to the top level. Settings has no antenna alias.</p>
+<p>Labels and h012 help are provided in English, German, Polish and Spanish.
+The private key chart is deliberately left unchanged: the user will add its
+implementation asterisk. Physical-radio testing remains pending. No installer
+build made.</p>
+<h2 id="section-2">Model behaviour</h2>
+<ul>
+<li>FT-DX10, FT-710, IC-705 and original IC-7300: fixed antenna 1 is reported;
+cycling and receive-path changes say Not supported.</li>
+<li>TS-590SG: x changes ANT1/2 preserving RX ANT and the Drive Out/antenna-output
+field. r changes RX ANT preserving the other fields; unchanged CAT fields
+are sent as 9 as specified by Kenwood.</li>
+<li>TS-480HX/SAT: x changes ANT1/2 after the existing TY identity check. r is
+unavailable. Shared ID020 alone does not enable this on QMX.</li>
+<li>IC-7600: x changes ANT1/2 while preserving RX path state; r changes the RX
+path while preserving the main antenna selection.</li>
+<li>IC-7300MK2: fixed main antenna, with r controlling RX-ANT IN/OUT. The RX
+path may contain a filter/preamp rather than a separate receiving antenna.</li>
+<li>FTX-1 with SPA-1: HF/50 MHz only. A PC response with selector 2 is required
+as the SPA-1 command-context guard; this needs physical confirmation on
+Field and Optima variants and is not a general hardware inventory query.
+In normal TRX mode x cycles ANT1/2. r requires TX ANT1 and enables ANT2
+reception using operation mode 2 and HF ANT SELECT 1. Turning it off selects
+ANT1 before returning to TRX mode, keeping TX on ANT1 throughout. Existing
+mode 1 routing is also reported and can be returned to ANT1. x is unavailable
+while receive-only routing is configured: it must not turn a receive-only
+antenna into a TX path. No tuner-selection menu is changed.</li>
+<li>IC-9700 and other unprofiled models: Not supported. Band-specific sockets
+are not cycled as antenna alternatives. FT-DX101 remains future radio support;
+this module does not add discovery or general control support for that model.</li>
+</ul>
+<h2 id="section-3">Verification and failure behaviour</h2>
+<p>Each user action starts from a fresh radio read and validates native values.
+Every write is read back; Icom additionally requires acknowledgement. Failed
+changes announce failure and the actual current routing if it can be read.
+Unknown routing prevents changes. FTX-1 receive-path setup uses multiple menu
+writes: a partial failure may leave an intermediate routing, which is reported
+rather than pretending success or automatically changing it again.</p>
+<p>No transmitter is keyed. Antenna switching is separate from tuner selection.
+Mappings are in per-model antennas.json; implementation is antenna_control.py.
+Protocol and keyboard tests use offline radios, not physical hardware.</p>
+<p>Manufacturer documentation and remaining FT-DX101 documentation discrepancies
+are recorded in antenna-control-survey.md.</p>
+</main>
+<footer><p>YAC documentation. <a href="index.html">All documents</a></p></footer>
+</body></html>

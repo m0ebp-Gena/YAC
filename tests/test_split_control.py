@@ -176,7 +176,7 @@ class SplitTests(unittest.TestCase):
             with patch.object(yac,'_civ_exchange',side_effect=civ.exchange), patch.object(yac,'_civ_send',side_effect=civ.send), \
                  patch('builtins.input',return_value=entered), redirect_stdout(output):
                 split.control(yac,ROOT,civ.radio,'en')
-            self.assertIn('Back',output.getvalue())
+            self.assertIn('Done',output.getvalue())
             self.assertEqual(civ.sent,[])
         civ=Civ(fm=True)
         output=io.StringIO()
@@ -190,7 +190,7 @@ class SplitTests(unittest.TestCase):
 
     def test_top_level_l_dispatch(self):
         radio=create_dummy_radio()
-        keys=iter(['l','q'])
+        keys=iter(['l','q', 'y'])
         with patch.object(yac,'connect_radio',return_value=radio), \
              patch.object(yac,'_read_settings',return_value={'call':'test','lang':'en'}), \
              patch.object(lang_sel,'read_key',side_effect=lambda:next(keys)), \

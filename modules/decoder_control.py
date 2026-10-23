@@ -140,7 +140,7 @@ class DecoderManager:
             while True:
                 key = read_key().casefold()
                 if key == 'q':
-                    chat_int.show_back(self.root, self.language)
+                    chat_int.show_done(self.root, self.language)
                     return
                 if key == 'h':
                     chat_int.show_response(help_int.get_help(self.root, self.language, 'h013'))

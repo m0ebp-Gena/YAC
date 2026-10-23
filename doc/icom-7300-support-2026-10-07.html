@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IC-7300 and IC-7300MK2 support — YAC documentation</title><style>
+:root { color-scheme: light dark; font: 120%/1.65 system-ui, sans-serif; }
+body { max-width: 76ch; margin: auto; padding: 1rem; }
+a { text-decoration: underline; text-underline-offset: .15em; }
+a:focus-visible { outline: .2rem solid currentColor; outline-offset: .2rem; }
+pre { padding: 1rem; border: 1px solid; white-space: pre-wrap; overflow-wrap: anywhere; }
+code { font-size: 1em; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid; padding: .5rem; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+h1, h2, h3, h4 { line-height: 1.3; }
+@media print { nav, .skip { display: none; } body { max-width: none; } }
+</style></head>
+<body><a class="skip" href="#main">Skip to main content</a>
+<nav aria-label="Document navigation"><p><a href="index.html">All documents</a></p><p>On this page:</p><ul><li><a href="#section-2">Official Icom references</a></li><li><a href="#section-3">Implemented behavior</a></li><li><a href="#section-4">Radio choice correction</a></li><li><a href="#section-5">Validation</a></li></ul></nav>
+<main id="main" tabindex="-1"><h1 id="section-1">IC-7300 and IC-7300MK2 support</h1>
+<p>Implemented 7 October 2026. Hardware verification is pending for both models.</p>
+<h2 id="section-2">Official Icom references</h2>
+<ul>
+<li>Original IC-7300: <a href="https://www.icomjapan.com/support/manual/2271/">https://www.icomjapan.com/support/manual/2271/</a>
+Local reference: pdfs/IC-7300_ENG_FM_12b.pdf.
+Section 19, especially 19-2 through 19-8 (commands), 19-9 (frequency/mode)
+and 19-13 (RIT and selected/unselected VFO formats).
+Receiver limits: section 16, PDF page 150.</li>
+<li>IC-7300MK2: <a href="https://www.icomjapan.com/support/manual/4486/">https://www.icomjapan.com/support/manual/4486/</a>
+Local reference: pdfs/IC-7300MK2_ENG_CI-V_0.pdf.
+Command table and format pages 16 and 23, plus the official product
+specifications: <a href="https://www.icomjapan.com/lineup/products/IC-7300MK2/">https://www.icomjapan.com/lineup/products/IC-7300MK2/</a>.</li>
+</ul>
+<p>Keep the reference PDFs for local development; the demo packaging includes
+rad_cmds, not the manuals or extracted text.</p>
+<h2 id="section-3">Implemented behavior</h2>
+<p>Model definitions live in rad_cmds/icom/CI-V/models/ic-7300 and ic-7300mk2.
+profile.json supplies receiver limits, modes, band destinations and the list
+of command files. Hexadecimal files contain command/subcommand bytes only;
+YAC supplies the connected radio&#39;s address, frame delimiters and data.
+The IC-705 now uses this same definition mechanism.</p>
+<ul>
+<li>e enters frequency in MHz, with exact readback and rollback on failure.</li>
+<li>Comma/full stop tune by the configured mode-specific increment.</li>
+<li>s then s saves that increment in hertz, using the existing settings flow.</li>
+<li>b navigates HF, 6 m and 4 m. Returning to a band recalls its frequency,
+mode and filter during the session. Failed changes attempt restoration.</li>
+<li>m offers the modes in the corresponding model profile.</li>
+<li>z rounds to the nearest kilohertz and restores RIT/Delta-TX enable states.</li>
+<li>o adjusts receive/transmit offsets in 10 Hz increments or clears them.</li>
+<li>s then v selects VFO A on the first request, then alternates B/A.
+Acknowledged selection is followed by frequency/mode readback. Band
+memories are kept separately for each YAC-selected VFO.</li>
+<li>w/f show signal strength, frequency and mode. The S-meter curve is an
+approximation using the existing Icom calibration, not hardware calibration.</li>
+</ul>
+<p>Additional selected/unselected VFO, split and hardware tuning-step command
+files are recorded for future controls. Those files do not add extra keys.
+YAC&#39;s tuning increments are software settings, separate from the hardware
+10 command. CTCSS/DCS remains unchanged and is not enabled for these models.</p>
+<p>Discovery recognizes both model IDs and includes the MK2 factory address.
+A reply to the identification query takes precedence over a USB description,
+including when the user has changed the radio&#39;s CI-V address.</p>
+<p>CI-V reads/writes wait for the addressed radio&#39;s reply rather than stopping
+at a local echo. Frequency readback must match exactly for supported Icoms.</p>
+<h2 id="section-4">Radio choice correction</h2>
+<p>When several radios are listed, no radio is preselected. Enter a number,
+then Space to accept; q cancels. Space before a number does not select the
+first radio. The chosen number/model is echoed without claiming that a
+selection has already been confirmed.</p>
+<h2 id="section-5">Validation</h2>
+<p>Run:</p>
+<pre><code>python -m unittest tests.test_radio_responses tests.test_icom_7300 -v
+</code></pre>
+<p>The added tests drive the actual CI-V encoders/decoders through a simulated
+serial device with fragmented replies and local echoes. They cover frequency
+limits, exact readback, rejected commands, rollback, modes, tuning increments,
+band recall, rounding, offsets, VFO selection, discovery at a changed address,
+the keyboard loop and waiting for a user&#39;s radio choice.</p>
+<p>Result: all 27 regression tests passed, including 15 added integration and
+selection checks. No physical radios were used and no serial ports opened.</p>
+<p>The already distributed YAC-2026-10-07.zip has not been replaced. These are
+source changes for the next build; the published executable is unchanged.</p>
+</main>
+<footer><p>YAC documentation. <a href="index.html">All documents</a></p></footer>
+</body></html>

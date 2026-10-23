@@ -182,7 +182,7 @@ class FilterTests(unittest.TestCase):
 
     def test_nested_q_and_forwarded_command(self):
         radio = create_dummy_radio()
-        keys = iter(['f','p','.','q','h','q','w','q'])
+        keys = iter(['f','p','.','q','h','q','w','q', 'y'])
         output = io.StringIO()
         with patch.object(yac, 'connect_radio', return_value=radio), \
              patch.object(yac, '_read_settings', return_value={'call':'test','lang':'en'}), \

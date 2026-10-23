@@ -148,9 +148,10 @@ def control(yac, root, radio, language, call, read_key, watch):
         if key != 'v':
             filter_review.reset()
         if key == 'q':
-            chat_int.show_back(root, language)
             if not adjusting:
+                chat_int.show_back(root, language)
                 return None
+            chat_int.show_done(root, language)
             adjusting = None
         elif key == 'h':
             chat_int.show_response(help_int.get_help(root, language, 'h007'))

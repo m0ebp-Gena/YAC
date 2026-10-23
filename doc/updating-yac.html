@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Updating YAC — YAC documentation</title><style>
+:root { color-scheme: light dark; font: 120%/1.65 system-ui, sans-serif; }
+body { max-width: 76ch; margin: auto; padding: 1rem; }
+a { text-decoration: underline; text-underline-offset: .15em; }
+a:focus-visible { outline: .2rem solid currentColor; outline-offset: .2rem; }
+pre { padding: 1rem; border: 1px solid; white-space: pre-wrap; overflow-wrap: anywhere; }
+code { font-size: 1em; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid; padding: .5rem; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+h1, h2, h3, h4 { line-height: 1.3; }
+@media print { nav, .skip { display: none; } body { max-width: none; } }
+</style></head>
+<body><a class="skip" href="#main">Skip to main content</a>
+<nav aria-label="Document navigation"><p><a href="index.html">All documents</a></p><p>On this page:</p><ul><li><a href="#section-2">Linux, macOS and the Pi image</a></li><li><a href="#section-3">Portable Windows version</a></li><li><a href="#section-4">Release requirements</a></li></ul></nav>
+<main id="main" tabindex="-1"><h1 id="section-1">Updating YAC</h1>
+<p>Normal YAC radio control does not require an internet connection. The updater
+contacts GitHub only when requested; it does not check for updates at startup.
+If an update check fails, the message remains available until Enter returns
+to YAC. The currently installed version stays usable offline.</p>
+<p>Press <code>s</code>, then <code>u</code>, to open Update YAC on Windows, Linux or macOS.
+Space closes the radio connection and opens the updater; <code>q</code> returns to Settings.
+The updater checks published GitHub releases. It offers <code>r</code> to read changes,
+<code>q</code> to cancel, and Space to download and install. No Git installation is needed.
+The updater&#39;s prompts and release notes are currently English; the Settings
+handover prompt is translated into YAC&#39;s supported languages.</p>
+<h2 id="section-2">Linux, macOS and the Pi image</h2>
+<p>Use the installed source version: <code>~/.local/yac</code> on Linux or <code>~/Applications/yac</code>
+on macOS. The existing <code>update-yac</code> command remains available outside YAC.
+The updater downloads the source ZIP and its SHA-256 checksum, checks the
+archive and runs the source installer. Personal settings, logs and the Python
+environment are preserved. It restores program files if the installer fails.
+Another running YAC prevents installation.</p>
+<p>After a successful update or cancellation, YAC restarts in a fresh process.
+After a failed update, read the error and press Enter to return to YAC.
+On the Pi it retains the launcher&#39;s image environment and audio selection.
+The ordinary source updater does not replace Pi launcher files or boot setup;
+those belong to the separate Pi image-builder kit.</p>
+<p>An extracted source tree outside the supported install location reports that
+the updater is unavailable. Install it with the source installer first.</p>
+<h2 id="section-3">Portable Windows version</h2>
+<p>The portable executable downloads the Windows ZIP and its matching checksum.
+It does not install Python or run the source installer. Once verified, the
+update opens an interactive Windows PowerShell console and closes YAC. The
+installer waits for the original executable to exit before replacing program
+files. Another YAC instance prevents replacement.</p>
+<p>Settings in <code>yac.ini</code> and unrelated personal files/logs remain in place. Program
+files are backed up during replacement; failed installation attempts restore
+them. Recovery files are retained if installation fails. After success, press
+Enter in the updater console to start the new executable. A cancelled check or
+an up-to-date installation returns to YAC without installing anything.</p>
+<p>The first Windows version providing this menu must be downloaded and extracted
+normally. Existing older executables cannot gain this command until replaced.
+Source-only Windows launches do not provide the portable Windows update path.</p>
+<h2 id="section-4">Release requirements</h2>
+<p>Updates use published release assets and matching checksum files from the YAC
+repository. They cannot install unpublished local beta work. A missing or
+ambiguous package/checksum is reported; no installation is attempted. The
+checksum detects a corrupted download; it is not a separate publisher signature.
+Updates do not request administrator access or upgrade the operating system.</p>
+</main>
+<footer><p>YAC documentation. <a href="index.html">All documents</a></p></footer>
+</body></html>

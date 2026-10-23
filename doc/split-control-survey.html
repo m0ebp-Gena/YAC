@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Split control survey — 17 October 2026 — YAC documentation</title><style>
+:root { color-scheme: light dark; font: 120%/1.65 system-ui, sans-serif; }
+body { max-width: 76ch; margin: auto; padding: 1rem; }
+a { text-decoration: underline; text-underline-offset: .15em; }
+a:focus-visible { outline: .2rem solid currentColor; outline-offset: .2rem; }
+pre { padding: 1rem; border: 1px solid; white-space: pre-wrap; overflow-wrap: anywhere; }
+code { font-size: 1em; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid; padding: .5rem; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+h1, h2, h3, h4 { line-height: 1.3; }
+@media print { nav, .skip { display: none; } body { max-width: none; } }
+</style></head>
+<body><a class="skip" href="#main">Skip to main content</a>
+<nav aria-label="Document navigation"><p><a href="index.html">All documents</a></p><p>On this page:</p><ul><li><a href="#section-2">The distinction that matters</a></li><li><a href="#section-3">Verified command differences</a></li><li><a href="#section-4">Findings in current YAC</a></li><li><a href="#section-5">Proposed behaviour to discuss before implementation</a></li><li><a href="#section-6">Ian&#39;s FT Talk guide</a></li><li><a href="#section-7">Manufacturer references</a></li></ul></nav>
+<main id="main" tabindex="-1"><h1 id="section-1">Split control survey — 17 October 2026</h1>
+<p>Original research for top-level <code>l</code>. The subsequent first implementation is
+documented in <code>split-controls.md</code>; its chart entry is marked implemented.
+No installer build or physical-radio testing performed.</p>
+<h2 id="section-2">The distinction that matters</h2>
+<p>Split means receiving on one frequency and transmitting on another. The
+operation must identify both roles, rather than treating &quot;other VFO&quot; as a
+universal name for the transmitter. VFO selection, transmit selection, and
+split enable are distinct model-dependent operations.</p>
+<p>FM repeater duplex is also distinct from two-VFO split. CTCSS/DCS does not
+itself configure either the transmit frequency or repeater shift.</p>
+<h2 id="section-3">Verified command differences</h2>
+<table>
+<thead>
+<tr>
+<th scope="col">Radio</th>
+<th scope="col">Split control</th>
+<th scope="col">Frequency/VFO implications</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FT-DX10</td>
+<td><code>ST;</code> reads; <code>ST0;</code> off, <code>ST1;</code> on. <code>ST2;</code> enables split with +5 kHz, so it also changes the operating setup.</td>
+<td><code>FA</code>/<code>FB</code> address named VFO A/B. <code>VS</code> selects A/B. <code>FT</code> <strong>sets with 2/3 but answers with 0/1</strong> for Main/Sub TX. Setter and response encodings cannot be shared.</td>
+</tr>
+<tr>
+<td>FT-710</td>
+<td><code>ST;</code>, <code>ST0;</code>, <code>ST1;</code>. The surveyed reference does not list the FT-DX10&#39;s <code>ST2</code> shortcut.</td>
+<td><code>FA</code>/<code>FB</code>, <code>VS</code>, and TX selection must be handled separately. <code>FT</code> uses 0/1 for both set and response.</td>
+</tr>
+<tr>
+<td>FTX-1</td>
+<td><code>ST;</code>, <code>ST0;</code>, <code>ST1;</code>.</td>
+<td><code>FA</code>/<code>FB</code> address Main/Sub. <code>FT0/1</code> chooses the transmitting side. <strong><code>FR00/01</code> controls dual/single reception</strong>, not A/B receive selection. <code>VS</code> has Main/Sub TX/RX role semantics. Do not copy Kenwood <code>FR</code> logic.</td>
+</tr>
+<tr>
+<td>IC-705</td>
+<td>CI-V <code>0F</code> reads split/duplex; <code>0F 00/01</code> sets split off/on. Responses also include <code>11/12</code> for DUP-/DUP+.</td>
+<td><code>07 00/01</code> selects A/B. <code>25 00/01</code> reads/sets selected/unselected frequency; <code>26 00/01</code> does the same for mode/data/filter. <strong>00 and 01 are relative to the selected VFO, not fixed A/B identities.</strong> DR and memory/call contexts have documented restrictions.</td>
+</tr>
+<tr>
+<td>IC-7300MK2</td>
+<td>The supplied CI-V reference documents selected/unselected frequency and mode via 25/26.</td>
+<td>Same relative selector distinction; retain per-model validation rather than inferring everything from the IC-705.</td>
+</tr>
+<tr>
+<td>IC-9700</td>
+<td><code>0F</code> also returns duplex states, including DD repeater simplex in the surveyed guide.</td>
+<td><code>25/26</code> selected/unselected access is <strong>MAIN-band only</strong>; it does not mean Main/Sub. Satellite mode rejects these operations. A/B split, Main/Sub selection, and satellite operation need separate handling.</td>
+</tr>
+<tr>
+<td>TS-590SG</td>
+<td><code>FR</code> selects RX and <code>FT</code> TX, with 0=A, 1=B, 2=memory where allowed.</td>
+<td>The reference explicitly says setting <code>FR</code> selects simplex, while setting <code>FT</code> selects split. A VFO-selection command can therefore change split state.</td>
+</tr>
+</tbody></table>
+<p>IC-7300, IC-7600 and TS-480 require their own command/operating-guide checks
+before inclusion in an implementation. Existing command-file entries are
+implementation assets, not sufficient evidence of every operating restriction.
+QMX must not inherit TS-480 split support merely because it shares CAT ID020.</p>
+<h2 id="section-4">Findings in current YAC</h2>
+<ul>
+<li>Icom profiles already provide read/set files for split, selected/unselected
+frequency and mode. These were present before the new top-level split control.</li>
+<li>Icom <code>s v</code> initially selects A, then alternates using remembered selections
+after acknowledgements. This is not a live query of which VFO was selected
+externally and must not become authoritative for split frequency reporting.</li>
+<li>FTX-1 <code>s v</code> changes YAC&#39;s local Main/Sub control target. It does not issue a
+radio <code>VS</code> command. YAC&#39;s control target must not be mistaken for TX routing.</li>
+<li>TS-480 VFO-selection code comments claim preservation of split; the TS-480
+reference needs checking before relying on that assertion. The TS-590SG
+reference demonstrates why <code>FR</code> semantics cannot be assumed harmless.</li>
+</ul>
+<h2 id="section-5">Proposed behaviour to discuss before implementation</h2>
+<h3 id="section-6">Ian&#39;s FT Talk guide</h3>
+<p>Reviewed <code>local_storage/FTTALK_UserGuideV35.xhtml</code>, Split Frequency mode,
+Repeater mode, CTCSS/DCS and Extended Command Mode sections.</p>
+<ul>
+<li>Outside FM, V enters split: receive on A, transmit on B, and navigation
+adjusts B&#39;s transmit frequency. V again exits split.</li>
+<li>In FM on the supported repeater bands, V instead enables repeater operation
+using a configured offset or a temporary offset from Extended O.</li>
+<li>Ordinary channel tuning keeps repeater operation active; changing mode,
+band or using the 1 MHz jumps turns it off.</li>
+<li>Repeater setup order is receive frequency, repeater operation, then tone/code.</li>
+<li>Normal frequency reporting gives the transmit frequency; Extended F gives
+receive frequency during split or repeater input frequency in repeater mode.</li>
+<li>Swapping Main/Sub or A/B is a separate operation, with a reminder to swap
+back after listening to the repeater input.</li>
+</ul>
+<p>The split section does not specify whether entering split copies A into B;
+do not infer an equalization command from that description. These are FT Talk
+behaviours to discuss for YAC, not approval to change YAC&#39;s navigation or w.
+Use a small dedicated module for the agreed control and per-model command
+handling, leaving top-level dispatch in yac.py.</p>
+<ol>
+<li>Establish whether <code>l</code> should simply toggle the existing split setup or
+open a control for entering a transmit frequency / signed offset. Do not
+silently choose a +5 kHz shortcut or overwrite the other VFO.</li>
+<li>Announce the live split state and both roles, for example:
+<code>Split On, receive 14.195 USB, transmit 14.200 USB</code>.</li>
+<li>Preserve the user&#39;s receive frequency, existing other-VFO contents, mode,
+data/filter selections, tone settings, and receiver arrangement unless the
+chosen action explicitly changes them. Changing mode with Icom 26 requires
+care: omitted data/filter fields can reset them to defaults.</li>
+<li>Read back changes; handle unreadable state as unknown, not Off. Distinguish
+split, repeater DUP-/DUP+, and unsupported satellite/DR/memory contexts.</li>
+<li>Keep the initial implementation in VFO mode where documented, and verify
+the model&#39;s TX-frequency mapping rather than inferring it from a cached
+selected-VFO variable. Do not key the transmitter for verification.</li>
+</ol>
+<p>These are proposals, not an agreed key flow. Repeater-shift support can be a
+separate action if the user wants it; it should not silently replace split.</p>
+<h2 id="section-7">Manufacturer references</h2>
+<ul>
+<li><a href="https://www.yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/FTDX10_CAT_OM_ENG_2308-F.pdf">FT-DX10 CAT reference, 2308-F</a>: FT, ST, VS, FA/FB.</li>
+<li><a href="https://www.yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/FT-710_CAT_OM_ENG_2306-C.pdf">FT-710 CAT reference, 2306-C</a>: FT, ST, VS.</li>
+<li>FTX-1 CAT reference <strong>2508-C</strong>, supplied locally at <code>local_storage/manuals/pdfs/FTX-1_CAT_OM_ENG_2508-C.pdf</code>; checked extracted FR, FT, ST and VS entries. The online <a href="https://www.yaesu.com/Files/4CB1CAF6-1018-01AF-FABABCA11697FC7F/FTX-1_CAT_OM_ENG_2507-B.pdf">2507-B reference</a> is older; do not substitute it for the supplied revision.</li>
+<li><a href="https://www.icomeurope.com/wp-content/uploads/2020/08/IC-705_ENG_CI-V_1_20200721.pdf">IC-705 CI-V reference</a>: command table and selected/unselected VFO sections.</li>
+<li><a href="https://www.icomfrance.com/uploads/files/produit/not-IC-9700_ENG_CI-V_3a-en.pdf">IC-9700 CI-V reference</a>: 0F and MAIN-only 25/26 restrictions.</li>
+<li>IC-7300MK2 supplied CI-V reference: <code>local_storage/manuals/pdfs/IC-7300MK2_ENG_CI-V_0.pdf</code>, selected/unselected VFO sections.</li>
+<li>TS-590SG supplied PC command reference: <code>local_storage/manuals/pdfs/ts_590_g_pc_command_e.pdf</code>, FR/FT section.</li>
+</ul>
+</main>
+<footer><p>YAC documentation. <a href="index.html">All documents</a></p></footer>
+</body></html>

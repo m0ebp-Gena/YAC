@@ -265,4 +265,4 @@ def control(yac, root, radio, language, read_key, watch):
                     say('l242')
             except (OSError, RuntimeError):
                 say('l242')
-        chat_int.show_back(root, language)
+        chat_int.show_done(root, language)

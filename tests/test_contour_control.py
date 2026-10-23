@@ -52,7 +52,7 @@ class ContourTests(unittest.TestCase):
             self.assertEqual(exchange.call_count,1)
     def test_menu_level_width_frequency_and_q_context(self):
         radio=create_dummy_radio()
-        keys=iter(['f','c','l','.','w',',','c','.','c','.','q','l','q','q','q'])
+        keys=iter(['f','c','l','.','w',',','c','.','c','.','q','l','q','q','q', 'y'])
         output=io.StringIO()
         with patch.object(yac,'connect_radio',return_value=radio),patch.object(yac,'_read_settings',return_value={'call':'test','lang':'en'}),patch.object(lang_sel,'read_key',side_effect=lambda:next(keys)),redirect_stdout(output):
             self.assertEqual(yac.main([]),0)

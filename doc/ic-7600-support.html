@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Icom IC-7600 — YAC documentation</title><style>
+:root { color-scheme: light dark; font: 120%/1.65 system-ui, sans-serif; }
+body { max-width: 76ch; margin: auto; padding: 1rem; }
+a { text-decoration: underline; text-underline-offset: .15em; }
+a:focus-visible { outline: .2rem solid currentColor; outline-offset: .2rem; }
+pre { padding: 1rem; border: 1px solid; white-space: pre-wrap; overflow-wrap: anywhere; }
+code { font-size: 1em; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid; padding: .5rem; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+h1, h2, h3, h4 { line-height: 1.3; }
+@media print { nav, .skip { display: none; } body { max-width: none; } }
+</style></head>
+<body><a class="skip" href="#main">Skip to main content</a>
+<nav aria-label="Document navigation"><p><a href="index.html">All documents</a></p></nav>
+<main id="main" tabindex="-1"><h1 id="section-1">Icom IC-7600</h1>
+<p>Sources: <a href="https://icomuk.co.uk/files/icom/PDF/productManual/IC-7600_ENG_3.pdf">Icom instruction manual</a>,
+<a href="https://www.icomeurope.com/wp-content/uploads/2020/11/IC-7600_IM_D_upgrade_20151103.pdf">updated manual with command tables</a>,
+and <a href="https://www.icomjapan.com/support/firmware_driver/2387/">Icom firmware 2.00 notes</a>.</p>
+<p>YAC probes the factory address 7A and identifies the model through command
+19 00, including at a changed address. Set the radio and interface to matching
+CI-V baud rates; close other software using the serial port.</p>
+<p>The profile supports 30 kHz–60 MHz reception, HF/6 m band navigation,
+frequency entry/steps, signal reports, and the documented analogue modes
+including PSK and PSK-R. S-meter interpolation is approximate.</p>
+<p>In Settings, <code>v</code> selects Main first and Sub next, using 07 D0/D1.
+The IC-7600 does not use the VFO A/B commands of the IC-7300.
+RIT/Delta-TX controls and offset-preserving rounding require firmware 2.00&#39;s
+21 commands. Older firmware may reject these controls; basic tuning and status
+remain available. This package does not update radio firmware.</p>
+<p>Acknowledgements and readback validate changes. Coverage is simulated;
+Miguel&#39;s physical radio still needs testing. CTCSS and data submode selection
+are outside this profile&#39;s current interface.</p>
+</main>
+<footer><p>YAC documentation. <a href="index.html">All documents</a></p></footer>
+</body></html>

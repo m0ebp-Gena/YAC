@@ -145,7 +145,7 @@ def control(yac, root, radio, language, read_key, watch):
         if watch.lost: return key or 'w'
         if not key: continue
         if key == 'q':
-            chat_int.show_back(root,language)
+            chat_int.show_done(root,language)
             return None
         if key == 'h':
             chat_int.show_response(help_int.get_help(root,language,'h012'))

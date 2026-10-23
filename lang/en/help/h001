@@ -6,7 +6,7 @@ z: round the current frequency to the nearest 1 kHz
 s: Settings; v selects FTX-1 Main/Sub or Icom VFO A/B (first press selects A)
 s then s: save the step size in hertz for the current mode
 w: read signal strength, frequency and mode
-q: quit YAC
+q: quit YAC; y confirms, n or q cancels. Inside controls, q returns immediately.
 o: Offset; o cycles Receive/Transmit/Clear; full stop adds 10 Hz, comma subtracts 10 Hz; either clears in Clear; q exits
 i: Tone input; i cycles CTCSS/DCS N/DCS I; enter a value, Enter, then t for TX or b for Both when offered; q exits, h gives help
 Profile selection: enter a number to highlight a radio, Space to select it, or q to cancel. Press h on the profile screen for this help.

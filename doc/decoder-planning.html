@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decoder submenu planning — YAC documentation</title><style>
+:root { color-scheme: light dark; font: 120%/1.65 system-ui, sans-serif; }
+body { max-width: 76ch; margin: auto; padding: 1rem; }
+a { text-decoration: underline; text-underline-offset: .15em; }
+a:focus-visible { outline: .2rem solid currentColor; outline-offset: .2rem; }
+pre { padding: 1rem; border: 1px solid; white-space: pre-wrap; overflow-wrap: anywhere; }
+code { font-size: 1em; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid; padding: .5rem; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+h1, h2, h3, h4 { line-height: 1.3; }
+@media print { nav, .skip { display: none; } body { max-width: none; } }
+</style></head>
+<body><a class="skip" href="#main">Skip to main content</a>
+<nav aria-label="Document navigation"><p><a href="index.html">All documents</a></p><p>On this page:</p><ul><li><a href="#section-2">Confirmed hardware routes</a></li></ul></nav>
+<main id="main" tabindex="-1"><h1 id="section-1">Decoder submenu planning</h1>
+<p>Bindings (implementation status below):
+c CW operating controls; c k Keyer speed.
+d Decoders; d c Decode CW; d r Decode RTTY; d h Help; d q Back.
+Returning from a decoder should preserve capture; stopping is explicit.
+Capture and terminal text review are now implemented; see decoder-controls.md.
+CW operating controls and keyer-speed shortcuts remain planned.
+Labels l271-l275 provide CW, Decoders, Decode CW, Decode RTTY and Keyer speed
+in English, German, Spanish and Polish. These are reserved UI resources;
+their presence alone does not mean the corresponding command is functional.</p>
+<h2 id="section-2">Confirmed hardware routes</h2>
+<p>TS-590SG: CD0 decoder enable; CD1 threshold 001-030; unsolicited CD2 decoded
+ASCII when AI is enabled (AI2 nonpersistent enable). Speed tracks automatically.
+Read and preserve existing AI and decoder settings. Existing CAT transport
+clears pending input, so a shared buffered reader is required before capture.
+The command guide has apparent CD0 answer and missing read-terminator typos;
+verify responses on hardware rather than reproducing those assumptions.
+<a href="https://www.kenwood.com/i/products/info/amateur/pdf/ts590_g_pc_command_e_rev2.pdf">https://www.kenwood.com/i/products/info/amateur/pdf/ts590_g_pc_command_e_rev2.pdf</a>
+<a href="https://www.kenwood.com/i/products/info/amateur/pdf/TS-590SG_IDM.pdf">https://www.kenwood.com/i/products/info/amateur/pdf/TS-590SG_IDM.pdf</a></p>
+<p>IC-705: built-in RTTY decoder exports decoded data on USB Serial Port B.
+Port A remains CI-V. USB (B) Function = RTTY Decode, not RTTY keying.
+CI-V 1A 05 01 33 reads/sets USB (B) Function: 00 Off, 01 RTTY Decode,
+02 DV Data, 03 Weather. Preserve prior function and avoid interfering with
+existing port-B applications or DTR/RTS SEND/keying assignments. Opening this
+port needs deliberate line-state handling. Baud rate and exact stream framing,
+decoder operation and identification of the matching physical device&#39;s port B
+still require checking before implementation. No built-in CW text route found.
+<a href="https://www.icomeurope.com/wp-content/uploads/2024/06/IC-705_ENG_IM_Basic_7.pdf">https://www.icomeurope.com/wp-content/uploads/2024/06/IC-705_ENG_IM_Basic_7.pdf</a>
+<a href="https://www.icomeurope.com/wp-content/uploads/2020/08/IC-705_ENG_CI-V_1_20200721.pdf">https://www.icomeurope.com/wp-content/uploads/2020/08/IC-705_ENG_CI-V_1_20200721.pdf</a></p>
+<p>No documented CW decoded-text output found in the checked FT-DX10, FTX-1 or
+IC-7300MK2 CAT/CI-V references. Decoder settings or screen text alone do not
+establish an export route. Computer audio decoding would be a separate option.</p>
+</main>
+<footer><p>YAC documentation. <a href="index.html">All documents</a></p></footer>
+</body></html>

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YAC 001 beta — 12 October 2026 — YAC documentation</title><style>
+:root { color-scheme: light dark; font: 120%/1.65 system-ui, sans-serif; }
+body { max-width: 76ch; margin: auto; padding: 1rem; }
+a { text-decoration: underline; text-underline-offset: .15em; }
+a:focus-visible { outline: .2rem solid currentColor; outline-offset: .2rem; }
+pre { padding: 1rem; border: 1px solid; white-space: pre-wrap; overflow-wrap: anywhere; }
+code { font-size: 1em; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid; padding: .5rem; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+h1, h2, h3, h4 { line-height: 1.3; }
+@media print { nav, .skip { display: none; } body { max-width: none; } }
+</style></head>
+<body><a class="skip" href="#main">Skip to main content</a>
+<nav aria-label="Document navigation"><p><a href="index.html">All documents</a></p></nav>
+<main id="main" tabindex="-1"><h1 id="section-1">YAC 001 beta — 12 October 2026</h1>
+<p>This testing release adds live AF Gain (<code>a</code>), RF Gain/squelch (<code>r</code>), preamp
+(<code>p</code>), attenuator (<code>u</code>), settings verification (<code>v</code>), tuner settings (<code>s t</code>)
+and an output-power edit field (<code>s p</code>). Gain controls start at the radio&#39;s
+current setting, use full stop/comma, and stop at scale endpoints.</p>
+<p>Power entry accepts whole watts. Icom watt entries are estimates converted to
+the manufacturer&#39;s relative setting; <code>v</code> reports its rounded percentage.
+Power edits accept <code>h</code> followed by Enter for help and blank Enter to cancel.
+Successful power edits are silent. Step-size confirmation now says applied.</p>
+<p>Public key charts and short first-steps guides are supplied in English,
+German, Polish and Spanish. Punctuation key names are spelled out. <code>w</code> alone
+reads position; <code>f</code> remains reserved. A fuller help audit and possible scale
+endpoint shortcuts are deferred pending user feedback.</p>
+<p>Tests now live under <code>tests/</code>; manual checks are under <code>tests/hardware/</code>.
+Current packages stay at the root, older packages under <code>previous-builds/</code>.
+Personal working charts, radio settings, local manuals and logs are excluded.</p>
+<p>Validation: 98 offline tests passed. The Windows package passed its bundled
+runtime/data and simulated gain/power checks. ZIP integrity, checksums and
+the extracted source startup were checked. Broader physical-radio testing
+remains ongoing. No native Linux or macOS binary was built on this Windows
+host; the source package includes the Linux/macOS installer.</p>
+</main>
+<footer><p>YAC documentation. <a href="index.html">All documents</a></p></footer>
+</body></html>

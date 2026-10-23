@@ -1,0 +1,11 @@
+s w: WLAN-Einrichtung ist nur im Raspberry-Pi-Abbild verfügbar. Hier die WLAN-Einstellungen des Betriebssystems verwenden.
+WLAN-Einrichtung: Land, Netzwerkname und Passwort. Strg+C bricht die Eingabe ab; Satzzeichen und Befehlsbuchstaben sind normale Zeichen.
+WLAN-Land: GB. Zwei Buchstaben eingeben, etwa GB, DE, ES oder PL. Leere Eingabe behält das aktuelle Land:
+Ungültiges Land. Zweibuchstabigen Ländercode eingeben; UK wird als GB akzeptiert.
+Netzwerkname (SSID), genau wie im Router eingestellt:
+Passwort. Eingabe bleibt verborgen, Speakup-Tastenecho ist vorübergehend aus. Leer für ein offenes Netz. Strg+C bricht ab:
+Ungültiger Netzwerkname. 1 bis 32 UTF-8-Bytes ohne Steuerzeichen verwenden.
+Ungültiges Passwort für dieses Netzwerk. Länge und Sicherheitsart prüfen.
+Land GB, Netzwerk S S I D. Leertaste verbindet und speichert; e bearbeitet; q zurück ohne Verbindung.
+WLAN-Verbindung wird hergestellt. Dies kann bis zu zwei Minuten dauern.
+WLAN verbunden und gespeichert. Der Aktualisierer prüft den Internetzugang gesondert.

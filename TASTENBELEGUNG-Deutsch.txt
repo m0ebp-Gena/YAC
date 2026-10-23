@@ -93,3 +93,11 @@ s dann a   Unterstützte AGC-Stufen durchschalten; a wiederholen. Rücklesen gep
 s dann e   Sprachprozessor: nur lesen beim Öffnen; e schaltet; Punkt/Komma bei Ein. Kenwood i/o Eingang/Ausgang. n verwirft und stellt wieder her; q behält; h hilft.
 
 Neue Funktionen: l Split/Relais; wiederholtes w zeigt RX/TX und Ton; x Antennen (x Hauptantenne, r Empfang, h Hilfe, q Zurück); t Abstimmung mit gewähltem Tuner. d Decoder: c CW, r RTTY, a Empfangsaudio einrichten, h Hilfe, q Zurück. Im Decoder e Start/Stopp, v Text, Komma/Punkt Textverlauf, n Löschen; q lässt Empfang laufen. Audioeinrichtung: Punkt/Komma Geräte, c Kanal, v Pegelprüfung, e Speichern, q Zurück. Audio-CW experimentell; Hilfe lesen.
+
+s b: h Hilfe; b Sprache und Braille; r Nur Braille; s Nur Sprache; q Zurück. Jede Auswahl wirkt sofort und wird für weitere Starts gespeichert. r schaltet Speakup stumm und erhält Braille-Eingabe und -Ausgabe. b oder s stellt Sprache wieder her. Eine angeschlossene Braillezeile bleibt in jedem Modus verfügbar. q kehrt zurück und behält die Auswahl.
+s o: h Hilfe; . erhöhen; , verringern; q Zurück. r Tempo; v Lautstärke; p Tonhöhe; u Satzzeichen; t Test; d Vorgaben. Änderungen wirken und speichern sofort.
+h Hilfe; r Tempo; v Lautstärke; p Tonhöhe; u Satzzeichen; . erhöhen; , verringern; t Test; d Vorgaben; q Zurück. Jede Änderung wirkt sofort und wird gespeichert. Anfangs ist Tempo ausgewählt. Tempo und Tonhöhe: 0 bis 9; Lautstärke: 1 bis 9. Satzzeichen: Keine, Einige, Meiste, Alle. q behält Änderungen. d stellt sofort die YAC-Vorgaben her: Tempo 2, Lautstärke 5, Tonhöhe 5, Einige Satzzeichen. t zeigt einen Testsatz mit den aktuellen Einstellungen. Systemlautstärke, Braille und andere Speakup-Einstellungen bleiben unverändert.
+
+s u: YAC aktualisieren. Leertaste schliesst die Funkgeraeteverbindung und oeffnet die Aktualisierung; q kehrt zu Einstellungen zurueck.
+
+s w: WLAN-Einrichtung ist nur im Raspberry-Pi-Abbild verfügbar. Hier die WLAN-Einstellungen des Betriebssystems verwenden. WLAN-Einrichtung: Land, Netzwerkname und Passwort. Strg+C bricht die Eingabe ab; Satzzeichen und Befehlsbuchstaben sind normale Zeichen.
