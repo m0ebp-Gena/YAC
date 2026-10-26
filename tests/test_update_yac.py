@@ -40,6 +40,17 @@ class Updates(unittest.TestCase):
             self.assertTrue(install.call_args.kwargs['capture_output'])
             self.assertEqual(output.getvalue(),'')
 
+    def test_failed_selected_installer_is_logged_without_screen_diagnostics(self):
+        data = archive()
+        responses = [data, (hashlib.sha256(data).hexdigest()+'  yac-source.zip').encode()]
+        failure = subprocess.CompletedProcess([], 1, stdout='Dependency setup failed.', stderr='connection timed out')
+        with tempfile.TemporaryDirectory() as tmp, patch.object(updater, 'fetch', side_effect=responses), patch.object(updater.subprocess, 'run', return_value=failure), self.assertLogs('yac.update', level='ERROR') as logs, redirect_stdout(io.StringIO()) as output:
+            self.assertEqual(updater.run(Path(tmp), selected_release=release()), 1)
+        self.assertEqual(output.getvalue(), '')
+        self.assertIn('exit=1', logs.output[0])
+        self.assertIn('connection timed out', logs.output[0])
+        self.assertIn('Dependency setup failed', logs.output[0])
+
     def test_beta_and_draft_selection(self):
         beta=release()
         draft=dict(beta,published_at='2026-10-25T00:00:00Z',draft=True)

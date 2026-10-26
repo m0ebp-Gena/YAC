@@ -30,6 +30,20 @@ class WifiControlTests(unittest.TestCase):
                     if len(values)==3:
                         self.assertEqual(bridge.call_args_list[-1].args[0]['action'],'private-end')
 
+    def test_connect_confirmation_names_the_action_in_all_languages(self):
+        questions = {'en':'Connect Y/N?', 'de':'Verbinden Y/N?', 'es':'Conectar Y/N?', 'pl':'Połączyć Y/N?'}
+        for language, question in questions.items():
+            for answer in ('y', 'q'):
+                with self.subTest(language=language, answer=answer):
+                    output = io.StringIO()
+                    values = iter(['GB', 'Home', 'private-password'])
+                    with patch.object(wifi_control, 'enabled', return_value=True), patch.object(wifi_control, 'bridge', return_value={'country':'GB', 'countries':['GB']}) as bridge, redirect_stdout(output):
+                        wifi_control.control(ROOT, language, lambda:answer, SimpleNamespace(lost=False), read_field=lambda *args, **kwargs:next(values))
+                    self.assertIn(question, output.getvalue())
+                    self.assertNotIn('private-password', output.getvalue())
+                    connected = any(call.args[0]['action'] == 'connect' for call in bridge.call_args_list)
+                    self.assertEqual(connected, answer == 'y')
+
     def test_blank_ssid_aborts_in_all_languages(self):
         for language,expected in [('en','Aborted'),('de','Abgebrochen'),('es','Cancelado'),('pl','Anulowano')]:
             with self.subTest(language=language),patch.object(wifi_control,'enabled',return_value=True), \

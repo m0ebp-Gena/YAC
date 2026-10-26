@@ -12,14 +12,18 @@ parser.add_argument('--date', default=date.today().isoformat())
 parser.add_argument("--source", type=Path, default=root / "builds/.work/demo-dist/YAC")
 parser.add_argument("--include-demo", action="store_true", help="Publish the staged runnable folder with the ZIP")
 parser.add_argument('--stage-only', action='store_true', help='Verify and stage without publishing release artifacts')
+parser.add_argument('--revision', type=int, default=0, help='Same-day release revision')
 args = parser.parse_args()
+if args.revision < 0:
+    parser.error('revision must be nonnegative')
+release_suffix = '-r' + str(args.revision) if args.revision else ''
 date.fromisoformat(args.date)
 source = args.source.resolve()
 version_match = re.search(r'^VERSION\s*=\s*"([^"]+)"', (root / 'yac.py').read_text(encoding='utf-8-sig'), re.MULTILINE)
 if version_match is None:
     raise RuntimeError('Could not read the YAC version from yac.py')
 version = re.sub(r'[^A-Za-z0-9]+', '-', version_match.group(1)).strip('-')
-folder = 'YAC-' + version + '-' + args.date
+folder = 'YAC-' + version + release_suffix + '-' + args.date
 staging = root / 'builds/.work/packages'
 staging.mkdir(parents=True, exist_ok=True)
 archive = staging / (folder + '.zip')
@@ -40,6 +44,9 @@ release_guides = {'CWKit-LICENSE.txt', 'AUDIO-LICENSES.txt', 'decoder-controls.m
                   'antenna-controls.md', 'tuner-controls.md'}
 release_guides.update(path.name for path in (root / 'doc').iterdir()
                      if path.is_file() and path.suffix in {'.md', '.html'})
+release_details = root / 'doc' / ('in-this-release-' + args.date + '.txt')
+if release_details.is_file():
+    release_guides.add(release_details.name)
 if {path.name for path in (source / 'doc').iterdir()} != {'supported-radios'} | release_guides:
     raise RuntimeError('Unexpected documentation in the demo folder')
 for name in release_guides:

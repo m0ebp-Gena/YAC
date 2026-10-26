@@ -56,4 +56,4 @@ w: Pi Wi-Fi setup. Follow the prompts; h gives help where offered.
 Profile selection: type a radio number, then Space to select; q cancels.
 Pi-only settings require the configured Pi launcher.
 
-Radio recovery: Radio Error and Stand by start a 60-second recovery period. Radio Restored resumes operation; otherwise Aborting ends YAC. Press h while waiting for recovery help.
+Radio recovery: Radio Error and Reconnecting start a 60-second recovery period. Radio Restored resumes operation; otherwise Aborting ends YAC. Press h while waiting for recovery help.

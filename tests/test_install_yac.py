@@ -112,6 +112,16 @@ class Installer(unittest.TestCase):
         commands.assert_not_called()
         shortcut.assert_not_called()
 
+    def test_dated_release_details_are_installed(self):
+        documentation = self.source / 'doc'
+        documentation.mkdir()
+        details = documentation / 'in-this-release-2026-10-26.txt'
+        details.write_text('Full explanation for this release.')
+        result, _, _, _ = self.run_setup([True])
+        self.assertEqual(result, 0)
+        installed = self.home / '.local/yac/doc' / details.name
+        self.assertEqual(installed.read_bytes(), details.read_bytes())
+
     def test_recovery_files_are_installed_without_replacing_personal_ini(self):
         destination=self.home/'.local/yac'
         destination.mkdir(parents=True)

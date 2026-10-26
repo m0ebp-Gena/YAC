@@ -88,7 +88,7 @@ portable Windows builds. See [Updating YAC](doc/updating-yac.html).
 
 Real connections are checked quietly every five seconds while waiting for
 command keys. An unusable radio-status response or repeated connection failures
-announces Radio Error, then Stand by. YAC retries the same device and model for
+announces Radio Error, then Reconnecting. YAC retries the same device and model for
 up to 60 seconds, without resetting radio settings or entering simulated mode.
 Radio Restored resumes operation; otherwise Aborting closes YAC. Press h during
 recovery for help.

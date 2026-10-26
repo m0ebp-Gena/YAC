@@ -13,7 +13,7 @@ Keep your personal yac.ini and logs; the installer preserves an existing INI.
 Radio Error
 
 YAC could not obtain usable radio data, or repeated connection checks failed.
-Stand by means YAC is trying the same device again, about every five seconds.
+Reconnecting means YAC is trying the same device again, about every five seconds.
 Radio Restored means recovery succeeded and ordinary operation can continue.
 After a failed frequency change, check the radio frequency after recovery.
 YAC may have been unable to confirm restoration of the previous frequency.

@@ -18,3 +18,4 @@ Nie udało się ustawić kraju WLAN.
 Nie znaleziono sieci. Sprawdź dokładny SSID, router i sygnał.
 Połączenie nieudane. Sprawdź hasło i sygnał. Poprzednia zapisana sieć została zachowana.
 Nie można przygotować prywatnego wpisywania. Nie poproszono o hasło.
+Przy Połączyć Y/N? y łączy z podanymi danymi i zapisuje je. n wraca do edycji; q anuluje bez łączenia.

@@ -1,6 +1,7 @@
 """Download published YAC beta releases without Git (GPL-3.0-only)."""
 import hashlib
 import json
+import logging
 import os
 from pathlib import Path, PurePosixPath
 import re
@@ -16,6 +17,8 @@ import zipfile
 REPOSITORY = 'm0ebp-Gena/YAC'
 API = 'https://api.github.com/repos/' + REPOSITORY + '/releases?per_page=100'
 MAX_ARCHIVE = 64 * 1024 * 1024
+LOG = logging.getLogger('yac.update')
+LOG.addHandler(logging.NullHandler())
 
 
 def fetch(url, limit):
@@ -180,6 +183,7 @@ def run(destination, key=read_key, *, selected_release=None):
                 restore(destination, backup, protected)
                 raise
             if result.returncode:
+                LOG.error('Source installer failed: tag=%s exit=%s stdout=%s stderr=%s', release.get('tag_name', '?'), result.returncode, getattr(result, 'stdout', '') or '', getattr(result, 'stderr', '') or '')
                 restore(destination, backup, protected)
             if result.returncode:
                 if selected_release is None:

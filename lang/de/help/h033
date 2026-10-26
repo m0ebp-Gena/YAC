@@ -1,0 +1,5 @@
+Frequenzeingabe
+
+Die neue Frequenz in Megahertz eingeben und Enter drücken. Für Bruchteile einen Dezimalpunkt verwenden. YAC übernimmt einen unterstützten Wert sofort und bestätigt die Frequenz durch Rücklesen vom Funkgerät.
+h und Enter zeigt diese Hilfe und kehrt ohne Änderung zur Frequenzeingabe zurück.
+Enter ohne Eingabe bricht mit Abgebrochen ab. Ein unzulässiger Wert ergibt Ungültig. Beide beenden die Eingabe ohne Frequenzänderung und kehren zur Hauptbedienung zurück. Mit e erneut versuchen.

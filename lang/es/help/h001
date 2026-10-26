@@ -56,4 +56,4 @@ w: Wi-Fi del Pi. Sigue las indicaciones; h da ayuda donde se ofrezca.
 Selección de perfil: introduce el número de radio y Espacio para seleccionar; q cancela.
 Los ajustes exclusivos del Pi requieren su lanzador configurado.
 
-Recuperación: Error de radio y Espere inician un plazo de 60 segundos. Radio conectada reanuda el uso; si no, Cancelando cierra YAC. h durante la espera lee la ayuda.
+Recuperación: Error de radio y Reconectando inician un plazo de 60 segundos. Radio conectada reanuda el uso; si no, Cancelando cierra YAC. h durante la espera lee la ayuda.

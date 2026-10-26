@@ -85,7 +85,7 @@ def control(root, language, read_key, watch, *, read_field=field):
             if len(password.encode('utf-8')) > 64 or any(not c.isprintable() for c in password):
                 say('l356')
                 return
-            say('l007')
+            say('l028')
             while True:
                 key = read_key().casefold()
                 if watch.lost:

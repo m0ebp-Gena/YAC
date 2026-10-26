@@ -14,7 +14,11 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--date", default=date.today().isoformat(), help="Release date (YYYY-MM-DD)")
 parser.add_argument("--dist-dir", default="builds/.work/demo-dist", help="Staging directory within builds")
 parser.add_argument('--stage-only', action='store_true', help='Build and verify without publishing release artifacts')
+parser.add_argument('--revision', type=int, default=0, help='Same-day release revision')
 args = parser.parse_args()
+if args.revision < 0:
+    parser.error('revision must be nonnegative')
+release_suffix = '-r' + str(args.revision) if args.revision else ''
 date.fromisoformat(args.date)
 staging = (root / args.dist_dir).resolve()
 if not staging.is_relative_to((root / 'builds/.work').resolve()):
@@ -39,8 +43,11 @@ for guide in ('split-controls.md', 'antenna-controls.md', 'tuner-controls.md', '
 for guide in (root / 'doc').iterdir():
     if guide.is_file() and guide.suffix in {'.md', '.html'}:
         shutil.copyfile(guide, destination / 'doc' / guide.name)
+release_details = root / 'doc' / ('in-this-release-' + args.date + '.txt')
+if release_details.is_file():
+    shutil.copyfile(release_details, destination / 'doc' / release_details.name)
 (destination / "yac.ini").write_text("[yac]\nplatform=\nlang=\ncall=\ndebug=true\n", encoding="utf-8")
-(destination / 'release.json').write_text(json.dumps({'tag': 'v001-beta-' + args.date,
+(destination / 'release.json').write_text(json.dumps({'tag': 'v001-beta-' + args.date + release_suffix,
                                                     'published_at': args.date + 'T00:00:00Z'}))
 guides = {
     "yac.ini.example": "yac.ini.example",
@@ -66,5 +73,5 @@ if version_match is None:
 version = re.sub(r"[^A-Za-z0-9]+", "-", version_match.group(1)).strip("-")
 (destination / "YAC.exe").replace(destination / ("YAC-" + version + ".exe"))
 subprocess.run([sys.executable, str(root / "package_demo.py"), "--date", args.date,
-                "--source", str(destination), *(['--stage-only'] if args.stage_only else ['--include-demo'])], cwd=root, check=True)
+                "--source", str(destination), "--revision", str(args.revision), *(['--stage-only'] if args.stage_only else ['--include-demo'])], cwd=root, check=True)
 

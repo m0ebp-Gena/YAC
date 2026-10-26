@@ -1,4 +1,4 @@
-Wi-Fi setup: s w from the main menu. Nothing is applied until y confirms connection at Continue Y/N?. n returns to edit the details; q cancels.
+Wi-Fi setup: s w from the main menu. Nothing is applied until y confirms connection at Connect Y/N?. n returns to edit the details; q cancels.
 
 Aborted: entry was cancelled or the network name was empty. Entered details are discarded; return to Settings. Repeat w there, or s w from the main menu, to try again.
 Connected: Wi-Fi connected and saved; this does not confirm internet access.
@@ -10,7 +10,7 @@ h: at Country, type h then Enter for help; at confirmation, press h. Help return
 Invalid: an entry could not be accepted. The request ends and entered details are discarded. Return to Settings; repeat w to try again with valid details.
 Network name: enter the exact SSID, 1 to 32 UTF-8 bytes, without control characters. Blank Enter aborts.
 Password: entry is hidden; Speakup key echo is temporarily off and restored afterwards. Blank means an open network, not cancellation. Letters such as h and q, spaces and punctuation are literal in network names and passwords.
-y: at Continue Y/N?, connect and save. n returns to edit; q cancels. Until then, cancelling or invalid entry leaves the connection unchanged.
+y: at Connect Y/N?, connect and save. n returns to edit; q cancels. Until then, cancelling or invalid entry leaves the connection unchanged.
 
 Wi-Fi setup is unavailable. Check the image helper, permissions and NetworkManager.
 No Wi-Fi adapter was found.

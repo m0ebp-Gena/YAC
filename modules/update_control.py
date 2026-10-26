@@ -10,7 +10,8 @@ import threading
 from modules import chat_int, help_int
 
 REQUEST = 75
-LOG = logging.getLogger(__name__)
+LOG = logging.getLogger('yac.update')
+LOG.addHandler(logging.NullHandler())
 _pending = None
 
 
@@ -151,6 +152,7 @@ def run(root):
             result = 1
         if result == REQUEST:
             return 0
+        LOG.info('Update installation finished: tag=%s result=%s', plan[1].get('tag_name', '?'), result)
         chat_int.show_response(outcomes['l365' if not result else 'l361'])
         chat_int.finish_response()
         os.execv(sys.executable, [sys.executable,

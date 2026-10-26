@@ -115,7 +115,8 @@ def main(source=None, home=None, update=False, pi=False):
         if (source / 'doc/supported-radios').is_dir():
             copy_changed(source / 'doc/supported-radios', destination / 'doc/supported-radios')
         for guide in (source / 'doc').glob('*'):
-            if guide.is_file() and guide.suffix in {'.md', '.html'}:
+            if guide.is_file() and (guide.suffix in {'.md', '.html'} or (guide.name.startswith('in-this-release-') and guide.suffix == '.txt')):
+                (destination / 'doc').mkdir(parents=True, exist_ok=True)
                 copy_changed(guide, destination / 'doc' / guide.name)
         if (source / "doc/linux-macos-setup.txt").is_file():
             copy_changed(source / "doc/linux-macos-setup.txt", destination / "LINUX-MACOS-SETUP.txt")

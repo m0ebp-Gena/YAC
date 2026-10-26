@@ -18,3 +18,4 @@ WLAN-Land konnte nicht eingestellt werden.
 Netzwerk nicht gefunden. Genaue SSID, Router und Signal prüfen.
 Verbindung fehlgeschlagen. Passwort und Signal prüfen. Das bisherige gespeicherte Netzwerk bleibt erhalten.
 Private Passworteingabe konnte nicht vorbereitet werden. Es wurde kein Passwort abgefragt.
+Bei Verbinden Y/N? verbindet y mit den eingegebenen Daten und speichert sie. n kehrt zur Eingabe zurück; q bricht ohne Verbindung ab.

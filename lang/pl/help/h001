@@ -56,4 +56,4 @@ w: Wi-Fi Pi. Wykonuj polecenia; h daje pomoc tam, gdzie dostępna.
 Wybór profilu: wpisz numer radia i Spację, aby wybrać; q anuluje.
 Ustawienia tylko dla Pi wymagają skonfigurowanego programu uruchamiającego Pi.
 
-Przywracanie: Błąd radia i Proszę czekać rozpoczynają 60 sekund prób. Radio powróciło wznawia obsługę; inaczej Kończenie zamyka YAC. h podczas oczekiwania czyta pomoc.
+Przywracanie: Błąd radia i Łączę Ponownie rozpoczynają 60 sekund prób. Radio powróciło wznawia obsługę; inaczej Kończenie zamyka YAC. h podczas oczekiwania czyta pomoc.

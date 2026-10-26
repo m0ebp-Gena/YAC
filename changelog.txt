@@ -1,5 +1,11 @@
 YAC changes
 
+26 October 2026 revision 2
+- Fixed incomplete source package rejection; packages pass the actual updater extractor.
+- Added frequency-entry help and clearer reconnecting and Wi-Fi confirmations.
+- Split short update headlines from dated full release details.
+- Captured source update failures in the YAC debug log.
+
 26 October 2026
 - Consolidated short labels, shared errors and explanatory help in all four languages.
 - Added same-radio connection recovery and documented INI/command-file errors.

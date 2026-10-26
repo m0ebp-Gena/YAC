@@ -197,7 +197,7 @@ def _read_label(root: Path, language: str, label_id: str, fallback: str) -> str:
 def _radio_error(root, radio, language):
     watch = getattr(radio, '_yac_connection_watch', None)
     if watch is not None and watch.report_error():
-        return ''  # The recovery announcement includes Radio Error and Stand by.
+        return ''  # The recovery announcement includes Radio Error and Reconnecting.
     return _read_label(root, language, 'l050', 'Radio Error')
 
 
@@ -1793,7 +1793,7 @@ def _main(argv: list[str] | None = None) -> int:
     def announce_connection(event):
         if event == 'lost':
             chat_int.show_response(_read_label(root, language, 'l050', 'Radio Error'))
-        key, fallback = {'lost': ('l109', 'Stand by'),
+        key, fallback = {'lost': ('l109', 'Reconnecting'),
                          'restored': ('l110', 'Radio Restored'),
                          'aborting': ('l367', 'Aborting')}[event]
         chat_int.show_response(_read_label(root, language, key, fallback))
@@ -1850,7 +1850,7 @@ def _main(argv: list[str] | None = None) -> int:
                     from modules import help_int
                     chat_int.show_response(help_int.get_help(root, language, 'h029'))
                 else:
-                    chat_int.show_response(_read_label(root, language, 'l109', 'Stand by'))
+                    chat_int.show_response(_read_label(root, language, 'l109', 'Reconnecting'))
                 continue
             if key == "w":
                 response = (split_control.report(sys.modules[__name__], root, radio, language)
@@ -1861,11 +1861,21 @@ def _main(argv: list[str] | None = None) -> int:
                 if original_frequency is None:
                     response = _radio_error(root, radio, language)
                 else:
-                    chat_int.show_frequency_prompt(root, language)
-                    try:
-                        frequency = input().strip()
-                    except (EOFError, KeyboardInterrupt):
-                        print()
+                    frequency = None
+                    while True:
+                        chat_int.show_frequency_prompt(root, language)
+                        try:
+                            frequency = input().strip()
+                        except (EOFError, KeyboardInterrupt):
+                            print()
+                            frequency = None
+                            break
+                        if frequency.casefold() == "h":
+                            from modules import help_int
+                            chat_int.show_response(help_int.get_help(root, language, "h033"))
+                            continue
+                        break
+                    if frequency is None:
                         continue
                     response = _dispatch(
                         root, radio, language, key, frequency, original_frequency
