@@ -1,3 +1,5 @@
+Hilfe: WLAN-Einrichtung
+
 WLAN einrichten: s w im Hauptmenü. Erst die y bestätigt den Verbindungsversuch.
 
 Abgebrochen: Eingabe abgebrochen oder Netzwerkname leer. Eingegebene Daten werden verworfen; zurück zu Einstellungen. Dort w oder im Hauptmenü s w wiederholen.
@@ -19,3 +21,7 @@ Netzwerk nicht gefunden. Genaue SSID, Router und Signal prüfen.
 Verbindung fehlgeschlagen. Passwort und Signal prüfen. Das bisherige gespeicherte Netzwerk bleibt erhalten.
 Private Passworteingabe konnte nicht vorbereitet werden. Es wurde kein Passwort abgefragt.
 Bei Verbinden Y/N? verbindet y mit den eingegebenen Daten und speichert sie. n kehrt zur Eingabe zurück; q bricht ohne Verbindung ab.
+
+***
+Ende der Hilfe
+***

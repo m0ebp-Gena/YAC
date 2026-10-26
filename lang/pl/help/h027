@@ -1,3 +1,5 @@
+Pomoc: Aktualizacje YAC
+
 Aktualizacja YAC
 YAC sprawdza GitHub przez istniejące połączenie internetowe.
 
@@ -13,3 +15,7 @@ r: czytaj opis wydania ponownie. Przy długim opisie Spacja przechodzi dalej, q 
 y: czytaj opis przy Opis Y/N?. Przy Update Y/N? pobierz, sprawdź i zainstaluj, potem uruchom YAC ponownie.
 
 Radio pozostaje połączone do rozpoczęcia instalacji. Zapisane ustawienia są zachowane. Instalacja plików lokalnych jest niedostępna. Na Pi nie aktualizuje oddzielnych programów pomocniczych ani rozruchu.
+
+***
+Koniec pomocy
+***

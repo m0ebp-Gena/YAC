@@ -1,3 +1,5 @@
+Pomoc: Przywracanie połączenia z radiem
+
 Przywracanie połączenia
 
 Błąd radia: YAC nie otrzymał użytecznych danych lub kolejne próby sprawdzenia połączenia zawiodły.
@@ -6,3 +8,7 @@ Kończenie: radio nie powróciło w ciągu 60 sekund. YAC zamyka połączenie i 
 q: zakończ YAC przez zwykłe potwierdzenie.
 Radio powróciło: to samo radio znów odpowiada; normalna obsługa zostaje wznowiona.
 Łączę Ponownie: YAC próbuje tego samego radia mniej więcej co pięć sekund, do 60 sekund po Błąd radia. Podczas oczekiwania nie trzeba nic robić. Nie resetuje ustawień radia ani nie przechodzi do symulacji.
+
+***
+Koniec pomocy
+***

@@ -1,5 +1,11 @@
+Pomoc: Praca z rozdzielonymi częstotliwościami i przemienniki
+
 l: Split/przemiennik. Poza FM wpisz częstotliwość nadawania w MHz. Odbiór pozostaje; częstotliwość i emisja drugiego VFO zostają zastąpione. W FM wpisz przesunięcie ze znakiem w hercach, np. minus 600000, chyba że yac.ini ma wartość dla pasma. Puste lub q anuluje; h i Enter pomoc. Kolejne l wyłącza split/przemiennik. FM zachowuje ton/kod. Klucze [yac]: repeater_offset_10m_hz, repeater_offset_6m_hz, repeater_offset_2m_hz, repeater_offset_70cm_hz, repeater_offset_23cm_hz. Bez zgadywania i automatycznego zapisu. Wymagany tryb VFO i wyłączone RIT/XIT/clarifier. Cel FTX-1 musi odpowiadać VS. IC-9700 MAIN A/B, bez satelity. Kenwood/QMX jeszcze nieobsługiwane. Odczyt częstotliwości bazowych, nie pomiar RF. Bez uruchamiania nadawania.
 
 Kolejne w przełączają zwykły status i bieżące szczegóły split/przemiennika: częstotliwość odbioru, nadawania oraz aktywny ton/kod FM. Wyłączenie jest zgłaszane; błędy odczytu jako nieznane. Inne polecenie resetuje kolejność.
 Dla minus 600000 herców wpisz znak minus, a potem 600000. Dla plus 600000 herców wpisz 600000; znak plus jest opcjonalny. Stan podaje słowo plus lub minus przed wartością.
 Błąd Przywróc. po ustawieniu podziału oznacza brak potwierdzenia wszystkich poprzednich ustawień. Zwolnij przycisk nadawania. W głównym interfejsie kolejne w przełączają zwykły stan i bieżące szczegóły podziału/przemiennika z częstotliwościami odbioru i nadawania. Sprawdź je przed nadawaniem. Jeśli odczyt nie działa, najpierw przywróć połączenie.
+
+***
+Koniec pomocy
+***

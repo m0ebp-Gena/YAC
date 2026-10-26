@@ -1,5 +1,11 @@
+Ayuda: Operación dividida y repetidores
+
 l: Split/repetidor. Fuera de FM introduzca la frecuencia de transmisión en MHz. Se mantiene recepción y se sustituyen frecuencia y modo del otro VFO. En FM introduzca desplazamiento con signo en hercios, por ejemplo menos 600000, salvo que exista un valor por banda en yac.ini. Vacío o q cancela; h y Enter ayuda. Otra l desactiva split/repetidor. FM mantiene tono/código. Claves [yac]: repeater_offset_10m_hz, repeater_offset_6m_hz, repeater_offset_2m_hz, repeater_offset_70cm_hz, repeater_offset_23cm_hz. Sin adivinar ni guardar valores automáticamente. Requiere modo VFO y RIT/XIT/clarificadores desactivados. El destino FTX-1 debe coincidir con VS. IC-9700 MAIN A/B, sin satélite. Kenwood/QMX aún no compatibles. Lectura de frecuencias base, no medida RF. No inicia transmisión.
 
 Pulsaciones consecutivas de w alternan estado normal y detalles actuales de split/repetidor: frecuencia de recepción, transmisión y tono/código FM activo. Se anuncia desactivado; los fallos de lectura son desconocidos. Otro comando reinicia la secuencia.
 Para menos 600000 hercios, escribe el signo menos seguido de 600000. Para más 600000 hercios, escribe 600000; el signo más es opcional. El estado pronuncia más o menos antes del valor.
 Fallo Restaurar tras configurar split indica que no se confirmó la restauración completa. Suelta el pulsador de transmisión. En la interfaz principal, w repetido alterna estado normal y detalles actuales de split/repetidor con frecuencias de recepción y transmisión. Compruébalos antes de transmitir. Si no se pueden leer, resuelve primero la conexión.
+
+***
+Fin de la ayuda
+***

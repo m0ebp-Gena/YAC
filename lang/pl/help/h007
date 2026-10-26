@@ -1,3 +1,5 @@
+Pomoc: Menu filtrów
+
 Filtry: naciśnij f, potem klawisz poniżej. Dostępne funkcje zależą od radia i emisji.
 
 a: Automatyczny notch. Kolejne a włącza lub wyłącza.
@@ -18,3 +20,7 @@ Gdy szerokość pasma jest domyślna, wejście do regulacji jej nie zmienia. Kro
 p wybiera szerokość pasma. Przy osobnych granicach p najpierw wybiera dolną, a kolejne naciśnięcia przełączają górną i dolną. Wybór odczytuje wartość bez zmiany. Przecinek i kropka stosują każdą zmianę natychmiast, aby można było usłyszeć jej efekt; YAC odczytuje i podaje wynik.
 Czas śledzenia redukcji szumów określa szybkość podążania za zmianami odbieranego sygnału, jeśli radio go obsługuje. Jest podawany w milisekundach. Przy wybranej regulacji kropka zwiększa czas, a przecinek go zmniejsza. Każda zmiana działa natychmiast i jest potwierdzana odczytem.
 W stanie filtrów Brak obsługi oznacza brak obsługiwanych przełączanych filtrów dla bieżącego radia i trybu.
+
+***
+Koniec pomocy
+***

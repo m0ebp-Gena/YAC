@@ -1,2 +1,8 @@
+Help For The Antennas
+
 Antennas: entry with x reads current transmit and receive routing without changing it. Repeat x to cycle supported main antennas. r switches the receive input where supported. q leaves with Back; h repeats this help. Another command leaves Antennas and starts that command. Single-antenna radios report antenna 1; unsupported changes say Not supported. Band-specific sockets are not interchangeable antenna choices. Unknown readings prevent changes. Each change is read back; failure reports current routing if readable. Tuner selection and unrelated output settings are preserved. On the TS-590, r toggles RX ANT and leaves Drive Out/antenna output alone. On the TS-480, only antenna 1/2 switching is available, after confirming its identity. On the IC-7600, r controls RX ANT IN/OUT, which may be used for an external filter or preamp; on the IC-7300MK2, only receive-path switching is available. On FTX-1 with SPA-1, HF/50 MHz only and readable SPA-1 power context are required. x cycles ANT1/2 only in normal TRX mode. r enables reception on ANT2 with transmission kept on ANT1; select transmit ANT1 first. r again returns both paths to ANT1. Existing ANT2 receive-only routing is reported; x will not turn that RX-only path into a transmitting path. FTX-1 receive-only configurations do not offer a main TX cycle. No FT-DX101 profile is implemented yet. No transmitter is keyed.
 If YAC says Select TX Ant 1, press x to select transmit antenna 1 before using r to enable antenna 2 for reception. Read back the announced routing before continuing.
+
+***
+End of help
+***

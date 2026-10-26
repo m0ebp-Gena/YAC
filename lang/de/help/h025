@@ -1,4 +1,10 @@
+Hilfe: Spracheinstellungen
+
 h Hilfe; o wechselt zwischen Geschwindigkeit, Lautstärke, Tonhöhe und Zeichensetzung, wie bei Offset. Anfangs ist Geschwindigkeit gewählt. Punkt erhöht; Komma verringert. Jede Änderung gilt sofort und wird gespeichert; q behält Änderungen und kehrt zurück. t Test; d YAC-Standardwerte sofort anwenden: Geschwindigkeit 2, Lautstärke 5, Tonhöhe 5, Zeichensetzung Einige. Geschwindigkeit und Tonhöhe 0 bis 9, Lautstärke 1 bis 9.
 
 Speakup-Einstellungen sind nicht verfügbar. Einrichtung des Pi-Hilfsprogramms prüfen; nichts wurde geändert.
 Einstellung konnte nicht geändert oder gespeichert werden. Aktuelle Werte prüfen.
+
+***
+Ende der Hilfe
+***

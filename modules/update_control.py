@@ -82,7 +82,6 @@ def confirm(root, language, read_key):
         return False
     def say(label):
         chat_int.show_response(chat_int.label(root, language, label))
-    chat_int.show_response(help_int.get_help(root, language, 'h027'))
     say('l357')
     try:
         completed, release = _lookup_while_cancellable(root, read_key)

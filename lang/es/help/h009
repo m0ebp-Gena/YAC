@@ -1,3 +1,5 @@
+Ayuda: Menú de ajustes
+
 Ajustes: a AGC; m ganancia de micrófono; p potencia; s paso; t sintonizador; v VFO/receptor; e procesador de voz. q vuelve y anuncia Atrás, o Listo tras seleccionar AGC. h lee esta ayuda.
 
 s a lee el ajuste AGC actual sin cambiarlo. Otra a selecciona el ajuste siguiente y confirma la opción. q termina y anuncia Listo. Rápido recupera antes tras una señal fuerte; Lento mantiene la reducción más tiempo. Elige escuchando. Desactivado permite mayores cambios de volumen. No requiere transmitir.
@@ -17,7 +19,7 @@ s b: punto o b selecciona el modo siguiente; coma el anterior. q aplica, guarda 
 
 s o: r velocidad; v volumen; p tono; u puntuación; punto aumenta; coma disminuye; t prueba; d valores predeterminados; h ayuda; q vuelve. Los cambios se aplican y guardan inmediatamente.
 
-s u: Actualizar YAC. Muestra ayuda y Buscando. Sin internet o Sin novedades vuelve a Ajustes. Nueva versión pregunta Notas Y/N? y después Update Y/N?. y acepta; n omite notas o rechaza instalación; q vuelve. En notas largas, Espacio avanza y q sale de las notas.
+s u: Actualizar YAC. Empieza con Buscando. h muestra la ayuda de actualización. Sin internet o Sin novedades vuelve a Ajustes. Nueva versión pregunta Notas Y/N? y después Update Y/N?. y acepta; n omite notas o rechaza instalación; q vuelve. En notas largas, Espacio avanza y q sale de las notas.
 
 s w: La configuración Wi-Fi solo está disponible en la imagen Raspberry Pi. Aquí use los ajustes Wi-Fi del sistema. Configuración Wi-Fi: país, nombre de red y contraseña. Ctrl+C cancela; puntuación y letras de comandos son caracteres normales.
 
@@ -26,3 +28,7 @@ Sintonización fallida o sintonizador desactivado
 Resultado de sintonización sin confirmar
 Tiempo agotado; parada solicitada
 No se pudo confirmar la parada
+
+***
+Fin de la ayuda
+***

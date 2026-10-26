@@ -1,3 +1,5 @@
+Hilfe: Bandbreite
+
 Bandbreite
 
 Ein Regler: Punkt verbreitert die Bandbreite; Komma verengt sie.
@@ -7,3 +9,7 @@ Jede Änderung wirkt sofort und wird durch Rücklesen bestätigt.
 Bei Standard wählt Punkt die schmalste numerische Bandbreite, Komma die breiteste.
 h zeigt diese Hilfe. q beendet mit Fertig und erhält Änderungen; zurück zu Filter.
 Nicht unterstützt bedeutet: keine Bandbreitenregelung für Gerät und Modus. YAC kehrt ohne Änderung zu Filter zurück.
+
+***
+Ende der Hilfe
+***

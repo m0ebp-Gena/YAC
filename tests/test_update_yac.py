@@ -28,6 +28,26 @@ def release():
 
 
 class Updates(unittest.TestCase):
+    def test_platform_names_preferred_over_compatibility_assets(self):
+        base = 'https://github.com/m0ebp-Gena/YAC/releases/download/v-test/'
+        names = ['yac-win-2026-10-26-r4.zip', 'yac-mac-linux-2026-10-26-r4.zip',
+                 'YAC-001-beta-r4-2026-10-26.zip', 'yac-source.zip']
+        assets = [dict(name=n, browser_download_url=base+n)
+                  for name in names for n in (name, name+'.sha256')]
+        for windows, expected in ((True, names[0]), (False, names[1])):
+            with self.subTest(windows=windows):
+                pair = updater.asset_pair({'assets': assets}, windows=windows)
+                self.assertEqual(pair[0]['name'], expected)
+                self.assertEqual(pair[1]['name'], expected+'.sha256')
+
+    def test_multiple_modern_packages_rejected_instead_of_guessing(self):
+        base = 'https://github.com/m0ebp-Gena/YAC/releases/download/v-test/'
+        names = ['yac-mac-linux-2026-10-26-r4.zip', 'yac-mac-linux-2026-10-26-r5.zip']
+        assets = [dict(name=n, browser_download_url=base+n)
+                  for name in names for n in (name, name+'.sha256')]
+        with self.assertRaisesRegex(ValueError, 'unambiguous'):
+            updater.asset_pair({'assets': assets})
+
     def test_preselected_release_never_rechecks_or_prompts(self):
         data=archive()
         responses=[data,(hashlib.sha256(data).hexdigest()+'  yac-source.zip').encode()]

@@ -1,0 +1,33 @@
+YAC - Erste Schritte
+
+Entpacken Sie die ZIP-Datei in Downloads, auf dem Desktop oder dort, wo sie gespeichert wurde. Lassen Sie den entpackten Ordner zusammen. Sie können den ganzen Ordner bei Bedarf an einen anderen Ort verschieben.
+
+Schließen Sie das Funkgerät an und schalten Sie es ein. Beenden Sie andere Programme, die dessen serielle Schnittstelle verwenden. Eventuell wird der USB-Treiber des Herstellers benötigt. Warten Sie die Suche ab.
+
+MAC
+
+Terminal öffnen: Befehl+Leertaste, Terminal eingeben, Return.
+
+Öffnen Sie Terminal. Benötigt wird Python 3.10 oder neuer. Auf dem Mac erhalten Sie Python bei Bedarf von python.org; unter Linux verwenden Sie die Pakete Ihrer Distribution einschließlich venv-Unterstützung. Es muss nichts kompiliert werden.
+
+Geben Sie cd, ein Leerzeichen und den vollständigen Pfad zum entpackten YAC-Ordner ein; Pfade mit Leerzeichen in Anführungszeichen setzen. Drücken Sie Enter. Dann:
+
+    sh install-yac.sh
+
+Als normaler Benutzer ausführen, ohne sudo. Enter bestätigt Ja bei Install YAC? und den optionalen Launcher-Fragen. Andere Python-Umgebungen bleiben unverändert. Für Abhängigkeiten wird Internet benötigt. Falls ein Launcher Administratorrechte erfordert, geben Sie auf Nachfrage Ihr normales Anmeldepasswort ein; Zeichen werden nicht angezeigt.
+
+YAC STARTEN
+Im Terminal ausführen:
+
+    ~/Applications/yac/run-yac
+
+Der Installer erstellt YACs Installationsordner. Nach erfolgreicher Installation können Sie den entpackten Downloadordner verschieben oder entfernen; das installierte YAC bleibt am selben Ort. Lassen Sie den Installationsordner zusammen.
+
+OPTIONALER LAUNCHER
+Bestätigen Sie bei der Installation Create YAC launcher?, um bei passendem PATH yac im Terminal zu verwenden. Andernfalls verwenden Sie den vollständigen run-yac-Befehl oben. Eine Desktopverknüpfung ist nicht erforderlich.
+
+Folgen Sie den Fragen zu Sprache und Name/Rufzeichen. h öffnet die Hilfe; q und dann y beendet YAC. Die Tasten stehen in TASTENBELEGUNG-Deutsch.txt in diesem Dokumentationsordner.
+
+YAC nutzt Ihren Screenreader und Ihre Braillezeile im Terminal. Erforderlich ist North American Computer Braille (NABCC). Die Auswahl der benötigten Brailletabelle auf dem Mac ist noch ungeklärt; Sprache kann getrennt getestet werden.
+
+Updates: s, dann u. Vor der Zustimmung können Sie die kurzen Neuerungen lesen oder überspringen. Notieren Sie bei Problemen Build, Plattform, Funkgerät und Ablauf. Kontakt: gena@m0ebp.uk. Prüfen Sie Protokolle vor dem Weitergeben auf persönliche Angaben.

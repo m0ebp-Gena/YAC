@@ -1,5 +1,11 @@
 YAC changes
 
+26 October 2026 revision 4
+- Clear Windows and Mac/Linux package names; compatible updates from earlier builds.
+- Separate language documentation folders and platform-specific START-HERE guides.
+- Help titles and end boundaries in all four languages; updater help on request.
+- Core checklist now exercises AF Gain, dial tracking, band/mode changes and updating.
+
 26 October 2026 revision 2
 - Fixed incomplete source package rejection; packages pass the actual updater extractor.
 - Added frequency-entry help and clearer reconnecting and Wi-Fi confirmations.

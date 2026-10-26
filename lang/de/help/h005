@@ -1,1 +1,7 @@
+Hilfe: Audio- und Hochfrequenzverstärkung
+
 a regelt AF-Verstärkung. r regelt in FM die Rauschsperre, sonst RF-Verstärkung. Start beim aktuellen Funkgerätewert, als gerundeter Prozentwert. Punkt erhöht; Komma verringert. Schritte etwa 3 Prozent. Kein Umlauf an den Grenzen. q beendet und behält den Wert. Eine andere Befehlstaste startet diesen Befehl.
+
+***
+Ende der Hilfe
+***

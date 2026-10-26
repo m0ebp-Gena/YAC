@@ -91,6 +91,19 @@ class Installer(unittest.TestCase):
         self.assertEqual((legacy / "yac.ini").read_text(), "old settings")
         shortcut.assert_called_once_with(destination / "run-yac", self.home)
 
+    def test_language_documents_installed_on_both_platforms(self):
+        for language in ('English', 'Deutsch', 'Espanol', 'Polski'):
+            guide = self.source / 'doc' / language / 'START-HERE-mac.txt'
+            guide.parent.mkdir(parents=True, exist_ok=True)
+            guide.write_text('Guide: '+language, encoding='utf-8')
+        for platform in ('darwin', 'linux'):
+            with self.subTest(platform=platform):
+                result, _, _, _ = self.run_setup([True], platform=platform)
+                self.assertEqual(result, 0)
+                destination = install_yac.installation_directory(self.home, platform)
+                for language in ('English', 'Deutsch', 'Espanol', 'Polski'):
+                    self.assertEqual((destination / 'doc' / language / 'START-HERE-mac.txt').read_text(encoding='utf-8'), 'Guide: '+language)
+
     def test_updater_install_preserves_settings_without_more_confirmation(self):
         (self.source / 'update_yac.py').write_text('# updater')
         (self.source / 'changelog.txt').write_text('changes')

@@ -1,0 +1,33 @@
+YAC - Primeros pasos
+
+Extraiga el ZIP en Descargas, en el Escritorio o donde lo haya guardado. Mantenga junta la carpeta extraída. Puede mover la carpeta completa a otro lugar si lo desea.
+
+Conecte y encienda la radio. Cierre otros programas que utilicen su puerto serie. Puede necesitar el controlador USB del fabricante. Espere a que termine la búsqueda.
+
+MAC
+
+Abra Terminal con Comando+Espacio, escriba Terminal y pulse Retorno.
+
+Abra Terminal. Necesita Python 3.10 o posterior. En Mac puede obtenerlo de python.org; en Linux utilice los paquetes de su distribución, incluido el soporte de venv. No necesita compilar nada.
+
+Escriba cd, un espacio y la ruta completa de la carpeta YAC extraída, entre comillas si contiene espacios. Pulse Intro. Después ejecute:
+
+    sh install-yac.sh
+
+Use su usuario normal, sin sudo. Intro acepta Sí en Install YAC? y en las preguntas opcionales sobre lanzadores. Los demás entornos de Python no cambian. Se necesita internet para instalar dependencias. Si un lanzador necesita permisos de administrador, escriba su contraseña habitual cuando se solicite; los caracteres no se muestran.
+
+INICIAR YAC
+En Terminal ejecute:
+
+    ~/Applications/yac/run-yac
+
+El instalador crea la ubicación instalada de YAC. Tras instalar correctamente puede mover o eliminar la carpeta extraída de la descarga; esto no mueve YAC instalado. Mantenga intacta la carpeta de instalación.
+
+LANZADOR OPCIONAL
+Acepte Create YAC launcher? durante la instalación para usar yac en Terminal si su directorio está en PATH. En otro caso utilice el comando run-yac completo indicado arriba. No necesita un acceso directo en el escritorio.
+
+Responda a las preguntas de idioma y nombre/indicativo. h muestra ayuda; q seguido de y sale. Las teclas están en TECLAS-Espanol.txt en esta carpeta de documentación.
+
+YAC utiliza su lector de pantalla y línea braille habituales en el terminal. La tabla requerida es North American Computer Braille (NABCC). La selección de esa tabla en Mac sigue sin resolverse; la voz puede probarse por separado.
+
+Actualizaciones: s y después u. Puede leer u omitir las novedades antes de aceptar. Si algo falla, anote versión de prueba, plataforma, radio y lo ocurrido. Contacto: gena@m0ebp.uk. Revise los datos personales de los registros antes de compartirlos.

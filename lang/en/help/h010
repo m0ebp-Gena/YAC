@@ -1,3 +1,5 @@
+Help For The Speech Processor
+
 Speech Processor: s e opens the control by reading the current On/Off state and level, without changing anything. YAC changes only processor settings requested by your keys. It never changes RF power, frequency, mode, mic gain, equalizer or AMC and never keys transmission.
 
 q means Finish and Keep. n means No changes: cancel and restore the processor state and level(s) saved on entry. If you have not edited anything, n sends no setters. After edits, cancellation restores exact native values and verifies readback. A failed or interrupted write still counts as a possible change. If restoration fails, YAC reports it and retains the entry snapshot during this run; reconnect/return to the original frequency, mode and receiver, release PTT and reopen s e to retry n. Original values are also recorded in the diagnostic log when logging is enabled. A program crash cannot guarantee restoration. q explicitly accepts current settings and discards the snapshot.
@@ -12,3 +14,7 @@ Once ready, hold PTT and speak normally; release PTT to hear the sampled peak CO
 
 Icom operating guidance generally uses 10-20dB compression in SSB. Kenwood input guidance uses about 10dB and output uses the ALC limit. Yaesu AMC guidance is separate from processor guidance; do not transfer targets automatically. Meter conversions vary by model and physical calibration is pending. User preparation and PTT remain in your hands.
 Restore Failed means the saved processor settings could not be confirmed restored. Release the push-to-talk switch, return to the original mode, frequency and receiver, reopen the control and press n to retry. The original settings remain saved during this run and are recorded in the diagnostic log when enabled. q explicitly keeps the current settings.
+
+***
+End of help
+***

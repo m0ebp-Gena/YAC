@@ -1,3 +1,5 @@
+Hilfe: YAC-Updates
+
 YAC aktualisieren
 YAC prüft GitHub über den vorhandenen Internetzugang.
 
@@ -13,3 +15,7 @@ r: Versionshinweise erneut lesen. Bei langen Hinweisen blättert die Leertaste w
 y: liest bei Hinweise Y/N? die Hinweise. Bei Update Y/N? herunterladen, prüfen, installieren und YAC neu starten.
 
 Das Radio bleibt bis zum Installationsbeginn verbunden. Gespeicherte Einstellungen bleiben erhalten. Lokale Pakete können nicht gewählt werden. Auf dem Pi bleiben getrennte Helfer und der Startablauf unverändert.
+
+***
+Ende der Hilfe
+***

@@ -8,6 +8,7 @@ import argparse
 import re
 import json
 from datetime import date
+from modules.package_layout import copy_documents
 
 root = Path(__file__).resolve().parent
 parser = argparse.ArgumentParser(description=__doc__)
@@ -46,6 +47,7 @@ for guide in (root / 'doc').iterdir():
 release_details = root / 'doc' / ('in-this-release-' + args.date + '.txt')
 if release_details.is_file():
     shutil.copyfile(release_details, destination / 'doc' / release_details.name)
+copy_documents(root, destination, 'win')
 (destination / "yac.ini").write_text("[yac]\nplatform=\nlang=\ncall=\ndebug=true\n", encoding="utf-8")
 (destination / 'release.json').write_text(json.dumps({'tag': 'v001-beta-' + args.date + release_suffix,
                                                     'published_at': args.date + 'T00:00:00Z'}))
@@ -55,14 +57,6 @@ guides = {
     "LICENSE": "LICENSE",
     "COPYING": "COPYING",
     "changelog.txt": "changelog.txt",
-    "KEY-BINDINGS-English.txt": "KEY-BINDINGS-English.txt",
-    "TASTENBELEGUNG-Deutsch.txt": "TASTENBELEGUNG-Deutsch.txt",
-    "SKROTY-KLAWISZOWE-Polski.txt": "SKROTY-KLAWISZOWE-Polski.txt",
-    "TECLAS-Espanol.txt": "TECLAS-Espanol.txt",
-    "demo-start-here.txt": "START-HERE-English.txt",
-    "demo-start-here-de.txt": "HIER-STARTEN-Deutsch.txt",
-    "demo-start-here-pl.txt": "ZACZNIJ-TUTAJ-Polski.txt",
-    "demo-start-here-es.txt": "EMPIEZA-AQUI-Espanol.txt",
 }
 for source_name, destination_name in guides.items():
     shutil.copyfile(root / source_name, destination / destination_name)

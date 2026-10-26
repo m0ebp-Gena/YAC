@@ -1,5 +1,11 @@
+Ayuda: Entrada de frecuencia
+
 Entrada de frecuencia
 
 Escribe la nueva frecuencia en megahercios y pulsa Intro. Usa un punto decimal para las fracciones de megahercio. YAC aplica inmediatamente un valor compatible y confirma la frecuencia leyendo la radio.
 Escribe h y pulsa Intro para leer esta ayuda y volver a la entrada sin cambios.
 Intro sin valor cancela con Cancelado. Un valor no aceptable muestra Inválido. Ambos terminan la petición sin cambiar la frecuencia y vuelven a los controles principales. Pulsa e para intentarlo otra vez.
+
+***
+Fin de la ayuda
+***

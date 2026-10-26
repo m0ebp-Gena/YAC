@@ -1,3 +1,5 @@
+Help For The Filters Menu
+
 Filters: press f, then a key below. Available controls depend on the radio and mode.
 
 a: Auto Notch. Press a again to switch On or Off.
@@ -18,3 +20,7 @@ When bandwidth is Default, entering the control leaves it unchanged. Full stop s
 Press p for bandwidth. With separate edges, p first selects Low Cut; press p again for Upper Cut, then p to return to Low Cut. Each selection reads the current value without changing it. Comma and full stop apply each adjustment immediately, so you can hear its effect; YAC reads back and announces the result.
 Noise Reduction Following Time sets how quickly the noise reduction follows changes in the received signal, where supported. It is measured in milliseconds. While this setting is selected, full stop increases the time and comma decreases it; each change is applied immediately and confirmed by readback.
 In filter status reports, Not Supported means there are no supported switchable filters for the current radio and mode.
+
+***
+End of help
+***

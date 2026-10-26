@@ -1,3 +1,5 @@
+Ayuda: Comandos de YAC
+
 Comandos YAC en orden de tecla. Pulsa las teclas por separado.
 Los comandos dependen de la radio y del modo actual.
 
@@ -57,3 +59,7 @@ Selección de perfil: introduce el número de radio y Espacio para seleccionar; 
 Los ajustes exclusivos del Pi requieren su lanzador configurado.
 
 Recuperación: Error de radio y Reconectando inician un plazo de 60 segundos. Radio conectada reanuda el uso; si no, Cancelando cierra YAC. h durante la espera lee la ayuda.
+
+***
+Fin de la ayuda
+***

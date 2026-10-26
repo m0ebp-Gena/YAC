@@ -1,0 +1,19 @@
+YAC - Erste Schritte
+
+Entpacken Sie die ZIP-Datei in Downloads, auf dem Desktop oder dort, wo sie gespeichert wurde. Lassen Sie den entpackten Ordner zusammen. Sie können den ganzen Ordner bei Bedarf an einen anderen Ort verschieben.
+
+Schließen Sie das Funkgerät an und schalten Sie es ein. Beenden Sie andere Programme, die dessen serielle Schnittstelle verwenden. Eventuell wird der USB-Treiber des Herstellers benötigt. Warten Sie die Suche ab.
+
+WINDOWS 64-BIT
+
+1. Entpacken Sie zuerst die gesamte ZIP-Datei. Öffnen Sie den entpackten Ordner und starten Sie YAC-001-beta.exe. Installation oder Python sind nicht nötig.
+2. Terminal maximieren: Alt+Leertaste drücken, loslassen, dann x.
+
+OPTIONALE DESKTOPVERKNÜPFUNG
+Wählen Sie zuerst den endgültigen Speicherort. Markieren Sie YAC-001-beta.exe und drücken Sie Umschalt+F10. Wählen Sie mit den Pfeiltasten Senden an und im Untermenü Desktop (Verknüpfung erstellen). Unter Windows 11 wählen Sie gegebenenfalls zuerst Weitere Optionen anzeigen. Danach startet die Desktopverknüpfung YAC. Ein späteres Verschieben des Programmordners kann die Verknüpfung ungültig machen.
+
+Folgen Sie den Fragen zu Sprache und Name/Rufzeichen. h öffnet die Hilfe; q und dann y beendet YAC. Die Tasten stehen in TASTENBELEGUNG-Deutsch.txt in diesem Dokumentationsordner.
+
+YAC nutzt Ihren Screenreader und Ihre Braillezeile im Terminal. Erforderlich ist North American Computer Braille (NABCC). Die Auswahl der benötigten Brailletabelle auf dem Mac ist noch ungeklärt; Sprache kann getrennt getestet werden.
+
+Updates: s, dann u. Vor der Zustimmung können Sie die kurzen Neuerungen lesen oder überspringen. Notieren Sie bei Problemen Build, Plattform, Funkgerät und Ablauf. Kontakt: gena@m0ebp.uk. Prüfen Sie Protokolle vor dem Weitergeben auf persönliche Angaben.

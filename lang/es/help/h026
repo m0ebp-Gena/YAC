@@ -1,3 +1,5 @@
+Ayuda: Configuración de Wi-Fi
+
 Configurar Wi-Fi: s w desde el menú principal. No se aplica nada hasta confirmar la conexión con y.
 
 Cancelado: se canceló la entrada o el nombre de red estaba vacío. Se descartan los datos y se vuelve a Ajustes. Repite w allí, o s w desde el menú principal.
@@ -19,3 +21,7 @@ Red no encontrada. Compruebe SSID exacto, router y señal.
 Conexión fallida. Compruebe contraseña y señal. Se conserva la red guardada anterior.
 No se pudo preparar la entrada privada. No se ha pedido ninguna contraseña.
 En Conectar Y/N?, y conecta con los datos introducidos y los guarda. n vuelve a editarlos; q cancela sin conectar.
+
+***
+Fin de la ayuda
+***

@@ -1,3 +1,5 @@
+Pomoc: Polecenia YAC
+
 Polecenia YAC według klawiszy. Naciskaj klawisze osobno.
 Polecenia zależą od radia i bieżącej emisji.
 
@@ -57,3 +59,7 @@ Wybór profilu: wpisz numer radia i Spację, aby wybrać; q anuluje.
 Ustawienia tylko dla Pi wymagają skonfigurowanego programu uruchamiającego Pi.
 
 Przywracanie: Błąd radia i Łączę Ponownie rozpoczynają 60 sekund prób. Radio powróciło wznawia obsługę; inaczej Kończenie zamyka YAC. h podczas oczekiwania czyta pomoc.
+
+***
+Koniec pomocy
+***

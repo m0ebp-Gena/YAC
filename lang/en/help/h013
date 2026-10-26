@@ -1,3 +1,5 @@
+Help For The Decoders
+
 Decoders: c opens CW decoding; r opens RTTY decoding. Capture starts on entry when setup allows it. Only one decoder runs at a time.
 Inside a decoder: e explicitly stops or restarts capture. q says Back and leaves capture running. q again returns to the main controls. Returning to another decoder stops the previous capture. YAC exit stops capture and restores native decoder settings.
 v reviews the latest text; comma reviews earlier text; full stop later text. Review chunks are 60 characters. n clears received text. New text appears automatically only inside the decoder view; capture continues quietly elsewhere. Terminal speech and braille read that text using your existing accessibility setup. h gives this help.
@@ -10,3 +12,7 @@ d then a: guided receive audio setup; h inside explains selection and level chec
 
 Decoder could not start. Check mode and decoder setup; press h for help.
 Decoder input lost; capture stopped. Check radio settings.
+
+***
+End of help
+***

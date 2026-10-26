@@ -1,3 +1,6 @@
+Answers: Pass / Fail / Not tested / Not applicable 
+Unavailable features: record under Problems. 
+
 Date: 
 Platform: 
 Build date/label: 
@@ -9,7 +12,7 @@ Text table:
 Dots: 
 Manual changes: 
 
-Core YAC
+Core YAC 
 
 Installs cleanly 
 Starts cleanly 
@@ -18,6 +21,21 @@ Speech readable w
 Braille readable w 
 Keyboard input w 
 Braille input w 
+AF Gain read a 
+AF Gain increases audibly . 
+AF Gain decreases audibly , 
+AF Gain exit q 
+Knob tuning tracked: turn dial, w 
+Band read b 
+Band changes . 
+Band restored , 
+Band exit q 
+Mode read m 
+Mode changes . 
+Mode restored , 
+Mode exit q 
+Frequency entry e 
+Frequency confirmed w 
 Power abort s p Enter 
 Power invalid s p text Enter 
 Frequency abort e Enter 
@@ -29,20 +47,26 @@ Filter help f h
 Settings help s h 
 Settings exit s q 
 Filter exit f q 
-Band exit b q 
-Mode exit m q 
 Radio loss announced 
 Radio return announced 
-Control after reconnect w 
-Preferences retained 
+Control after reconnect a . , q 
+Preferences retained after restart 
+Update lookup s u 
+Update notes declined n 
+Update declined n 
+Update installed s u n y 
+Starts after update 
+Control after update a . , q 
+Quit cancelled q n 
+Quit q y 
+
+Pi image only 
+
 Speech setting saved s o 
 Speech setting after reboot s o 
 Braille only s b 
 Speech restored s b 
 Wi-Fi entry s w 
-Update lookup s u 
-Quit cancelled q n 
-Quit q y 
 Pi shutdown 
 
 Problems: 

@@ -1,3 +1,5 @@
+Hilfe: Wiederherstellung der Funkverbindung
+
 Verbindung wiederherstellen
 
 Abbruch: Das Radio antwortet nach 60 Sekunden noch nicht. YAC schließt die Verbindung und beendet sich. Radio, Stromversorgung und USB-Kabel prüfen, dann YAC erneut starten.
@@ -6,3 +8,7 @@ h: Diese Hilfe während der Wiederherstellung lesen.
 Neu Verbinden: YAC versucht etwa alle fünf Sekunden dasselbe Radio, bis zu 60 Sekunden nach Funkfehler. Währenddessen ist keine Eingabe nötig. Radioeinstellungen werden nicht zurückgesetzt; kein Wechsel zum Simulationsmodus.
 q: YAC über die normale Bestätigung beenden.
 Radio wieder da: Dasselbe Radio antwortet wieder; normale Bedienung wird fortgesetzt.
+
+***
+Ende der Hilfe
+***

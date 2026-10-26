@@ -1,3 +1,5 @@
+Ayuda: Actualizaciones de YAC
+
 Actualizar YAC
 YAC consulta GitHub mediante la conexión a internet existente.
 
@@ -13,3 +15,7 @@ r: leer las notas otra vez. En notas largas, Espacio avanza y q sale. Después a
 y: leer notas en Notas Y/N?. En Update Y/N?, descargar, verificar e instalar, y reiniciar YAC.
 
 La radio sigue conectada hasta iniciar la instalación. Se conservan los ajustes. No permite instalar archivos locales. En el Pi no actualiza auxiliares separados ni el arranque.
+
+***
+Fin de la ayuda
+***

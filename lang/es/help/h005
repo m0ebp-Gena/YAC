@@ -1,1 +1,7 @@
+Ayuda: Ganancia de audio y radiofrecuencia
+
 a ajusta la ganancia AF. r ajusta el silenciador en FM y la ganancia RF en otros modos. Empieza con el valor actual de la radio, en porcentaje redondeado. Punto aumenta; coma disminuye. Pasos de unos 3 por ciento. Se detiene en los extremos. q sale y conserva el valor. Otra tecla de comando sale y ejecuta ese comando.
+
+***
+Fin de la ayuda
+***

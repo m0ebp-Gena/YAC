@@ -1,1 +1,7 @@
+Help For The Speech and Braille
+
 Full stop or b selects the next mode; comma selects the previous mode. h Help; b cycles Speech and braille, Braille only, Speech only. Leave the wanted mode selected and press q to apply, save and return. Braille only silences Speakup. Speech choices require its service to be running. Attached braille remains available in every mode.
+
+***
+End of help
+***

@@ -1,3 +1,5 @@
+Ayuda: Menú de filtros
+
 Filtros: pulsa f y después una tecla de abajo. Los controles disponibles dependen de la radio y del modo.
 
 a: Notch automático. Otra a activa o desactiva.
@@ -18,3 +20,7 @@ Si el ancho de banda es Predeterminado, entrar en el control no lo cambia. Punto
 Pulsa p para el ancho de banda. Con bordes separados, p selecciona primero el corte inferior y después alterna entre superior e inferior. Cada selección lee el valor sin cambiarlo. Coma y punto aplican cada ajuste inmediatamente para oír su efecto; YAC lee y anuncia el resultado.
 El tiempo de seguimiento de la reducción de ruido determina con qué rapidez sigue los cambios de la señal recibida, cuando es compatible. Se mide en milisegundos. Con este ajuste seleccionado, punto aumenta el tiempo y coma lo reduce. Cada cambio se aplica inmediatamente y se confirma por lectura.
 En los informes de filtros, No compatible significa que no hay filtros conmutables compatibles para la radio y el modo actuales.
+
+***
+Fin de la ayuda
+***

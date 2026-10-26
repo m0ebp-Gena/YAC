@@ -1,4 +1,10 @@
+Ayuda: Ajustes de voz
+
 h Ayuda; o alterna Velocidad, Volumen, Tono y Puntuación, como el selector de desplazamiento. Al entrar se selecciona Velocidad. Punto aumenta; coma disminuye. Cada ajuste se aplica y guarda inmediatamente; q conserva los cambios y vuelve. t Prueba; d aplica los valores de YAC: velocidad 2, volumen 5, tono 5, puntuación Alguna. Velocidad y tono de 0 a 9; volumen de 1 a 9.
 
 Los ajustes de Speakup no están disponibles. Compruebe el ayudante Pi; no se ha cambiado el acceso.
 No se pudo cambiar o guardar el ajuste. Compruebe los valores actuales.
+
+***
+Fin de la ayuda
+***

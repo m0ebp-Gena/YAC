@@ -41,7 +41,11 @@ def newest_release(releases):
 
 def asset_pair(release, windows=False):
     assets = {a['name']: a for a in release.get('assets', [])}
-    names = [n for n in assets if
+    platform = 'win' if windows else 'mac-linux'
+    names = [n for n in assets if re.fullmatch(
+        r'yac-' + platform + r'-\d{4}-\d{2}-\d{2}(?:-r\d+)?\.zip', n)]
+    if not names:
+        names = [n for n in assets if
              (bool(re.fullmatch(r'YAC-(?!source-)[A-Za-z0-9-]+-\d{4}-\d{2}-\d{2}\.zip', n))
               if windows else n == 'yac-source.zip' or bool(re.fullmatch(r'YAC-source-\d{4}-\d{2}-\d{2}\.zip', n)))]
     if len(names) != 1:

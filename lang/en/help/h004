@@ -1,3 +1,5 @@
+Help For The Tone Selection
+
 Tone input: press i to cycle CTCSS, DCS N (normal polarity) and DCS I (inverted polarity). The cycle repeats. Radios with CTCSS only stay on CTCSS.
 For CTCSS, type a supported tone in hertz, for example 88.5 or 100.0. The field accepts digits and one decimal point, up to five characters.
 For DCS, type a supported three-digit code, for example 023 or 754, including any leading zero. Do not type D, N, I or a decimal point. DCS code digits are 0 to 7; not every combination is a supported code.
@@ -6,3 +8,7 @@ The radio is changed after t or b, or directly after Enter when Both is automati
 Press h for this help; the entered value is kept. Press i to choose the next tone type and clear the field. Press q at either stage to cancel and return to the main interface.
 These controls are available in supported FM repeater bands. To disable tones, use the radio's controls.
 Status reports show separate transmit and receive tones when they differ. TX Tone Unknown means the transmit tone has not been verified for an external split; it does not mean the radio connection has failed.
+
+***
+End of help
+***

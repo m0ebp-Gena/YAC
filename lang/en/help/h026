@@ -1,3 +1,5 @@
+Help For The Wi-Fi Setup
+
 Wi-Fi setup: s w from the main menu. Nothing is applied until y confirms connection at Connect Y/N?. n returns to edit the details; q cancels.
 
 Aborted: entry was cancelled or the network name was empty. Entered details are discarded; return to Settings. Repeat w there, or s w from the main menu, to try again.
@@ -18,3 +20,7 @@ Could not set the WLAN country.
 Network not found. Check the exact SSID, router power and signal.
 Connection failed. Check the password and signal. The previous saved network has been kept.
 Private password entry could not be prepared. No password has been requested.
+
+***
+End of help
+***

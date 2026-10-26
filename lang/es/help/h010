@@ -1,3 +1,5 @@
+Ayuda: Procesador de voz
+
 Procesador: s e lee estado y nivel sin cambios. e activa/desactiva; punto/coma ajustan estando activo. Kenwood i selecciona Entrada, o Salida; se conserva el otro nivel. v lee; h ayuda. q termina conservando cambios. n significa Sin cambios: restaura estado y niveles nativos originales y verifica lectura; si no hubo edición no escribe. Ambos vuelven con Atrás.
 
 Suelta PTT antes de cambiar o restaurar. YAC solo modifica procesador, nunca potencia, frecuencia, modo, micrófono, ecualizador ni AMC; no inicia transmisión. Restaurar requiere frecuencia, modo y receptor originales. Si falla se conserva la instantánea durante esta ejecución; valores en log diagnóstico si está activo. Vuelve al contexto original, suelta PTT, abre s e y reintenta n. q acepta valores actuales. Un fallo del programa no garantiza restauración.
@@ -9,3 +11,7 @@ Espacio abre preparación opcional del medidor. Antena adaptada a la frecuencia 
 Icom SSB suele recomendar 10-20dB; Kenwood Entrada unos 10dB y Salida dentro del límite ALC. AMC Yaesu es aparte. Sin juicio automático; calibración y pruebas físicas pendientes.
 Preparación del medidor: Espacio muestra la ayuda y Continue Y/N?. y inicia la supervisión; n o q vuelve al control sin cambios.
 Fallo Restaurar significa que no se confirmó la restauración del procesador. Suelta el pulsador de transmisión, vuelve al modo, frecuencia y receptor originales, abre el control y pulsa n para reintentar. Los valores originales se conservan durante esta ejecución y se registran si el diagnóstico está activo. q conserva expresamente los ajustes actuales.
+
+***
+Fin de la ayuda
+***

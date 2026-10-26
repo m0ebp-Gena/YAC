@@ -1,6 +1,12 @@
+Hilfe: Empfangsaudio einrichten
+
 Empfangsaudio: Punkt nächster Eingang; Komma vorheriger; c wechselt den physischen Kanal. v prüft eine Sekunde den Pegel ohne Wiedergabe. e speichert; q Zurück; h Hilfe. Nur v öffnet den Eingang; e prüft das Format ohne Aufnahme. Name und Audiosystem werden angesagt. Mehrere Einträge können dasselbe Gerät darstellen. Radio wählen, nicht Mikrofon. Pegel beweist keine Geräteidentität. Mit einem stetigen Empfangssignal prüfen. Kanalnummern garantieren nicht Main/Sub. Gespeicherter Name und Audiosystem müssen eindeutig bleiben; kein Ersatzgerät bei Fehlern. Keine Änderung von Standardgeräten, Sprachausgabe oder Wiedergabe. Laufende Audio-Dekodierung wird beim Öffnen gestoppt; danach ausdrücklich neu starten. Optionale sounddevice/PortAudio-Abhängigkeit erforderlich. Nur e speichert.
 
 Empfangspegel wird eine Sekunde geprüft
 Audioeingang fehlt, ist mehrdeutig oder inkompatibel; Auswahl nicht gespeichert
 Audioeinrichtung nicht verfügbar. Optionale Audio-Abhängigkeit installieren.
 Audio übersteuert; USB-Audiopegel am Radio senken
+
+***
+Ende der Hilfe
+***

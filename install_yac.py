@@ -81,7 +81,7 @@ def main(source=None, home=None, update=False, pi=False):
         print("Install Python 3.10 or newer using your package manager, then try again.")
         return 1
     if sys.platform not in {"linux", "darwin"}:
-        print("This installer is for Linux and macOS source packages.")
+        print("This installer is for the Mac/Linux package.")
         return 1
     if os.geteuid() == 0:
         print("Run this installer as your normal user, without sudo.")
@@ -93,7 +93,7 @@ def main(source=None, home=None, update=False, pi=False):
     destination = installation_directory(home, sys.platform)
     for name in ("yac.py", "modules", "lang", "rad_cmds"):
         if not (source / name).exists():
-            print("Missing " + name + ". Extract the complete YAC source package, not the Windows executable package.")
+            print("Missing " + name + ". Extract the complete YAC Mac/Linux package.")
             return 1
     if destination.is_symlink() or (destination.exists() and not destination.is_dir()):
         print(str(destination) + " is not a regular installation directory; left unchanged.")
@@ -114,6 +114,9 @@ def main(source=None, home=None, update=False, pi=False):
             copy_changed(source / name, destination / name)
         if (source / 'doc/supported-radios').is_dir():
             copy_changed(source / 'doc/supported-radios', destination / 'doc/supported-radios')
+        for directory in ('English', 'Deutsch', 'Espanol', 'Polski'):
+            if (source / 'doc' / directory).is_dir():
+                copy_changed(source / 'doc' / directory, destination / 'doc' / directory)
         for guide in (source / 'doc').glob('*'):
             if guide.is_file() and (guide.suffix in {'.md', '.html'} or (guide.name.startswith('in-this-release-') and guide.suffix == '.txt')):
                 (destination / 'doc').mkdir(parents=True, exist_ok=True)

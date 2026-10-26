@@ -1,0 +1,33 @@
+YAC - first steps
+
+You can extract the ZIP in Downloads, on your Desktop, or wherever you saved it. Keep the extracted folder together. You may move the whole folder to a convenient location if you wish.
+
+Connect and power on the radio. Close other programs using its serial port. A manufacturer's USB driver may be needed. Allow discovery to finish.
+
+LINUX
+
+Open your usual terminal; many desktops use Ctrl+Alt+T.
+
+Open Terminal. You need Python 3.10 or newer. On Mac, obtain Python from python.org if needed; on Linux use your distribution's packages, including venv support. Nothing needs compiling.
+
+Type cd followed by a space and the full path of the extracted YAC folder, in quotation marks if it contains spaces. Press Enter. Then run:
+
+    sh install-yac.sh
+
+Run as your normal user, without sudo. Enter accepts Yes at Install YAC? and at the optional launcher questions. Your other Python environments are unchanged. Internet is needed to install dependencies. If a launcher needs administrator permission, enter your normal login password when asked; password characters are not echoed.
+
+START YAC
+In Terminal run:
+
+    ~/.local/yac/run-yac
+
+The installer creates YAC's installed location. After successful installation you may move or remove the extracted download folder; this does not move the installed YAC. Keep the installed folder intact.
+
+OPTIONAL LAUNCHER
+Accept Create YAC launcher? during installation to use yac in Terminal when its launcher directory is on PATH. Otherwise use the full run-yac command above. No desktop shortcut is needed.
+
+Follow the language and name/callsign prompts. Press h for help; q then y quits. Commands are in KEY-BINDINGS-English.txt in this documentation folder.
+
+YAC uses your usual terminal screen reader and braille display. The required computer braille table is North American Computer Braille (NABCC). Mac selection of the required braille table remains unresolved; speech can be tested separately.
+
+Updates: s then u. Notes are optional before you accept the update. If something fails, record the build, platform, radio and what happened. Contact gena@m0ebp.uk. Logs may contain personal details; review before sharing.

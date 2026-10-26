@@ -5,6 +5,8 @@ import re
 import hashlib
 from datetime import date
 from modules.build_outputs import publish
+from modules.package_layout import LANGUAGES, documents
+import shutil
 
 root = Path(__file__).resolve().parent
 parser = argparse.ArgumentParser(description="Create and verify a dated YAC demo ZIP.")
@@ -23,7 +25,7 @@ version_match = re.search(r'^VERSION\s*=\s*"([^"]+)"', (root / 'yac.py').read_te
 if version_match is None:
     raise RuntimeError('Could not read the YAC version from yac.py')
 version = re.sub(r'[^A-Za-z0-9]+', '-', version_match.group(1)).strip('-')
-folder = 'YAC-' + version + release_suffix + '-' + args.date
+folder = 'yac-win-' + args.date + release_suffix
 staging = root / 'builds/.work/packages'
 staging.mkdir(parents=True, exist_ok=True)
 archive = staging / (folder + '.zip')
@@ -33,10 +35,7 @@ if (source / 'yac.ini').read_bytes().replace(b'\r\n', b'\n') != expected_setting
 expected_files = {
     'yac.ini.example', 'error-codes.txt',
     'LICENSE', 'COPYING', 'changelog.txt',
-    'KEY-BINDINGS-English.txt', 'TASTENBELEGUNG-Deutsch.txt',
-    'SKROTY-KLAWISZOWE-Polski.txt', 'TECLAS-Espanol.txt',
-    'YAC-' + version + '.exe', 'yac.ini', 'release.json', 'START-HERE-English.txt',
-    'HIER-STARTEN-Deutsch.txt', 'ZACZNIJ-TUTAJ-Polski.txt', 'EMPIEZA-AQUI-Espanol.txt',
+    'YAC-' + version + '.exe', 'yac.ini', 'release.json',
 }
 if {path.name for path in source.iterdir()} != expected_files | {'_internal', 'lang', 'rad_cmds', 'doc'}:
     raise RuntimeError('Unexpected files in the demo folder; build a clean package before distributing')
@@ -47,11 +46,14 @@ release_guides.update(path.name for path in (root / 'doc').iterdir()
 release_details = root / 'doc' / ('in-this-release-' + args.date + '.txt')
 if release_details.is_file():
     release_guides.add(release_details.name)
-if {path.name for path in (source / 'doc').iterdir()} != {'supported-radios'} | release_guides:
+if {path.name for path in (source / 'doc').iterdir()} != {'supported-radios', *LANGUAGES.values()} | release_guides:
     raise RuntimeError('Unexpected documentation in the demo folder')
 for name in release_guides:
     if (source / 'doc' / name).read_bytes() != (root / 'doc' / name).read_bytes():
         raise RuntimeError('Missing or stale release guide: ' + name)
+for relative, original in documents(root, 'win').items():
+    if (source / relative).read_bytes() != original.read_bytes():
+        raise RuntimeError('Missing or stale language document: ' + str(relative))
 for directory in ('lang', 'rad_cmds', 'doc/supported-radios'):
     expected_data = {
         path.relative_to(root / directory)
@@ -80,17 +82,11 @@ with zipfile.ZipFile(archive) as package:
         "LICENSE": "LICENSE",
         "COPYING": "COPYING",
         "changelog.txt": "changelog.txt",
-        "KEY-BINDINGS-English.txt": "KEY-BINDINGS-English.txt",
-        "TASTENBELEGUNG-Deutsch.txt": "TASTENBELEGUNG-Deutsch.txt",
-        "SKROTY-KLAWISZOWE-Polski.txt": "SKROTY-KLAWISZOWE-Polski.txt",
-        "TECLAS-Espanol.txt": "TECLAS-Espanol.txt",
-        "START-HERE-English.txt": "demo-start-here.txt",
-        "HIER-STARTEN-Deutsch.txt": "demo-start-here-de.txt",
-        "ZACZNIJ-TUTAJ-Polski.txt": "demo-start-here-pl.txt",
-        "EMPIEZA-AQUI-Espanol.txt": "demo-start-here-es.txt",
     }
     for destination_name, source_name in guides.items():
         assert package.read(folder + '/' + destination_name) == (root / source_name).read_bytes()
+    for relative, original in documents(root, 'win').items():
+        assert package.read(folder + '/' + relative.as_posix()) == original.read_bytes()
     assert not any(name.endswith(('/START-HERE.txt', '/START-HERE-DE.txt', '/START-HERE-PL.txt')) for name in package.namelist())
     for model in ('ic-705', 'ic-7300', 'ic-7300mk2', 'ic-9700', 'ic-7600'):
         assert folder + '/rad_cmds/icom/CI-V/models/' + model + '/profile.json' in package.namelist()
@@ -100,6 +96,11 @@ with zipfile.ZipFile(archive) as package:
 checksum = hashlib.sha256(archive.read_bytes()).hexdigest()
 archive.with_suffix('.sha256').write_text(checksum + '  ' + archive.name + '\n', encoding='ascii')
 artifacts = [archive, archive.with_suffix('.sha256')]
+legacy = staging / ('YAC-' + version + release_suffix + '-' + args.date + '.zip')
+shutil.copyfile(archive, legacy)
+legacy_checksum = legacy.with_suffix('.sha256')
+legacy_checksum.write_text(checksum + '  ' + legacy.name + '\n', encoding='ascii')
+artifacts.extend([legacy, legacy_checksum])
 if args.include_demo:
     artifacts.append(source)
 outputs = artifacts if args.stage_only else publish(root, args.date, artifacts)

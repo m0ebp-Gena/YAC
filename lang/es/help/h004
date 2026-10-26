@@ -1,3 +1,5 @@
+Ayuda: Selección de tono
+
 Entrada de tonos: pulsa i para alternar CTCSS, DCS N (polaridad normal) y DCS I (polaridad invertida). Las radios que solo admiten CTCSS permanecen en CTCSS.
 Para CTCSS, introduce un tono compatible en hercios, por ejemplo 88.5 o 100.0. Se aceptan cifras y un punto decimal, hasta cinco caracteres.
 Para DCS, introduce un código compatible de tres cifras, por ejemplo 023 o 754, incluidos los ceros iniciales. No escribas D, N, I ni un punto decimal. Las cifras van de 0 a 7; no todas las combinaciones son válidas.
@@ -6,3 +8,7 @@ La radio cambia tras t o b, o directamente tras Intro cuando Ambos es automátic
 Pulsa h para ver esta ayuda sin perder el valor. Pulsa i para cambiar de tipo de tono y vaciar el campo. Pulsa q en cualquier etapa para cancelar y volver a la interfaz principal.
 Estos controles están disponibles en las bandas FM de repetidores compatibles. Para desactivar los tonos, usa los controles de la radio.
 El estado muestra por separado los tonos de transmisión y recepción si difieren. Tono TX No Disp indica que el tono de transmisión de un split externo no está verificado; no implica fallo de conexión.
+
+***
+Fin de la ayuda
+***

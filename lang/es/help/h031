@@ -1,3 +1,5 @@
+Ayuda: Ancho de banda
+
 Ancho de banda
 
 Control único: punto ensancha el ancho de banda; coma lo estrecha.
@@ -7,3 +9,7 @@ Cada ajuste se aplica inmediatamente y se confirma leyendo la radio.
 Desde Predeterminado, punto selecciona el ancho numérico más estrecho; coma, el más ancho.
 h muestra esta ayuda. q termina, conserva los cambios y vuelve a Filtros.
 No compatible significa que no hay control de ancho para la radio y el modo. YAC vuelve a Filtros sin cambios.
+
+***
+Fin de la ayuda
+***

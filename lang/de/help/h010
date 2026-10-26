@@ -1,3 +1,5 @@
+Hilfe: Sprachprozessor
+
 Sprachprozessor: s e liest Zustand und Pegel ohne Änderung. e schaltet Ein/Aus; Punkt/Komma ändern den Pegel bei Ein. Kenwood i wählt Eingang, o Ausgang; der andere Pegel bleibt unverändert. v liest; h hilft. q beendet und behält Änderungen. n bedeutet Keine Änderungen: ursprünglichen Prozessorzustand und exakte Pegel wiederherstellen und rücklesen; ohne Bearbeitung keine Schreibbefehle. Beide kehren mit Zurück zu Einstellungen zurück.
 
 PTT vor Änderungen oder Wiederherstellung loslassen. YAC ändert nur Prozessorwerte, niemals Leistung, Frequenz, Betriebsart, Mikrofon, Equalizer oder AMC und startet kein Senden. Wiederherstellung braucht ursprüngliche Frequenz, Betriebsart und Empfänger. Bei Fehler bleibt der ursprüngliche Zustand während dieses Laufs gespeichert; in Diagnoseprotokoll bei aktivierter Protokollierung nachsehen. Zurückkehren, PTT loslassen, s e öffnen und n wiederholen. q akzeptiert aktuelle Werte. Ein Absturz garantiert keine Wiederherstellung.
@@ -9,3 +11,7 @@ Leertaste öffnet optionale Messvorbereitung. Abgestimmte Antenne für Testfrequ
 Icom SSB meist 10-20dB Kompression, Kenwood Eingang etwa 10dB und Ausgang innerhalb ALC-Grenze. Yaesu AMC ist getrennt. Keine automatische Bewertung; Kalibrierung und Gerätetests stehen aus.
 Messvorbereitung: Leertaste zeigt die Hilfe und Continue Y/N?. y startet die Überwachung; n oder q kehrt ohne Änderungen zur Prozessorregelung zurück.
 Rücksetzen Fehl bedeutet, dass die Wiederherstellung der gespeicherten Prozessoreinstellungen nicht bestätigt wurde. Sendetaste loslassen, ursprünglichen Modus, Frequenz und Empfänger wählen, Regelung erneut öffnen und n drücken. Die Originalwerte bleiben während dieses Laufs gespeichert und stehen bei aktivierter Diagnose im Protokoll. q behält ausdrücklich die aktuellen Werte.
+
+***
+Ende der Hilfe
+***

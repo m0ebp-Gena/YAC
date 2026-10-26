@@ -1,3 +1,5 @@
+Hilfe: Filtermenü
+
 Filter: f drücken, dann eine Taste unten. Verfügbare Funktionen hängen vom Radio und der Betriebsart ab.
 
 a: Auto Notch. Erneutes a schaltet Ein oder Aus.
@@ -18,3 +20,7 @@ Bei Standardbandbreite bleibt die Einstellung beim Aufruf unverändert. Punkt w�
 p wählt die Bandbreite. Bei getrennten Grenzen wählt p zuerst die untere Grenze, danach abwechselnd die obere und untere Grenze. Jede Auswahl liest den aktuellen Wert ohne Änderung. Komma und Punkt übernehmen jede Änderung sofort, damit sie hörbar ist; YAC liest den Wert zurück und meldet ihn.
 Die Nachführzeit der Rauschunterdrückung bestimmt bei unterstützten Geräten, wie schnell sie Änderungen des Empfangssignals folgt. Sie wird in Millisekunden gemessen. Bei gewählter Einstellung erhöht Punkt die Zeit, Komma verringert sie. Änderungen wirken sofort und werden durch Rücklesen bestätigt.
 In Filterstatusmeldungen bedeutet Nicht unterstützt, dass für das aktuelle Funkgerät und den Modus keine unterstützten schaltbaren Filter verfügbar sind.
+
+***
+Ende der Hilfe
+***

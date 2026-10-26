@@ -1,6 +1,12 @@
+Help For The Name and Callsign
+
 Name and callsign
 Enter the name, callsign or combination you want YAC to use, up to 10 characters including spaces. Press Enter to review it.
 
 h: at Continue Y/N?, read this help again, then return to the question.
 n: return to the entry without saving. Your text is kept for editing; use the arrow keys, Home, End, Backspace or Delete.
 y: save the displayed entry and continue starting YAC. Space does not confirm.
+
+***
+End of help
+***

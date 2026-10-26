@@ -1,3 +1,5 @@
+Help For The Settings Menu
+
 Settings: a AGC; m Mic Gain; p Power; s Step Size; t Tuner; v VFO/receiver; e Speech Processor. q returns and announces Back, or Done after AGC selection. h reads this help.
 
 s a reads the current AGC setting without changing it. Another a selects the next AGC setting and announces the confirmed choice. q finishes and announces Done. Fast recovers sooner after a strong signal; Slow holds gain reduction longer. Choose by listening. Off allows larger changes in received volume. No transmission is needed.
@@ -17,7 +19,7 @@ s b: full stop or b selects the next mode; comma the previous. q applies, saves 
 
 s o: r Rate; v Volume; p Pitch; u Punctuation; full stop increases; comma decreases; t Test; d Defaults; h Help; q returns. Changes apply and save immediately.
 
-s u: Update YAC. Shows help, then Looking. No Internet or No Update returns to Settings. Update Found asks Read Notes Y/N?, then Update Y/N?. y accepts; n skips notes or declines installation; q returns. Long notes use Space for the next page and q to leave.
+s u: Update YAC. Starts with Looking. h reads update help. No Internet or No Update returns to Settings. Update Found asks Read Notes Y/N?, then Update Y/N?. y accepts; n skips notes or declines installation; q returns. Long notes use Space for the next page and q to leave.
 
 s w: Wi-Fi setup is available only on the Raspberry Pi image. Use your operating system Wi-Fi settings here. Wi-Fi setup. Country, network name and password. Ctrl+C cancels entry; punctuation and command letters are literal.
 
@@ -26,3 +28,7 @@ Tune failed or tuner bypassed
 Tune result unconfirmed
 Tuning timed out; stop requested
 Tuning stop could not be confirmed
+
+***
+End of help
+***

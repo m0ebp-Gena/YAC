@@ -1,3 +1,5 @@
+Help For The YAC Updates
+
 Update YAC
 YAC checks GitHub using the existing internet connection.
 
@@ -13,3 +15,7 @@ r: read the release notes again. Long notes use Space for the next page and q to
 y: read notes at Read Notes Y/N?. At Update Y/N?, download, verify and install, then restart YAC.
 
 The radio stays connected until installation begins. Saved settings are kept. Local-file installation is not available. On the Pi, separate helpers and boot setup are not updated.
+
+***
+End of help
+***

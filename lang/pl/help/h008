@@ -1,3 +1,5 @@
+Pomoc: Wzmocnienie mikrofonu
+
 Wzmocnienie mikrofonu: przeczytaj procedurę przed kontynuacją. Przy Continue Y/N? y kontynuuje; n lub q anuluje i wraca do Ustawień. h wyświetla pomoc.
 
 Podłącz dopasowaną antenę lub odpowiednie sztuczne obciążenie. YAC nie sprawdza obciążenia. Mniejsza moc nie zapewnia bezpieczeństwa przy złym obciążeniu. Sam ustaw moc i wyłącz procesor mowy. YAC zmienia tylko wzmocnienie mikrofonu; nie zmienia mocy, częstotliwości ani emisji i nie rozpoczyna nadawania.
@@ -8,3 +10,7 @@ Po puszczeniu PTT kropka zwiększa, przecinek zmniejsza wzmocnienie. Potwierdzon
 
 Emisje, skale, ustawienia miernika i strefy ALC danego modelu są w pliku radia w doc/supported-radios.
 W razie potrzeby YAC wybiera miernik automatycznej regulacji poziomu i potwierdza odczyt. Przy wyjściu podczas odbioru przywraca znany poprzedni miernik. Po błędzie zachowuje oczekujące przywrócenie do następnego wejścia.
+
+***
+Koniec pomocy
+***

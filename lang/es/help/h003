@@ -1,2 +1,8 @@
+Ayuda: Selección de modo
+
 El punto selecciona el modo siguiente; la coma, el anterior. Pulsa q para salir de la selección de modo o h para ver esta ayuda. Cualquier otra tecla de comando sale y ejecuta ese comando.
 La selección de modo empieza en el modo actual de la radio y recorre los modos disponibles en bucle.
+
+***
+Fin de la ayuda
+***

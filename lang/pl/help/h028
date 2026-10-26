@@ -1,6 +1,12 @@
+Pomoc: Imię i znak wywoławczy
+
 Imię i znak wywoławczy
 Wpisz imię, znak lub połączenie obu, którego ma używać YAC, do 10 znaków ze spacjami. Enter wyświetla wpis do sprawdzenia.
 
 h: przy Dalej Y/N? czytaj tę pomoc ponownie, potem wróć do pytania.
 n: wróć do wpisywania bez zapisu. Tekst pozostaje do edycji; użyj strzałek, Home, End, Backspace lub Delete.
 y: zapisz wyświetlony wpis i kontynuuj uruchamianie YAC. Spacja nie potwierdza.
+
+***
+Koniec pomocy
+***

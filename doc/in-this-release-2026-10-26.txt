@@ -30,7 +30,30 @@ Changes
 - Settings u checks for updates and offers release notes before installation. Wi-Fi confirmation uses y to connect and n to edit.
 - Mac/Linux/Pi installation uses brief launcher questions, Enter for Yes, quiet dependency setup and a reminder that existing Python environments are unchanged. The Pi password hint appears before any sudo request; the default image password is radio unless changed.
 
-Validation
+Revision 4: packaging and help
+
+The public downloads are yac-win-2026-10-26-r4.zip and
+yac-mac-linux-2026-10-26-r4.zip. Older updaters receive identical content
+under their recognised filenames. Current updaters prefer the platform names.
+No Pi image or complete Pi wrapper is built for this revision.
+
+Both packages put START-HERE guides and key charts in doc/English,
+doc/Deutsch, doc/Espanol and doc/Polski. Mac and Linux have separate
+START-HERE-mac.txt and START-HERE-linux.txt files. Windows uses
+START-HERE-win.txt. Extract where downloaded; moving the folder is optional.
+Windows instructions include keyboard steps for a desktop shortcut.
+Mac/Linux instructions explain installation, starting in Terminal and the
+optional launcher. Required runtime resources retain their existing paths.
+
+Every help file now has a title and ends with a three-asterisk line,
+End of help in the selected language, then another three-asterisk line.
+Settings u no longer reads help automatically; h requests help.
+The core checklist now covers AF Gain changes, physical dial tracking,
+actual band/mode changes and restoration, and update completion. Pi-only
+checks are separate. Mac braille-table selection remains unresolved;
+speech and braille results are recorded separately.
+
+Validation of the original release
 
 422 automated tests passed, including the native Windows installer checks. Windows executable package checks verify bundled resources and simulated controls without opening radio ports. Package integrity and matching language/radio resources are checked before release.
 

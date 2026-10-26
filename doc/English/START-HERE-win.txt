@@ -1,0 +1,19 @@
+YAC - first steps
+
+You can extract the ZIP in Downloads, on your Desktop, or wherever you saved it. Keep the extracted folder together. You may move the whole folder to a convenient location if you wish.
+
+Connect and power on the radio. Close other programs using its serial port. A manufacturer's USB driver may be needed. Allow discovery to finish.
+
+WINDOWS 64-BIT
+
+1. Extract the whole ZIP first. Open the extracted folder and run YAC-001-beta.exe. No installation or Python is required.
+2. To maximise the terminal, press Alt+Space, release, then x.
+
+OPTIONAL DESKTOP SHORTCUT
+Choose the folder's final location first. Select YAC-001-beta.exe and press Shift+F10. Use the arrow keys to find Send to; open its submenu and choose Desktop (create shortcut). On Windows 11, choose Show more options first if necessary. You can then start YAC from that desktop shortcut. Moving the program folder afterwards can break the shortcut.
+
+Follow the language and name/callsign prompts. Press h for help; q then y quits. Commands are in KEY-BINDINGS-English.txt in this documentation folder.
+
+YAC uses your usual terminal screen reader and braille display. The required computer braille table is North American Computer Braille (NABCC). Mac selection of the required braille table remains unresolved; speech can be tested separately.
+
+Updates: s then u. Notes are optional before you accept the update. If something fails, record the build, platform, radio and what happened. Contact gena@m0ebp.uk. Logs may contain personal details; review before sharing.

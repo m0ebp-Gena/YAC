@@ -1,0 +1,19 @@
+YAC - Primeros pasos
+
+Extraiga el ZIP en Descargas, en el Escritorio o donde lo haya guardado. Mantenga junta la carpeta extraída. Puede mover la carpeta completa a otro lugar si lo desea.
+
+Conecte y encienda la radio. Cierre otros programas que utilicen su puerto serie. Puede necesitar el controlador USB del fabricante. Espere a que termine la búsqueda.
+
+WINDOWS DE 64 BITS
+
+1. Extraiga primero todo el ZIP. Abra la carpeta extraída y ejecute YAC-001-beta.exe. No necesita instalación ni Python.
+2. Maximice el terminal pulsando Alt+Espacio, suelte y pulse x.
+
+ACCESO DIRECTO OPCIONAL EN EL ESCRITORIO
+Elija primero la ubicación definitiva de la carpeta. Seleccione YAC-001-beta.exe y pulse Mayús+F10. Con las flechas busque Enviar a, abra el submenú y elija Escritorio (crear acceso directo). En Windows 11, elija antes Mostrar más opciones si hace falta. Ya puede iniciar YAC desde ese acceso directo. Si mueve después la carpeta del programa, el acceso directo puede dejar de funcionar.
+
+Responda a las preguntas de idioma y nombre/indicativo. h muestra ayuda; q seguido de y sale. Las teclas están en TECLAS-Espanol.txt en esta carpeta de documentación.
+
+YAC utiliza su lector de pantalla y línea braille habituales en el terminal. La tabla requerida es North American Computer Braille (NABCC). La selección de esa tabla en Mac sigue sin resolverse; la voz puede probarse por separado.
+
+Actualizaciones: s y después u. Puede leer u omitir las novedades antes de aceptar. Si algo falla, anote versión de prueba, plataforma, radio y lo ocurrido. Contacto: gena@m0ebp.uk. Revise los datos personales de los registros antes de compartirlos.

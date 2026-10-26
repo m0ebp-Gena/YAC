@@ -1,3 +1,5 @@
+Hilfe: Einstellungsmenü
+
 Einstellungen: a AGC; m Mikrofonverstärkung; p Leistung; s Schrittweite; t Tuner; v VFO/Empfänger; e Sprachprozessor. q kehrt zurück und meldet Zurück, nach AGC-Auswahl Fertig. h liest diese Hilfe.
 
 s a liest die aktuelle AGC-Einstellung, ohne sie zu ändern. Erneutes a wählt die nächste Einstellung und bestätigt sie. q beendet und meldet Fertig. Schnell erholt sich früher nach einem starken Signal, Langsam hält die Verstärkungsreduzierung länger. Nach Gehör wählen. Aus erlaubt größere Lautstärkeschwankungen. Kein Senden nötig.
@@ -17,7 +19,7 @@ s b: Punkt oder b wählt den nächsten Modus; Komma den vorherigen. q wendet an,
 
 s o: r Tempo; v Lautstärke; p Tonhöhe; u Satzzeichen; Punkt erhöht; Komma verringert; t Test; d Standardwerte; h Hilfe; q kehrt zurück. Änderungen gelten und speichern sofort.
 
-s u: YAC aktualisieren. Zeigt Hilfe und Suche. Kein Internet oder Kein Update führt zu Einstellungen zurück. Update gefunden fragt Hinweise Y/N?, dann Update Y/N?. y bestätigt; n überspringt Hinweise oder lehnt Installation ab; q kehrt zurück. Lange Hinweise: Leertaste weiter; q beendet die Hinweise.
+s u: YAC aktualisieren. Beginnt mit Suche. h zeigt die Update-Hilfe. Kein Internet oder Kein Update führt zu Einstellungen zurück. Update gefunden fragt Hinweise Y/N?, dann Update Y/N?. y bestätigt; n überspringt Hinweise oder lehnt Installation ab; q kehrt zurück. Lange Hinweise: Leertaste weiter; q beendet die Hinweise.
 
 s w: WLAN-Einrichtung ist nur im Raspberry-Pi-Abbild verfügbar. Hier die WLAN-Einstellungen des Betriebssystems verwenden. WLAN-Einrichtung: Land, Netzwerkname und Passwort. Strg+C bricht die Eingabe ab; Satzzeichen und Befehlsbuchstaben sind normale Zeichen.
 
@@ -26,3 +28,7 @@ Abstimmung fehlgeschlagen oder Tuner umgangen
 Abstimmergebnis nicht bestätigt
 Zeitüberschreitung; Stopp angefordert
 Stopp der Abstimmung nicht bestätigt
+
+***
+Ende der Hilfe
+***

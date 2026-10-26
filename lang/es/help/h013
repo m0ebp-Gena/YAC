@@ -1,3 +1,5 @@
+Ayuda: Decodificadores
+
 Decodificadores: c abre CW; r abre RTTY. La captura empieza al entrar si la configuración lo permite. Solo funciona un decodificador a la vez.
 Dentro: e detiene o reinicia explícitamente. q anuncia Atrás y mantiene la captura. Otro q vuelve al nivel principal. Cambiar de decodificador detiene el anterior. Salir de YAC detiene la captura y restaura los ajustes originales.
 v revisa el texto más reciente; coma el anterior; punto el siguiente. Bloques de 60 caracteres. n borra el texto. El texto nuevo aparece automáticamente solo en la vista del decodificador; fuera se captura en silencio. Utilice la voz y braille de su terminal. h muestra esta ayuda.
@@ -10,3 +12,7 @@ d luego a: configurar audio de recepción; h explica selección y nivel.
 
 No se pudo iniciar el decodificador. Revise modo y configuración; h para ayuda.
 Entrada perdida; captura detenida. Revise los ajustes de la radio.
+
+***
+Fin de la ayuda
+***

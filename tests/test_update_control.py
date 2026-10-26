@@ -23,7 +23,7 @@ class UpdateControlTests(unittest.TestCase):
     def tearDown(self):
         update_control._pending = None
 
-    def test_help_precedes_lookup_and_notes_return_to_confirmation(self):
+    def test_lookup_starts_without_help_and_notes_return_to_confirmation(self):
         for language in ('en','de','es','pl'):
             with self.subTest(language=language),patch.object(update_control,'supported',return_value=True), \
                  patch.object(update_control,'_lookup_while_cancellable',return_value=(True,release())), \
@@ -35,10 +35,21 @@ class UpdateControlTests(unittest.TestCase):
                 self.assertEqual(output.getvalue().splitlines().count(prompt),2)
                 self.assertIn('Changes for testing.',output.getvalue())
                 looking=update_control.chat_int.label(ROOT,language,'l357')
-                self.assertTrue(output.getvalue().lstrip().startswith(update_control.help_int.get_help(ROOT,language,'h027')))
+                self.assertTrue(output.getvalue().lstrip().startswith(looking))
+                self.assertNotIn(update_control.help_int.get_help(ROOT,language,'h027'), output.getvalue())
                 self.assertIn(looking,output.getvalue())
                 fetch.assert_not_called()
                 run.assert_not_called()
+
+    def test_help_is_only_read_on_request_and_returns_to_live_question(self):
+        for language in ('en', 'de', 'es', 'pl'):
+            with self.subTest(language=language), patch.object(update_control, 'supported', return_value=True), patch.object(update_control, '_lookup_while_cancellable', return_value=(True, release())), redirect_stdout(io.StringIO()) as output:
+                self.assertFalse(update_control.confirm(ROOT, language, iter(['h', 'n', 'h', 'n']).__next__))
+            help_text = update_control.help_int.get_help(ROOT, language, 'h027')
+            self.assertEqual(output.getvalue().count(help_text), 2)
+            after_help = output.getvalue().split(help_text)[1:]
+            self.assertTrue(after_help[0].lstrip().startswith(update_control.chat_int.label(ROOT, language, 'l366')))
+            self.assertTrue(after_help[1].lstrip().startswith(update_control.chat_int.label(ROOT, language, 'l326')))
 
     def test_normal_startup_never_checks_the_internet(self):
         radio = create_dummy_radio()

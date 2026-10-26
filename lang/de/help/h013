@@ -1,3 +1,5 @@
+Hilfe: Decoder
+
 Decoder: c öffnet CW, r RTTY. Die Erfassung startet beim Öffnen, sofern die Einrichtung dies erlaubt. Nur ein Decoder läuft gleichzeitig.
 Im Decoder: e stoppt oder startet ausdrücklich. q meldet Zurück; die Erfassung läuft weiter. Nochmals q führt zu den Hauptfunktionen. Ein anderer Decoder beendet die bisherige Erfassung. Beim Beenden stellt YAC die ursprünglichen Radio-Decoder-Einstellungen wieder her.
 v liest den neuesten Text; Komma früheren Text; Punkt späteren Text. Abschnitte haben 60 Zeichen. n löscht Text. Neuer Text erscheint automatisch nur in der Decoder-Ansicht; sonst wird still erfasst. Sprachausgabe und Braille erfolgen durch die vorhandene Terminal-Zugangstechnik. h gibt Hilfe.
@@ -10,3 +12,7 @@ d dann a: Empfangsaudio einrichten; h erklärt Auswahl und Pegelprüfung.
 
 Decoder konnte nicht starten. Modus und Einrichtung prüfen; h für Hilfe.
 Decoder-Eingang verloren; Erfassung gestoppt. Funkgerät prüfen.
+
+***
+Ende der Hilfe
+***
