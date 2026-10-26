@@ -1,0 +1,9 @@
+Szerokość pasma
+
+Jeden regulator: kropka poszerza pasmo; przecinek je zwęża.
+Osobne granice: p wybiera dolną, a potem przełącza górną i dolną.
+Kropka podnosi wybraną granicę; przecinek ją obniża. Wybór odczytuje wartość bez zmiany.
+Każda zmiana działa natychmiast i jest potwierdzana odczytem radia.
+Przy wartości domyślnej kropka wybiera najwęższą szerokość liczbową, przecinek najszerszą.
+h wyświetla pomoc. q kończy regulację, zachowuje zmiany i wraca do Filtrów.
+Brak obsługi oznacza brak regulacji pasma dla radia i trybu. YAC wraca do Filtrów bez zmian.

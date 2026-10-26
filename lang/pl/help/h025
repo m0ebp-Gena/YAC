@@ -1,1 +1,4 @@
 h Pomoc; o przełącza Szybkość, Głośność, Wysokość i Interpunkcję, jak wybór przesunięcia. Początkowo wybrana jest Szybkość. Kropka zwiększa; przecinek zmniejsza. Każda zmiana jest stosowana i zapisywana natychmiast; q zachowuje zmiany i wraca. t Test; d stosuje wartości YAC: szybkość 2, głośność 5, wysokość 5, interpunkcja Niektóre. Szybkość i wysokość od 0 do 9; głośność od 1 do 9.
+
+Ustawienia Speakup są niedostępne. Sprawdź program pomocniczy Pi; dostęp nie został zmieniony.
+Nie można zmienić lub zapisać ustawienia. Sprawdź obecne wartości.

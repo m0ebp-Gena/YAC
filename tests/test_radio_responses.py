@@ -11,6 +11,21 @@ root=Path(__file__).resolve().parents[1]
 class Responses(unittest.TestCase):
     def radio(self,model):
         return RadioConnection(None,'mock',38400,'CI-V' if model=='IC-705' else 'CAT',model,model,civ_address=0xA4 if model=='IC-705' else None)
+    def test_offset_limits_report_current_value_without_writing(self):
+        from modules import ts480_control
+        for language in ('en', 'de', 'es', 'pl'):
+            for value, direction in ((9990, 1), (-9990, -1)):
+                for selection in (0, 1):
+                    radio = self.radio('0840')
+                    with patch.object(yac, '_yaesu_offset_state', return_value=(value, True, True)), patch.object(yac, '_cat_exchange') as exchange:
+                        result = yac._offset_action(root, radio, language, selection, direction)
+                        self.assertIn('9990', result)
+                        exchange.assert_not_called()
+                    with patch.object(ts480_control, 'variant', return_value='1'), patch.object(ts480_control, 'offset_state', return_value=(value, True, True)), patch.object(ts480_control, 'profile', return_value={}), patch.object(yac, '_cat_exchange') as exchange:
+                        result = ts480_control.offset(yac, root, radio, language, selection, direction)
+                        self.assertIn('9990', result)
+                        exchange.assert_not_called()
+
     def test_mode_response_consistency(self):
         for model in ['0761','0840','023','IC-705']:
             r=self.radio(model)
@@ -38,24 +53,74 @@ class Responses(unittest.TestCase):
                     r=self.radio(model); sent=[]; yac._yaesu_vfo_side=side
                     with patch.object(yac,'_current_frequency',side_effect=['14.185','14.186','14.185']),patch.object(yac,'_cat_exchange',side_effect=lambda r,c:sent.append(c) or ''),patch.object(yac,'_civ_send',side_effect=lambda r,c,d:sent.append((c,d)) or bytes.fromhex('FEFEE0A4FBFD')):
                         result=yac._set_frequency(root,r,'en','14.187')
-                    self.assertIn('restored',result)
+                    self.assertEqual('Freq Restored',result)
                     if model=='0840': self.assertTrue(sent[-1].startswith('FB' if side else 'FA'))
         yac._yaesu_vfo_side=0
     def test_missing_frequency_prevents_write(self):
         with patch.object(yac,'_current_frequency',return_value=None),patch.object(yac,'_cat_exchange') as write:
-            self.assertIn('cancelled',yac._set_frequency(root,self.radio('0840'),'en','7.159'))
+            self.assertEqual('Radio Error',yac._set_frequency(root,self.radio('0840'),'en','7.159'))
             write.assert_not_called()
     def test_invalid_frequency_prevents_write(self):
         for model in ['0761','0840','023','IC-705']:
             with patch.object(yac,'_cat_exchange') as cat,patch.object(yac,'_civ_send') as civ:
                 for value in ['nan','inf','-1','0','garbage','471']:
-                    self.assertNotEqual(yac._set_frequency(root,self.radio(model),'en',value),value)
+                    self.assertEqual(yac._set_frequency(root,self.radio(model),'en',value),'Invalid')
                 cat.assert_not_called(); civ.assert_not_called()
+    def test_missing_or_unreadable_command_file_reports_file_error(self):
+        for language in ('en','de','es','pl'):
+            for command_file in (None,MagicMock()):
+                if command_file is not None:
+                    command_file.read_text.side_effect=PermissionError('test')
+                with self.subTest(language=language,missing=command_file is None), \
+                     patch.object(yac,'_radio_command_file',return_value=command_file),patch.object(yac,'_cat_exchange') as exchange:
+                    expected=yac._read_label(root,language,'l053','')
+                    self.assertLessEqual(len(expected),15)
+                    self.assertEqual(yac._set_frequency(root,self.radio('0840'),language,'7.159','7.100'),expected)
+                    exchange.assert_not_called()
+    def test_invalid_command_template_uses_shared_file_error(self):
+        for language in ('en','de','es','pl'):
+            command_file=MagicMock()
+            command_file.read_text.return_value='FA000000000;'
+            with self.subTest(language=language),patch.object(yac,'_radio_command_file',return_value=command_file),patch.object(yac,'_cat_exchange') as exchange:
+                self.assertEqual(yac._set_frequency(root,self.radio('0840'),language,'7.159','7.100'),yac._read_label(root,language,'l053',''))
+                exchange.assert_not_called()
+    def test_status_command_file_failure_uses_shared_file_error(self):
+        for language in ('en','de','es','pl'):
+            for error in (None,PermissionError('test'),UnicodeError('test')):
+                command_file=None if error is None else MagicMock()
+                if command_file is not None:command_file.read_text.side_effect=error
+                with self.subTest(language=language,error=error),patch.object(yac,'_radio_command_file',return_value=command_file),patch.object(yac,'_cat_exchange') as exchange:
+                    self.assertEqual(yac._radio_status(root,self.radio('0761'),language),yac._read_label(root,language,'l053',''))
+                    exchange.assert_not_called()
+    def test_frequency_cancel_and_invalid_labels_in_all_languages(self):
+        for language,invalid,aborted in [('en','Invalid','Aborted'),('de','Ungültig','Abgebrochen'),('es','Inválido','Cancelado'),('pl','Nieprawidłowe','Anulowano')]:
+            with self.subTest(language=language),patch.object(yac,'_cat_exchange') as cat:
+                self.assertEqual(yac._set_frequency(root,self.radio('0761'),language,'text'),invalid)
+                self.assertEqual(yac._set_frequency(root,self.radio('0761'),language,'999'),invalid)
+                self.assertEqual(yac._set_frequency(root,self.radio('0761'),language,''),aborted)
+                cat.assert_not_called()
+    def test_invalid_frequency_returns_to_main_without_reprompt(self):
+        from modules.dummy_radio import create_dummy_radio
+        radio=create_dummy_radio()
+        keys=iter(['e','s','q','q','y'])
+        output=io.StringIO()
+        with patch.object(yac,'connect_radio',return_value=radio),patch.object(yac,'_read_settings',return_value={'call':'test','lang':'en'}),patch.object(lang_sel,'read_key',side_effect=lambda:next(keys)),patch('builtins.input',return_value='text') as entered,redirect_stdout(output):
+            self.assertEqual(yac.main([]),0)
+        self.assertEqual(entered.call_count,1)
+        self.assertIn('Invalid',output.getvalue())
+        self.assertIn('Settings',output.getvalue())
     def test_steps_for_all_families(self):
         for mode,key,hz in [('USB','step_ssb',1000),('AM','step_am',2500),('FM','step_fm',12500),('CWU','step_cw',500)]:
             with patch.object(yac,'_current_mode',return_value=mode),patch.object(yac,'_current_frequency',return_value='7.159'),patch.object(yac,'_set_frequency',return_value='ok') as setting:
                 yac._step_frequency(root,self.radio('0840'),'en',{},1)
                 self.assertEqual(round(float(setting.call_args.args[3])*1e6),7159000+hz)
+    def test_invalid_tuning_step_does_not_write(self):
+        for language,expected in [('en','Invalid'),('de','Ungültig'),('es','Inválido'),('pl','Nieprawidłowe')]:
+            for frequency,direction in [('0.000001',-1),('1000',1)]:
+                with self.subTest(language=language,frequency=frequency),patch.object(yac,'_current_mode',return_value='USB'), \
+                     patch.object(yac,'_current_frequency',return_value=frequency),patch.object(yac,'_set_frequency') as setter:
+                    self.assertEqual(yac._step_frequency(root,self.radio('0840'),language,{},direction),expected)
+                    setter.assert_not_called()
     def test_yaesu_tone_rejection_not_success(self):
         for model,kind in [('0761','ftdx10'),('0840','ftx1'),('023','ts590')]:
             with patch.object(yac,'_cat_exchange',return_value='?;'):
@@ -100,7 +165,7 @@ class Responses(unittest.TestCase):
             self.assertIn('Bye Gena',transcript)
             self.assertNotIn('yac:',transcript)
             self.assertNotIn('Gena:',transcript)
-            self.assertIn('Command not available yet.',transcript)
+            self.assertIn('Not Available',transcript)
             r.serial.close.assert_called_once()
             yac._yaesu_vfo_side=0
     def test_response_keeps_cursor_and_next_request_starts_new_line(self):

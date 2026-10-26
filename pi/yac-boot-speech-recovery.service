@@ -1,0 +1,6 @@
+[Unit]
+Description=Restore console speech if YAC boot handover did not complete
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/libexec/yac-boot-speech recover

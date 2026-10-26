@@ -36,5 +36,5 @@ class QuitTests(unittest.TestCase):
         from modules import chat_int
         for language in ['en', 'de', 'es', 'pl']:
             label = chat_int.label(ROOT, language, 'l352')
-            for key in ['y', 'n', 'q']:
+            for key in ['y', 'n']:
                 self.assertIn(key, label)

@@ -19,8 +19,8 @@ class ToneStatusTests(unittest.TestCase):
             ({'CT1;': 'CT12;', 'CN10;': 'CN10008;'}, 'CTCSS 88.5 Hz Both'),
             ({'CT1;': 'CT13;', 'CN11;': 'CN11000;', 'EX010323;': 'EX0103231;',
               'EX010324;': 'EX0103241;'}, 'DCS I 023 Both'),
-            ({'CT1;': 'CT11;', 'CN10;': 'CN10999;'}, 'Tone/code unknown'),
-            ({}, 'Tone/code unknown'),
+            ({'CT1;': 'CT11;', 'CN10;': 'CN10999;'}, 'Radio Error'),
+            ({}, 'Radio Error'),
         ]
         for replies, expected in cases:
             with self.subTest(expected=expected), patch.object(yac, '_yaesu_vfo_side', 1), \
@@ -58,7 +58,7 @@ class ToneStatusTests(unittest.TestCase):
 
     def test_w_appends_only_active_or_unknown_tone(self):
         for tone, expected in [('', 'S 9 145.5 FM'), ('CTCSS 88.5 Hz TX', 'S 9 145.5 FM, CTCSS 88.5 Hz TX'),
-                               ('Tone/code unknown', 'S 9 145.5 FM, Tone/code unknown')]:
+                               ('Radio Error', 'S 9 145.5 FM, Radio Error')]:
             with patch.object(yac, '_radio_status', return_value='S 9 145.5 FM'), \
                  patch.object(tone_status, 'report', return_value=tone):
                 self.assertEqual(yac._dispatch(ROOT, None, 'en', 'w', None), expected)

@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import Mock
-from modules.connection_watch import ConnectionWatch, reconnect_same_radio
+from modules.connection_watch import ConnectionWatch, RecoveryExpired, reconnect_same_radio
 
 
 class ConnectionWatchTests(unittest.TestCase):
@@ -50,6 +50,51 @@ class ConnectionWatchTests(unittest.TestCase):
         self.radio.is_dummy = True
         self.tick()
         self.read.assert_not_called()
+
+    def test_command_error_starts_one_recovery_window(self):
+        self.assertTrue(self.watch.report_error())
+        self.assertEqual(self.watch.recovery_deadline,60)
+        self.now=20
+        self.watch.report_error()
+        self.assertEqual(self.watch.recovery_deadline,60)
+        self.say.assert_called_once_with('lost')
+
+    def test_failed_recovery_aborts_at_sixty_seconds_even_between_polls(self):
+        self.watch.report_error()
+        self.reconnect.return_value=False
+        self.now=59
+        self.watch.tick()
+        self.assertFalse(self.watch.expired)
+        self.now=60
+        with self.assertRaises(RecoveryExpired):self.watch.tick()
+        self.assertEqual(self.say.call_args.args,('aborting',))
+        with self.assertRaises(RecoveryExpired):self.watch.tick()
+        self.assertEqual([c.args[0] for c in self.say.call_args_list],['lost','aborting'])
+
+    def test_recovery_requires_complete_state_and_clears_deadline(self):
+        state=Mock(return_value=None)
+        self.watch.read_recovery_state=state
+        self.watch.report_error()
+        self.tick()
+        self.assertTrue(self.watch.lost)
+        state.return_value='14.2'
+        self.now=59
+        self.watch.tick()
+        self.assertFalse(self.watch.lost)
+        self.assertIsNone(self.watch.recovery_deadline)
+        self.now=80
+        self.watch.tick()
+        self.assertFalse(self.watch.expired)
+
+    def test_slow_reconnect_does_not_accept_success_after_deadline(self):
+        self.watch.report_error()
+        def reconnect(radio):
+            self.now=61
+            return True
+        self.watch.reconnect=reconnect
+        self.now=55
+        with self.assertRaises(RecoveryExpired):self.watch.tick()
+        self.assertNotIn('restored',[c.args[0] for c in self.say.call_args_list])
 
     def test_exception_after_reopen_closes_failed_handle(self):
         self.watch.lost = True

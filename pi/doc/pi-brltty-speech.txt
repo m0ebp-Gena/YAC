@@ -1,0 +1,154 @@
+Raspberry Pi: BRLTTY braille and speech
+11 October 2026
+
+1. Scope
+
+	This guide assumes Raspberry Pi OS Lite or Debian on the Pi.
+	Use a local text console with a keyboard, a USB braille display, and
+	speakers or headphones. BRLTTY can supply console speech without Speakup.
+	It is not a desktop screen reader: use Orca for a graphical desktop.
+	Over SSH, the client screen reader reads the SSH terminal; Pi speech
+	plays on the Pi. These instructions do not supply speech during SD setup.
+	Use your working computer and SSH to complete initial setup if needed.
+
+2. Install packages
+
+	Run each command separately. The indented lines are commands to paste.
+
+	sudo apt update
+	sudo apt install python3 python3-venv brltty brltty-espeak espeak alsa-utils unzip
+
+	The package brltty-espeak supplies BRLTTY's es speech driver. This is
+	separate from the braille driver: fs for Freedom Scientific or hw for
+	HumanWare Brailliant BI 40X. No Speakup package is needed for this test.
+
+3. Check audio before changing BRLTTY
+
+	espeak "Hello. This is the Raspberry Pi speech test."
+
+	If you hear that, also test as the account used by the BRLTTY service:
+
+	sudo espeak "This is the administrator speech test."
+
+	If either is silent, check the selected audio output and its volume.
+	HDMI and USB audio may appear as different sound cards. To list them:
+
+	aplay -l
+	cat /proc/asound/cards
+	alsamixer
+
+	In alsamixer, F6 selects a sound card, left/right selects a control,
+	up/down adjusts its volume, M toggles mute, and Escape exits.
+	Audio routing varies by Pi model and OS. Do not assume a headphone
+	socket exists. Resolve the audio test before expecting BRLTTY speech.
+
+4. Temporary BRLTTY test
+
+	Have working speech on your other computer or an SSH connection ready:
+	stopping BRLTTY briefly interrupts existing braille access. Do not run
+	two BRLTTY instances against the same display.
+
+	sudo systemctl stop brltty
+
+	For Freedom Scientific, paste this complete single line:
+
+	sudo brltty -n -e -b fs -d usb: -t en-nabcc -s es -k laptop
+
+	OR, for HumanWare BI 40X in terminal/connected-display mode:
+
+	sudo brltty -n -e -b hw -d usb: -t en-nabcc -s es -k laptop
+
+	-n keeps BRLTTY running in the foreground; -e shows diagnostics there.
+	-t en-nabcc selects North American computer braille. -s es enables
+	eSpeak. -k laptop enables the keyboard bindings listed below.
+	Keep this terminal running. Use another local virtual console for YAC,
+	for example Control+Alt+F2, then log in. To return, select the original
+	console. These keys switch local consoles, not remote SSH sessions.
+
+5. Speech controls with the laptop keyboard table
+
+	Hold Caps Lock while pressing the other key:
+
+	Caps Lock + Space: speak the current line.
+	Caps Lock + F9: toggle automatic speech.
+	Caps Lock + F5: slower speech.
+	Caps Lock + F6: faster speech.
+	Caps Lock + F7: lower speech volume.
+	Caps Lock + F8: higher speech volume.
+	Right Control: stop speech.
+
+	Automatic speech is a separate preference from loading the driver.
+	A spoken startup message does not mean automatic speech is enabled.
+	Turn it on with Caps Lock + F9 if wanted. It follows navigation and
+	editing; test YAC responses as well as typing before deciding whether
+	its automatic reading is sufficient for you.
+	The display's own Help lists its bindings for speech and preferences.
+	Those bindings differ between Freedom Scientific and HumanWare.
+
+6. Keep the working setup for future boots
+
+	Only after the temporary test works, stop it with Control+C in its
+	original terminal. Back up and edit the existing configuration:
+
+	sudo cp -n /etc/brltty.conf /etc/brltty.conf.before-yac-speech
+	sudo nano /etc/brltty.conf
+
+	Edit the matching directives so each has one active value. For FS:
+
+	braille-driver fs
+	braille-device usb:
+	text-table en-nabcc
+	speech-driver es
+	keyboard-table laptop
+
+	For HumanWare use braille-driver hw instead of braille-driver fs.
+	These five lines are configuration text to place in the editor;
+	they are NOT shell commands. Preserve unrelated settings.
+	In nano, Control+O then Enter saves; Control+X exits.
+	Save automatic speech and rate preferences using BRLTTY's preferences
+	menu and its save-preferences command, as listed in display Help.
+
+	sudo systemctl enable --now brltty
+	systemctl status brltty --no-pager
+
+7. Start YAC in the fresh extracted source folder
+
+	cd ~/YAC-source-2026-10-11
+	python3 -m venv .venv
+	.venv/bin/python -m pip install -r requirements.txt
+	.venv/bin/python yac.py
+
+	Keep the braille display connected and disconnect real radios to test
+	the dummy FT-DX10. Run YAC as your normal user, without sudo.
+	After discovery, Simulated Mode remains under the terminal cursor
+	until you enter a command. Press h for help; q at top level quits.
+
+8. Troubleshooting and recovery
+
+	If BRLTTY speech fails but both espeak tests work, collect:
+
+	brltty --version
+	sudo journalctl -u brltty -b -n 80 --no-pager
+
+	Use the foreground -e test in section 4 to see driver errors.
+	If a service is still controlling the display after you stop brltty,
+	inspect the running instances before starting another:
+
+	pgrep -a brltty
+
+	To restore the configuration backup, if you created it in section 6:
+
+	sudo cp /etc/brltty.conf.before-yac-speech /etc/brltty.conf
+	sudo systemctl restart brltty
+
+	If you only ran the temporary test, Control+C then this restores the
+	service with its unchanged configuration:
+
+	sudo systemctl start brltty
+
+References
+
+	https://wiki.debian.org/accessibility/#BRLTTY
+	https://manpages.debian.org/trixie/brltty/brltty.1.en.html
+	https://brltty.app/doc/Manual-BRLTTY/English/BRLTTY-5.html
+	https://brltty.app/doc/KeyBindings/kbd-laptop.html

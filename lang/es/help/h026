@@ -1,11 +1,20 @@
-s w: La configuración Wi-Fi solo está disponible en la imagen Raspberry Pi. Aquí use los ajustes Wi-Fi del sistema.
-Configuración Wi-Fi: país, nombre de red y contraseña. Ctrl+C cancela; puntuación y letras de comandos son caracteres normales.
-País WLAN: GB. Introduzca dos letras, por ejemplo GB, DE, ES o PL. Intro vacío conserva el país actual:
-País no válido. Introduzca su código de dos letras; UK se acepta como GB.
-Nombre de red (SSID), exactamente como está configurado en el router:
-Contraseña. Entrada oculta y eco de teclas Speakup desactivado temporalmente. Intro vacío para una red abierta. Ctrl+C cancela:
-Nombre de red no válido. Use de 1 a 32 bytes UTF-8 sin caracteres de control.
-Contraseña no válida para esta red. Compruebe longitud y tipo de seguridad.
-País GB, red S S I D. Espacio conecta y guarda; e edita; q vuelve sin conectar.
-Conectando a Wi-Fi. Puede tardar hasta dos minutos.
-Wi-Fi conectado y guardado. El actualizador comprueba el acceso a internet por separado.
+Configurar Wi-Fi: s w desde el menú principal. No se aplica nada hasta confirmar la conexión con y.
+
+Cancelado: se canceló la entrada o el nombre de red estaba vacío. Se descartan los datos y se vuelve a Ajustes. Repite w allí, o s w desde el menú principal.
+Conectado: Wi-Fi conectado y guardado; no confirma acceso a internet.
+Conectando: conexión en curso; puede tardar dos minutos.
+Contraseña: entrada oculta; el eco de teclas Speakup se desactiva temporalmente y después se restaura. Vacía significa red abierta, no cancelación. h, q, espacios y puntuación son literales en nombres de red y contraseñas.
+Ctrl+C: cancela desde cualquier campo. En la confirmación, q también cancela.
+e: en la confirmación, vuelve a los campos para editar.
+y: en la confirmación, conecta y guarda. Hasta entonces, cancelar o introducir datos no válidos no cambia la conexión.
+h: en País, h y Enter; en la confirmación, h para ayuda. Después vuelve al mismo campo.
+Inválido: entrada no aceptada. Termina la solicitud y descarta los datos. Vuelve a Ajustes; repite w con datos válidos.
+Nombre de red: introduce la SSID exacta, de 1 a 32 bytes UTF-8, sin caracteres de control. Enter vacío cancela.
+País: código de dos letras. UK se acepta como GB. Enter vacío conserva el país actual, si existe.
+
+Configuración Wi-Fi no disponible. Compruebe el asistente de imagen, permisos y NetworkManager.
+No se encontró un adaptador Wi-Fi.
+No se pudo establecer el país WLAN.
+Red no encontrada. Compruebe SSID exacto, router y señal.
+Conexión fallida. Compruebe contraseña y señal. Se conserva la red guardada anterior.
+No se pudo preparar la entrada privada. No se ha pedido ninguna contraseña.

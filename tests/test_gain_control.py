@@ -32,7 +32,7 @@ class GainTests(unittest.TestCase):
                 with patch.object(yac,'_current_mode_code',return_value=5):
                     self.assertEqual(gain.adjust(yac,ROOT,r,'en','r',1),'Squelch 3%')
                 serial.reject_setting=True
-                self.assertEqual(gain.adjust(yac,ROOT,r,'en','a',1),'Setting change failed')
+                self.assertEqual(gain.adjust(yac,ROOT,r,'en','a',1),'Radio Error')
                 serial.settings[b'\x14\x01']=b'\x0a\x00'
                 self.assertEqual(gain.adjust(yac,ROOT,r,'en','a',1),'Gain unknown')
 

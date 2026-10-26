@@ -33,7 +33,7 @@ class DecoderManager:
             self.stop()
         except Exception:
             LOG.exception('Previous decoder restoration failed')
-            return self.label('l280')
+            return self.label('l003')
         settings = self.yac._read_settings(self.root / 'yac.ini')
         if kind == 'c':
             if self.radio.protocol == 'CAT' and self.radio.model_id == '023':
@@ -59,7 +59,7 @@ class DecoderManager:
             session.start()
         except RestoreError:
             LOG.exception('Decoder start rollback failed')
-            return self.label('l280')
+            return self.label('l003')
         except Exception:
             LOG.exception('Decoder start failed kind=%s model=%s', kind, self.radio.model_id)
             # Constructors own no devices; start() cleans up any partial setup.
@@ -87,7 +87,7 @@ class DecoderManager:
                 self.stop()
             except Exception:
                 LOG.exception('Decoder restore failed')
-                chat_int.show_response(self.label('l280'))
+                chat_int.show_response(self.label('l003'))
             chat_int.show_response(self.label('l284'))
         self.pending += self.buffer.take()
         self.pending = self.pending[-10000:]
@@ -122,7 +122,7 @@ class DecoderManager:
                         self.stop()
                         chat_int.show_response(self.label('l277'))
                     except Exception:
-                        chat_int.show_response(self.label('l280'))
+                        chat_int.show_response(self.label('l003'))
                         continue
                 from modules import audio_setup
                 audio_setup.control(self.yac, self.root, self.language, read_key)
@@ -153,7 +153,7 @@ class DecoderManager:
                             response = self.start(kind)
                     except Exception:
                         LOG.exception('Decoder stop failed')
-                        response = self.label('l280')
+                        response = self.label('l003')
                     chat_int.show_response(response)
                 elif key in ('v', '.', ','):
                     if key == 'v':
@@ -177,7 +177,7 @@ class DecoderManager:
                         value = self.session.threshold(1 if key == '+' else -1)
                         chat_int.show_response(self.label('l282', value=value))
                     except (ValueError, OSError):
-                        chat_int.show_response(self.label('l131'))
+                        chat_int.show_response(self.yac._radio_error(self.root, self.radio, self.language))
                 elif key:
                     chat_int.show_response(self.label('l129'))
         finally:
@@ -188,4 +188,4 @@ class DecoderManager:
             self.stop()
         except Exception:
             LOG.exception('Decoder shutdown restoration failed')
-            chat_int.show_response(self.label('l280'))
+            chat_int.show_response(self.label('l003'))

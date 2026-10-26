@@ -10,10 +10,8 @@ def operate(yac, root, radio, language, key, *, toggle=False, direction=0, width
     spec = feature[key]
     mode = yac._current_mode_code(radio)
     beat = spec.get('beat_cancel', False)
-    unknown = 'l188' if beat else 'l181'
-    failed = 'l189' if beat else 'l184'
     if mode is None:
-        return label(unknown)
+        return yac._radio_error(root, radio, language)
     if str(mode).upper() not in spec['modes']:
         return label('l129')
     side = str(yac._yaesu_vfo_side) if radio.model_id == '0840' else '0'
@@ -22,16 +20,16 @@ def operate(yac, root, radio, language, key, *, toggle=False, direction=0, width
     state_spec = expand(spec['state'])
     current = settings.read(yac, radio, state_spec)
     if current is None:
-        return label(unknown)
+        return yac._radio_error(root, radio, language)
     current = str(current)
     shared = spec.get('shared', False)
     if shared:
         if current not in {'00', '10', '20', '21'}:
-            return label(unknown)
+            return yac._radio_error(root, radio, language)
         enabled = current.startswith('1' if key == 'a' else '2')
     else:
         if current not in state_spec['on_values'] + [state_spec['off']]:
-            return label(unknown)
+            return yac._radio_error(root, radio, language)
         enabled = current != state_spec['off']
     if not hasattr(radio, '_notch_memory'):
         radio._notch_memory = {}
@@ -64,15 +62,15 @@ def operate(yac, root, radio, language, key, *, toggle=False, direction=0, width
         if other_spec:
             original_other = settings.read(yac, radio, other_spec)
             if original_other not in {'00', '01'}:
-                return label(unknown)
+                return yac._radio_error(root, radio, language)
             if original_other == '01' and not write_verified(other_spec, '00'):
-                return label(failed)
+                return yac._radio_error(root, radio, language)
         if not write_verified(state_spec, target):
             if original_other == '01':
                 write_verified(other_spec, '01')
-            return label(failed)
+            return yac._radio_error(root, radio, language)
         if other_spec and settings.read(yac, radio, other_spec) != '00':
-            return label(failed)
+            return yac._radio_error(root, radio, language)
         if enabled:
             return label(off_label)
         response = description(target)
@@ -89,32 +87,32 @@ def operate(yac, root, radio, language, key, *, toggle=False, direction=0, width
         current_width = current[1] if shared else settings.read(yac, radio, width_spec)
         choices = width_spec['choices']
         if current_width not in choices:
-            return label('l183')
+            return yac._radio_error(root, radio, language)
         target = choices[(choices.index(current_width) + 1) % len(choices)]
         if shared:
             if not write_verified(state_spec, '2' + target):
-                return label(failed)
+                return yac._radio_error(root, radio, language)
             memory[(memory_key, 'width')] = target
         elif not write_verified(width_spec, target):
-            return label(failed)
+            return yac._radio_error(root, radio, language)
         return label(width_spec['labels'][target])
     position_spec = expand(spec['position'])
     value = settings.read(yac, radio, position_spec)
     if value is None:
-        return label('l182')
+        return yac._radio_error(root, radio, language)
     value = int(value)
     if not position_spec['minimum'] <= value <= position_spec['maximum']:
-        return label('l182')
+        return yac._radio_error(root, radio, language)
     target = max(position_spec['minimum'], min(position_spec['maximum'],
                  value + direction * position_spec['step']))
     if target != value:
         digits = 4 if position_spec.get('encoding') == 'bcd' else position_spec['digits']
         payload = f'{target:0{digits}d}'
         if not settings._write(yac, radio, position_spec, payload):
-            return label(failed)
+            return yac._radio_error(root, radio, language)
         actual = settings.read(yac, radio, position_spec)
         if actual is None or int(actual) != target:
-            return label(failed)
+            return yac._radio_error(root, radio, language)
         value = int(actual)
     return label('l175' if position_spec.get('hertz_multiplier') else 'l176',
                  value=value * position_spec.get('hertz_multiplier', 1))

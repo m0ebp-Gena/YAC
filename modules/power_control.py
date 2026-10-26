@@ -52,6 +52,8 @@ def prepare(yac, root, radio):
             return None
         selector = match.group(1)
         spec['set'] = spec['set'].replace('{selector}', selector)
+        spec['input_minimum'] = spec.get('selector_minimum', {}).get(selector, spec['input_minimum'])
+        spec['minimum'] = spec['input_minimum']
         spec['maximum'] = spec['selector_maximum'][selector]
     if settings.read(yac, radio, spec) is None:
         return None
@@ -64,16 +66,16 @@ def set_value(yac, radio, spec, entered):
     if not entered:
         return None  # An empty edit cancels without writing.
     if not entered.isascii() or not entered.isdecimal():
-        return 'l146'
+        return 'l356'
     value = int(entered)
     if not spec['input_minimum'] <= value <= spec['maximum']:
-        return 'l146'
+        return 'l356'
     native = round(value * 255 / spec['watts_at_full_scale']) if spec.get('encoding') == 'bcd' else value
     payload = f'{native:04d}' if spec.get('encoding') == 'bcd' else f'{native:03d}'
     if not settings._write(yac, radio, spec, payload):
-        return 'l131'
+        return 'l050'
     actual = settings.read(yac, radio, spec)
-    return None if actual is not None and int(actual) == native else 'l131'
+    return None if actual is not None and int(actual) == native else 'l050'
 
 
 def edit(yac, root, radio, language):
@@ -93,6 +95,11 @@ def edit(yac, root, radio, language):
         except (EOFError, KeyboardInterrupt):
             print()
             return
+        if not entered.strip():
+            chat_int.show_response(settings._label(yac, root, language, 'l355'))
+            return
+        if entered.strip().casefold() == 'q':
+            return
         if entered.strip().casefold() == 'h':
             chat_int.show_response(help_int.get_help(root, language, 'h006'))
             # Re-read limits after help: supply, band or mode may have changed.
@@ -108,6 +115,12 @@ def edit(yac, root, radio, language):
                 chat_int.show_response(settings._label(yac, root, language, 'l127'))
                 return
         error = set_value(yac, radio, spec, entered)
+        if error == 'l050':
+            chat_int.show_response(yac._radio_error(root, radio, language))
+            return
+        if error == 'l356':
+            chat_int.show_response(settings._label(yac, root, language, 'l356'))
+            return
         if not error:
             if entered.strip():
                 chat_int.show_response(settings._label(

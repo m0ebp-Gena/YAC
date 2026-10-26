@@ -29,10 +29,10 @@ def adjust(yac, root, radio, language, key, direction=0):
         if target != current:
             value = f'{target:04d}' if spec.get('encoding') == 'bcd' else f'{target:03d}'
             if not settings._write(yac, radio, spec, value):
-                return settings._label(yac, root, language, 'l131')
+                return yac._radio_error(root, radio, language)
             actual = settings.read(yac, radio, spec)
             if actual is None or int(actual) != target:
-                return settings._label(yac, root, language, 'l131')
+                return yac._radio_error(root, radio, language)
             current = target
     percent = round((current - spec['minimum']) * 100 / (spec['maximum'] - spec['minimum']))
     return settings._label(yac, root, language, spec['label'], value=percent)

@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pi speech options with Speakup — YAC documentation</title><style>
+:root { color-scheme: light dark; font: 120%/1.65 system-ui, sans-serif; }
+body { max-width: 76ch; margin: auto; padding: 1rem; }
+a { text-decoration: underline; text-underline-offset: .15em; }
+a:focus-visible { outline: .2rem solid currentColor; outline-offset: .2rem; }
+pre { padding: 1rem; border: 1px solid; white-space: pre-wrap; overflow-wrap: anywhere; }
+code { font-size: 1em; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid; padding: .5rem; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+h1, h2, h3, h4 { line-height: 1.3; }
+@media print { nav, .skip { display: none; } body { max-width: none; } }
+</style></head>
+<body><a class="skip" href="#main">Skip to main content</a>
+<nav aria-label="Document navigation"><p><a href="index.html">All documents</a></p><p>On this page:</p><ul><li><a href="#section-2">Keys</a></li><li><a href="#section-3">One-time image setup</a></li><li><a href="#section-4">First test and limitations</a></li></ul></nav>
+<main id="main" tabindex="-1"><h1 id="section-1">Pi speech options with Speakup</h1>
+<p>YAC&#39;s <code>s o</code> menu now uses Speakup/espeakup. BRLTTY continues providing braille.
+The previous BRLTTY speech helper is superseded: do not install or use it.
+This is a local implementation awaiting testing on the Pi; nothing is pushed.</p>
+<h2 id="section-2">Keys</h2>
+<p>Press <code>s</code>, then <code>o</code>:</p>
+<ul>
+<li>Repeat <code>o</code> to cycle Rate, Volume, Pitch and Punctuation, like repeating <code>o</code>
+in the offset controls. Rate is selected on entry.</li>
+<li>Rate and pitch range from 0 to 9; speech volume from 1 to 9, separately from
+ALSA volume. Punctuation choices are None, Some, Most and All.</li>
+<li>Full stop increases the selected setting; comma decreases it. Endpoints stop.</li>
+<li>Every adjustment applies immediately and saves for future boots. There is no
+separate Apply/Save key. Rate is selected when the menu opens, like the initial
+selection in the offset controls. The compact key list starts with h Help.</li>
+<li><code>t</code>: display a speech test using the current settings.</li>
+<li><code>d</code>: immediately apply and save YAC defaults: rate 2, volume 5, pitch 5,
+punctuation Some. Unrelated Speakup settings, braille and system volume are untouched.</li>
+<li><code>q</code>: return to Settings, keeping changes.</li>
+<li><code>h</code>: help.</li>
+</ul>
+<p><code>s s</code> remains tuning step. <code>s b</code> opens the saved access-mode choices:
+<code>h</code> Help, repeat <code>b</code> to cycle speech and braille, braille only, speech only;
+full stop or comma applies the selected mode; <code>q</code> Back.
+Browsing does not apply a mode. Applying saves it in the launcher INI for next boot.
+Braille-only mutes Speakup without stopping BRLTTY or losing braille input/output.
+The speech choices restore Speakup. An attached braille display remains available
+even with speech-only selected; no display or keyboard is disabled.</p>
+<p>For an existing beta, quit YAC, extract the refreshed special Pi ZIP, and run
+<code>sh pi/install-access-beta.sh</code> from the extracted folder. It updates YAC and
+the speech/audio helpers without repeating package installation or changing
+boot setup. It preserves the launcher INI. No reboot is needed to try the menus.</p>
+<h2 id="section-3">One-time image setup</h2>
+<p>Use a working SSH connection while setting up. YAC itself runs as your normal
+user. The helper is a separate root-owned program with a fixed settings whitelist.
+These steps assume the login account is <code>yac</code> and you are in the extracted Pi kit.
+They do not replace your existing profile or change automatic login.</p>
+<p>First confirm Speakup/espeakup works with YAC. Keep BRLTTY Autospeak off.
+No BRLTTY speech settings are modified by this helper.</p>
+<p>Install the helper and boot-restore service:</p>
+<pre><code class="language-sh">sudo install -d -o root -g root -m 755 /usr/local/libexec
+sudo install -o root -g root -m 755 pi/speakup-settings.py /usr/local/libexec/yac-speakup-settings
+sudo install -o root -g root -m 644 pi/yac-speakup-restore.service /etc/systemd/system/yac-speakup-restore.service
+sudo systemctl daemon-reload
+sudo systemctl enable yac-speakup-restore.service
+</code></pre>
+<p>The restore service runs after espeakup at boot. It restores only fields actually
+saved through YAC, from <code>/var/lib/yac-speakup/settings.json</code>. With no saved file,
+it does nothing. This does not save all Speakup settings or override choices YAC
+has never saved. Do not combine it with another boot tool that restores different
+values for the same fields.</p>
+<p>Open the permission file:</p>
+<pre><code class="language-sh">sudo visudo -f /etc/sudoers.d/yac-speakup-settings
+</code></pre>
+<p>START COPYING BELOW. Copy only the single permission line, without formatting
+backticks, language labels or these instructions.</p>
+<pre><code class="language-text">yac ALL=(root) NOPASSWD: /usr/local/libexec/yac-speakup-settings &quot;&quot;
+</code></pre>
+<p>STOP COPYING. The permission line above is the last line to copy.</p>
+<p>If visudo uses nano, Ctrl+O then Enter saves, and Ctrl+X exits. Visudo checks
+syntax. The empty quotes restrict sudo permission to calls without arguments.
+Do not give passwordless sudo to the whole YAC application or Python interpreter.</p>
+<p>Check the helper without changing anything:</p>
+<pre><code class="language-sh">printf &#39;%s\n&#39; &#39;{&quot;action&quot;:&quot;status&quot;}&#39; | sudo -n /usr/local/libexec/yac-speakup-settings
+</code></pre>
+<p>It should report <code>ok: true</code>, <code>backend: speakup</code> and current speech preferences.
+The active synth must be <code>soft</code>, and Speakup&#39;s sysfs files must be available.
+The helper has no service restart, driver selection or arbitrary path interface.</p>
+<p>Install the updated launcher as before, so it sets <code>YAC_PI_IMAGE=1</code> for YAC.
+You also need the updated YAC source; the helper kit alone does not update YAC.
+Normal source/Windows/macOS launches keep their external screen-reader settings.</p>
+<h2 id="section-4">First test and limitations</h2>
+<p>Start with rate: <code>s o</code>, full stop once. Use <code>t</code> to test; <code>q</code> returns.
+Repeat <code>o</code> to select Volume, then use full stop or comma to adjust it.
+Check speech and braille remain available. Test saved values after reboot before
+releasing the image. Automated tests use fake sysfs files, not actual Pi hardware.</p>
+<p>Punctuation changes <code>/sys/accessibility/speakup/punc_level</code> only. Review punctuation
+(<code>reading_punc</code>) is preserved. This requires <code>soft/direct</code> to be zero; if your
+installation delegates punctuation to the synthesizer, the helper refuses the
+punctuation change instead of silently changing that arrangement. Rate, pitch
+and volume can still be changed. The kernel may expose punctuation values 3 and
+4 as All; YAC writes 4 for its All choice.</p>
+<p>If any write or readback fails, the helper attempts to restore the affected live
+values. If saving fails, it also rolls back the live changes. Never make all of
+<code>/sys/accessibility/speakup</code> writable merely to operate this menu.</p>
+<p>The general five-minute startup activity timer and language/voice changes remain
+separate tasks. Existing Morse cues are unchanged. Espeakup startup hangs are an
+unresolved Pi release blocker; local tests do not establish working hardware speech.</p>
+<p>References: <a href="https://www.kernel.org/doc/html/latest/admin-guide/abi-stable.html">kernel Speakup controls</a>,
+<a href="https://github.com/linux-speakup/espeakup">espeakup</a>.</p>
+</main>
+<footer><p>YAC documentation. <a href="index.html">All documents</a></p></footer>
+</body></html>

@@ -185,8 +185,8 @@ class SplitTests(unittest.TestCase):
              patch('builtins.input',side_effect=AssertionError('Default must not prompt')), redirect_stdout(output):
             split.control(yac,ROOT,civ.radio,'en')
             split.control(yac,ROOT,civ.radio,'en')
-        self.assertIn('Repeater On, receive 145.6 MHz, transmit 145 MHz',output.getvalue())
-        self.assertIn('Off',output.getvalue())
+        self.assertIn('Repeater On, RX 145.6 MHz, TX 145 MHz',output.getvalue())
+        self.assertIn('Simplex',output.getvalue())
 
     def test_top_level_l_dispatch(self):
         radio=create_dummy_radio()
@@ -228,7 +228,7 @@ class SplitTests(unittest.TestCase):
         output=io.StringIO()
         with patch('builtins.input',side_effect=['h','7.164']),redirect_stdout(output):
             split.control(yac,ROOT,radio,'en')
-        self.assertIn('Split On, receive 7.159 MHz, transmit 7.164 MHz',output.getvalue())
+        self.assertIn('Split On, RX 7.159 MHz, TX 7.164 MHz',output.getvalue())
         self.assertEqual(radio.serial.frequency,7159000)
         self.assertEqual(radio.serial.split_settings['ST'],'1')
 
@@ -242,13 +242,21 @@ class SplitTests(unittest.TestCase):
         with patch.object(yac,'_cat_exchange',side_effect=exchange),patch.object(yac,'_yaesu_vfo_side',0), \
              patch('builtins.input',return_value='14.2'),redirect_stdout(output):
             split.control(yac,ROOT,cat.radio,'en')
-        self.assertIn('may not be restored',output.getvalue())
+        self.assertIn('Restore Failed',output.getvalue())
         self.assertEqual(cat.state['ST'],'0')
+
+    def test_split_preparation_errors_are_distinct(self):
+        radio = create_dummy_radio()
+        for error, response in ((split.Unavailable(), 'Not Supported'), (split.CommandFileError(), 'Cmd File Error'), (split.RadioReadError(), 'Radio Error')):
+            output = io.StringIO()
+            with patch.object(split, 'Radio', side_effect=error), redirect_stdout(output):
+                split.control(yac, ROOT, radio, 'en')
+            self.assertIn(response, output.getvalue())
 
     def test_all_split_labels_and_help_exist_in_each_language(self):
         import string
         fields=lambda text:{name for _,name,_,_ in string.Formatter().parse(text) if name}
-        for number in range(249,258):
+        for number in (n for n in range(250,258) if n not in (255, 256, 257)):
             english=(ROOT/'lang/en/labels'/f'l{number}').read_text(encoding='utf-8')
             for language in ('de','pl','es'):
                 translated=(ROOT/'lang'/language/'labels'/f'l{number}').read_text(encoding='utf-8')

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pi audio selection beta — start here — YAC documentation</title><style>
+:root { color-scheme: light dark; font: 120%/1.65 system-ui, sans-serif; }
+body { max-width: 76ch; margin: auto; padding: 1rem; }
+a { text-decoration: underline; text-underline-offset: .15em; }
+a:focus-visible { outline: .2rem solid currentColor; outline-offset: .2rem; }
+pre { padding: 1rem; border: 1px solid; white-space: pre-wrap; overflow-wrap: anywhere; }
+code { font-size: 1em; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid; padding: .5rem; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+h1, h2, h3, h4 { line-height: 1.3; }
+@media print { nav, .skip { display: none; } body { max-width: none; } }
+</style></head>
+<body><a class="skip" href="#main">Skip to main content</a>
+<nav aria-label="Document navigation"><p><a href="index.html">All documents</a></p><p>On this page:</p><ul><li><a href="#section-2">Internet access is optional</a></li><li><a href="#section-3">Install on your existing Pi</a></li><li><a href="#section-4">Boot speech mute update</a></li><li><a href="#section-5">Test at the Pi console</a></li><li><a href="#section-6">Later boots and changing speakers</a></li><li><a href="#section-7">Volume, braille-only mode and no response</a></li><li><a href="#section-8">Installed files and recovery</a></li></ul></nav>
+<main id="main" tabindex="-1"><h1 id="section-1">Pi audio selection beta — start here</h1>
+<h2 id="section-2">Internet access is optional</h2>
+<p>The new <a href="pi-wifi.html">Pi Wi-Fi setup</a> provides <code>s w</code> inside YAC. Its installer
+also supplies the one-command image-builder Wi-Fi cleanup tool.</p>
+<p>The ready-made image must support normal radio operation without internet.
+Audio selection and YAC startup do not perform network checks. The updater
+needs internet only when the user requests s u. Ethernet is the simplest
+connection: attach a cable to a router with internet access. For Wi-Fi, run
+<code>sudo raspi-config</code> and use System Options, Wireless LAN, to enter the network
+name and password. Network credentials are personal and must be removed before
+redistributing an image. Package/source installation also needs access to its
+dependencies; that is separate from using a prepared image offline.</p>
+<p>Image-builder acceptance test: boot with Ethernet disconnected and no configured
+Wi-Fi. Confirm that Morse, Speakup, braille and radio operation still start.
+OS services may affect boot time; do not require a network connection to start YAC.</p>
+<p>This special package contains YAC source and the Pi launcher materials.
+Pi instructions stay in <code>pi/doc</code>; ordinary source and Windows packages do
+not include them. This beta needs testing on the Pi; it is not a published
+release. It does not change Windows or Mac startup.</p>
+<h2 id="section-3">Install on your existing Pi</h2>
+<p>Copy the ZIP to <code>/home/yac</code>. In the Pi SSH session, run these commands one at
+a time. Copy only the command lines between the copy instructions.</p>
+<p>Start copying the next three lines:</p>
+<pre><code class="language-sh">unzip yac-pi-audio-beta-2026-10-22.zip -d /home/yac/yac-pi-audio-beta-2026-10-22
+cd /home/yac/yac-pi-audio-beta-2026-10-22
+sh pi/install-pi-beta.sh
+</code></pre>
+<p>End copying at the sh line above.</p>
+<p>Answer Y when the source installer asks to update YAC. The installer uses
+sudo for system files; it may ask for your password. Run the script as yac,
+not with sudo before the script name. It preserves YAC preferences and the
+launcher INI, with a backup of the previous launcher and INI.</p>
+<p>The installer puts all files in place. You do not need to copy Python files
+manually or change your working <code>.profile</code>. It does not enable auto-login
+or edit boot configuration. Keep your existing auto-login setup.
+Plymouth was tested and rejected: Speakup repeatedly announced black squares
+and then login text. Disable its splash; it is not a Speakup boot mute.
+In the Pi SSH session run the following lines one at a time. The second line
+restores quiet kernel logging because raspi-config removes quiet with splash.</p>
+<p>Start copying the next three lines:</p>
+<pre><code class="language-sh">sudo raspi-config nonint do_boot_splash 1
+sudo sed -i &#39;s/$/ quiet/&#39; /boot/firmware/cmdline.txt
+sudo reboot
+</code></pre>
+<p>End copying at the reboot line above.</p>
+<p>After disabling the splash, remove its packages with <code>sudo apt purge plymouth rpd-plym-splash plymouth-themes plymouth-label libplymouth5</code>. Then use
+<code>sudo apt autoremove --purge</code> to remove unused dependencies. Review that
+second removal list because it may include unrelated packages already unused.
+Finally run <code>sudo update-initramfs -u</code> and reboot. The saved YAC audio output
+is separate from these packages. Boot speech suppression and login chatter
+remain separate work to be tested.</p>
+<h2 id="section-4">Boot speech mute update</h2>
+<p>The updated beta includes <code>pi/install-boot-speech.sh</code>. After copying and
+extracting the refreshed ZIP, run this script as your normal user. It updates
+only launcher/helper files and boot speech configuration; it does not reinstall
+YAC or packages, edit the INI, or change .profile.</p>
+<p>Start copying the next line:</p>
+<pre><code class="language-sh">sh /home/yac/yac-pi-audio-beta-2026-10-22/pi/install-boot-speech.sh
+</code></pre>
+<p>End copying at the sh line above. Reboot when it reports completion.</p>
+<p>A systemd espeakup drop-in mutes Speakup once per boot, before the speech
+backend starts. The launcher unmutes before audio selection and before YAC,
+so the audio confirmation and saved-output feedback remain spoken. Later
+espeakup restarts do not mute again. Morse output is independent and remains
+audible. This does not suppress boot text on the braille display.</p>
+<p>An independent timer restores console speech two minutes after boot if the
+launcher has not completed the handover. The launcher cancels that timer once
+it restores speech. Invalid configuration or missing YAC also restores speech
+before reporting the error. Braille-only startup cancels recovery without
+unmuting Speakup. The s b menu now saves and applies that startup mode.</p>
+<p>No kernel command-line change or initramfs rebuild is needed for this mute.
+To undo it, remove <code>/etc/systemd/system/espeakup.service.d/yac-boot-speech.conf</code>,
+disable <code>yac-boot-speech-recovery.timer</code>, reload systemd and reboot. The audio
+selection helper can remain installed. These new boot changes require Pi testing.
+It preserves your existing Morse files and boot cue service. It supplies
+missing DE, K and 73 text files, and includes an optional service template
+under <code>pi</code> for future image builds. Before the first audio selection, the
+early DE cue may still fail because the default output has not yet been set.</p>
+<h2 id="section-5">Test at the Pi console</h2>
+<p>Quit any YAC already running and return to the Pi&#39;s local console. Test there
+so Enter comes from the keyboard or braille display attached to that console.</p>
+<p>Start copying the next line:</p>
+<pre><code class="language-sh">python3 /home/yac/.local/bin/yac-pi
+</code></pre>
+<p>End copying at the python3 line above.</p>
+<p>The launcher cycles through ALSA playback outputs. Each speaks, in English,
+“Audio setup. Press Enter if you can hear this.” Press Enter while hearing
+the prompt or during the following eight seconds. The chosen output is saved
+in <code>/home/yac/.config/yac/pi-launcher.ini</code>. YAC then follows its existing
+language/name/radio startup. If language and name are already saved, they
+are not asked again.</p>
+<p>The test uses eSpeak NG directly, not Speakup or the existing default device.
+Speakup&#39;s backend is stopped during testing and restarted afterwards.
+The helper selects a system ALSA default for both Speakup and Morse. The
+selection changes the default ALSA capture card too; radio/decoder inputs
+should be selected explicitly in their existing YAC audio settings.</p>
+<h2 id="section-6">Later boots and changing speakers</h2>
+<p>A connected saved device skips the test. Selection is repeated if it is
+missing. The device is stored by its ALSA identifier and playback device
+number, not its changing card number. Similar identical USB units can still
+have unstable ALSA identifiers; multiple identical speakers need hardware
+testing. A connected but switched-off speaker cannot be detected.</p>
+<p>To choose again deliberately, at the local console use:</p>
+<p>Start copying the next line:</p>
+<pre><code class="language-sh">python3 /home/yac/.local/bin/yac-pi --audio-setup
+</code></pre>
+<p>End copying at the python3 line above.</p>
+<p>There is no new YAC key binding for audio selection in this beta.</p>
+<h2 id="section-7">Volume, braille-only mode and no response</h2>
+<p>The launcher tries the INI volume (70 percent by default) on playback mixer
+controls before each output test. Hardware without an adjustable playback
+volume is left alone. Physical volume controls may still need adjusting.
+After confirmation, the existing optional alsa_card/alsa_control overrides
+should be left blank/default unless deliberately configured for that output.</p>
+<p><code>access_mode = braille</code> bypasses audio selection/preparation and mutes Speakup
+at launcher startup. YAC&#39;s s b menu changes and saves the mode immediately.
+It leaves the speech backend running so s o settings remain available, and
+never disables an attached braille display or its input.</p>
+<p>Without Enter confirmation, selection continues for five minutes. Prompts
+during the last minute explain the approaching shutdown. At timeout the
+launcher restores the speech backend and requests safe poweroff. This timer
+is only for unconfirmed audio setup; it does not interrupt normal radio use.
+Ctrl+C cancels setup, restores the backend and returns to the console.</p>
+<h2 id="section-8">Installed files and recovery</h2>
+<ul>
+<li>Launcher: <code>/home/yac/.local/bin/yac-pi</code>.</li>
+<li>Audio module: <code>/home/yac/.local/bin/pi_audio.py</code>.</li>
+<li>Root audio helper: <code>/usr/local/libexec/yac-pi-audio</code>.</li>
+<li>Settings: <code>/home/yac/.config/yac/pi-launcher.ini</code>.</li>
+<li>Shared ALSA selection: <code>/etc/asound.conf</code>, marked as managed by YAC.</li>
+<li>Narrow sudo permissions: <code>/etc/sudoers.d/yac-pi-beta</code>.</li>
+<li>Speakup options helper and restore service are also included for YAC&#39;s so menu.</li>
+</ul>
+<p>The audio helper refuses to overwrite an existing, unmanaged <code>/etc/asound.conf</code>.
+Per-user <code>.asoundrc</code> files can override the system default; review those manually
+if present. This beta does not remove them. Your diagnostic report showed neither.</p>
+<p>If setup fails, copy the error from SSH or save a diagnostic report. The launcher
+returns to the console rather than saving an unconfirmed choice. A failed Speakup
+restart rolls back the ALSA configuration. The original launcher is saved as
+<code>/home/yac/.local/bin/yac-pi.before-audio-beta</code>.</p>
+<p>Before sharing the image, reset audio_setup_complete to no, clear audio_card
+and audio_device in the INI, and remove the YAC-managed <code>/etc/asound.conf</code>.
+Also complete the image licence/source review and remove personal preferences.
+Do not distribute a hardware-tested claim until this beta passes your tests.</p>
+</main>
+<footer><p>YAC documentation. <a href="index.html">All documents</a></p></footer>
+</body></html>

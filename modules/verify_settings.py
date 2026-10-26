@@ -156,7 +156,9 @@ def describe(yac, root, radio, language, name, spec):
         states = dict(spec['selection']['states'], off='l121', atas='l124', tuning='l130')
     if value in states:
         return _label(yac, root, language, states[value])
-    return _label(yac, root, language, {'attenuator':'l125', 'preamp':'l126',
+    if name == 'attenuator':
+        return yac._radio_error(root, radio, language)
+    return _label(yac, root, language, {'preamp':'l126',
                                      'power':'l127', 'tuner':'l128'}[name])
 
 
@@ -184,10 +186,10 @@ def cycle(yac, root, radio, language, name):
     target = choices[(choices.index(current) + 1) % len(choices)]
     if name == 'tuner' and spec.get('selection'):
         if not _select_tuner(yac, radio, spec, current, target):
-            return _label(yac, root, language, 'l131')
+            return yac._radio_error(root, radio, language)
     elif not _write(yac, radio, spec, target, selected_band):
-        return _label(yac, root, language, 'l131')
+        return yac._radio_error(root, radio, language)
     actual = _tuner_state(yac, radio, spec) if name == 'tuner' else read(yac, radio, spec, selected_band)
     if actual != target:
-        return _label(yac, root, language, 'l131')
+        return yac._radio_error(root, radio, language)
     return describe(yac, root, radio, language, name, spec)

@@ -1,0 +1,6 @@
+Nombre e indicativo
+Introduce el nombre, indicativo o combinación que quieres usar en YAC, hasta 10 caracteres incluidos los espacios. Enter muestra la entrada para revisarla.
+
+h: en Seguir Y/N?, leer esta ayuda de nuevo y volver a la pregunta.
+n: volver a la entrada sin guardar. El texto se conserva para editar; usa flechas, Inicio, Fin, Retroceso o Suprimir.
+y: guardar la entrada mostrada y continuar el inicio de YAC. Espacio no confirma.

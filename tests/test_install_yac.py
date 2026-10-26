@@ -26,6 +26,8 @@ class Installer(unittest.TestCase):
         self.home.mkdir()
         (self.source / "yac.py").write_text("# source\n")
         (self.source / "yac.ini").write_text("personal settings must not be copied")
+        (self.source / "yac.ini.example").write_text("[yac]\nlang=\ncall=\n")
+        (self.source / "error-codes.txt").write_text("INI Error recovery\n")
         (self.source / "KEY-BINDINGS-English.txt").write_text("s then t: tuner\n")
         for name in ["modules", "lang", "rad_cmds"]:
             (self.source / name).mkdir()
@@ -38,6 +40,43 @@ class Installer(unittest.TestCase):
         with patch.object(install_yac.sys, "platform", platform), patch.object(install_yac.os, "geteuid", return_value=1000, create=True), patch.object(install_yac, "ask", side_effect=answers), patch.object(install_yac.subprocess, "run", side_effect=failure) as commands, patch.object(install_yac, "install_shortcut") as shortcut, redirect_stdout(io.StringIO()) as output:
             result = install_yac.main(self.source, self.home)
         return result, commands, shortcut, output.getvalue()
+
+    def test_enter_accepts_yes_and_eof_cancels(self):
+        with patch('builtins.input', return_value='') as entered:
+            self.assertTrue(install_yac.ask('Install YAC?'))
+            entered.assert_called_once_with('Install YAC? [Y/n] ')
+        with patch('builtins.input', side_effect=EOFError), redirect_stdout(io.StringIO()):
+            self.assertFalse(install_yac.ask('Install YAC?'))
+
+    def test_pi_decline_stops_wrapper_without_installing(self):
+        with patch.object(install_yac.sys, 'platform', 'linux'), patch.object(install_yac.os, 'geteuid', return_value=1000, create=True), patch.object(install_yac, 'ask', return_value=False), patch.object(install_yac.subprocess, 'run') as commands, redirect_stdout(io.StringIO()):
+            self.assertEqual(install_yac.main(self.source, self.home, pi=True), 2)
+        commands.assert_not_called()
+        self.assertFalse((self.home / '.local/yac').exists())
+
+    def test_dependency_commands_capture_output_and_use_private_environment(self):
+        result, commands, _, output = self.run_setup([True])
+        self.assertEqual(result, 0)
+        self.assertIn('Installation Complete', output)
+        for call in commands.call_args_list:
+            self.assertTrue(call.kwargs.get('capture_output'))
+
+    def test_launcher_asks_once_and_existing_launcher_is_silent(self):
+        system = self.base / 'system-bin'
+        system.mkdir()
+        launcher = self.base / 'run-yac'
+        launcher.write_text('#!/bin/sh\n')
+        real_path = Path
+        def paths(value):
+            return system if value == '/usr/local/bin' else real_path(value)
+        with patch.object(install_yac, 'Path', side_effect=paths), patch.object(install_yac.os, 'access', return_value=True), patch.object(install_yac, 'ask', return_value=True) as ask, redirect_stdout(io.StringIO()) as output:
+            self.assertEqual(install_yac.install_shortcut(launcher, self.home), system / 'yac')
+            ask.assert_called_once_with('Create YAC launcher?')
+            self.assertEqual(output.getvalue(), '')
+            ask.reset_mock()
+            self.assertIsNone(install_yac.install_shortcut(launcher, self.home))
+            ask.assert_not_called()
+            self.assertEqual((system / 'yac').read_text(), launcher.read_text())
 
     def test_mac_uses_applications_and_leaves_legacy_installation(self):
         legacy = self.home / "yac"
@@ -73,6 +112,17 @@ class Installer(unittest.TestCase):
         commands.assert_not_called()
         shortcut.assert_not_called()
 
+    def test_recovery_files_are_installed_without_replacing_personal_ini(self):
+        destination=self.home/'.local/yac'
+        destination.mkdir(parents=True)
+        (destination/'yac.py').write_text('# old source')
+        (destination/'yac.ini').write_text('keep even if damaged')
+        result,_,_,_=self.run_setup([True])
+        self.assertEqual(result,0)
+        for name in ('yac.ini.example','error-codes.txt'):
+            self.assertEqual((destination/name).read_bytes(),(self.source/name).read_bytes())
+        self.assertEqual((destination/'yac.ini').read_text(),'keep even if damaged')
+
     def test_existing_install_is_unchanged(self):
         destination = self.home / ".local/yac"
         destination.mkdir(parents=True)
@@ -100,7 +150,7 @@ class Installer(unittest.TestCase):
         self.assertEqual((destination / "logs/test.log").read_text(), "keep log")
         self.assertEqual(python.read_text(), "existing environment")
         self.assertEqual(commands.call_count, 2)
-        self.assertIn("skipping pip", output)
+        self.assertNotIn("Installing dependencies", output)
         before = (destination / "yac.py").stat().st_mtime_ns
         self.run_setup([True], [subprocess.CompletedProcess([], 0), None])
         self.assertEqual((destination / "yac.py").stat().st_mtime_ns, before)
@@ -129,7 +179,7 @@ class Installer(unittest.TestCase):
         self.assertEqual(commands.call_count, 3)
         self.assertEqual(commands.call_args_list[1].args[0], [str(destination / ".venv/bin/python"), "-m", "pip", "install", "pyserial>=3.5,<4"])
         shortcut.assert_called_once_with(destination / "run-yac", self.home)
-        self.assertIn("has not opened any radio ports", output)
+        self.assertIn("Your existing Python environments are unchanged.", output)
 
     def test_venv_failure_does_not_install_shortcut(self):
         result, commands, shortcut, output = self.run_setup([True], subprocess.CalledProcessError(1, "venv"))

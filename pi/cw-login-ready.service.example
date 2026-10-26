@@ -1,0 +1,15 @@
+# Optional template for the image builder. Replace yac and /home/yac if needed.
+# The beta installer preserves an existing boot cue service rather than replacing it.
+[Unit]
+Description=Play Morse DE when tty1 is ready
+After=getty@tty1.service alsa-restore.service sound.target
+Requires=getty@tty1.service
+
+[Service]
+Type=oneshot
+User=yac
+ExecStartPre=/bin/sleep 5
+ExecStart=/usr/bin/cw -s alsa -w 15 -t 950 -v 60 -f /home/yac/.local/share/cw/de
+
+[Install]
+WantedBy=multi-user.target

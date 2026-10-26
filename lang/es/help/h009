@@ -1,10 +1,10 @@
-Ajustes: a AGC; m ganancia de micrófono; p potencia; s paso; t sintonizador; v VFO/receptor; e procesador de voz. q vuelve y anuncia Atrás. h lee esta ayuda.
+Ajustes: a AGC; m ganancia de micrófono; p potencia; s paso; t sintonizador; v VFO/receptor; e procesador de voz. q vuelve y anuncia Atrás, o Listo tras seleccionar AGC. h lee esta ayuda.
 
-a selecciona el siguiente ajuste AGC y confirma la opción. Rápido recupera antes tras una señal fuerte; Lento mantiene la reducción más tiempo. Elige escuchando. Desactivado permite mayores cambios de volumen. No requiere transmitir.
+s a lee el ajuste AGC actual sin cambiarlo. Otra a selecciona el ajuste siguiente y confirma la opción. q termina y anuncia Listo. Rápido recupera antes tras una señal fuerte; Lento mantiene la reducción más tiempo. Elige escuchando. Desactivado permite mayores cambios de volumen. No requiere transmitir.
 
 m abre el ajuste guiado del micrófono. Sigue las indicaciones previas; h dentro explica teclas, prueba y lectura ALC. Tú accionas el PTT.
 
-p anuncia la potencia actual y el intervalo de entrada. Introduce vatios enteros y pulsa Enter; Enter vacío cancela. La confirmación indica el valor introducido y Establecido. Es un ajuste, no potencia transmitida medida. h y Enter dan ayuda de potencia.
+p anuncia la potencia actual y el intervalo de entrada. Introduce vatios enteros y pulsa Enter; Enter vacío cancela. La confirmación indica el valor introducido y Establecido. Es un ajuste, no potencia transmitida medida. h y Enter dan ayuda de potencia. Enter vacío o q y Enter cancelan y vuelven a Ajustes.
 
 s abre el paso para el modo actual. t recorre opciones del sintonizador y confirma el ajuste; no inicia la sintonización. Sal de Ajustes y pulsa t para iniciarla. v selecciona el VFO o receptor admitido y anuncia la selección.
 
@@ -13,10 +13,16 @@ e abre el procesador y lee ajustes. e dentro conmuta; punto aumenta y coma dismi
 Las opciones, límites y excepciones de cada modelo están en doc/supported-radios, en el archivo de texto con el nombre de tu radio. READ-ME.txt explica estas notas. Las respuestas habladas también aparecen como texto para la línea braille. Se anuncian funciones no admitidas y lecturas desconocidas o fallidas.
 
 
-s b: h Ayuda; b alterna Voz y braille, Solo braille, Solo voz, como el selector de desplazamiento. Explorar no cambia el modo. Punto o coma aplica y guarda el modo seleccionado. Solo braille silencia Speakup. La voz requiere su servicio activo. El braille conectado sigue disponible en todos los modos. q vuelve y descarta la selección no aplicada.
-s o: h Ayuda; o siguiente opción; . aumentar; , disminuir; q Volver. t Prueba; d Valores predeterminados. Los cambios se aplican y guardan inmediatamente.
-h Ayuda; o alterna Velocidad, Volumen, Tono y Puntuación, como el selector de desplazamiento. Al entrar se selecciona Velocidad. Punto aumenta; coma disminuye. Cada ajuste se aplica y guarda inmediatamente; q conserva los cambios y vuelve. t Prueba; d aplica los valores de YAC: velocidad 2, volumen 5, tono 5, puntuación Alguna. Velocidad y tono de 0 a 9; volumen de 1 a 9.
+s b: punto o b selecciona el modo siguiente; coma el anterior. q aplica, guarda y vuelve. h lee ayuda. Solo braille silencia Speakup; el braille conectado sigue disponible en todos los modos.
 
-s u: Actualizar YAC. Espacio cierra la conexion con la radio y abre el actualizador; q vuelve a Ajustes.
+s o: r velocidad; v volumen; p tono; u puntuación; punto aumenta; coma disminuye; t prueba; d valores predeterminados; h ayuda; q vuelve. Los cambios se aplican y guardan inmediatamente.
+
+s u: Actualizar YAC. Muestra ayuda y Buscando. Sin internet o Sin novedades vuelve a Ajustes. Nueva versión pregunta Notas Y/N? y después Update Y/N?. y acepta; n omite notas o rechaza instalación; q vuelve. En notas largas, Espacio avanza y q sale de las notas.
 
 s w: La configuración Wi-Fi solo está disponible en la imagen Raspberry Pi. Aquí use los ajustes Wi-Fi del sistema. Configuración Wi-Fi: país, nombre de red y contraseña. Ctrl+C cancela; puntuación y letras de comandos son caracteres normales.
+
+Ciclo de sintonización terminado
+Sintonización fallida o sintonizador desactivado
+Resultado de sintonización sin confirmar
+Tiempo agotado; parada solicitada
+No se pudo confirmar la parada

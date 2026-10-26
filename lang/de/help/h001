@@ -1,64 +1,59 @@
-b: Bandauswahl; Punkt/Komma ändern das Band, q beendet die Auswahl
-e: Frequenz in MHz eingeben, z. B. 7.2
-m: Modusauswahl; Punkt/Komma ändern den Modus, q beendet die Auswahl
-Punkt/Komma: Frequenz um die gespeicherte Schrittweite erhöhen/verringern
-w: Signalstärke, Frequenz und Modus lesen
-z: Frequenz auf das nächste Kilohertz runden
-s: Einstellungen; v wählt FTX-1 Main/Sub oder Icom VFO A/B (zuerst A); s speichert die Schrittweite
-o: Offset; o wählt Empfang/Senden/Löschen; Punkt/Komma ändern um 10 Hz; q beendet
-i: Toneingabe; i wechselt CTCSS/DCS N/DCS I; Wert eingeben, Enter, dann bei Abfrage t für TX oder b für Beide; q beendet, h hilft
-q: YAC beenden; y bestätigt, n oder q bricht ab. In Untermenüs kehrt q sofort zurück.
-Radioauswahl: Nummer markieren, Leertaste bestätigt, q bricht ab
-p: Vorverstärkerstufen und aus durchschalten
-u: Abschwächerstufen und aus durchschalten
-v: Abschwächer, Vorverstärker, eingestellte Leistung und unterstützten Tunerstatus prüfen
-s dann t: unterstützte Tunereinstellungen durchschalten; t wiederholen, q verlässt Einstellungen
-Der Tunerstatus beschreibt die Einstellung des Funkgeräts. Unabhängige HF-gesteuerte Tuner werden nicht erkannt. Aus behält die Tunerauswahl bei, außer ATAS: zum Ausschalten muss ATAS abgewählt werden. Die Auswahl startet keinen Abstimmvorgang.
-Leistung: Watt bei Yaesu/Kenwood, relativer Einstellwert in Prozent bei Icom; keine gemessene Sendeleistung. Unbekannt bedeutet, dass eine unterstützte Einstellung nicht gelesen werden konnte.
-Offset beginnt bei Empfang mit null Hertz. Andere Befehlstaste: verlassen.
-Die Modusauswahl beginnt bei der aktuellen Betriebsart und läuft im Kreis.
-Die Bandauswahl beginnt beim aktuellen Band. Bei Icom und Kenwood endet
-sie an beiden Grenzen; bei Yaesu folgt sie dem Verhalten des Funkgeräts.
-An der oberen Bandgrenze mit Komma abwärts oder mit e eine Frequenz eingeben.
+YAC-Befehle in Tastenreihenfolge. Tasten einzeln drücken.
+Befehle hängen vom Radio und der Betriebsart ab.
 
-a regelt AF-Verstärkung. r regelt in FM die Rauschsperre, sonst RF-Verstärkung. Start beim aktuellen Funkgerätewert, als gerundeter Prozentwert. Punkt erhöht; Komma verringert. Schritte etwa 3 Prozent. Kein Umlauf an den Grenzen. q beendet und behält den Wert. Eine andere Befehlstaste startet diesen Befehl.
+a: AF Gain. Punkt erhöht; Komma verringert.
+b: Band. Punkt weiter; Komma zurück.
+d: Decoder. c CW; r RTTY; a Empfangsaudio einrichten.
+e: Neue Frequenz. MHz eingeben, dann Enter.
+f: Filter. Siehe Filtertasten unten.
+h: Hilfe. h innerhalb einer Funktion liest deren ausführliche Hilfe.
+i: Ton/Code eingeben. i wechselt zwischen CTCSS, DCS normal und DCS invertiert, soweit unterstützt. Wert eingeben und den Ansagen folgen.
+l: Split/Relais einrichten. Erneutes l schaltet aus. h und Enter im Eingabefeld geben Hilfe.
+m: Betriebsart. Punkt weiter; Komma zurück.
+o: Offset. o wechselt Empfang, Senden, Löschen. Punkt addiert 10 Hertz; Komma subtrahiert. Bei Löschen löscht jede Bewegungstaste.
+p: Vorverstärkerstufen und Aus durchschalten.
+q: YAC beenden. y bestätigt; n oder q bricht ab. Innerhalb einer Funktion oder eines Menüs kehrt q zurück und behält Änderungen, sofern die Hilfe nichts anderes sagt.
+r: RF Gain, bei FM Rauschsperre. Punkt erhöht; Komma verringert.
+s: Einstellungen. Siehe Einstellungstasten unten.
+t: Konfigurierten Tuner starten, soweit unterstützt. Zuerst mit s t auswählen oder aktivieren.
+u: Abschwächerstufen und Aus durchschalten.
+v: Abschwächer, Vorverstärker, Leistung und unterstützten Tunerstatus lesen. Leistung ist der eingestellte Wert, keine gemessene HF-Leistung.
+w: Signalstärke, Frequenz, Betriebsart und aktiven FM-Ton/Code lesen. w wiederholen für Split/Relaisdetails.
+x: Antennen. Einstieg liest Zuordnung; x wechselt Hauptantenne; r Empfangseingang.
+z: Frequenz auf das nächste Kilohertz runden.
 
-Einstellungen: s dann p öffnet die Leistungseingabe. Ganze Zahl in der angezeigten Einheit und im Bereich eingeben, dann Eingabetaste; leer bricht ab. Erfolgreiche Änderungen bleiben still. q verlässt Einstellungen; v prüft die Leistung.
+Komma: Frequenz um die eingestellte Schrittweite verringern.
+Punkt: Frequenz um die eingestellte Schrittweite erhöhen.
 
-Leistungseingabe: ganze Watt; h und Eingabetaste für Hilfe; leere Eingabe bricht ab. Icom-Watteingaben sind geschätzt und werden in Prozent umgerechnet; v meldet Prozent. Erfolg bleibt still. Vor v Einstellungen mit q verlassen.
+Filter: f drücken, dann:
+a: Auto Notch oder unterstützte Beat-Cancel-Funktion. Erneutes a schaltet um.
+b: Noise Blanker. b schaltet um; Punkt/Komma ändern den Pegel bei Ein.
+c: Contour. c schaltet um; Punkt/Komma ändern die Frequenz bei Ein. l wählt Pegel; w Breite; c zurück zur Frequenz.
+h: Filterhilfe.
+l: Untere Grenzfrequenz. Punkt/Komma ändern.
+n: Manueller Notch. n schaltet um; Punkt/Komma ändern die Position bei Ein; w ändert die Breite.
+p: Bandbreite. Punkt/Komma ändern.
+q: Zurück zum Hauptmenü. Aus einer Einstellung kehrt q zunächst zu Filter zurück.
+r: Noise Reduction. r schaltet um; Punkt/Komma ändern den Pegel bei Ein.
+u: Obere Grenzfrequenz. Punkt/Komma ändern.
+v: Eingeschaltete Filter lesen. v wiederholen für einzelne Filterzustände.
 
-Filter: p stellt die direkte Empfangsbandbreite ein; l die untere und u die obere Grenzfrequenz, soweit unterstützt. Punkt erhöht; Komma verringert. Start beim aktuellen Wert; kein Umlauf. q behält den Wert und kehrt zu Filter zurück; erneut q zur Hauptebene. h gibt Hilfe. Bei Grenzfrequenzsteuerung verweist p auf l oder u. Die andere Grenze bleibt unverändert. Feste Bandbreiten bleiben unverändert. Nicht unterstützte Funktionen werden gemeldet. Ein Yaesu-Standardwert wird ohne geschätzte Breite gemeldet; zuerst eine numerische Breite am Funkgerät wählen. QMX verwendet aktivierte CW-Filter oder SSB-Empfangsbreite; Änderungen werden im Funkgerät gespeichert und können je nach Geräteeinstellung CW-Mitte, Ablage und Mithörton anpassen.
+Einstellungen: s drücken, dann:
+a: Aktuelle AGC lesen. Erneutes a wählt die nächste Stufe; q beendet.
+b: Pi-Sprache/Braille. Punkt weiter; Komma zurück; q wendet an und speichert.
+e: Sprachprozessor. Einstieg liest Einstellungen; e schaltet um; Punkt/Komma ändern bei Ein. Kenwood i/o wählen Eingang/Ausgang. n stellt Anfangswerte wieder her; q behält Änderungen.
+h: Einstellungshilfe.
+m: Geführte Mikrofonverstärkung. Vorbereitungshinweisen folgen; Punkt/Komma ändern. PTT bedienen Sie selbst.
+o: Pi-Spracheinstellungen. r Tempo; v Lautstärke; p Tonhöhe; u Satzzeichen; Punkt/Komma ändern; t Test; d Standardwerte. Änderungen werden sofort gespeichert.
+p: Ausgangsleistung. Ganze Watt und Enter eingeben. Leeres Enter oder q und Enter brechen ab. Erfolg nennt den eingegebenen Wert. Icom verwendet eine geschätzte Umrechnung; v meldet den relativen Prozentwert.
+q: Zurück zum Hauptmenü; nach AGC-Auswahl wird Fertig angesagt.
+s: Schrittweite. Ganze Hertz und Enter eingeben.
+t: Unterstützte Tuner-Einstellungen durchschalten. t wiederholen. Die Auswahl startet keine Abstimmung.
+u: YAC aktualisieren. Zeigt Hilfe und prüft GitHub. r liest Hinweise; y installiert; n oder q kehrt zurück.
+v: Unterstützten VFO A/B oder Main/Sub auswählen.
+w: Pi-WLAN einrichten. Ansagen folgen; h gibt Hilfe, wo angeboten.
 
-Störaustaster: f dann b schaltet den aktuellen Zustand um und meldet Ein oder Aus. Im Regler schaltet b erneut um. Punkt erhöht die Stufe; Komma verringert sie. Bei Aus meldet Navigation Aus und lässt die Stufe unverändert. q kehrt zu Filter zurück; erneut q zur Hauptebene. h gibt Hilfe. Werte folgen der Geräteskala oder definierten Prozentwerten. Bei unbekanntem Status wird nicht geschaltet. FTX-1 merkt sich die zuletzt beobachtete Stufe getrennt für Main/Sub; ohne bekannte Stufe wird 1 verwendet. TS-590SG merkt sich NB1/NB2; ohne bekannte Auswahl wird NB1 verwendet. Nicht unterstützte Geräte oder Modi werden gemeldet.
+Profilauswahl: Radionummer eingeben, dann Leertaste zum Auswählen; q bricht ab.
+Pi-Einstellungen erfordern den konfigurierten Pi-Starter.
 
-Rauschunterdrückung: f dann r schaltet den aktuellen Zustand um; r im Regler erneut. Punkt erhöht; Komma verringert; kein Umlauf. Bei Aus bleibt der Wert unverändert. q kehrt zu Filter zurück; erneut q zur Hauptebene. h gibt Hilfe. FTDX10/FT-710: Stufen 1-15; FTX-1: 1-10, getrennt für Main/Sub gespeichert, ohne bekannten Wert wird 1 verwendet. Icom verwendet Prozentwerte. Kenwood behält die zuletzt beobachtete NR1/NR2-Auswahl; ohne bekannte Auswahl wird NR1 verwendet. TS-590SG NR1: 1-10. TS-480 NR1: Automatisch, dann 1-9; Komma bei 1 wählt Automatisch. NR2: Nachführzeit 2-20 Millisekunden. Navigation folgt dem aktuellen Typ; einen anderen Typ am Funkgerät wählen. Nicht unterstützte Funktionen werden gemeldet; unbekannter Status verhindert das Umschalten.
-
-Im Kenwood-FM-Modus wird beim Einschalten NR1 gewählt.
-
-Kerbfilter: f dann a schaltet Auto Notch um; a im Regler erneut. TS-480 verwendet Beat Cancel und merkt sich BC1/BC2, sonst BC1. f dann n schaltet Manual Notch um; n im Regler erneut. Punkt/Komma erhöhen/verringern Frequenz oder Position bei Ein, ohne Umlauf. w im manuellen Regler wechselt die Breite. Bei Aus bleiben Werte unverändert. q kehrt zu Filter zurück; erneut q zur Hauptebene; h gibt Hilfe. Yaesu: 10-3200 Hertz; Icom: Position 0-255; TS-590SG: Position 0-127. Breiten folgen den Herstellernamen. Gegenseitig ausschließende Auto/Manual-Funktionen werden entsprechend umgeschaltet. TS-590SG stellt die zuletzt beobachtete Breite wieder her; sonst wird beim ersten Einschalten Normal verwendet und gemeldet. BC1/BC2 bei Bedarf am TS-480 wählen. Nicht unterstützte Funktionen werden gemeldet; unbekannter Status verhindert Umschalten. QMX hat keine dokumentierte Kerbsteuerung.
-
-Contour: f c toggles On/Off. Navigation adjusts current frequency (10-3200 hertz). Inside Contour, l selects Contour level (-40 to +20, spoken as Dip/Neutral/Peak); w selects Contour width (1-11); c returns to frequency. When already on frequency, c toggles On/Off. Full stop increases and comma decreases the selected setting, stopping at endpoints. Off leaves settings unchanged. q returns to Filters, where l means Low Cut; q again returns to top level. Current settings are preserved on switching. FT-DX10, FT-710 and FTX-1 only; FTX-1 frequency/state follow selected Main/Sub, level/width are shared menu settings. APF is separate and is not altered.
-
-Filterprüfung: f v nennt die aktuell eingeschalteten schaltbaren Filter der Betriebsart und des Empfängers. v innerhalb einer Filtereinstellung prüft, ohne die Einstellung zu verlassen. Ausgeschaltete oder nicht unterstützte Filter werden ausgelassen; unbekannte Zustände werden genannt. Bandbreite und untere/obere Grenzfrequenzen werden nicht als Ein/Aus-Filter gezählt. FTX-1 nennt Haupt- oder Nebenempfänger. Die Prüfung ändert keine Einstellungen.
-
-Wiederholte v-Prüfung: Das erste v zeigt die Übersicht eingeschalteter Filter. Weitere aufeinanderfolgende v zeigen jeweils einen unterstützten Filter, auch Aus oder unbekannt, und danach wieder die Übersicht. Jeder Zustand wird neu gelesen. Andere Befehle oder ein Wechsel der Betriebsart/des Empfängers starten wieder bei der Übersicht. q verlässt das Filtermenü; innerhalb einer Einstellung führt q zuerst zum Filtermenü. Das Haupt-v bleibt unverändert.
-
-Einstellungen s m öffnet die geführte Mikrofonverstärkung. Nur Punkt/Komma ändern die Verstärkung; PTT und HF-Leistung bleiben manuell. h liest Vorbereitung und Messanleitung.
-
-Einstellungen s a schaltet unterstützte AGC-Stufen weiter; a wiederholen. s h liest Einstellungshilfe. AGC regelt Empfang; kein Senden nötig.
-
-Einstellungen s e öffnet Sprachprozessor ohne Änderung. e schaltet, Punkt/Komma regeln. Kenwood i/o Eingang/Ausgang. n verwirft und stellt Originalwerte wieder her; q behält. h hilft.
-
-In FM liest w auch aktive CTCSS/DCS bei den von i unterstützten Funkgeräten: Ton/Code, TX oder Beide und DCS-Polarität. Aus fügt nichts hinzu. Nicht lesbare Signalisierung wird als unbekannt gemeldet. FTX-1 folgt Main/Sub. Einstellungen bleiben unverändert.
-
-l: Split/Relais einrichten; l erneut schaltet aus. h im Eingabefeld für Hilfe.
-
-Wiederholtes w wechselt zwischen normalem Status und aktuellen Split-/Relaisdetails: Empfangsfrequenz, Sendefrequenz und aktivem FM-Ton/Code. Aus wird angesagt; Lesefehler sind unbekannt. Jeder andere Befehl setzt die Folge zurück.
-
-x: Antennen. Einstieg liest Wege; x Hauptantenne, r Empfangseingang, q Zurück, h Hilfe. Soweit unterstützt.
-
-t: Abstimmung mit dem gewählten Tuner starten. Bei Aus zuerst in Einstellungen einschalten. Das Ende bestätigt keine erfolgreiche Anpassung.
-
-d: Decoder; c CW, r RTTY, h Hilfe, q Zurück. Im Decoder stoppt/startet e; q lässt die Erfassung laufen.
-
-FTX-1-Korrektur: Einstellungen t wechselt den Tunertyp der Sendeantenne (Optima: intern, intern schnell, extern, ATAS; Field: extern/ATAS). Der ruhende AC-Status wird nicht als Tuner Aus ausgegeben. Die Auswahl startet keine Abstimmung. t auf Hauptebene nutzt den korrigierten Startbefehl. Die Prüfung nennt den Typ, bestätigt aber weder Bypass noch erfolgreiche Anpassung.
+Wiederherstellung: Funkfehler und Bitte warten starten eine Frist von 60 Sekunden. Radio wieder da setzt die Bedienung fort; sonst beendet Abbruch YAC. h liest währenddessen die Hilfe.

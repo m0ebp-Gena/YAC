@@ -1,1 +1,1 @@
-Entrada {number}/{total}: {name}, {host}, canal {channel}/{channels}
+In {number}/{total}: {name}, {host}, c {channel}/{channels}

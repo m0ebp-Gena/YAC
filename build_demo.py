@@ -43,6 +43,8 @@ for guide in (root / 'doc').iterdir():
 (destination / 'release.json').write_text(json.dumps({'tag': 'v001-beta-' + args.date,
                                                     'published_at': args.date + 'T00:00:00Z'}))
 guides = {
+    "yac.ini.example": "yac.ini.example",
+    "error-codes.txt": "error-codes.txt",
     "LICENSE": "LICENSE",
     "COPYING": "COPYING",
     "changelog.txt": "changelog.txt",

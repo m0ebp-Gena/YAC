@@ -87,7 +87,7 @@ Revisión con v repetida: la primera v da el resumen de filtros activados. Las s
 
 s luego m  Ganancia de micrófono: preparación, PTT manual, punto/coma ajustan; h ayuda. YAC solo cambia la ganancia.
 
-s luego a  Cambia opciones AGC admitidas; repite a. Lectura verificada. s h da ayuda de Ajustes.
+s luego a  Lee AGC actual sin cambiarlo; repite a para la opción siguiente. Lectura verificada. q anuncia Listo. s h da ayuda.
 
 s luego e  Procesador: abre sin cambios; e conmuta; punto/coma ajustan activo. Kenwood i/o Entrada/Salida. n cancela y restaura; q conserva; h ayuda.
 
@@ -97,6 +97,6 @@ s b: h Ayuda; b Voz y braille; r Solo braille; s Solo voz; q Atrás. Cada opció
 s o: h Ayuda; . aumenta; , reduce; q Atrás. r Velocidad; v Volumen; p Tono; u Puntuación; t Prueba; d Predeterminados. Los cambios se aplican y guardan al instante.
 h Ayuda; r Velocidad; v Volumen; p Tono; u Puntuación; . aumenta; , reduce; t Prueba; d Predeterminados; q Atrás. Cada ajuste se aplica y guarda al instante. Velocidad está seleccionada al entrar. Velocidad y tono: 0 a 9; volumen: 1 a 9. Puntuación: Ninguna, Alguna, Mayoría o Toda. q conserva los cambios. d restaura al instante los valores YAC: velocidad 2, volumen 5, tono 5, Alguna puntuación. t muestra una frase de prueba con los ajustes actuales. El volumen del sistema, braille y otros ajustes Speakup no cambian.
 
-s u: Actualizar YAC. Espacio cierra la conexion con la radio y abre el actualizador; q vuelve a Ajustes.
+s u: Actualizar YAC. Muestra ayuda y Buscando. Sin internet o Sin novedades vuelve a Ajustes. Nueva versión pregunta Notas Y/N? y después Update Y/N?. y acepta; n omite notas o rechaza instalación; q vuelve. En notas largas, Espacio avanza y q sale de las notas.
 
 s w: La configuración Wi-Fi solo está disponible en la imagen Raspberry Pi. Aquí use los ajustes Wi-Fi del sistema. Configuración Wi-Fi: país, nombre de red y contraseña. Ctrl+C cancela; puntuación y letras de comandos son caracteres normales.

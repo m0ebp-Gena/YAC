@@ -1,0 +1,70 @@
+Date: 
+Platform: 
+Build date/label: 
+Radio: 
+Mode: 
+Screen reader: 
+Braille display: 
+Text table: 
+Dots: 
+Manual changes: 
+
+Radio controls
+
+Frequency read w 
+Frequency entry e 
+Frequency up . 
+Frequency down , 
+Frequency rounding z 
+Tuning step s s 
+Band b 
+Mode read w 
+Mode selection m 
+Signal w 
+Volume a 
+RF gain r 
+Squelch r 
+Preamp p 
+Attenuator u 
+Power read v 
+Power entry s p 
+Mic gain s m 
+AGC read s a 
+AGC change s a a 
+AGC exit s a q 
+Processor toggle s e e 
+Processor level s e 
+Processor restore s e n 
+Bandwidth f p 
+Low cut f l 
+Upper cut f u 
+Noise blanker toggle f b 
+Noise blanker level f b 
+Noise reduction toggle f r 
+Noise reduction level f r 
+Auto notch f a 
+Manual notch f n 
+Notch position f n 
+Notch width f n w 
+Contour toggle f c 
+Contour frequency f c 
+Contour level f c l 
+Contour width f c w 
+Filter status f v 
+Tuner status v 
+Tuner selection s t 
+Tuner activation t 
+Receive offset o 
+Transmit offset o o 
+Clear offsets o o o . 
+Split l 
+Split off l 
+Repeater shift l 
+Repeater shift off l 
+Tone i 
+DCS i i 
+Main antenna x x 
+Receive antenna x r 
+VFO s v 
+
+Problems: 

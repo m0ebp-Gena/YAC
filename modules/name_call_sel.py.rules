@@ -1,11 +1,9 @@
-This file should use the language specific label files.
-This file should generate an edit field that echos the user input.
-When the user press enter, this filed uses labels to ask for confirmation with the space bar.
-If n is entered the user should be able to cursor over their entered chars and edit their original input.
- After pressing enter confirmation should be asked. When the user confirms with the spacebar.
-Clear screen.
-Edit ini file call=<user input>
-Exit and return to yac.py.
-l004
-l006
-l007
+Use labels and help in the selected language.
+Display h028 before the first name/callsign entry.
+Use l004 for the Name / Call? prompt.
+The edit field echoes input and supports editing, up to 10 characters.
+After Enter, display l006 followed by the user's entry, then l007 Continue Y/N?.
+Y confirms, saves call=<user input> in yac.ini, clears the screen and returns to yac.py.
+N returns to editing and preserves the entered text.
+At confirmation, H reads the same help and returns to Continue Y/N?.
+Space and E no longer confirm or edit the name.

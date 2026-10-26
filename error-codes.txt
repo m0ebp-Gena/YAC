@@ -1,0 +1,101 @@
+YAC error codes
+
+Cmd File Error
+
+YAC could not find or read the command file needed for the requested operation,
+or the frequency command template did not contain the required value field.
+The operation stops before its command is sent to the radio.
+This concerns YAC's installed command definitions, not radio interference.
+Check that the complete rad_cmds folder was installed and can be read.
+Repair or reinstall the complete YAC package if files are missing or damaged.
+Keep your personal yac.ini and logs; the installer preserves an existing INI.
+
+Radio Error
+
+YAC could not obtain usable radio data, or repeated connection checks failed.
+Stand by means YAC is trying the same device again, about every five seconds.
+Radio Restored means recovery succeeded and ordinary operation can continue.
+After a failed frequency change, check the radio frequency after recovery.
+YAC may have been unable to confirm restoration of the previous frequency.
+No action is needed while waiting; h reads the recovery help.
+If the radio has not recovered within 60 seconds, YAC says Aborting, closes
+the connection and exits. Check the radio power and USB cable, then restart.
+YAC does not reset the radio settings or switch to simulated mode during recovery.
+
+INI Error
+
+YAC could not read or save yac.ini, or a saved startup value is invalid.
+YAC exits. It does not reset a damaged configuration automatically.
+
+Possible causes include malformed INI syntax, duplicate sections or keys,
+invalid text encoding, a missing [yac] section, an unsupported saved language
+or platform, a name/callsign longer than 10 characters, or a file/directory
+that cannot be read or written. Check permissions and free disk space too.
+
+A missing yac.ini is normal on first use. Blank language and name fields
+start setup; missing optional settings use their defaults. Moving between
+supported operating systems updates the saved platform automatically.
+
+Recovery
+
+1. Close YAC.
+2. Open the YAC installation folder.
+3. Rename yac.ini to yac.ini.backup. Use a different backup name if needed;
+   do not overwrite an earlier backup.
+4. Copy yac.ini.example in the same folder and name the copy yac.ini.
+   Keep the original example for future recovery.
+5. Start YAC. Select the language and enter your name/callsign again.
+   YAC will search for the radio again.
+
+The replacement resets preferences and saved radio profiles. Keep the backup
+so working values can be recovered, or so someone helping can inspect it.
+If INI Error remains, check file permissions and disk space before retrying.
+Configuration files may contain personal details; review before sharing.
+
+Installation folders
+
+Linux and the YAC Pi image: ~/.local/yac
+macOS: ~/Applications/yac
+Portable Windows: the extracted YAC folder containing the executable.
+Source checkout: the folder containing yac.py.
+
+Both yac.ini.example and error-codes.txt are installed beside YAC.
+In the source ZIP, the example is also at the top of the extracted folder.
+The installer creates a starter yac.ini only when it is missing; it preserves
+an existing file and does not silently replace a damaged one.
+
+Tuning responses
+
+Tune Finished: YAC observed the tuning cycle start and finish. This alone
+does not certify a good antenna match.
+Tune Failed: the start was rejected or the radio reported failure/bypass.
+Tune Unverified: the start could not be confirmed. Do not assume a match.
+Tune Timed Out: YAC reached the waiting limit, requested stop and confirmed
+the radio was no longer reporting a busy tuning state.
+Stop Unverified: YAC requested stop but could not confirm it. Release the
+push-to-talk switch and verify radio status before continuing.
+
+Decoder and audio responses
+
+Decoder Error: capture could not start. Read decoder help and check mode
+and audio setup. Input Lost: capture stopped after an input failure.
+Restore Failed: saved decoder, tuner or processor settings could not be
+confirmed restored. Follow the relevant control help; do not assume reset.
+Audio Error: the selected input/channel could not be used or saved.
+Audio Unavail.: the optional audio dependency is unavailable.
+Audio Clipping: lower the receive audio level and repeat the level check.
+The level check samples one second; its percentage is root mean square
+audio level, and does not identify which radio supplied the audio.
+
+Access and Wi-Fi responses
+
+Speakup Error: check the Pi speech helper and its permissions.
+Setting Error: an access setting could not be changed or saved.
+Wi-Fi Error: check the image helper, permissions and network service.
+No Wi-Fi Device: no wireless adapter was available.
+Country Error: the wireless regulatory country could not be applied.
+No Network: check the exact network name, router power and signal.
+Connect Failed: check password and signal; the previous saved network is
+kept. Privacy Error: private password entry could not be prepared; no
+password was requested. Not Supported can mean an unsupported network
+security type. These local service failures do not trigger radio recovery.

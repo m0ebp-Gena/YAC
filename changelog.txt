@@ -1,5 +1,14 @@
 YAC changes
 
+26 October 2026
+- Consolidated short labels, shared errors and explanatory help in all four languages.
+- Added same-radio connection recovery and documented INI/command-file errors.
+- Improved accessible bandwidth edges, Default-width entry and signed offset reports.
+- Added automatic ALC meter preparation and hidden processor-level handling.
+- Simplified Mac/Linux/Pi installers, yes/no prompts and launcher questions.
+- Included the complete Pi update package alongside Windows and source downloads.
+- Preserved existing settings, Python environments and previous release downloads.
+
 23 October 2026
 - Mac source installations use ~/Applications/yac; Linux uses ~/.local/yac.
 - update-yac checks published GitHub beta releases without requiring Git.

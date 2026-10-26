@@ -87,7 +87,7 @@ Przegląd przez kolejne v: pierwsze v podaje włączone filtry. Następne kolejn
 
 s potem m  Mikrofon: przygotowanie, ręczny PTT, kropka/przecinek regulują; h daje pomoc. YAC zmienia tylko wzmocnienie mikrofonu.
 
-s potem a  Przełącz obsługiwane opcje AGC; powtarzaj a. Odczyt sprawdzany. s h daje pomoc Ustawień.
+s potem a  Odczytaj AGC bez zmiany; powtarzaj a dla następnego ustawienia. Odczyt sprawdzany. q ogłasza Gotowe. s h daje pomoc.
 
 s potem e  Procesor: otwiera bez zmian; e przełącza; kropka/przecinek gdy włączony. Kenwood i/o Wejście/Wyjście. n anuluje i przywraca; q zachowuje; h pomaga.
 
@@ -97,6 +97,6 @@ s b: h Pomoc; b Mowa i brajl; r Tylko brajl; s Tylko mowa; q Wstecz. Każdy wyb�
 s o: h Pomoc; . zwiększa; , zmniejsza; q Wstecz. r Tempo; v Głośność; p Wysokość; u Interpunkcja; t Test; d Domyślne. Zmiany działają i zapisują się natychmiast.
 h Pomoc; r Tempo; v Głośność; p Wysokość; u Interpunkcja; . zwiększa; , zmniejsza; t Test; d Domyślne; q Wstecz. Każda zmiana działa i zapisuje się natychmiast. Na początku wybrane jest tempo. Tempo i wysokość: 0 do 9; głośność: 1 do 9. Interpunkcja: Brak, Niektóre, Większość lub Wszystkie. q zachowuje zmiany. d od razu przywraca wartości YAC: tempo 2, głośność 5, wysokość 5, Niektóre znaki. t pokazuje zdanie testowe z obecnymi ustawieniami. Głośność systemu, brajl i inne ustawienia Speakup pozostają bez zmian.
 
-s u: Aktualizuj YAC. Spacja zamyka polaczenie z radiem i otwiera aktualizator; q wraca do Ustawien.
+s u: Aktualizacja YAC. Wyświetla pomoc i Szukam. Brak internetu lub Brak zmian wraca do Ustawień. Nowa wersja pyta Opis Y/N?, potem Update Y/N?. y potwierdza; n pomija opis lub odmawia instalacji; q wraca. Przy długim opisie Spacja przechodzi dalej, q opuszcza opis.
 
 s w: Konfiguracja Wi-Fi jest dostępna tylko w obrazie Raspberry Pi. Tutaj użyj ustawień Wi-Fi systemu. Konfiguracja Wi-Fi: kraj, nazwa sieci i hasło. Ctrl+C anuluje wpisywanie; interpunkcja i litery poleceń są zwykłymi znakami.

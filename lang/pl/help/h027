@@ -1,0 +1,15 @@
+Aktualizacja YAC
+YAC sprawdza GitHub przez istniejące połączenie internetowe.
+
+Brak internetu: nie można połączyć się z GitHub; powrót do Ustawień.
+Brak zmian: brak nowszego wydania; powrót do Ustawień.
+Nowa wersja: pyta Opis Y/N?. Po przeczytaniu lub pominięciu opisu pyta Update Y/N?.
+Szukam: sprawdzanie aktualizacji.
+
+h: czytaj tę pomoc ponownie.
+n: pomiń opis przy Opis Y/N?; odmów instalacji i wróć do Ustawień przy Update Y/N?.
+q: anuluj i wróć do Ustawień. W opisie wydania q opuszcza tylko opis.
+r: czytaj opis wydania ponownie. Przy długim opisie Spacja przechodzi dalej, q wychodzi. Potem pojawia się Update Y/N?.
+y: czytaj opis przy Opis Y/N?. Przy Update Y/N? pobierz, sprawdź i zainstaluj, potem uruchom YAC ponownie.
+
+Radio pozostaje połączone do rozpoczęcia instalacji. Zapisane ustawienia są zachowane. Instalacja plików lokalnych jest niedostępna. Na Pi nie aktualizuje oddzielnych programów pomocniczych ani rozruchu.

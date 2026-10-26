@@ -1,0 +1,17 @@
+PI LAUNCHER - SPECIAL AUDIO BETA
+
+The complete current instructions are in pi-audio-beta.html or pi-audio-beta.md
+beside this file. These documents belong only to the Pi image-builder kit.
+
+Extract the special beta ZIP into its own directory, then run as user yac:
+  sh pi/install-pi-beta.sh
+
+The installer updates YAC and places all launcher files and helpers.
+It preserves the launcher INI and existing .profile. No manual file copies
+are needed. Test at the Pi local console:
+  python3 /home/yac/.local/bin/yac-pi
+
+Press Enter when the English test is audible. Selection is saved in the INI.
+Unanswered audio setup shuts down after five minutes. Braille-only mode
+bypasses setup. Normal radio listening has no added inactivity timer.
+See the main beta guide for changing outputs, recovery, and image cleanup.

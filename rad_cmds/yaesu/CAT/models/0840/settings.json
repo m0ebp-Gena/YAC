@@ -39,11 +39,15 @@
     "protocol": "cat",
     "read": "PC;",
     "pattern": "PC[12](\\d{3});",
-    "minimum": 5,
+    "minimum": 1,
     "maximum": 100,
     "input_minimum": 5,
     "set": "PC{selector}{value};",
     "selector_pattern": "PC([12])\\d{3};",
+    "selector_minimum": {
+      "1": 1,
+      "2": 5
+    },
     "selector_maximum": {
       "1": 10,
       "2": 100

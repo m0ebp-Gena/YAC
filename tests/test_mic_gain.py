@@ -32,6 +32,32 @@ class MicGainTests(unittest.TestCase):
                 exchange.assert_not_called()
             self.assertIn('Done', output)
 
+    def test_kenwood_meter_selection_restoration_and_failure(self):
+        for model in ('020', '023'):
+            radio = RadioConnection(None, 'test', 9600, 'CAT', model, 'Kenwood')
+            spec = {'family': 'kenwood'}
+            selected = ['1']
+            commands = []
+            def exchange(radio, command):
+                commands.append(command)
+                if command != 'RM;':
+                    selected[0] = command[2]
+                return f'RM{selected[0]}0001;'
+            with patch.object(yac, '_cat_exchange', side_effect=exchange), patch.object(mic, 'tx_state', return_value=False):
+                self.assertEqual(mic.prepare_meter(yac, radio, spec), '1')
+                self.assertEqual(selected[0], '3')
+                self.assertTrue(mic.restore_meter(yac, radio, spec))
+                self.assertEqual(selected[0], '1')
+                self.assertFalse(hasattr(radio, '_yac_mic_meter_restore'))
+            with patch.object(yac, '_cat_exchange', return_value='RM10001;'):
+                with self.assertRaises(RuntimeError):
+                    mic.prepare_meter(yac, radio, spec)
+                self.assertEqual(radio._yac_mic_meter_restore, '1')
+            del radio._yac_mic_meter_restore
+            with patch.object(yac, '_cat_exchange', return_value='RM10001;RM20002;RM30003;') as command:
+                self.assertIsNone(mic.prepare_meter(yac, radio, spec))
+                command.assert_called_once_with(radio, 'RM;')
+
     def test_preparation_help_does_not_acknowledge_readiness(self):
         with patch.object(yac, '_cat_exchange') as exchange:
             _, output = self.run_control(['h', 'q'])
@@ -46,7 +72,7 @@ class MicGainTests(unittest.TestCase):
             commands.append(command)
             return original(radio, command)
         with patch.object(yac, '_cat_exchange', side_effect=exchange):
-            _, output = self.run_control([' ', '.', 'v', 'q'], radio)
+            _, output = self.run_control(['y', '.', 'v', 'q'], radio)
         self.assertEqual(radio.serial.mic_gain, 51)
         self.assertEqual(radio.serial.power, '020')
         self.assertEqual(radio.serial.frequency, 7159000)
@@ -105,28 +131,28 @@ class MicGainTests(unittest.TestCase):
 
     def test_initial_tx_blocks_adjustment(self):
         with patch.object(mic, 'tx_state', return_value=True), patch.object(mic, 'adjust') as adjust:
-            _, output = self.run_control([' '])
+            _, output = self.run_control(['y'])
             adjust.assert_not_called()
         self.assertIn('Release PTT', output)
 
     def test_mode_change_blocks_writes(self):
         with patch.object(yac, '_current_mode', side_effect=['LSB', 'CW']), patch.object(mic, 'adjust') as adjust:
-            _, output = self.run_control([' ', '.'])
+            _, output = self.run_control(['y', '.'])
             adjust.assert_not_called()
-        self.assertIn('Select SSB', output)
+        self.assertIn('Mode Changed', output)
 
     def test_settings_route_returns_to_settings(self):
         radio = create_dummy_radio()
-        keys = iter(['s', 'm', ' ', '.', 'q', 'q', 'q', 'y'])
+        keys = iter(['s', 'm', 'y', '.', 'q', 'q', 'q', 'y'])
         with patch.object(yac, 'connect_radio', return_value=radio), patch.object(yac, '_read_settings', return_value={'call':'test','lang':'en'}), patch.object(lang_sel, 'read_key', side_effect=lambda **kwargs: next(keys)), redirect_stdout(io.StringIO()) as output:
             self.assertEqual(yac.main([]), 0)
         self.assertEqual(output.getvalue().count('Done'), 1)
-        self.assertEqual(output.getvalue().count('Back'), 1)
+        self.assertEqual(output.getvalue().splitlines().count('Back'), 1)
         self.assertIn('Bye test', output.getvalue())
 
     def test_idle_polling_reports_peak_after_ptt_release(self):
         radio = create_dummy_radio()
-        keys = iter([' ', 'q', 'y'])
+        keys = iter(['y', 'q', 'y'])
         def read_key(idle_callback=None):
             if idle_callback:
                 idle_callback()

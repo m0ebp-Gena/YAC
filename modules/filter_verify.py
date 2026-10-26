@@ -6,21 +6,21 @@ def _reports(yac, root, radio, language, features=None):
     label = lambda token, **values: settings._label(yac, root, language, token, **values)
     features = settings.catalog(root, radio, yac) if features is None else features
     entries = []
-    for name, on, unknown in [('noise_blanker', 'l153', 'l156'),
-                               ('noise_reduction', 'l160', 'l163')]:
+    for name, on, unknown in [('noise_blanker', 'l153', 'l050'),
+                               ('noise_reduction', 'l160', 'l050')]:
         if name in features:
             entries.append((name, features[name], on, unknown))
     for key, on in [('a', 'l171'), ('n', 'l173')]:
         spec = features.get('notch', {}).get(key)
         if spec:
-            entries.append((key, spec, on, 'l188' if spec.get('beat_cancel') else 'l181'))
+            entries.append((key, spec, on, 'l050'))
     if 'contour' in features:
-        entries.append(('contour', features['contour'], 'l190', 'l197'))
+        entries.append(('contour', features['contour'], 'l190', 'l050'))
     if not entries:
-        return label('l201'), [], None
+        return label('l129'), [], None
     mode = yac._current_mode_code(radio)
     if mode is None:
-        return label('l204'), [], None
+        return yac._radio_error(root, radio, language), [], None
     mode = str(mode).upper()
     side = str(yac._yaesu_vfo_side) if radio.model_id == '0840' else '0'
     active, unknowns, items, names = [], [], [], []
@@ -45,6 +45,9 @@ def _reports(yac, root, radio, language, features=None):
             valid = value in on_values + [off]
             enabled = valid and value != off
         if not valid:
+            if unknown == 'l050':
+                response = yac._radio_error(root, radio, language)
+                return response, [], None
             item = label(unknown)
             unknowns.append(item)
         elif enabled:
@@ -65,7 +68,7 @@ def _reports(yac, root, radio, language, features=None):
     if active:
         result.append(label('l199', filters=', '.join(active)))
     elif not unknowns:
-        result.append(label('l200' if names else 'l201'))
+        result.append(label('l200' if names else 'l129'))
     result.extend(dict.fromkeys(unknowns))
     summary = ', '.join(result)
     if radio.model_id == '0840':

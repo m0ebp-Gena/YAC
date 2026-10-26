@@ -28,6 +28,18 @@ def release():
 
 
 class Updates(unittest.TestCase):
+    def test_preselected_release_never_rechecks_or_prompts(self):
+        data=archive()
+        responses=[data,(hashlib.sha256(data).hexdigest()+'  yac-source.zip').encode()]
+        with tempfile.TemporaryDirectory() as tmp,patch.object(updater,'fetch',side_effect=responses) as fetch, \
+             patch.object(updater.subprocess,'run',return_value=subprocess.CompletedProcess([],0)) as install, \
+             redirect_stdout(io.StringIO()) as output:
+            self.assertEqual(updater.run(Path(tmp),lambda:self.fail('second confirmation'),selected_release=release()),0)
+            self.assertEqual(fetch.call_count,2)
+            self.assertNotIn(updater.API,[c.args[0] for c in fetch.call_args_list])
+            self.assertTrue(install.call_args.kwargs['capture_output'])
+            self.assertEqual(output.getvalue(),'')
+
     def test_beta_and_draft_selection(self):
         beta=release()
         draft=dict(beta,published_at='2026-10-25T00:00:00Z',draft=True)

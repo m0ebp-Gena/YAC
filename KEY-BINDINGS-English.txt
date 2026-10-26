@@ -92,7 +92,7 @@ Repeated v review: first v gives the filters-On summary. Further consecutive v p
 
 s then m   Mic Gain: guided preparation, manual PTT, full stop/comma adjust gain; h gives help. YAC changes only mic gain.
 
-s then a   Cycle supported AGC choices; repeat a. Readback is verified. s h gives Settings help.
+s then a   Read current AGC without changing it; repeat a to cycle choices. Readback is verified. q finishes with Done. s h gives Settings help.
 
 s then e   Speech Processor: read-only entry; e toggles; full stop/comma adjust while On. Kenwood i/o Input/Output. n cancels and restores; q keeps. h gives help.
 
@@ -104,6 +104,6 @@ s b: h Help; b Speech and braille; r Braille only; s Speech only; q Back. Each c
 s o: h Help; . increase; , decrease; q Back. r Rate; v Volume; p Pitch; u Punctuation; t Test; d Defaults. Changes apply and save immediately.
 h Help; r Rate; v Volume; p Pitch; u Punctuation; . increase; , decrease; t Test; d Defaults; q Back. Every adjustment applies and saves immediately. Rate is selected on entry. Rate and pitch range from 0 to 9; volume from 1 to 9. Punctuation is None, Some, Most or All. q returns and keeps changes. d immediately restores YAC defaults: rate 2, volume 5, pitch 5, punctuation Some. t displays a test sentence using the current settings. System volume, braille and other Speakup preferences are unchanged.
 
-s u: Update YAC. Space closes the radio connection and opens the updater; q returns to Settings.
+s u: Update YAC. Shows help, then Looking. No Internet or No Update returns to Settings. Update Found asks Read Notes Y/N?, then Update Y/N?. y accepts; n skips notes or declines installation; q returns. Long notes use Space for the next page and q to leave.
 
 s w: Wi-Fi setup is available only on the Raspberry Pi image. Use your operating system Wi-Fi settings here. Wi-Fi setup. Country, network name and password. Ctrl+C cancels entry; punctuation and command letters are literal.

@@ -1,0 +1,8 @@
+Przywracanie połączenia
+
+Błąd radia: YAC nie otrzymał użytecznych danych lub kolejne próby sprawdzenia połączenia zawiodły.
+h: czytaj tę pomoc podczas przywracania połączenia.
+Kończenie: radio nie powróciło w ciągu 60 sekund. YAC zamyka połączenie i kończy pracę. Sprawdź radio, zasilanie i kabel USB, potem uruchom YAC ponownie.
+Proszę czekać: YAC próbuje tego samego radia mniej więcej co pięć sekund, do 60 sekund po Błąd radia. Podczas oczekiwania nie trzeba nic robić. Nie resetuje ustawień radia ani nie przechodzi do symulacji.
+q: zakończ YAC przez zwykłe potwierdzenie.
+Radio powróciło: to samo radio znów odpowiada; normalna obsługa zostaje wznowiona.

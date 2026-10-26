@@ -13,7 +13,7 @@ def _cat_value(yac, radio, command, pattern):
 def _profile(yac, radio, feature):
     mode = yac._current_mode_code(radio)
     if mode is None:
-        return None, 'l083'
+        return None, 'l050'
     profile = feature['modes'].get(str(mode).upper())
     if profile is None:
         return None, 'l129'
@@ -30,18 +30,18 @@ def _profile(yac, radio, feature):
         else:
             layout = _cat_value(yac, radio, 'EX0450000;', r'EX0450000([01]);')
             if layout is None:
-                return None, 'l083'
+                return None, 'l050'
             if str(mode) in {'1', '2'} and layout == '1':
                 profile = dict(feature['width_profile'])
     if feature['kind'] == 'kenwood' and str(mode) in {'1', '2'}:
         data = _cat_value(yac, radio, 'DA;', r'DA([01]);')
         if data is None:
-            return None, 'l083'
+            return None, 'l050'
         menu = '029' if data == '1' else '028'
         command = f'EX{menu}0000'
         layout = _cat_value(yac, radio, command + ';', command + r'([12]);')
         if layout is None:
-            return None, 'l083'
+            return None, 'l050'
         if layout == '2':
             profile = dict(feature['width_profile'])
     side = str(yac._yaesu_vfo_side) if radio.model_id == '0840' else '0'
@@ -57,7 +57,7 @@ def adjust(yac, root, radio, language, direction=0, key='p'):
         return label('l129')
     spec, error = _profile(yac, radio, feature)
     if error:
-        return label(error)
+        return yac._radio_error(root, radio, language) if error == 'l050' else label(error)
     label_token = 'l082'
     bound = None
     if key in {'l', 'u'}:
@@ -66,7 +66,7 @@ def adjust(yac, root, radio, language, direction=0, key='p'):
         if key == 'l':
             high = settings.read(yac, radio, spec)
             if high not in spec['values']:
-                return label('l083')
+                return yac._radio_error(root, radio, language)
             bound = spec['values'][high]
             spec = dict(protocol='cat', read=spec['low_read'],
                         pattern=spec['low_pattern'], set='SL{value};',
@@ -75,23 +75,23 @@ def adjust(yac, root, radio, language, direction=0, key='p'):
         else:
             raw = _cat_value(yac, radio, spec['low_read'], spec['low_pattern'])
             if raw not in spec['low_values']:
-                return label('l083')
+                return yac._radio_error(root, radio, language)
             bound = spec['low_values'][raw]
             spec = {k: v for k, v in spec.items() if not k.startswith('low_')}
             label_token = 'l151'
     elif spec.get('low_read'):
-        # Separate edge controls must not be disguised as a width adjustment.
-        return label('l152')
+        return adjust(yac, root, radio, language, direction, key='l')
     current = settings.read(yac, radio, spec)
     widths = spec['values']
     if current is not None and spec.get('apply'):
         current = next((value for value in widths
                         if value.casefold() == current.casefold()), None)
-    # Default is a symbolic manufacturer setting, not a universal 2400 Hz.
-    if 'default' in spec and current == spec['default']:
-        return label('l148' if direction else 'l147')
-    if current not in widths:
-        return label('l083')
+    # Default is symbolic; choose an explicit endpoint without guessing its width.
+    is_default = 'default' in spec and current == spec['default']
+    if is_default and not direction:
+        return label('l147')
+    if not is_default and current not in widths:
+        return yac._radio_error(root, radio, language)
     choices = list(widths)
     if bound is not None:
         choices = [value for value in choices if
@@ -105,23 +105,26 @@ def adjust(yac, root, radio, language, direction=0, key='p'):
             state = _cat_value(yac, radio, spec['enabled_read'].format(index=index),
                                r'MM(ENABLED|DISABLED);')
             if state is None:
-                return label('l083')
+                return yac._radio_error(root, radio, language)
             if state == 'ENABLED':
                 enabled.append(value)
         choices = enabled
-    if current not in choices:
-        return label('l083')
+    if not choices or (not is_default and current not in choices):
+        return yac._radio_error(root, radio, language)
     if direction:
-        index = choices.index(current)
-        target = choices[max(0, min(len(choices) - 1, index + direction))]
+        if is_default:
+            target = choices[0] if direction > 0 else choices[-1]
+        else:
+            index = choices.index(current)
+            target = choices[max(0, min(len(choices) - 1, index + direction))]
         if target != current:
             if not settings._write(yac, radio, spec, target):
-                return label('l131')
+                return yac._radio_error(root, radio, language)
             if spec.get('apply'):
                 yac._cat_exchange(radio, spec['apply'])
             actual = settings.read(yac, radio, spec)
             if actual is None or actual.casefold() != target.casefold():
-                return label('l131')
+                return yac._radio_error(root, radio, language)
             current = target
     if current == 'None':
         return label('l149')
@@ -154,7 +157,7 @@ def control(yac, root, radio, language, call, read_key, watch):
             chat_int.show_done(root, language)
             adjusting = None
         elif key == 'h':
-            chat_int.show_response(help_int.get_help(root, language, 'h007'))
+            chat_int.show_response(help_int.get_help(root, language, 'h031' if adjusting in {'p', 'l', 'u'} else 'h007'))
         elif key == 'v':
             chat_int.show_response(filter_review.next(yac, root, radio, language))
         elif key == 'b' and adjusting in {None, 'b'}:
@@ -176,7 +179,19 @@ def control(yac, root, radio, language, call, read_key, watch):
             chat_int.show_response(contour_control.operate(yac, root, radio, language, toggle=toggle, parameter=contour_parameter))
         elif key == 'w' and adjusting == 'n':
             chat_int.show_response(notch_control.operate(yac, root, radio, language, 'n', width=True))
-        elif not adjusting and key in {'p', 'l', 'u'}:
+        elif key == 'p' and adjusting in {None, 'p', 'l', 'u'}:
+            if adjusting is None:
+                chat_int.show_response(help_int.get_help(root, language, 'h031'))
+            feature = settings.catalog(root, radio).get('bandwidth')
+            spec, error = _profile(yac, radio, feature) if feature else (None, 'l129')
+            if error:
+                adjusting = None
+                response = yac._radio_error(root, radio, language) if error == 'l050' else settings._label(yac, root, language, error)
+            else:
+                adjusting = ('u' if adjusting == 'l' else 'l') if spec and spec.get('low_read') else 'p'
+                response = adjust(yac, root, radio, language, key=adjusting)
+            chat_int.show_response(response)
+        elif not adjusting and key in {'l', 'u'}:
             adjusting = key
             chat_int.show_response(adjust(yac, root, radio, language, key=key))
         elif adjusting and key in {yac.UP_KEY, yac.DOWN_KEY}:

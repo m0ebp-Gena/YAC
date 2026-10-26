@@ -63,7 +63,7 @@ class FTXTunerTests(unittest.TestCase):
         self.assertFalse(any(c.startswith('AC') and c!='AC;' for c in self.ftx.commands))
 
     def test_selects_ant1_types_without_enable_or_tune(self):
-        for label in ('tuner internal fast','tuner external','tuner ATAS','tuner internal'):
+        for label in ('Tuner Int Fast','tuner external','tuner ATAS','tuner internal'):
             self.assertEqual(self.cycle(),label)
         self.assertEqual(self.ftx.values['030701'],'0')
         self.assertEqual(self.ftx.values['030702'],'2')
@@ -79,14 +79,14 @@ class FTXTunerTests(unittest.TestCase):
 
     def test_receive_only_ant2_still_uses_transmit_ant1_tuner(self):
         self.ftx.values.update({'030704':'1','030703':'2'})
-        self.assertEqual(self.cycle(),'tuner internal fast')
+        self.assertEqual(self.cycle(),'Tuner Int Fast')
         self.assertEqual(self.ftx.values['030701'],'1')
         self.assertEqual(self.ftx.values['030702'],'2')
 
     def test_failed_route_change_restores_previous_menu(self):
         self.ftx.values['030701']='2'
         self.ftx.reject='EX0301041;'
-        self.assertEqual(self.cycle(),'Setting change failed')
+        self.assertEqual(self.cycle(),'Radio Error')
         self.assertEqual(self.ftx.values['030701'],'2')
         self.assertEqual(self.ftx.values['030104'],'0')
 
@@ -100,26 +100,26 @@ class FTXTunerTests(unittest.TestCase):
         for selected in ('0','1','2'):
             self.ftx.values['030701']=selected
             with patch('modules.ftx_tuner.time.sleep'),patch('builtins.print'):
-                self.assertEqual(tuner_control.tune(yac,ROOT,self.radio,'en'),'Tuning cycle finished')
+                self.assertEqual(tuner_control.tune(yac,ROOT,self.radio,'en'),'Tune Finished')
         self.assertEqual(self.ftx.commands.count('AC103;'),3)
         self.assertNotIn('AC003;',self.ftx.commands)
 
     def test_atas_uses_its_own_start(self):
         self.ftx.values.update({'030104':'1','030701':'3'})
         with patch('modules.ftx_tuner.time.sleep'),patch('builtins.print'):
-            self.assertEqual(tuner_control.tune(yac,ROOT,self.radio,'en'),'Tuning cycle finished')
+            self.assertEqual(tuner_control.tune(yac,ROOT,self.radio,'en'),'Tune Finished')
         self.assertIn('AC123;',self.ftx.commands)
 
     def test_completed_tune_returns_on_ac101_without_bypass(self):
         self.ftx.ac='101'
         with patch('modules.ftx_tuner.time.sleep'),patch('builtins.print'):
-            self.assertEqual(tuner_control.tune(yac,ROOT,self.radio,'en'),'Tuning cycle finished')
+            self.assertEqual(tuner_control.tune(yac,ROOT,self.radio,'en'),'Tune Finished')
         self.assertIn('AC103;',self.ftx.commands)
         self.assertNotIn('AC000;',self.ftx.commands)
 
     def test_on_state_does_not_block_selection(self):
         self.ftx.ac='101'
-        self.assertEqual(self.cycle(),'tuner internal fast')
+        self.assertEqual(self.cycle(),'Tuner Int Fast')
 
     def test_busy_and_unknown_never_write(self):
         self.ftx.ac='103'
@@ -136,5 +136,5 @@ class FTXTunerTests(unittest.TestCase):
             return self.ftx.exchange(radio,command)
         with patch.object(yac,'_cat_exchange',side_effect=exchange), \
              patch('modules.ftx_tuner.time.sleep'),patch('builtins.print'):
-            self.assertIn('stop requested',tuner_control.tune(yac,ROOT,self.radio,'en',polls=2))
+            self.assertIn('Tune Timed Out',tuner_control.tune(yac,ROOT,self.radio,'en',polls=2))
         self.assertIn('AC000;',self.ftx.commands)

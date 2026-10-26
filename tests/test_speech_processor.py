@@ -33,7 +33,7 @@ class ProcessorTests(unittest.TestCase):
         with patch.object(yac, '_cat_exchange', side_effect=exchange):
             _, output = self.run_control(['n'], radio)
         self.assertTrue(all(c in {'MD0;', 'FA;', 'PR0;', 'PL;', 'TX;'} for c in commands), commands)
-        self.assertIn('Cancelled', output)
+        self.assertIn('Restored', output.splitlines())
         self.assertFalse(radio.serial.processor_on)
 
     def test_q_keeps_only_processor_changes(self):
@@ -44,28 +44,49 @@ class ProcessorTests(unittest.TestCase):
         self.assertEqual(radio.serial.power, '020')
         self.assertEqual(radio.serial.frequency, 7159000)
         self.assertEqual(radio.serial.mode, '1')
-        self.assertIn('changes kept', output)
+        self.assertIn('Done', output.splitlines())
         self.assertIsNone(radio._processor_pending)
 
     def test_n_restores_onoff_and_level(self):
         radio, output = self.run_control(['e', '.', '.', 'n'])
         self.assertFalse(radio.serial.processor_on)
         self.assertEqual(radio.serial.processor_level, 25)
-        self.assertIn('Original processor settings restored', output)
+        self.assertIn('Restored', output.splitlines())
 
     def test_navigation_while_off_changes_nothing(self):
         radio, _ = self.run_control(['.', ',', 'q'])
         self.assertFalse(radio.serial.processor_on)
         self.assertEqual(radio.serial.processor_level, 25)
 
-    def test_unobservable_off_level_refuses_writes(self):
+    def test_hidden_off_level_is_revealed_and_restored_without_radio_controls(self):
+        for model in ('0761', '0800', '0840'):
+            radio = create_dummy_radio()
+            radio.model_id = model
+            original_exchange = yac._cat_exchange
+            commands = []
+            def exchange(radio, command):
+                commands.append(command)
+                if command == 'PL;' and not radio.serial.processor_on:
+                    return 'PL000;'
+                return original_exchange(radio, command)
+            with patch.object(yac, '_cat_exchange', side_effect=exchange):
+                _, output = self.run_control(['e', '.', 'n'], radio)
+            self.assertFalse(radio.serial.processor_on)
+            self.assertEqual(radio.serial.processor_level, 25)
+            self.assertIn('PR02;', commands)
+            self.assertIn('Restored', output.splitlines())
+
+    def test_failed_hidden_level_probe_restores_off(self):
         radio = create_dummy_radio()
-        radio.serial.processor_level = 0
-        with patch.object(proc, 'set_status') as status, patch.object(proc, 'set_levels') as level:
-            _, output = self.run_control([], radio)
-            status.assert_not_called()
-            level.assert_not_called()
-        self.assertIn('hides its saved level', output)
+        spec = proc.profile(yac, radio)
+        state = [False]
+        def status(yac, radio, spec, enabled):
+            state[0] = enabled
+            return True
+        with patch.object(proc, 'context', return_value=('USB', '14.2', 0)), patch.object(proc.mic_gain, 'tx_state', return_value=False), patch.object(proc, 'set_status', side_effect=status), patch.object(proc, 'read', side_effect=lambda *args: None if state[0] else (False, (0,))):
+            self.assertIsNone(proc.reveal_level(yac, ROOT, radio, spec, (False, (0,)), ('USB', '14.2', 0)))
+        self.assertFalse(state[0])
+        self.assertIsNone(radio._processor_pending)
 
     def test_icom_undo_preserves_exact_bcd_not_rounded_display(self):
         serial = SettingsSerial(0xa4)
@@ -105,7 +126,7 @@ class ProcessorTests(unittest.TestCase):
             with redirect_stdout(io.StringIO()) as output:
                 proc.control(yac, ROOT, radio, 'en', read_key, SimpleNamespace(lost=False))
         self.assertIsNotNone(radio._processor_pending)
-        self.assertIn('Restoration not confirmed', output.getvalue())
+        self.assertIn('Restore Failed', output.getvalue().splitlines())
 
     def test_interrupt_restores(self):
         radio = create_dummy_radio()
@@ -130,11 +151,11 @@ class ProcessorTests(unittest.TestCase):
         radio = RadioConnection(None, 'test', 9600, 'CAT', '020', 'QMX')
         with patch.object(proc.mic_gain.ts480_control, 'variant', return_value=None):
             _, output = self.run_control([], radio)
-        self.assertIn('Not supported', output)
+        self.assertIn('Not Supported', output)
         radio = create_dummy_radio()
         radio.serial.mode = '4'
         _, output = self.run_control([], radio)
-        self.assertIn('unavailable in this mode', output)
+        self.assertIn('Not Supported', output)
 
     def test_kenwood_comp_meter_is_read_only(self):
         radio = RadioConnection(None, 'test', 9600, 'CAT', '023', 'TS-590SG')
@@ -148,14 +169,14 @@ class ProcessorTests(unittest.TestCase):
         with patch.object(yac, 'connect_radio', return_value=radio), patch.object(yac, '_read_settings', return_value={'call':'test','lang':'en'}), patch.object(lang_sel, 'read_key', side_effect=lambda **kwargs: next(keys)), redirect_stdout(io.StringIO()) as output:
             self.assertEqual(yac.main([]), 0)
         self.assertEqual(output.getvalue().count('Done'), 1)
-        self.assertEqual(output.getvalue().count('Back'), 1)
+        self.assertEqual(output.getvalue().splitlines().count('Back'), 1)
         self.assertFalse(radio.serial.processor_on)
 
     def test_n_in_meter_preparation_cancels_control(self):
-        radio, output = self.run_control(['e', '.', ' ', 'n'])
+        radio, output = self.run_control(['e', '.', ' ', 'q', 'n'])
         self.assertFalse(radio.serial.processor_on)
         self.assertEqual(radio.serial.processor_level, 25)
-        self.assertIn('Cancelled', output)
+        self.assertIn('Restored', output.splitlines())
 
     def test_partial_write_still_undoes_when_unconfirmed(self):
         radio = create_dummy_radio()
@@ -171,7 +192,7 @@ class ProcessorTests(unittest.TestCase):
 
     def test_monitor_captures_comp_peak_with_manual_ptt(self):
         radio = create_dummy_radio()
-        keys = iter([' ', ' ', 'q', 'y'])
+        keys = iter([' ', 'y', 'q', 'y'])
         def read_key(idle_callback=None):
             if idle_callback:
                 idle_callback()

@@ -23,7 +23,7 @@ def profile(yac, radio):
     return None
 
 
-def cycle(yac, root, radio, language):
+def cycle(yac, root, radio, language, *, advance=True):
     def label(token):
         return settings._label(yac, root, language, token)
     spec = profile(yac, radio)
@@ -31,25 +31,31 @@ def cycle(yac, root, radio, language):
         return label('l129')
     mode = yac._current_mode(radio)
     if mode is None:
-        return label('l229')
+        return yac._radio_error(root, radio, language)
     if spec['family'] == 'icom' and (mode.startswith('FM') or mode in {'WFM', 'DV', 'DD'}):
         return label('l230')
     if spec['family'] == 'kenwood' and mode.startswith('FM'):
-        return label('l231')
+        return label('l129')
     current = settings.read(yac, radio, spec)
     if current not in spec['labels']:
-        return label('l229')
+        return yac._radio_error(root, radio, language)
+    if not advance:
+        result = label(spec['labels'][current])
+        if spec['family'] == 'yaesu' and radio.model_id == '0840':
+            result = ('Main' if spec['side'] == 0 else 'Sub') + ' ' + result
+        return result
     # Yaesu Auto is returned as Auto-Fast/Mid/Slow, not writable value 4.
     selected = '4' if spec['family'] == 'yaesu' and current in {'4', '5', '6'} else current
     target = spec['choices'][(spec['choices'].index(selected) + 1) % len(spec['choices'])]
-    if yac._current_mode(radio) != mode:
-        return label('l229')
+    actual_mode = yac._current_mode(radio)
+    if actual_mode != mode:
+        return yac._radio_error(root, radio, language) if actual_mode is None else label('l001')
     if not settings._write(yac, radio, spec, target):
-        return label('l131')
+        return yac._radio_error(root, radio, language)
     actual = settings.read(yac, radio, spec)
     verified = actual in {'4', '5', '6'} if target == '4' and spec['family'] == 'yaesu' else actual == target
     if not verified:
-        return label('l131')
+        return yac._radio_error(root, radio, language)
     result = label(spec['labels'][actual])
     if spec['family'] == 'yaesu' and radio.model_id == '0840':
         result = ('Main' if spec['side'] == 0 else 'Sub') + ' ' + result

@@ -1,0 +1,72 @@
+YAC PI LAUNCHER KIT - 23 OCTOBER 2026
+
+Separate from yac-source.zip. No automatic installation script is included.
+Nothing here has been installed on your Pi by this build.
+
+FILES AND DESTINATIONS (account yac, home /home/yac)
+
+pi-launcher.py       -> ~/.local/bin/yac-pi                  mode 755
+pi_audio.py          -> ~/.local/bin/pi_audio.py             mode 644
+pi/audio-settings.py -> /usr/local/libexec/yac-pi-audio       root, mode 755
+pi/speakup-settings.py -> /usr/local/libexec/yac-speakup-settings root, mode 755
+pi/wifi-settings.py  -> /usr/local/libexec/yac-pi-wifi        root, mode 755
+pi/clear-image-wifi.py -> /usr/local/sbin/yac-image-clear-wifi root, mode 755
+pi/cw/de, k, 73      -> ~/.local/share/cw/de, k, 73           mode 644
+pi-launcher.ini.example -> ~/.config/yac/pi-launcher.ini ONLY if needed;
+                          preserve your existing selected output and mode.
+
+The source ZIP uses the normal release installer: sh install-yac.sh.
+It installs YAC at ~/.local/yac, creates run-yac and offers /usr/local/bin/yac.
+The launcher INI's yac_command should point to ~/.local/yac/run-yac.
+
+Review sudoers-yac.example with visudo. It contains exact commands for the
+helpers and poweroff, for user yac. Use visudo to apply permissions manually;
+do not blindly replace existing rules. Change the account if necessary.
+Wi-Fi setup needs NetworkManager (nmcli) and raspi-config on the Pi.
+The cleanup command is included for manual image preparation only.
+
+RESTORE YOUR LOGIN LAUNCHER
+
+profile-launcher.txt contains ONLY the three shell lines to append to your
+existing ~/.profile. Do not replace your entire .profile with this snippet.
+Bash instead reads ~/.bash_profile or ~/.bash_login if either exists; put
+the snippet in the login file actually used. Do not put it in .bashrc.
+The snippet starts only on tty1, skips SSH and honours disable-autostart.
+It does not use exec, so quitting YAC returns you to the login shell.
+This does not configure console autologin; keep your existing getty setup.
+
+RESTORE YOUR MORSE LOGIN CUE
+
+cw-login-ready.service is the existing service template, supplied under its
+actual filename. Put it at /etc/systemd/system/cw-login-ready.service.
+It expects user yac, /home/yac/.local/share/cw/de and /usr/bin/cw. Adjust
+those only if your account or home differs. When ready, run manually:
+  sudo systemctl daemon-reload
+  sudo systemctl enable cw-login-ready.service
+It plays on the next boot. To try it now if desired:
+  sudo systemctl start cw-login-ready.service
+
+OTHER SERVICE MATERIAL (OPTIONAL; NO SERVICES ARE ENABLED BY THIS KIT)
+
+pi/yac-speakup-restore.service replays saved speech preferences on boot.
+If desired, put it under /etc/systemd/system, daemon-reload and enable it.
+
+optional-boot-speech/ contains the existing once-per-boot mute and recovery
+materials. These are not required to restore the profile launcher or CW.
+Keep the independent recovery timer with the mute hook if you use them.
+boot-speech.py -> /usr/local/libexec/yac-boot-speech, root mode 755
+The .conf -> /etc/systemd/system/espeakup.service.d/yac-boot-speech.conf
+The recovery .service and .timer -> /etc/systemd/system/.
+After putting these in place, daemon-reload and enable the recovery timer
+for next boot, WITHOUT --now. Before any manual espeakup restart this boot,
+run sudo /usr/local/libexec/yac-boot-speech arm so the new hook does not mute
+speech during the current session. These are reference steps, not a script.
+
+CURRENT TEST STATUS
+
+Audio selection and speech-only restart/rate/volume changes were reported
+working by the user. The source mode menu now applies and saves the
+focused choice on q; b browses. This corrects discarded selections, but
+hardware silence still needs retesting. The minimal s b/s o prompts are in the
+source ZIP. The launcher/audio routines are the actual implementation,
+without an alternate test mode. No GitHub upload has been performed.

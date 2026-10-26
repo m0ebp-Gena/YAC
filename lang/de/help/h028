@@ -1,0 +1,6 @@
+Name und Rufzeichen
+Geben Sie den gewünschten Namen, das Rufzeichen oder eine Kombination für YAC ein, bis zu 10 Zeichen einschließlich Leerzeichen. Enter zeigt die Eingabe zur Prüfung.
+
+h: bei Weiter Y/N? diese Hilfe erneut lesen, dann zurück zur Frage.
+n: ohne Speichern zur Eingabe zurückkehren. Der Text bleibt zum Bearbeiten erhalten; Pfeiltasten, Pos1, Ende, Rücktaste oder Entf verwenden.
+y: angezeigte Eingabe speichern und YAC weiter starten. Die Leertaste bestätigt nicht.

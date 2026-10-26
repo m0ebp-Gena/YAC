@@ -1,0 +1,48 @@
+Date: 
+Platform: 
+Build date/label: 
+Radio: 
+Mode: 
+Screen reader: 
+Braille display: 
+Text table: 
+Dots: 
+Manual changes: 
+
+Core YAC
+
+Installs cleanly 
+Starts cleanly 
+Finds radio 
+Speech readable w 
+Braille readable w 
+Keyboard input w 
+Braille input w 
+Power abort s p Enter 
+Power invalid s p text Enter 
+Frequency abort e Enter 
+Frequency invalid e text Enter 
+Step abort s s Enter 
+Step invalid s s 0 Enter 
+Main help h 
+Filter help f h 
+Settings help s h 
+Settings exit s q 
+Filter exit f q 
+Band exit b q 
+Mode exit m q 
+Radio loss announced 
+Radio return announced 
+Control after reconnect w 
+Preferences retained 
+Speech setting saved s o 
+Speech setting after reboot s o 
+Braille only s b 
+Speech restored s b 
+Wi-Fi entry s w 
+Update lookup s u 
+Quit cancelled q n 
+Quit q y 
+Pi shutdown 
+
+Problems: 

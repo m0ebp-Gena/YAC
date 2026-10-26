@@ -7,3 +7,6 @@ IC-705 RTTY: zuerst RTTY wählen. Verwendet den eindeutig zugeordneten USB-Port 
 Startfehler: Modus, Audio-Einrichtung, USB-Zuordnung oder CAT prüfen. Einzelheiten stehen im Debug-Protokoll. Keine Sendebefehle; Frequenz, Modus und Leistung bleiben unverändert.
 
 d dann a: Empfangsaudio einrichten; h erklärt Auswahl und Pegelprüfung.
+
+Decoder konnte nicht starten. Modus und Einrichtung prüfen; h für Hilfe.
+Decoder-Eingang verloren; Erfassung gestoppt. Funkgerät prüfen.

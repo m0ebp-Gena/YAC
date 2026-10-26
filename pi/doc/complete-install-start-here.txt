@@ -1,0 +1,39 @@
+YAC PI COMPLETE UPDATE - 26 OCTOBER 2026
+
+Beta build: 2026-10-26. All four application languages are included.
+Only this START-HERE installation guide is English-only.
+
+Includes the completed label review, short operating responses, shared error
+handling and radio recovery. Help and labels are included in all four languages.
+Bandwidth supports immediate adjustment and p switching between separate edges.
+Microphone gain prepares the ALC meter when needed. Speech processor can read
+hidden retained levels through YAC. New control behaviour needs radio testing.
+
+Microphone gain and optional processor meter preparation use Continue Y/N?.
+y continues; n declines. Wi-Fi confirmation also uses y; n returns to edit.
+
+Quit YAC. In this extracted folder, as your normal Pi login user, run:
+
+  sh install.sh
+
+This uses the normal source installer, with all four languages and its usual
+shortcut offers. It also installs the Pi launcher, speech/audio/Wi-Fi helpers,
+their sudo permissions and the speech-preference restore service. No Nano or
+manual copying is needed. Your Pi password may be requested: radio is the
+default release password, unless changed. Nothing appears while typing it.
+
+The script preserves your working boot mute/wait configuration, .profile,
+CW service/cues, existing launcher INI, personal YAC settings and saved
+Speakup settings. It restores saved speech values now and enables restoration
+at boot. It checks the Wi-Fi helper without changing your connection.
+
+Once installation reports success, start when ready:
+  python3 ~/.local/bin/yac-pi
+
+s b: full stop next mode; comma previous; q applies and saves.
+s o: setting name only on selection, value only on adjustment.
+s w: Wi-Fi setup. Use h for instructions where supported.
+
+No reboot is needed for the menu checks. Reboot later to test saved speech
+settings. No boot hooks, CW setup or services are replaced by this installer
+except the newly installed speech-preference restore service.

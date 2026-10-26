@@ -139,7 +139,7 @@ def cycle(yac, root, radio, language):
                     restored = write_menu(yac, radio, number, old) and restored
                 except Unknown:
                     restored = False
-            return label(yac, root, language, 'l131' if restored else 'l295')
+            return yac._radio_error(root, radio, language) if restored else label(yac, root, language, 'l003')
         return label(yac, root, language, LABELS[target])
     except (Unknown, ValueError):
         return label(yac, root, language, 'l128')

@@ -14,6 +14,14 @@ class Unavailable(Exception):
     pass
 
 
+class RadioReadError(Unavailable):
+    """The radio did not return usable data."""
+
+
+class CommandFileError(Exception):
+    """An installed split definition is unreadable or malformed."""
+
+
 def band(hz):
     for name, low, high in [('10m', 28000000, 29700000), ('6m', 50000000, 54000000),
                              ('2m', 144000000, 148000000), ('70cm', 420000000, 450000000),
@@ -25,6 +33,18 @@ def band(hz):
 
 def mhz(hz):
     return format(Decimal(hz) / 1000000, 'f').rstrip('0').rstrip('.') if hz % 1000000 else str(hz // 1000000)
+
+
+def split_status(yac, root, language, rx, tx):
+    heading = yac._read_label(root, language, 'l250', 'Split On')
+    return f'{heading}, RX {mhz(rx)} MHz, TX {mhz(tx)} MHz'
+
+
+def repeater_status(yac, root, language, rx, tx):
+    heading = yac._read_label(root, language, 'l254', 'Repeater On')
+    offset = tx - rx
+    sign = yac._read_label(root, language, 'l079' if offset >= 0 else 'l080', '')
+    return f'{heading}, RX {mhz(rx)} MHz, TX {mhz(tx)} MHz, {sign} {abs(offset)} Hz'
 
 
 def parse(entered, fm):
@@ -46,21 +66,30 @@ class Radio:
         path = root / radio.radio_id_path / 'split.json'
         if not path.exists():
             raise Unavailable
-        self.spec = json.loads(path.read_text(encoding='utf-8'))
-        self.yaesu = self.spec['protocol'] == 'cat'
+        try:
+            self.spec = json.loads(path.read_text(encoding='utf-8'))
+            if self.spec['protocol'] not in {'cat', 'civ'}:
+                raise ValueError('Unknown split protocol')
+            if not 0 <= self.spec['minimum_hz'] < self.spec['maximum_hz']:
+                raise ValueError('Invalid frequency bounds')
+            self.yaesu = self.spec['protocol'] == 'cat'
+            if self.yaesu and (len(self.spec['tx_set']) != 2 or not isinstance(self.spec['offsets'], dict)):
+                raise ValueError('Invalid split command definition')
+        except (OSError, UnicodeError, ValueError, KeyError, TypeError) as error:
+            raise CommandFileError() from error
 
     def cat(self, command, pattern):
         answer = self.yac._cat_exchange(self.radio, command)
         match = re.fullmatch(pattern, answer.strip())
         if not match:
-            raise Unavailable
+            raise RadioReadError
         return match.group(1)
 
     def civ(self, command, sub=None):
         answer = self.yac._civ_exchange(self.radio, command, sub)
         data = self.yac._civ_response_data(answer, self.radio.civ_address, command, sub)
         if data is None:
-            raise Unavailable
+            raise RadioReadError
         return data
 
     def read(self, field):
@@ -94,7 +123,7 @@ class Radio:
         if self.yaesu:
             return int(value)
         if len(value) != 5 or any(b >> 4 > 9 or b & 15 > 9 for b in value):
-            raise Unavailable
+            raise RadioReadError
         return int(value[::-1].hex())
 
     def encode_frequency(self, hz):
@@ -126,12 +155,12 @@ class Radio:
             self.fm = self.rxmode in {'4', 'B'}
         else:
             if len(self.rxmode) != 3:
-                raise Unavailable
+                raise RadioReadError
             self.fm = self.rxmode[0] == 5
         self.state = self.read('split')
         valid = {'0', '1'} if self.yaesu else {b'\x00', b'\x01', b'\x11', b'\x12'}
         if self.state not in valid:
-            raise Unavailable
+            raise RadioReadError
         self.on = self.state in {'1', b'\x01', b'\x11', b'\x12'}
         if self.fm and self.yaesu:
             self.shift = self.read('shift')
@@ -250,7 +279,7 @@ def report(yac, root, radio, language):
     try:
         backend = Radio(yac, root, radio).prepare(reporting=True)
         if not backend.on:
-            return label('l258')
+            return label('l251')
         backend.check_context()
         repeater = False
         if backend.yaesu:
@@ -267,7 +296,7 @@ def report(yac, root, radio, language):
                 prefix, unit, step, maximum = menu
                 raw = backend.cat(prefix + ';', prefix + r'(\d{4});')
                 if int(raw) > maximum or int(raw) * unit % step:
-                    raise Unavailable
+                    raise RadioReadError
                 tx = backend.rx + int(raw) * unit * (1 if backend.shift == '1' else -1)
                 repeater = True
         elif backend.state == b'\x01':
@@ -275,13 +304,13 @@ def report(yac, root, radio, language):
         elif backend.state in {b'\x11', b'\x12'}:
             raw = backend.read('offset')
             if len(raw) != 3 or any(b >> 4 > 9 or b & 15 > 9 for b in raw):
-                raise Unavailable
+                raise RadioReadError
             tx = backend.rx + int(raw[::-1].hex()) * 100 * (1 if backend.state == b'\x12' else -1)
             repeater = True
         else:
             raise Unavailable
         if not backend.spec['minimum_hz'] <= tx <= backend.spec['maximum_hz']:
-            raise Unavailable
+            raise RadioReadError
         from modules import tone_status
         tone = tone_status.report(yac, root, radio, language,
                                   side=getattr(backend, 'side', None), mode='FM' if backend.fm else 'USB')
@@ -289,10 +318,14 @@ def report(yac, root, radio, language):
             # External two-VFO FM split may have different tone settings on
             # each VFO; selected-VFO tone is not authoritative for TX.
             tone = label('l247')
-        result = label('l254' if repeater else 'l250', rx=mhz(backend.rx), tx=mhz(tx))
+        result = repeater_status(yac, root, language, backend.rx, tx) if repeater else split_status(yac, root, language, backend.rx, tx)
         return result + (', ' + tone if tone else '')
-    except (Unavailable, OSError, RuntimeError, ValueError):
-        return label('l259')
+    except CommandFileError:
+        return label('l053')
+    except (RadioReadError, OSError, RuntimeError, ValueError):
+        return yac._radio_error(root, radio, language)
+    except Unavailable:
+        return label('l129')
 
 
 def control(yac, root, radio, language):
@@ -303,9 +336,9 @@ def control(yac, root, radio, language):
         backend = Radio(yac, root, radio).prepare()
         if backend.on:
             if backend.off():
-                show('l251', rx=mhz(backend.rx), tx=mhz(backend.rx))
+                chat_int.show_response(f'{label("l251")}, RX {mhz(backend.rx)} MHz, TX {mhz(backend.rx)} MHz')
             else:
-                show('l256' if getattr(backend, 'restored', False) else 'l257')
+                show('l241' if getattr(backend, 'restored', False) else 'l003')
             return
         entered = None
         if backend.fm:
@@ -329,10 +362,17 @@ def control(yac, root, radio, language):
         value = parse(entered, backend.fm)
         ok, tx = backend.enable(value)
         if ok:
-            show('l250' if not backend.fm else 'l254', rx=mhz(backend.rx), tx=mhz(tx))
+            if backend.fm:
+                chat_int.show_response(repeater_status(yac, root, language, backend.rx, tx))
+            else:
+                chat_int.show_response(split_status(yac, root, language, backend.rx, tx))
         else:
-            show('l256' if getattr(backend, 'restored', False) else 'l257')
+            show('l241' if getattr(backend, 'restored', False) else 'l003')
+    except CommandFileError:
+        show('l053')
+    except (RadioReadError, OSError, RuntimeError):
+        chat_int.show_response(yac._radio_error(root, radio, language))
     except ValueError:
-        show('l255')
-    except (Unavailable, OSError, RuntimeError):
-        show('l249')
+        show('l356')
+    except Unavailable:
+        show('l129')

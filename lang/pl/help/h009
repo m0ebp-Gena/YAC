@@ -1,10 +1,10 @@
-Ustawienia: a AGC; m wzmocnienie mikrofonu; p moc; s krok; t tuner; v VFO/odbiornik; e procesor mowy. q wraca i ogłasza Wstecz. h czyta tę pomoc.
+Ustawienia: a AGC; m wzmocnienie mikrofonu; p moc; s krok; t tuner; v VFO/odbiornik; e procesor mowy. q wraca i ogłasza Wstecz, a po wyborze AGC Gotowe. h czyta tę pomoc.
 
-a wybiera następne ustawienie AGC i potwierdza wybór. Szybkie szybciej przywraca wzmocnienie po silnym sygnale; Wolne dłużej utrzymuje redukcję. Wybieraj słuchając. Wyłączenie pozwala na większe zmiany głośności. Bez nadawania.
+s a odczytuje bieżące AGC bez zmiany ustawienia. Kolejne a wybiera następne ustawienie i potwierdza wybór. q kończy i ogłasza Gotowe. Szybkie szybciej przywraca wzmocnienie po silnym sygnale; Wolne dłużej utrzymuje redukcję. Wybieraj słuchając. Wyłączenie pozwala na większe zmiany głośności. Bez nadawania.
 
 m otwiera prowadzone ustawianie mikrofonu. Wykonaj przygotowania; h wewnątrz wyjaśnia klawisze, próbę i odczyt ALC. PTT obsługujesz samodzielnie.
 
-p podaje aktualną moc i zakres wpisywania. Wpisz całe waty i Enter; pusty Enter anuluje. Potwierdzenie podaje wpisaną wartość i Ustawiono. To ustawienie, nie zmierzona moc nadawania. h i Enter czytają pomoc mocy.
+p podaje aktualną moc i zakres wpisywania. Wpisz całe waty i Enter; pusty Enter anuluje. Potwierdzenie podaje wpisaną wartość i Ustawiono. To ustawienie, nie zmierzona moc nadawania. h i Enter czytają pomoc mocy. Pusty Enter lub q i Enter anulują i wracają do Ustawień.
 
 s otwiera krok dla bieżącej emisji. t przełącza wybór tunera i potwierdza ustawienie; nie rozpoczyna strojenia. Wyjdź z Ustawień i naciśnij t, aby stroić. v wybiera obsługiwany VFO lub odbiornik i podaje wybór.
 
@@ -13,10 +13,16 @@ e otwiera procesor i czyta ustawienia. e wewnątrz przełącza; kropka zwiększa
 Wybory, ograniczenia i wyjątki danego modelu są w doc/supported-radios, w pliku tekstowym nazwanym jak Twoje radio. READ-ME.txt wyjaśnia te notatki. Komunikaty głosowe pojawiają się także jako tekst dla monitora brajlowskiego. Funkcje nieobsługiwane oraz nieznane lub nieudane odczyty są zgłaszane.
 
 
-s b: h Pomoc; b przełącza Mowa i brajl, Tylko brajl, Tylko mowa, jak wybór przesunięcia. Przeglądanie nie zmienia trybu. Kropka lub przecinek stosuje i zapisuje wybrany tryb. Tylko brajl wycisza Speakup. Mowa wymaga działającej usługi. Podłączony brajl pozostaje dostępny w każdym trybie. q wraca i odrzuca niezastosowany wybór.
-s o: h Pomoc; o następna opcja; . zwiększ; , zmniejsz; q Wstecz. t Test; d Domyślne. Zmiany są stosowane i zapisywane natychmiast.
-h Pomoc; o przełącza Szybkość, Głośność, Wysokość i Interpunkcję, jak wybór przesunięcia. Początkowo wybrana jest Szybkość. Kropka zwiększa; przecinek zmniejsza. Każda zmiana jest stosowana i zapisywana natychmiast; q zachowuje zmiany i wraca. t Test; d stosuje wartości YAC: szybkość 2, głośność 5, wysokość 5, interpunkcja Niektóre. Szybkość i wysokość od 0 do 9; głośność od 1 do 9.
+s b: kropka lub b wybiera następny tryb; przecinek poprzedni. q stosuje, zapisuje i wraca. h czyta pomoc. Tylko brajl wycisza Speakup; podłączony brajl pozostaje dostępny w każdym trybie.
 
-s u: Aktualizuj YAC. Spacja zamyka polaczenie z radiem i otwiera aktualizator; q wraca do Ustawien.
+s o: r tempo; v głośność; p wysokość; u interpunkcja; kropka zwiększa; przecinek zmniejsza; t próba; d domyślne; h pomoc; q wraca. Zmiany stosują się i zapisują natychmiast.
+
+s u: Aktualizacja YAC. Wyświetla pomoc i Szukam. Brak internetu lub Brak zmian wraca do Ustawień. Nowa wersja pyta Opis Y/N?, potem Update Y/N?. y potwierdza; n pomija opis lub odmawia instalacji; q wraca. Przy długim opisie Spacja przechodzi dalej, q opuszcza opis.
 
 s w: Konfiguracja Wi-Fi jest dostępna tylko w obrazie Raspberry Pi. Tutaj użyj ustawień Wi-Fi systemu. Konfiguracja Wi-Fi: kraj, nazwa sieci i hasło. Ctrl+C anuluje wpisywanie; interpunkcja i litery poleceń są zwykłymi znakami.
+
+Cykl strojenia zakończony
+Strojenie nieudane lub tuner wyłączony
+Wynik strojenia niepotwierdzony
+Przekroczono czas; wysłano zatrzymanie
+Nie potwierdzono zatrzymania strojenia

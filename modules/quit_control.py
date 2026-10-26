@@ -3,7 +3,7 @@ from modules import chat_int
 
 
 def confirm(root, language, read_key):
-    prompt = chat_int.label(root, language, 'l352', 'Quit YAC? y Yes; n or q Cancel.')
+    prompt = chat_int.label(root, language, 'l352', 'Quit YAC? y/n')
     chat_int.show_response(prompt)
     while True:
         try:

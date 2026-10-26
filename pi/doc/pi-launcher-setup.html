@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raspberry Pi console launcher — YAC documentation</title><style>
+:root { color-scheme: light dark; font: 120%/1.65 system-ui, sans-serif; }
+body { max-width: 76ch; margin: auto; padding: 1rem; }
+a { text-decoration: underline; text-underline-offset: .15em; }
+a:focus-visible { outline: .2rem solid currentColor; outline-offset: .2rem; }
+pre { padding: 1rem; border: 1px solid; white-space: pre-wrap; overflow-wrap: anywhere; }
+code { font-size: 1em; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid; padding: .5rem; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+h1, h2, h3, h4 { line-height: 1.3; }
+@media print { nav, .skip { display: none; } body { max-width: none; } }
+</style></head>
+<body><a class="skip" href="#main">Skip to main content</a>
+<nav aria-label="Document navigation"><p><a href="index.html">All documents</a></p><p>On this page:</p><ul><li><a href="#section-2">Install and test YAC first</a></li><li><a href="#section-3">Install the Pi launcher</a></li><li><a href="#section-4">Configure audio</a></li><li><a href="#section-5">Allow confirmed shutdown</a></li><li><a href="#section-6">Enable console automatic login and startup</a></li><li><a href="#section-7">Recovery and current limits</a></li></ul></nav>
+<main id="main" tabindex="-1"><h1 id="section-1">Raspberry Pi console launcher</h1>
+<p>For Raspberry Pi OS Lite based on Debian 13. Run the commands as the normal
+account that will automatically log in, using sudo only where shown.</p>
+<h2 id="section-2">Install and test YAC first</h2>
+<p>From the source folder copied to the Pi:</p>
+<pre><code class="language-sh">sudo apt install python3-venv alsa-utils
+sh install-yac.sh
+~/.local/yac/run-yac
+</code></pre>
+<p>The installer normally installs into <code>~/.local/yac</code>. Check language, name,
+radio discovery and BRLTTY access before enabling automatic startup. Do not
+copy a Windows <code>.venv</code> to the Pi; create the environment on the Pi.</p>
+<h2 id="section-3">Install the Pi launcher</h2>
+<p>From that same source folder:</p>
+<pre><code class="language-sh">mkdir -p ~/.local/bin ~/.config/yac
+install -m 755 pi-launcher.py ~/.local/bin/yac-pi
+install -m 644 pi_audio.py ~/.local/bin/pi_audio.py
+cp -n pi/doc/pi-launcher.ini.example ~/.config/yac/pi-launcher.ini
+</code></pre>
+<p>Edit <code>~/.config/yac/pi-launcher.ini</code> if necessary. If not using the source
+installer, set <code>yac_command</code> to an executable shell script which changes to
+your YAC folder and runs its Pi Python environment&#39;s <code>python yac.py</code>.</p>
+<h2 id="section-4">Configure audio</h2>
+<p>The Pi audio beta adds first-run spoken output selection. Install its root
+helper and permissions using <code>sh pi/install-pi-beta.sh</code> from the special beta
+package. See <a href="pi-audio-beta.html">Pi audio beta setup</a> for the current procedure.
+The following card/control settings are optional overrides after selection.</p>
+<p>Leave <code>alsa_control</code> empty to use existing audio settings. To make the launcher
+set a level, identify and test the actual output first:</p>
+<pre><code class="language-sh">aplay -l
+amixer scontrols
+</code></pre>
+<p>For a particular card use <code>amixer -c CARD scontrols</code>. Put that card&#39;s identifier
+in <code>alsa_card</code> and the exact simple mixer control name in <code>alsa_control</code>.
+For example, only if your device lists a <code>PCM</code> control:</p>
+<pre><code class="language-ini">alsa_card = default
+alsa_control = PCM
+volume = 70
+</code></pre>
+<p>The launcher attempts to set and unmute that control before starting YAC.
+It continues if this fails. Some outputs have no software volume control;
+70% is not a guarantee of an audible or appropriate speaker level. This does
+not select HDMI/USB output, test speakers, or change BRLTTY&#39;s own volume.
+After selecting and testing your desired ALSA settings, you can save them:</p>
+<pre><code class="language-sh">sudo alsactl store
+</code></pre>
+<p>ALSA state restoration at boot and the launcher&#39;s explicit volume setting are
+separate: a configured launcher volume overrides the restored level on launch.
+Set <code>access_mode = braille</code> to bypass launcher audio changes. This setting does
+not yet switch BRLTTY speech on/off; use BRLTTY preferences for that.</p>
+<h2 id="section-5">Allow confirmed shutdown</h2>
+<p>First test whether your account already has permission:</p>
+<pre><code class="language-sh">sudo -n -l
+command -v systemctl
+</code></pre>
+<p>If it does not already allow passwordless shutdown, use <code>sudo visudo -f /etc/sudoers.d/yac-poweroff</code> and add the following as ONE line, replacing
+<code>YOURUSER</code> with your real account name and using the verified systemctl path:</p>
+<pre><code class="language-text">YOURUSER ALL=(root) NOPASSWD: /usr/bin/systemctl poweroff
+</code></pre>
+<p>Do not grant the entire launcher passwordless root access. Test manually:</p>
+<pre><code class="language-sh">~/.local/bin/yac-pi
+</code></pre>
+<p>Currently, after a normal YAC exit, the launcher asks <code>Shut down the Pi? Y/N:</code>.
+Type the letter and Enter. N returns to the shell. Y requests poweroff.
+A YAC error or interruption returns to the shell without requesting shutdown.
+This temporary English prompt will move into YAC&#39;s translated interface when
+appliance mode is implemented.</p>
+<h2 id="section-6">Enable console automatic login and startup</h2>
+<p>Run <code>sudo raspi-config</code>. Choose console/text boot and enable console automatic
+login for this account (wording varies by release). The console boot target is
+<code>multi-user.target</code>; a separate YAC system service is not required.</p>
+<pre><code class="language-sh">systemctl get-default
+</code></pre>
+<p>If necessary set the next boot&#39;s default explicitly:</p>
+<pre><code class="language-sh">sudo systemctl set-default multi-user.target
+</code></pre>
+<p>For the default Bash login shell, check which login file exists. Bash reads
+the first available of <code>~/.bash_profile</code>, <code>~/.bash_login</code>, <code>~/.profile</code>.
+Edit that active file; normally Raspberry Pi OS uses <code>~/.profile</code>. Append:</p>
+<p><strong>START COPYING BELOW. Copy only the three shell lines, from <code>if</code> through <code>fi</code>.</strong>
+If reading the raw Markdown file, do not copy the opening three backticks and
+<code>sh</code> language label, or the closing three backticks. Those mark formatting;
+they are not commands to put in your profile.</p>
+<pre><code class="language-sh">if [ -z &quot;${SSH_CONNECTION:-}&quot; ] &amp;&amp; [ &quot;$(tty 2&gt;/dev/null)&quot; = /dev/tty1 ] &amp;&amp; [ ! -e &quot;$HOME/.config/yac/disable-autostart&quot; ]; then
+    python3 &quot;$HOME/.local/bin/yac-pi&quot;
+fi
+</code></pre>
+<p><strong>STOP COPYING. The <code>fi</code> line above is the last line to copy.</strong>
+Do not copy these instructions or add a separate <code>sh</code> line or backticks.</p>
+<p>Do not use <code>exec</code>: retaining the login shell provides recovery after a failure.
+Do not add this to <code>.bashrc</code>, which would start it in ordinary subshells too.
+Reboot once ready. BRLTTY should remain enabled and configured independently.</p>
+<h2 id="section-7">Recovery and current limits</h2>
+<p>From SSH or another console, disable automatic YAC startup with:</p>
+<pre><code class="language-sh">touch ~/.config/yac/disable-autostart
+</code></pre>
+<p>Remove that file to reenable it. The same user&#39;s settings directory is needed.
+You can also remove the login-file block. Keep SSH access available while testing.</p>
+<p>Implemented here: console login entry point, optional ALSA startup level,
+direct handover to current YAC, and confirmed shutdown after normal exit.
+The updated YAC source adds <code>so</code> Speakup speech options through the image
+helper; <code>sb</code> mode switching is reserved and not yet adapted to Speakup; see <a href="pi-speech-options.html">Pi speech options and setup</a>.
+<code>ss</code> remains tuning step. The launcher sets the image-only environment flag.
+Not implemented yet: five-minute inactivity timer, four-minute translated warning, <code>w</code> cancellation,
+or appliance-mode exit protocol. In particular this launcher will NOT shut
+down automatically after five minutes. Those require changes inside YAC so
+actual command activity, translations and resource cleanup remain correct.</p>
+<p>Before hosting an image, complete the mandatory image licensing/source review
+recorded in TODO.md.</p>
+<p>References: <a href="https://www.raspberrypi.com/documentation/computers/configuration.html">Raspberry Pi configuration</a>
+and <a href="https://freedesktop.org/software/systemd/man/latest/systemd.html">systemd targets</a>.</p>
+</main>
+<footer><p>YAC documentation. <a href="index.html">All documents</a></p></footer>
+</body></html>

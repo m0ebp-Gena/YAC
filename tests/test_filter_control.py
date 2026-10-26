@@ -40,8 +40,8 @@ class FilterTests(unittest.TestCase):
             def exchange(radio, command):
                 commands.append(command)
                 if command != f'SH{side};':
-                    self.assertEqual(command, f'SH{side}021;')
-                    value[0] = '21'
+                    self.assertRegex(command, rf'^SH{side}0[0-9]{{2}};$')
+                    value[0] = command[-3:-1]
                 return f'SH{side}0{value[0]};'
             with patch.object(yac, '_cat_exchange', side_effect=exchange), \
                  patch.object(yac, '_current_mode_code', return_value='2'), \
@@ -49,9 +49,11 @@ class FilterTests(unittest.TestCase):
                 self.assertEqual(filters.adjust(yac, ROOT, radio, 'en', 1), 'Bandwidth 3200 Hz')
                 value[0] = '00'
                 commands.clear()
-                self.assertEqual(filters.adjust(yac, ROOT, radio, 'en'), 'Bandwidth default')
-                self.assertIn('Default width unknown', filters.adjust(yac, ROOT, radio, 'en', 1))
+                self.assertEqual(filters.adjust(yac, ROOT, radio, 'en'), 'Width Default')
                 self.assertTrue(all(cmd == f'SH{side};' for cmd in commands))
+                for direction, expected in ((1, 300), (-1, 4000)):
+                    value[0] = '00'
+                    self.assertEqual(filters.adjust(yac, ROOT, radio, 'en', direction), f'Bandwidth {expected} Hz')
             if model != '0761':
                 with patch.object(yac, '_current_mode_code', return_value='4'), \
                      patch.object(yac, '_yaesu_vfo_side', 1), \
@@ -70,16 +72,16 @@ class FilterTests(unittest.TestCase):
                 self.assertEqual(filters.adjust(yac, ROOT, radio, 'en', 1), 'Bandwidth 2500 Hz')
                 self.assertEqual(radio.serial.settings[b'\x1a\x03'], b'\x29')
                 radio.serial.reject_setting = True
-                self.assertEqual(filters.adjust(yac, ROOT, radio, 'en', 1), 'Setting change failed')
+                self.assertEqual(filters.adjust(yac, ROOT, radio, 'en', 1), 'Radio Error')
                 radio.serial.reject_setting = False
                 radio.serial.settings[b'\x1a\x03'] = b'\x0a'
-                self.assertEqual(filters.adjust(yac, ROOT, radio, 'en', 1), 'Bandwidth unknown')
+                self.assertEqual(filters.adjust(yac, ROOT, radio, 'en', 1), 'Radio Error')
             radio.serial.settings[b'\x1a\x03'] = b'\x49'
             with patch.object(yac, '_current_mode_code', return_value=2):
                 self.assertEqual(filters.adjust(yac, ROOT, radio, 'en', 1), 'Bandwidth 10000 Hz')
             with patch.object(yac, '_current_mode_code', return_value=5):
                 before = len(radio.serial.writes)
-                self.assertEqual(filters.adjust(yac, ROOT, radio, 'en', 1), 'Not supported')
+                self.assertEqual(filters.adjust(yac, ROOT, radio, 'en', 1), 'Not Supported')
                 self.assertEqual(len(radio.serial.writes), before)
 
     def test_kenwood_edges_keep_other_edge_and_width_is_separate(self):
@@ -98,7 +100,7 @@ class FilterTests(unittest.TestCase):
                 return name + state[name] + ';'
             with patch.object(yac, '_current_mode_code', return_value='2'), \
                  patch.object(yac, '_cat_exchange', side_effect=exchange):
-                self.assertEqual(filters.adjust(yac, ROOT, radio, 'en', 1), 'Use Low Cut l or Upper Cut u')
+                self.assertEqual(filters.adjust(yac, ROOT, radio, 'en'), 'Low Cut 300 Hz')
                 self.assertEqual(filters.adjust(yac, ROOT, radio, 'en', 1, 'l'), 'Low Cut 400 Hz')
                 self.assertEqual(state['SH'], '10')
                 self.assertEqual(filters.adjust(yac, ROOT, radio, 'en', 1, 'u'), 'Upper Cut 3400 Hz')
@@ -124,7 +126,7 @@ class FilterTests(unittest.TestCase):
                  patch.object(yac, '_current_mode_code', return_value='2'):
                 self.assertEqual(filters.adjust(yac, ROOT, radio, 'en', 1),
                                  'Bandwidth 600 Hz' if model == '023' else 'Bandwidth 1000 Hz')
-                self.assertEqual(filters.adjust(yac, ROOT, radio, 'en', 1, 'l'), 'Not supported')
+                self.assertEqual(filters.adjust(yac, ROOT, radio, 'en', 1, 'l'), 'Not Supported')
 
     def test_qmx_uses_menu_enabled_filters_not_read_only_fw(self):
         radio = self.radio('020')
@@ -150,7 +152,7 @@ class FilterTests(unittest.TestCase):
         for model in ('0761', '020', '023'):
             with patch.object(yac, '_current_mode_code', return_value='2'), \
                  patch.object(yac, '_cat_exchange', return_value='?;') as exchange:
-                self.assertEqual(filters.adjust(yac, ROOT, self.radio(model), 'en', 1), 'Bandwidth unknown')
+                self.assertEqual(filters.adjust(yac, ROOT, self.radio(model), 'en', 1), 'Radio Error')
                 self.assertTrue(all(call.args[1].endswith(';') for call in exchange.call_args_list))
                 self.assertFalse(any('=' in call.args[1] for call in exchange.call_args_list))
 
@@ -165,11 +167,11 @@ class FilterTests(unittest.TestCase):
         with patch.object(yac, '_current_mode_code', return_value='2'), \
              patch.object(yac, '_cat_exchange', side_effect=exchange):
             self.assertEqual(filters.adjust(yac, ROOT, radio, 'en', 1), 'Bandwidth 2900 Hz')
-            self.assertEqual(filters.adjust(yac, ROOT, radio, 'en', 1, 'u'), 'Not supported')
+            self.assertEqual(filters.adjust(yac, ROOT, radio, 'en', 1, 'u'), 'Not Supported')
         with patch.object(yac, '_current_mode_code', return_value='2'), \
              patch.object(yac, '_cat_exchange', return_value='SH0020;'):
             self.assertEqual(filters.adjust(yac, ROOT, self.radio('0761'), 'en', 1),
-                             'Setting change failed')
+                             'Radio Error')
 
     def test_edge_endpoint_cannot_cross_other_edge(self):
         replies = {'DA;':'DA0;', 'EX0280000;':'EX02800001;',
@@ -199,7 +201,7 @@ class FilterTests(unittest.TestCase):
                 for profile in feature['profiles'].values():
                     self.assertEqual(list(profile['values'].values()), sorted(profile['values'].values()))
         for lang in ('en','de','es','pl'):
-            for number in (65,82,83,147,148,149,150,151,152):
+            for number in (50,65,82,147,149,150,151):
                 self.assertTrue((ROOT/f'lang/{lang}/labels/l{number:03d}').read_text().strip())
 
 

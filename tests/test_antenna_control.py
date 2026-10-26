@@ -30,10 +30,10 @@ class AntennaTests(unittest.TestCase):
                 state[0]=''.join(old if new == '9' else new for old,new in zip(state[0],c[2:-1]))
             return 'AN'+state[0]+';'
         with patch.object(yac,'_cat_exchange',side_effect=exchange):
-            self.assertEqual(ant.operate(yac,ROOT,radio,'en'),'Transmit antenna 1, receive antenna RX input')
-            self.assertIn('Transmit antenna 2',ant.operate(yac,ROOT,radio,'en','x'))
+            self.assertEqual(ant.operate(yac,ROOT,radio,'en'),'Antennas, TX 1, RX RX input')
+            self.assertIn('Antennas, TX 2',ant.operate(yac,ROOT,radio,'en','x'))
             self.assertEqual(state[0],'111')
-            self.assertIn('receive antenna 2',ant.operate(yac,ROOT,radio,'en','r'))
+            self.assertIn('RX 2',ant.operate(yac,ROOT,radio,'en','r'))
         self.assertEqual(state[0],'101')
         self.assertIn('AN199;',commands)
         self.assertIn('AN909;',commands)
@@ -45,10 +45,10 @@ class AntennaTests(unittest.TestCase):
             if c != 'AN;': state[0]=c[2]
             return 'AN'+state[0]+';'
         with patch.object(ant.ts480_control,'variant',return_value='1'),patch.object(yac,'_cat_exchange',side_effect=exchange):
-            self.assertIn('Transmit antenna 2',ant.operate(yac,ROOT,radio,'en','x'))
-            self.assertEqual(ant.operate(yac,ROOT,radio,'en','r'),'Not supported')
+            self.assertIn('Antennas, TX 2',ant.operate(yac,ROOT,radio,'en','x'))
+            self.assertEqual(ant.operate(yac,ROOT,radio,'en','r'),'Not Supported')
         with patch.object(ant.ts480_control,'variant',return_value=None),patch.object(yac,'_cat_exchange') as cat:
-            self.assertEqual(ant.operate(yac,ROOT,radio,'en','x'),'Not supported')
+            self.assertEqual(ant.operate(yac,ROOT,radio,'en','x'),'Not Supported')
             cat.assert_not_called()
 
     def test_icom_main_and_rx_are_independent_with_readback(self):
@@ -64,10 +64,10 @@ class AntennaTests(unittest.TestCase):
             with patch.object(yac,'_civ_exchange',side_effect=read),patch.object(yac,'_civ_send',side_effect=write):
                 result=ant.operate(yac,ROOT,radio,'en','x')
                 if model == 'IC-7600':
-                    self.assertIn('Transmit antenna 2',result)
+                    self.assertIn('Antennas, TX 2',result)
                     self.assertEqual(state[0],b'\x01\x01')
                 else:
-                    self.assertEqual(result,'Not supported')
+                    self.assertEqual(result,'Not Supported')
                     self.assertEqual(sent,[])
                 ant.operate(yac,ROOT,radio,'en','r')
                 self.assertEqual(state[0][1],0)
@@ -93,46 +93,45 @@ class AntennaTests(unittest.TestCase):
 
     def test_ftx_receive_toggle_never_promotes_rx_only_port_to_tx(self):
         output,state,commands,history=self.ftx('r')
-        self.assertEqual(output,'Transmit antenna 1, receive antenna 2')
+        self.assertEqual(output,'Antennas, TX 1, RX 2')
         self.assertEqual(state,{'EX030704':'1','EX030703':'2'})
         output,state,commands,history=self.ftx('r','1','2')
-        self.assertEqual(output,'Transmit antenna 1, receive antenna 1')
+        self.assertEqual(output,'Antennas, TX 1, RX 1')
         for item in history:
             self.assertFalse(item['EX030703']=='0' and item['EX030704']=='1')
         for operation in ('1','2'):
             output,_,commands,_=self.ftx('x','1',operation)
-            self.assertEqual(output,'Not supported')
+            self.assertEqual(output,'Not Supported')
             self.assertTrue(all(c in {'PC;','EX030703;','EX030704;'} for c in commands))
-        self.assertIn('Select transmit antenna 1',self.ftx('r','1','0')[0])
+        self.assertIn('Select TX Ant 1',self.ftx('r','1','0')[0])
 
     def test_ftx_main_cycle_gates_and_failed_partial_change_reports_live_state(self):
-        self.assertEqual(self.ftx('x')[0],'Transmit antenna 2, receive antenna 2')
+        self.assertEqual(self.ftx('x')[0],'Antennas, TX 2, RX 2')
         for kwargs in ({'power':'PC1005;'}, {'frequency':'145.5'}):
             output,_,commands,_=self.ftx('x',**kwargs)
-            self.assertEqual(output,'Antenna routing unknown.')
+            self.assertEqual(output,'Not Supported')
             self.assertTrue(all(c in {'PC;','EX030703;','EX030704;'} for c in commands))
         output,state,_,_=self.ftx('r',reject='EX0307041;')
-        self.assertIn('Antenna change failed.',output)
-        self.assertIn('Transmit antenna 1, receive antenna 1',output)
+        self.assertIn('Radio Error',output)
 
     def test_unknown_and_rejected_reads_never_become_off_or_change(self):
         radio=self.cat('023')
         with patch.object(yac,'_cat_exchange',return_value='?;') as exchange:
-            self.assertEqual(ant.operate(yac,ROOT,radio,'en','x'),'Antenna routing unknown.')
+            self.assertEqual(ant.operate(yac,ROOT,radio,'en','x'),'Radio Error')
             self.assertEqual([c.args[1] for c in exchange.call_args_list],['AN;'])
         with patch.object(yac,'_cat_exchange',return_value='AN001;') as exchange:
-            self.assertIn('Antenna change failed.',ant.operate(yac,ROOT,radio,'en','x'))
+            self.assertIn('Radio Error',ant.operate(yac,ROOT,radio,'en','x'))
             self.assertIn('AN199;',[c.args[1] for c in exchange.call_args_list])
 
     def test_single_antenna_and_unsupported_radio_no_commands(self):
         for model in ('0761','0800','0840'):
             if model=='0840': continue
             with patch.object(yac,'_cat_exchange') as exchange:
-                self.assertEqual(ant.operate(yac,ROOT,self.cat(model),'en'),'Transmit antenna 1, receive antenna 1')
-                self.assertEqual(ant.operate(yac,ROOT,self.cat(model),'en','x'),'Not supported')
+                self.assertEqual(ant.operate(yac,ROOT,self.cat(model),'en'),'Antennas, TX 1, RX 1')
+                self.assertEqual(ant.operate(yac,ROOT,self.cat(model),'en','x'),'Not Supported')
                 exchange.assert_not_called()
         radio=RadioConnection(None,'test',115200,'CI-V','IC-9700','IC-9700',civ_address=162)
-        self.assertEqual(ant.operate(yac,ROOT,radio,'en'),'Not supported')
+        self.assertEqual(ant.operate(yac,ROOT,radio,'en'),'Not Supported')
 
     def test_menu_entry_help_back_and_command_passthrough(self):
         keys=iter(['h','q', 'y'])
@@ -153,7 +152,7 @@ class AntennaTests(unittest.TestCase):
             self.assertEqual(yac.main([]),0)
         control.assert_called_once()
         fields=lambda text:{f for _,f,_,_ in string.Formatter().parse(text) if f}
-        for number in range(260,265):
+        for number in (n for n in range(260,265) if n not in (262, 264)):
             english=(ROOT/f'lang/en/labels/l{number}').read_text(encoding='utf-8')
             for language in ('de','pl','es'):
                 self.assertEqual(fields(english),fields((ROOT/f'lang/{language}/labels/l{number}').read_text(encoding='utf-8')))

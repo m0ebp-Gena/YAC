@@ -7,3 +7,6 @@ IC-705 RTTY: najpierw wybierz RTTY. Używa jednoznacznie powiązanego portu USB 
 Przy błędzie startu sprawdź tryb, audio, porty i CAT. Szczegóły są w dzienniku debugowania. Dekoder nie nadaje i nie zmienia częstotliwości, trybu ani mocy.
 
 d potem a: konfiguracja audio odbioru; h wyjaśnia wybór i poziom.
+
+Nie można uruchomić dekodera. Sprawdź tryb i konfigurację; h to pomoc.
+Utracono wejście dekodera; zatrzymano odbiór. Sprawdź radio.

@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pi Wi-Fi setup and image cleanup — YAC documentation</title><style>
+:root { color-scheme: light dark; font: 120%/1.65 system-ui, sans-serif; }
+body { max-width: 76ch; margin: auto; padding: 1rem; }
+a { text-decoration: underline; text-underline-offset: .15em; }
+a:focus-visible { outline: .2rem solid currentColor; outline-offset: .2rem; }
+pre { padding: 1rem; border: 1px solid; white-space: pre-wrap; overflow-wrap: anywhere; }
+code { font-size: 1em; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid; padding: .5rem; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+h1, h2, h3, h4 { line-height: 1.3; }
+@media print { nav, .skip { display: none; } body { max-width: none; } }
+</style></head>
+<body><a class="skip" href="#main">Skip to main content</a>
+<nav aria-label="Document navigation"><p><a href="index.html">All documents</a></p><p>On this page:</p><ul><li><a href="#section-2">Install this beta</a></li><li><a href="#section-3">Use s w</a></li><li><a href="#section-4">Clear Wi-Fi before publishing the image</a></li><li><a href="#section-5">Verification status</a></li></ul></nav>
+<main id="main" tabindex="-1"><h1 id="section-1">Pi Wi-Fi setup and image cleanup</h1>
+<p><code>s w</code> opens Wi-Fi setup only when YAC is launched by the configured Pi launcher.
+It does not change networking on Windows, macOS or ordinary source launches.
+YAC startup and normal radio control remain usable without internet.</p>
+<h2 id="section-2">Install this beta</h2>
+<p>The refreshed special Pi beta ZIP includes the updated YAC source, the Wi-Fi
+module, its helper and the cleanup script. Quit YAC, extract into the existing
+beta folder with <code>unzip -o</code>, then run <code>sh pi/install-wifi-beta.sh</code> from that
+folder. This short installer updates an existing YAC and installs the Wi-Fi
+helper without repeating package installation or changing boot/audio setup.
+It preserves YAC preferences and launcher settings. Use the full
+<code>sh pi/install-pi-beta.sh</code> installer only for a fresh image.
+No individual Python files or service files need copying by hand.</p>
+<p>If YAC is already updated separately, <code>sh pi/install-wifi.sh</code> installs only the
+new helper, its narrow sudo permission and the image-builder cleanup command.
+Use the normal user account for these installers, not sudo before the script.</p>
+<h2 id="section-3">Use s w</h2>
+<ol>
+<li>Enter the two-letter country code where the Pi will operate. Examples:
+GB for the United Kingdom, DE for Germany, ES for Spain, PL for Poland.
+UK is also accepted and converted to GB. Blank Enter keeps an existing code.</li>
+<li>Enter the router&#39;s network name (SSID) exactly, including case and spaces.</li>
+<li>Enter the password and press Enter. For an open network, leave it blank.</li>
+<li>Review the country and network name. Space connects and saves, e edits,
+q returns without connecting. The password is not included in the review.</li>
+</ol>
+<p>During entry, punctuation and letters such as q are literal characters.
+Ctrl+C cancels an entry. Backspace uses the terminal&#39;s usual line editing.
+Password entry hides text and temporarily disables Speakup key echo; the
+previous key echo setting is restored on submission, cancellation or error.
+Screen-reader speech remains available for the rest of setup. If a process
+is forcibly killed during password entry, reboot restores normal boot settings;
+no password is shown in the transcript.</p>
+<p>The helper receives credentials through stdin, not shell commands or process
+arguments. NetworkManager stores the connection in a root-only keyfile in
+<code>/etc/NetworkManager/system-connections</code>. Credentials are not saved in YAC&#39;s INI
+or logs. YAC-created profiles have names beginning <code>YAC Wi-Fi</code> and filenames
+beginning <code>yac-wifi-</code>. A failed connection removes the new attempt&#39;s profile
+and attempts to reactivate the previous Wi-Fi connection. Existing saved
+networks are retained. The selected country remains set after a connection
+failure because it is the country the user specified for this hardware.</p>
+<p>This initial version uses the first detected Wi-Fi adapter and visible home
+networks: WPA/WPA2 Personal, WPA3 Personal and open networks. Hidden SSIDs,
+enterprise/802.1X, WEP and OWE networks require the system tools. Connection
+can take up to two minutes. “Connected” confirms the Wi-Fi connection, not
+internet access; s u checks internet separately. Changing Wi-Fi over an SSH
+session using that interface can disconnect the session; use the local console.</p>
+<h2 id="section-4">Clear Wi-Fi before publishing the image</h2>
+<p>At the local Pi console, run this single command. It asks you to type YES
+before making changes. Do not run it as part of ordinary user setup.</p>
+<p>Start copying the next line:</p>
+<pre><code class="language-sh">sudo /usr/local/sbin/yac-image-clear-wifi
+</code></pre>
+<p>End copying at the command above.</p>
+<p>It removes ALL saved NetworkManager Wi-Fi profiles, including connections
+created outside YAC, disables Wi-Fi, and clears the saved WLAN country so the
+next user can configure their own. Ethernet profiles are preserved. If boot
+seed files appear to contain Wi-Fi configuration, the script names them for
+review without printing their contents. Those seed files could recreate a
+connection and are not silently edited. Cleanup reports incomplete status
+when such review remains.</p>
+<p>This command cleans Wi-Fi configuration. Personal identity, SSH keys, history,
+logs, audio preferences and licensing/source checks are separate image-release
+tasks. Do not configure personal Wi-Fi again after cleanup before capturing
+the image. Check offline boot and s w country/connection setup on a fresh copy.</p>
+<h2 id="section-5">Verification status</h2>
+<p>Local automated tests cover cancellation, literal password characters, platform
+boundaries, country/input validation, key echo restoration, profile encoding,
+failed-connection rollback and cleanup&#39;s Wi-Fi-only profile selection. Real
+Pi Wi-Fi setup, persistence after reboot and publication cleanup need hardware
+testing before release.</p>
+</main>
+<footer><p>YAC documentation. <a href="index.html">All documents</a></p></footer>
+</body></html>

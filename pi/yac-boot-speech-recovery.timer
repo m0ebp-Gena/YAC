@@ -1,0 +1,10 @@
+[Unit]
+Description=Recover Speakup after an incomplete YAC startup
+
+[Timer]
+OnBootSec=120
+AccuracySec=1
+Unit=yac-boot-speech-recovery.service
+
+[Install]
+WantedBy=timers.target

@@ -7,3 +7,6 @@ IC-705 RTTY: seleccione RTTY primero. Usa el puerto USB B asociado de forma ineq
 Si no inicia, revise modo, audio, puertos y CAT. El registro de depuración tiene detalles. No transmite ni cambia frecuencia, modo o potencia.
 
 d luego a: configurar audio de recepción; h explica selección y nivel.
+
+No se pudo iniciar el decodificador. Revise modo y configuración; h para ayuda.
+Entrada perdida; captura detenida. Revise los ajustes de la radio.

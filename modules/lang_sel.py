@@ -13,6 +13,7 @@ import re
 import sys
 import tempfile
 from pathlib import Path
+from modules.ini_settings import IniError
 
 
 LANGUAGE_CODES = ("en", "de", "pl", "es")
@@ -32,6 +33,14 @@ def read_label(root: Path, language: str, label_id: str) -> str:
 
 
 def set_language(ini_path: Path, language: str) -> None:
+    from modules.ini_settings import save_error
+    try:
+        _write_language(ini_path, language)
+    except (OSError, UnicodeError) as error:
+        save_error(ini_path, error)
+
+
+def _write_language(ini_path: Path, language: str) -> None:
     """Update [yac] lang= while preserving all other INI content."""
     if ini_path.exists():
         with ini_path.open("r", encoding="utf-8-sig", newline="") as ini_file:
@@ -116,7 +125,9 @@ def read_key(idle_callback=None) -> str:
         raise RuntimeError("YAC language selection requires an interactive terminal.")
     previous_settings = termios.tcgetattr(descriptor)
     try:
-        tty.setraw(descriptor)
+        # The default TCSAFLUSH discards presses queued while a radio command
+        # was running. Keep them for the next read instead.
+        tty.setraw(descriptor, termios.TCSANOW)
         if idle_callback is not None:
             import select
             # Idle callbacks may print status. Preserve terminal output newline
@@ -139,7 +150,7 @@ def show_language_menu(root: Path) -> str | None:
     for code in LANGUAGE_CODES:
         names[code] = read_label(root, code, "l000")
         prompts[code] = read_label(root, code, "l002")
-        confirmations[code] = read_label(root, code, "l005")
+        confirmations[code] = read_label(root, code, "l007")
 
     choices = {str(number): code for number, code in enumerate(LANGUAGE_CODES, start=1)}
     while True:
@@ -158,7 +169,7 @@ def show_language_menu(root: Path) -> str | None:
                 print(f"{names[selected]}: {confirmations[selected]}", end="", flush=True)
                 while True:
                     confirm_key = read_key()
-                    if confirm_key == " ":
+                    if confirm_key.casefold() == "y":
                         print(flush=True)
                         return selected
                     if confirm_key.casefold() == "n":
@@ -188,7 +199,7 @@ def main() -> int:
             read_label(root, code, "l000")
             read_label(root, code, "l002")
             read_label(root, code, "l025")
-            read_label(root, code, "l005")
+            read_label(root, code, "l007")
     except OSError as error:
         print(f"Could not read YAC language labels: {error}", file=sys.stderr)
         return 1
@@ -204,9 +215,8 @@ def main() -> int:
             raise SystemExit(0)
         try:
             set_language(ini_path, selected)
-        except OSError as error:
+        except (OSError, IniError):
             print(read_label(root, selected, "l025"), file=sys.stderr)
-            print(f"{ini_path}: {error}", file=sys.stderr)
             return 1
         clear_console()
         return 0

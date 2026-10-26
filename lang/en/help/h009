@@ -1,10 +1,10 @@
-Settings: a AGC; m Mic Gain; p Power; s Step Size; t Tuner; v VFO/receiver; e Speech Processor. q returns and announces Back. h reads this help.
+Settings: a AGC; m Mic Gain; p Power; s Step Size; t Tuner; v VFO/receiver; e Speech Processor. q returns and announces Back, or Done after AGC selection. h reads this help.
 
-a selects the next AGC setting and announces the confirmed choice. Fast recovers sooner after a strong signal; Slow holds gain reduction longer. Choose by listening. Off allows larger changes in received volume. No transmission is needed.
+s a reads the current AGC setting without changing it. Another a selects the next AGC setting and announces the confirmed choice. q finishes and announces Done. Fast recovers sooner after a strong signal; Slow holds gain reduction longer. Choose by listening. Off allows larger changes in received volume. No transmission is needed.
 
 m opens guided microphone adjustment. Follow the preparation prompts; h inside explains the test, keys and ALC feedback. You operate PTT yourself.
 
-p announces current power and the entry range. Type whole watts and press Enter; blank Enter cancels. A confirmed change announces the entered value followed by Set. This is a setting, not measured transmitted power. h then Enter gives power help.
+p announces current power and the entry range. Type whole watts and press Enter; blank Enter cancels. A confirmed change announces the entered value followed by Set. This is a setting, not measured transmitted power. h then Enter gives power help. Blank Enter or q then Enter cancels and returns to Settings.
 
 s opens tuning step entry for the current mode. t cycles tuner choices and announces the confirmed setting; it does not start tuning. Leave Settings and press t to start a tuning cycle. v selects the supported VFO or receiver and reports the selection.
 
@@ -13,10 +13,16 @@ e opens Speech Processor and reads its settings. e inside toggles it; full stop 
 Model-specific choices, limits and exceptions are in doc/supported-radios: open the text file named for your radio. READ-ME.txt explains these notes. Spoken responses are also written as text for the braille display. Unsupported controls and failed or unknown readings are reported.
 
 
-s b: h Help; b cycles Speech and braille, Braille only, Speech only, like the offset selector. Browsing does not change the mode. Full stop or comma applies and saves the selected mode. Braille only mutes Speakup. Speech choices require its service to be running. Attached braille remains available in every mode. q returns; unapplied browsing is discarded.
-s o: h Help; o next option; . increase; , decrease; q Back. t Test; d Defaults. Changes apply and save immediately.
-h Help; o cycles Rate, Volume, Pitch, Punctuation, like the offset selector. Rate is selected on entry. Full stop increases; comma decreases. Each adjustment applies and saves immediately; q keeps changes and returns. t Test; d immediately applies YAC defaults: rate 2, volume 5, pitch 5, punctuation Some. Rate and pitch range 0 to 9, volume 1 to 9. Punctuation: None, Some, Most, All.
+s b: full stop or b selects the next mode; comma the previous. q applies, saves and returns. h reads help. Braille only silences Speakup; connected braille remains available in every mode.
 
-s u: Update YAC. Space closes the radio connection and opens the updater; q returns to Settings.
+s o: r Rate; v Volume; p Pitch; u Punctuation; full stop increases; comma decreases; t Test; d Defaults; h Help; q returns. Changes apply and save immediately.
+
+s u: Update YAC. Shows help, then Looking. No Internet or No Update returns to Settings. Update Found asks Read Notes Y/N?, then Update Y/N?. y accepts; n skips notes or declines installation; q returns. Long notes use Space for the next page and q to leave.
 
 s w: Wi-Fi setup is available only on the Raspberry Pi image. Use your operating system Wi-Fi settings here. Wi-Fi setup. Country, network name and password. Ctrl+C cancels entry; punctuation and command letters are literal.
+
+Tuning cycle finished
+Tune failed or tuner bypassed
+Tune result unconfirmed
+Tuning timed out; stop requested
+Tuning stop could not be confirmed

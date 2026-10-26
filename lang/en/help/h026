@@ -1,1 +1,20 @@
-Wi-Fi setup: enter the two-letter country code, for example GB. UK is accepted as GB; blank Enter keeps the current country. Enter the SSID exactly as configured, then the password. Password entry is hidden and Speakup key echo is temporarily off. Blank password is for an open network. Command letters and punctuation in SSID/password are literal. Ctrl+C cancels entry. After password entry: e returns to the fields for editing; q quits without changing the connection; Space connects using the entered details and saves the connection; h repeats this help. A connection may take up to two minutes. Connected confirms Wi-Fi, not internet access. At Country?, h then Enter opens this help.
+Wi-Fi setup: s w from the main menu. Nothing is applied until y confirms connection at Continue Y/N?. n returns to edit the details; q cancels.
+
+Aborted: entry was cancelled or the network name was empty. Entered details are discarded; return to Settings. Repeat w there, or s w from the main menu, to try again.
+Connected: Wi-Fi connected and saved; this does not confirm internet access.
+Connecting: connection is in progress; it may take two minutes.
+Country: enter the two-letter code. UK is accepted as GB. Blank Enter keeps the current country, if available.
+Ctrl+C: cancel from any field. At confirmation, q also cancels.
+e: at confirmation, return to the fields for editing.
+h: at Country, type h then Enter for help; at confirmation, press h. Help returns to the same prompt.
+Invalid: an entry could not be accepted. The request ends and entered details are discarded. Return to Settings; repeat w to try again with valid details.
+Network name: enter the exact SSID, 1 to 32 UTF-8 bytes, without control characters. Blank Enter aborts.
+Password: entry is hidden; Speakup key echo is temporarily off and restored afterwards. Blank means an open network, not cancellation. Letters such as h and q, spaces and punctuation are literal in network names and passwords.
+y: at Continue Y/N?, connect and save. n returns to edit; q cancels. Until then, cancelling or invalid entry leaves the connection unchanged.
+
+Wi-Fi setup is unavailable. Check the image helper, permissions and NetworkManager.
+No Wi-Fi adapter was found.
+Could not set the WLAN country.
+Network not found. Check the exact SSID, router power and signal.
+Connection failed. Check the password and signal. The previous saved network has been kept.
+Private password entry could not be prepared. No password has been requested.

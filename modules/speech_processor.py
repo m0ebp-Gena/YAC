@@ -77,6 +77,30 @@ def supported_mode(spec, mode):
     return mode in ({'LSB', 'USB', 'AM', 'FM'} if spec['family'] == 'kenwood' else {'LSB', 'USB'})
 
 
+def reveal_level(yac, root, radio, spec, original, entry_context):
+    """Read a hidden retained level in receive, leaving processing Off."""
+    if context(yac, root, radio) != entry_context or mic_gain.tx_state(yac, radio, spec) is not False:
+        return None
+    revealed = None
+    disabled = False
+    try:
+        if set_status(yac, radio, spec, True):
+            state = read(yac, radio, spec)
+            if state is not None and state[0]:
+                revealed = (False, state[1])
+    finally:
+        # Remember the recoverable baseline even if switching Off fails.
+        radio._processor_pending = {'original': revealed or original, 'context': entry_context}
+        if context(yac, root, radio) == entry_context and mic_gain.tx_state(yac, radio, spec) is False:
+            if set_status(yac, radio, spec, False):
+                state = read(yac, radio, spec)
+                disabled = state is not None and state[0] is False
+    if not disabled:
+        return None
+    radio._processor_pending = None
+    return revealed
+
+
 def restore(yac, root, radio, spec, original, entry_context):
     """Do not send setters if already unchanged, context differs or TX is active."""
     if context(yac, root, radio) != entry_context or mic_gain.tx_state(yac, radio, spec) is not False:
@@ -91,6 +115,14 @@ def restore(yac, root, radio, spec, original, entry_context):
         return False
     if current[1] != original[1] and not set_levels(yac, radio, spec, original[1]):
         return False
+    if spec['family'] == 'yaesu' and original[0] is False:
+        if not set_status(yac, radio, spec, True):
+            return False
+        verified = read(yac, radio, spec) == (True, original[1])
+        if not set_status(yac, radio, spec, False):
+            return False
+        final = read(yac, radio, spec)
+        return verified and final is not None and final[0] is False
     if not set_status(yac, radio, spec, original[0]):
         return False
     return read(yac, radio, spec) == original
@@ -117,27 +149,38 @@ def control(yac, root, radio, language, read_key, watch):
         say('l129')
         return
     entry_context = context(yac, root, radio)
-    if entry_context is None or not supported_mode(spec, entry_context[0]):
-        say('l240')
+    if entry_context is None:
+        chat_int.show_response(yac._radio_error(root, radio, language))
+        return
+    if not supported_mode(spec, entry_context[0]):
+        say('l129')
         return
     original = read(yac, radio, spec)
     if original is None:
-        say('l239')
+        chat_int.show_response(yac._radio_error(root, radio, language))
         return
     if mic_gain.tx_state(yac, radio, spec) is not False:
         say('l217')
         return
-    # Zero while Off may conceal a retained Yaesu level, which cannot be undone.
     pending = getattr(radio, '_processor_pending', None)
-    if not pending and spec['family'] == 'yaesu' and original[1] == (0,):
-        say('l244')
-        return
+    if not pending and spec['family'] == 'yaesu' and original == (False, (0,)):
+        try:
+            revealed = reveal_level(yac, root, radio, spec, original, entry_context)
+        except (RuntimeError, OSError):
+            revealed = None
+        if revealed is None:
+            if getattr(radio, '_processor_pending', None):
+                say('l003')
+            else:
+                chat_int.show_response(yac._radio_error(root, radio, language))
+            return
+        original = revealed
     if pending:
         if pending['context'] != entry_context:
-            say('l242')
+            say('l003')
             return
         original = pending['original']
-        say('l242')
+        say('l003')
     selected = 0
     peak = mic_gain.Peak()
     monitoring = False
@@ -148,27 +191,39 @@ def control(yac, root, radio, language, read_key, watch):
         say('l232' if enabled else 'l233')
         value = round(levels[selected] * 10 / 255, 1) if spec['family'] == 'icom' else levels[selected]
         say(('l235' if selected else 'l234') if spec['family'] == 'kenwood' else 'l236', value=value)
-    def safe():
-        return (not watch.lost and context(yac, root, radio) == entry_context
-                and mic_gain.tx_state(yac, radio, spec) is False)
+    def context_error(actual):
+        if actual is None:
+            return 'l050'
+        for index, token in enumerate(('l001', 'l005', 'l009')):
+            if actual[index] != entry_context[index]:
+                return token
+        return None
+
+    def report(token):
+        if token == 'l050':
+            chat_int.show_response(yac._radio_error(root, radio, language))
+        else:
+            say(token)
     def tick():
         nonlocal next_sample, changed_context
         if not monitoring or watch.lost or changed_context or monotonic() < next_sample:
             return
         next_sample = monotonic() + 0.3
-        if context(yac, root, radio) != entry_context:
+        error = context_error(context(yac, root, radio))
+        if error:
             changed_context = True
+            report(error)
             return
         tx = mic_gain.tx_state(yac, radio, spec)
         use_alc = spec['family'] == 'kenwood' and selected == 1
         meter = (mic_gain.alc(yac, radio, spec) if use_alc else compression(yac, radio, spec)) if tx else None
         result = peak.sample(tx, meter)
         if result == 'unknown':
-            say('l239')
+            say('l214' if use_alc else 'l239')
         elif result is not None:
             say('l213' if use_alc else 'l238', value=result)
     describe(read(yac, radio, spec) or original)
-    say('l237')
+    chat_int.show_response(help_int.get_help(root, language, 'h010'))
     try:
         while not watch.lost:
             key = read_key(idle_callback=tick).casefold() if monitoring else read_key().casefold()
@@ -177,56 +232,57 @@ def control(yac, root, radio, language, read_key, watch):
             if key in {'q', 'n', '\x03', '\x04'}:
                 if key == 'q':
                     radio._processor_pending = None
-                    say('l243')
                     return
                 if not getattr(radio, '_processor_pending', None) or restore(yac, root, radio, spec, original, entry_context):
                     radio._processor_pending = None
                     say('l241')
                     return
-                say('l242')
+                say('l003')
                 continue
             if key == 'h':
                 chat_int.show_response(help_int.get_help(root, language, 'h010'))
             elif key == ' ':
-                say('l209')
+                chat_int.show_response(help_int.get_help(root, language, 'h010'))
+                say('l007')
                 while True:
                     answer = read_key().casefold()
                     if watch.lost:
                         break
-                    if answer == 'n':
-                        if not getattr(radio, '_processor_pending', None) or restore(yac, root, radio, spec, original, entry_context):
-                            radio._processor_pending = None
-                            say('l241')
-                            return
-                        say('l242')
-                        break
-                    if answer == 'q':
+                    if answer in {'n', 'q'}:
                         break
                     if answer == 'h':
                         chat_int.show_response(help_int.get_help(root, language, 'h010'))
-                    if answer == ' ':
+                    if answer == 'y':
                         monitoring = True
                         peak.reset()
-                        say('l245')
+                        say('l212')
                         break
             elif key in {'i', 'o'} and spec['family'] == 'kenwood':
                 selected = 0 if key == 'i' else 1
                 peak.reset()
                 state = read(yac, radio, spec)
                 if state is None:
-                    say('l239')
+                    chat_int.show_response(yac._radio_error(root, radio, language))
                 else:
                     describe(state)
             elif key == 'v':
                 state = read(yac, radio, spec)
-                say('l239') if state is None else describe(state)
+                chat_int.show_response(yac._radio_error(root, radio, language)) if state is None else describe(state)
             elif key == 'e' or key in {yac.UP_KEY, yac.DOWN_KEY}:
-                if not safe():
-                    say('l246')
+                error = context_error(context(yac, root, radio))
+                if error:
+                    report(error)
+                    break
+                transmitting = mic_gain.tx_state(yac, radio, spec)
+                if transmitting is None:
+                    report('l050')
+                    break
+                if transmitting:
+                    say('l217')
                     continue
                 state = read(yac, radio, spec)
                 if state is None:
-                    say('l239')
+                    chat_int.show_response(yac._radio_error(root, radio, language))
                     continue
                 if key != 'e' and not state[0]:
                     say('l233')
@@ -248,7 +304,7 @@ def control(yac, root, radio, language, read_key, watch):
                 actual = read(yac, radio, spec)
                 verified = actual is not None and (actual[0] == target[0] if key == 'e' and spec['family'] == 'yaesu' else actual == target)
                 if not ok or not verified:
-                    say('l131')
+                    chat_int.show_response(yac._radio_error(root, radio, language))
                 else:
                     peak.reset()
                     describe(actual)
@@ -262,7 +318,7 @@ def control(yac, root, radio, language, read_key, watch):
                     radio._processor_pending = None
                     say('l241')
                 else:
-                    say('l242')
+                    say('l003')
             except (OSError, RuntimeError):
-                say('l242')
+                say('l003')
         chat_int.show_done(root, language)

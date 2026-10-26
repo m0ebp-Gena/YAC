@@ -1,4 +1,4 @@
-Ganancia de micrófono: lee la secuencia antes de continuar. Espacio confirma preparación; q cancela; h abre ayuda.
+Ganancia de micrófono: lee el procedimiento antes de continuar. En Continue Y/N?, y continúa; n o q cancela y vuelve a Ajustes. h muestra esta ayuda.
 
 Conecta una antena adaptada o carga artificial adecuada. YAC no comprueba la carga. Menor potencia no hace segura una carga inadecuada. Ajusta tú la potencia y desactiva el procesador de voz. YAC solo cambia ganancia de micrófono; no cambia potencia, frecuencia ni modo, ni inicia transmisión.
 
@@ -7,3 +7,4 @@ Empieza en recepción. YAC anuncia ganancia actual. Mantén PTT, habla normalmen
 Con PTT suelto, punto aumenta ganancia y coma disminuye. Cada cambio confirmado anuncia ganancia y borra el pico. Se detiene en los extremos. v lee ganancia; Espacio borra el pico; h lee ayuda. Suelta PTT y pulsa q para volver a Ajustes con Atrás, conservando ganancia. Restaura tú los ajustes previos que cambiaste.
 
 Modos, escalas, medidor y zonas ALC de cada modelo están en el archivo de tu radio en doc/supported-radios.
+Cuando es necesario, YAC selecciona el medidor de control automático de nivel y confirma su lectura. Al salir en recepción restaura la selección anterior conocida. Si falla, conserva la restauración pendiente para la próxima entrada.

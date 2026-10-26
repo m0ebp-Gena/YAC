@@ -33,8 +33,10 @@ Icom IC-705, IC-7300, IC-7300MK2, IC-7600, IC-9700: CI-V 14 0B gain (BCD
 0-255), 1C 00 RX/TX read, 15 13 ALC read. Native gain steps are 3, displayed
 as rounded percentages. CAT gain steps are 1. Endpoints stop without wrapping.
 TS-590SG and positively identified TS-480: MG gain (0-100), IF RX/TX status,
-RM read. TS-590SG ALC uses 0-30 dots; TS-480 uses 0-10 dots. No RM3 meter
-selection is sent; if ALC is not returned, the user selects that meter.
+RM read. TS-590SG ALC uses 0-30 dots; TS-480 uses 0-10 dots. If ALC is
+not already returned, YAC selects it and confirms the reading. A known previous
+meter selection is restored on exit while receiving. Failed restoration is
+reported; a lost connection may prevent restoration.
 ID020 without verified TY identification (including QMX) remains unsupported.
 
 SSB is supported. Yaesu/Icom AM can provide raw ALC, with Icom audio clarity

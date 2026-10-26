@@ -7,7 +7,7 @@ START
    extracted folder. No separate installation or Python is needed.
 3. Maximise the terminal: Alt+Space, release, then x.
 4. Follow the language and name/callsign prompts. Choose a language number
-   and press Space to confirm: English 1, German 2, Polish 3, Spanish 4.
+   and press y to confirm: English 1, German 2, Polish 3, Spanish 4.
 
 RADIO CONNECTION
 Connect and power on your radio. Close other programs using its COM port.

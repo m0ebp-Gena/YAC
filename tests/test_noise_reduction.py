@@ -17,15 +17,15 @@ ROOT=Path(__file__).resolve().parents[1]
 class NoiseReductionTests(unittest.TestCase):
     def test_demo_toggles_levels_off_and_endpoints(self):
         radio=create_dummy_radio()
-        self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'Noise Reduction On')
-        self.assertEqual(nr.operate(yac,ROOT,radio,'en',direction=1),'Noise Reduction Level 6')
-        self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'Noise Reduction Off')
-        self.assertEqual(nr.operate(yac,ROOT,radio,'en',direction=1),'Noise Reduction Off')
+        self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'NR On')
+        self.assertEqual(nr.operate(yac,ROOT,radio,'en',direction=1),'NR Level 6')
+        self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'NR Off')
+        self.assertEqual(nr.operate(yac,ROOT,radio,'en',direction=1),'NR Off')
         self.assertEqual(radio.serial.nr_level,'06')
         radio.serial.noise_reduction='1'; radio.serial.nr_level='15'
-        self.assertEqual(nr.operate(yac,ROOT,radio,'en',direction=1),'Noise Reduction Level 15')
+        self.assertEqual(nr.operate(yac,ROOT,radio,'en',direction=1),'NR Level 15')
         radio.serial.nr_level='01'
-        self.assertEqual(nr.operate(yac,ROOT,radio,'en',direction=-1),'Noise Reduction Level 1')
+        self.assertEqual(nr.operate(yac,ROOT,radio,'en',direction=-1),'NR Level 1')
 
     def test_all_icom_wire_formats_percent_and_failures(self):
         for model,address in [('IC-705',0xA4),('IC-7300',0x94),('IC-7300MK2',0xB6),('IC-7600',0x7A),('IC-9700',0xA2)]:
@@ -33,18 +33,18 @@ class NoiseReductionTests(unittest.TestCase):
             serial.settings.update({b'\x16\x40':b'\x00',b'\x14\x06':b'\x01\x28'})
             radio=RadioConnection(serial,'test',115200,'CI-V',model,model,civ_address=address)
             with patch.object(yac,'_current_mode_code',return_value=1):
-                self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'Noise Reduction On')
+                self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'NR On')
                 self.assertEqual(serial.settings[b'\x16\x40'],b'\x01')
-                self.assertEqual(nr.operate(yac,ROOT,radio,'en',direction=1),'Noise Reduction Level 51%')
+                self.assertEqual(nr.operate(yac,ROOT,radio,'en',direction=1),'NR Level 51%')
                 self.assertEqual(serial.settings[b'\x14\x06'],b'\x01\x31')
                 serial.reject_setting=True
-                self.assertEqual(nr.operate(yac,ROOT,radio,'en',direction=1),'Noise Reduction change failed')
+                self.assertEqual(nr.operate(yac,ROOT,radio,'en',direction=1),'Radio Error')
                 serial.reject_setting=False
                 serial.settings[b'\x14\x06']=b'\x0a\x00'
-                self.assertEqual(nr.operate(yac,ROOT,radio,'en',direction=1),'Noise Reduction level unknown')
+                self.assertEqual(nr.operate(yac,ROOT,radio,'en',direction=1),'Radio Error')
                 serial.settings[b'\x16\x40']=b'\x02'
                 before=len(serial.writes)
-                self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'Noise Reduction status unknown')
+                self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'Radio Error')
                 self.assertEqual(len(serial.writes),before+1)
 
     def test_ftx_combined_levels_and_main_sub_memory(self):
@@ -56,12 +56,12 @@ class NoiseReductionTests(unittest.TestCase):
             if len(command)>4: values[side]=int(command[3:-1])
             return f'RL{side}{values[side]:02d};'
         with patch.object(yac,'_cat_exchange',side_effect=exchange),patch.object(yac,'_current_mode_code',return_value='2'),patch.object(yac,'_yaesu_vfo_side',0):
-            self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'Noise Reduction Off')
-            self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'Noise Reduction On')
+            self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'NR Off')
+            self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'NR On')
             self.assertEqual(values['0'],7)
-            self.assertEqual(nr.operate(yac,ROOT,radio,'en',direction=1),'Noise Reduction Level 8')
+            self.assertEqual(nr.operate(yac,ROOT,radio,'en',direction=1),'NR Level 8')
         with patch.object(yac,'_cat_exchange',side_effect=exchange),patch.object(yac,'_current_mode_code',return_value='2'),patch.object(yac,'_yaesu_vfo_side',1):
-            self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'Noise Reduction On')
+            self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'NR On')
             self.assertEqual(values['1'],1)
 
     def test_kenwood_nr1_auto_nr2_time_and_retained_type(self):
@@ -76,34 +76,34 @@ class NoiseReductionTests(unittest.TestCase):
                 if command!=prefix+';': state[prefix]=command[2:-1]
                 return prefix+state[prefix]+';'
             with patch.object(yac,'_current_mode_code',return_value='2'),patch.object(yac,'_cat_exchange',side_effect=exchange):
-                self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'Noise Reduction 1 On')
+                self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'NR 1 On')
                 self.assertEqual(nr.operate(yac,ROOT,radio,'en',direction=-1),
-                                 'Noise Reduction Auto' if model=='020' else 'Noise Reduction Level 1')
+                                 'NR Auto' if model=='020' else 'NR Level 1')
                 self.assertEqual(nr.operate(yac,ROOT,radio,'en',direction=1),
-                                 'Noise Reduction Level 1' if model=='020' else 'Noise Reduction Level 2')
+                                 'NR Level 1' if model=='020' else 'NR Level 2')
                 state.update(NR='2',RL='00')  # Changed using the radio controls.
                 self.assertEqual(nr.operate(yac,ROOT,radio,'en',direction=1),
-                                 'Noise Reduction Following Time 4 milliseconds')
+                                 'NR Follow 4 ms')
                 self.assertIn('RL01;',commands)
                 state['RL']='09'
                 self.assertEqual(nr.operate(yac,ROOT,radio,'en',direction=1),
-                                 'Noise Reduction Following Time 20 milliseconds')
-                self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'Noise Reduction Off')
-                self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'Noise Reduction 2 On')
+                                 'NR Follow 20 ms')
+                self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'NR Off')
+                self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'NR 2 On')
 
     def test_unknown_readback_unsupported_and_no_guessing(self):
         radio=create_dummy_radio()
         with patch.object(yac,'_current_mode_code',return_value='2'),patch.object(yac,'_cat_exchange',return_value='?;') as exchange:
-            self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'Noise Reduction status unknown')
+            self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'Radio Error')
             self.assertEqual(exchange.call_count,1)
         with patch.object(yac,'_current_mode_code',return_value='2'),patch.object(yac,'_cat_exchange',return_value='NR00;'):
-            self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'Noise Reduction change failed')
+            self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'Radio Error')
         qmx=RadioConnection(None,'test',115200,'CAT','020','QMX Plus')
         with patch.object(yac,'_cat_exchange',return_value='?;') as exchange:
-            self.assertEqual(nr.operate(yac,ROOT,qmx,'en',toggle=True),'Not supported')
+            self.assertEqual(nr.operate(yac,ROOT,qmx,'en',toggle=True),'Not Supported')
             self.assertTrue(all(c.args[1]=='TY;' for c in exchange.call_args_list))
         radio.serial.mode='4'
-        self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'Not supported')
+        self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'Not Supported')
 
     def test_kenwood_fm_does_not_restore_nr2(self):
         radio=RadioConnection(None,'test',38400,'CAT','023','TS-590SG')
@@ -115,7 +115,7 @@ class NoiseReductionTests(unittest.TestCase):
                 state[0]='1'
             return 'NR'+state[0]+';'
         with patch.object(yac,'_current_mode_code',return_value='4'),patch.object(yac,'_cat_exchange',side_effect=exchange):
-            self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'Noise Reduction 1 On')
+            self.assertEqual(nr.operate(yac,ROOT,radio,'en',toggle=True),'NR 1 On')
 
     def test_keyboard_nested_navigation_and_repeat_toggle(self):
         radio=create_dummy_radio()
@@ -126,8 +126,8 @@ class NoiseReductionTests(unittest.TestCase):
         self.assertEqual(radio.serial.nr_level,'05')
         self.assertEqual(radio.serial.noise_reduction,'1')
         self.assertEqual(radio.serial.gains['RG0'],255)
-        self.assertIn('Noise Reduction Off',output.getvalue())
-        self.assertIn('Noise Reduction Level 6',output.getvalue())
+        self.assertIn('NR Off',output.getvalue())
+        self.assertIn('NR Level 6',output.getvalue())
 
     def test_each_q_keeps_back_visible_until_the_next_key(self):
         radio = create_dummy_radio()
@@ -150,7 +150,7 @@ class NoiseReductionTests(unittest.TestCase):
 
     def test_translated_labels_have_matching_fields(self):
         fields=lambda s:{f for _,f,_,_ in string.Formatter().parse(s) if f}
-        for number in range(160,171):
+        for number in (n for n in range(160,171) if n not in (163, 164, 165)):
             english=(ROOT/f'lang/en/labels/l{number:03d}').read_text(encoding='utf-8')
             for lang in ('de','es','pl'):
                 text=(ROOT/f'lang/{lang}/labels/l{number:03d}').read_text(encoding='utf-8')

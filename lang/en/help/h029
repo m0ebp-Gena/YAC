@@ -1,0 +1,8 @@
+Radio recovery
+
+Aborting: the radio has not recovered within 60 seconds. YAC closes the connection and exits. Check the radio, power and USB cable, then start YAC again.
+h: read this help while recovery is in progress.
+q: leave YAC through the normal quit confirmation.
+Radio Error: YAC could not obtain usable radio data, or repeated connection checks failed.
+Radio Restored: the same radio is responding again; normal operation resumes.
+Stand by: YAC retries the same radio about every five seconds, for up to 60 seconds after Radio Error. No action is needed while waiting. It does not reset radio settings or switch to simulated mode.

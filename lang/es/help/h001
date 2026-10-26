@@ -1,66 +1,59 @@
-b: selección de banda (punto/coma; h ayuda; q u otro comando sale)
-e: frecuencia en MHz (p. ej. 7.2; usa un punto decimal)
-m: selección de modo (punto/coma; h ayuda; q u otro comando sale)
-punto/coma: subir/bajar la frecuencia según el paso configurado
-z: redondear la frecuencia actual al kHz más cercano
-s: ajustes; v selecciona Main/Sub en FTX-1 o VFO A/B en Icom (la primera pulsación selecciona A)
-s y luego s: guardar el paso de sintonía en hercios para el modo actual
-w: leer intensidad de señal, frecuencia y modo
-q: salir de YAC; y confirma, n o q cancela. Dentro de los controles, q vuelve inmediatamente.
-o: desplazamiento; o alterna Recepción/Transmisión/Borrar; punto añade 10 Hz y coma resta 10 Hz; en Borrar, cualquiera borra; q sale. IC-9700 admite RIT en recepción, pero no XIT en transmisión.
-i: entrada de tonos; i alterna CTCSS/DCS N/DCS I; introduce un valor, pulsa Intro y luego t para TX o b para Ambos cuando se ofrezca; q sale, h muestra ayuda
-Perfiles: escribe un número para resaltar una radio, pulsa Espacio para seleccionarla o q para cancelar. h muestra esta ayuda.
-Si no se encuentra una radio, YAC carga un FT-DX10 simulado para explorar la interfaz. La señal y los ajustes son simulados.
-p: alternar etapas del preamplificador y apagado
-u: alternar niveles del atenuador y apagado
-v: verificar atenuador, preamplificador, potencia configurada y estado del sintonizador compatible
-s y luego t: alternar ajustes del sintonizador; repetir t, q sale de Ajustes
-El estado del sintonizador describe el ajuste de la radio. No se detectan sintonizadores independientes que reaccionan a RF. Apagado conserva la selección, excepto ATAS, que debe deseleccionarse para apagarlo. La selección no inicia la sintonización.
-Potencia en vatios para Yaesu/Kenwood y porcentaje relativo del ajuste para Icom; no es potencia transmitida medida. Desconocido indica que no se pudo leer un ajuste compatible.
-Desplazamiento empieza en Recepción a cero hercios. Otra tecla de comando sale.
-La selección de modo empieza en el modo actual y recorre los modos en bucle.
-La selección de banda empieza en la banda actual. Icom y Kenwood se detienen
-en ambos extremos; Yaesu sigue el comportamiento de la radio.
-En el límite superior, usa coma para bajar o e para introducir una frecuencia.
+Comandos YAC en orden de tecla. Pulsa las teclas por separado.
+Los comandos dependen de la radio y del modo actual.
 
-a ajusta la ganancia AF. r ajusta el silenciador en FM y la ganancia RF en otros modos. Empieza con el valor actual de la radio, en porcentaje redondeado. Punto aumenta; coma disminuye. Pasos de unos 3 por ciento. Se detiene en los extremos. q sale y conserva el valor. Otra tecla de comando sale y ejecuta ese comando.
+a: Ganancia AF. Punto aumenta; coma disminuye.
+b: Banda. Punto siguiente; coma anterior.
+d: Decodificadores. c CW; r RTTY; a configurar audio de recepción.
+e: Nueva frecuencia. Introduce MHz y pulsa Enter.
+f: Filtros. Consulta las teclas de filtros más abajo.
+h: Ayuda. h dentro de un control lee su ayuda detallada.
+i: Introducir tono/código. Repite i para CTCSS, DCS normal o invertido, donde se admita. Introduce un valor y sigue las indicaciones.
+l: Configurar split/repetidor. Repite l para desactivar. h y Enter en el campo dan ayuda.
+m: Modo. Punto siguiente; coma anterior.
+o: Desplazamiento. o recorre Recepción, Transmisión, Borrar. Punto suma 10 hercios; coma resta. En Borrar, cualquiera de las dos teclas borra.
+p: Recorrer etapas de preamplificador y desactivado.
+q: Salir de YAC. y confirma; n o q cancela. Dentro de un control o menú, q vuelve y conserva cambios salvo que su ayuda indique otra cosa.
+r: Ganancia RF, o silenciador en FM. Punto aumenta; coma disminuye.
+s: Ajustes. Consulta las teclas de ajustes más abajo.
+t: Iniciar el sintonizador configurado, si se admite. Primero selecciona o activa con s t.
+u: Recorrer niveles de atenuación y desactivado.
+v: Leer atenuador, preamplificador, potencia y estado del sintonizador admitido. La potencia es el ajuste, no una medición de RF.
+w: Leer señal, frecuencia, modo y tono/código FM activo. Repite w para detalles de split/repetidor.
+x: Antenas. Al entrar lee la ruta; x cambia antena principal; r entrada de recepción.
+z: Redondear frecuencia al kilohercio más cercano.
 
-Ajustes: s luego p abre el campo de potencia. Escribe un entero en las unidades y el rango indicados, luego Intro; vacío cancela. Los cambios correctos son silenciosos. q sale de Ajustes; v comprueba la potencia.
+Coma: reducir frecuencia según el paso configurado.
+Punto: aumentar frecuencia según el paso configurado.
 
-Campo de potencia: vatios enteros; h e Intro para ayuda; Intro vacío cancela. Los vatios de Icom son estimados y convertidos a porcentaje; v informa porcentaje. Éxito silencioso. Sal de Ajustes con q antes de v.
+Filtros: pulsa f y después:
+a: Notch automático o Beat Cancel admitido. Repite a para conmutar.
+b: Noise Blanker. b conmuta; punto/coma ajustan nivel estando activado.
+c: Contour. c conmuta; punto/coma ajustan frecuencia estando activado. l selecciona nivel; w anchura; c vuelve a frecuencia.
+h: Ayuda de filtros.
+l: Corte inferior. Punto/coma ajustan.
+n: Notch manual. n conmuta; punto/coma ajustan posición estando activado; w cambia anchura.
+p: Ancho de banda. Punto/coma ajustan.
+q: Volver al menú principal. Desde un ajuste, q vuelve primero a Filtros.
+r: Noise Reduction. r conmuta; punto/coma ajustan nivel estando activado.
+u: Corte superior. Punto/coma ajustan.
+v: Leer filtros activados. Repite v para revisar estados individuales.
 
-Filtros: p ajusta el ancho directo de recepción; l ajusta el corte bajo; u ajusta el corte superior, si son compatibles. Punto aumenta; coma disminuye. Empieza en el valor actual y se detiene en los extremos. q conserva el valor y vuelve a Filtros; otro q vuelve al nivel principal. h muestra ayuda. En configuración de cortes, p indica usar l o u. El otro extremo no cambia. Los anchos fijos no cambian. Se indican controles o modos no compatibles. El valor predeterminado de Yaesu se anuncia sin estimar su ancho; seleccione primero un ancho numérico en la radio. QMX usa filtros CW habilitados o ancho de recepción SSB; los cambios se guardan y pueden ajustar centro, desplazamiento y tono CW según los ajustes de la radio.
+Ajustes: pulsa s y después:
+a: Leer AGC actual. Repite a para seleccionar la opción siguiente; q termina.
+b: Voz/braille del Pi. Punto siguiente; coma anterior; q aplica y guarda.
+e: Procesador de voz. Al entrar lee ajustes; e conmuta; punto/coma ajustan estando activado. Kenwood i/o seleccionan Entrada/Salida. n restaura ajustes iniciales; q conserva cambios.
+h: Ayuda de ajustes.
+m: Ganancia de micrófono guiada. Sigue las indicaciones previas; punto/coma ajustan. Tú accionas el PTT.
+o: Voz del Pi. r velocidad; v volumen; p tono; u puntuación; punto/coma ajustan; t prueba; d valores predeterminados. Los cambios se guardan inmediatamente.
+p: Potencia. Introduce vatios enteros y Enter. Enter vacío o q y Enter cancelan. El éxito anuncia el valor introducido. Icom utiliza una conversión estimada; v informa su porcentaje relativo.
+q: Volver al menú principal; tras seleccionar AGC anuncia Listo.
+s: Paso de sintonía. Introduce hercios enteros y Enter.
+t: Recorrer ajustes del sintonizador admitido. Repite t. Seleccionarlo no inicia la sintonización.
+u: Actualizar YAC. Muestra ayuda y consulta GitHub. r lee notas; y instala; n o q vuelve.
+v: Seleccionar VFO A/B o Main/Sub admitido.
+w: Wi-Fi del Pi. Sigue las indicaciones; h da ayuda donde se ofrezca.
 
-Supresor de ruido: f luego b cambia el estado actual e indica activado o desactivado. Dentro del control, b lo cambia de nuevo. Punto aumenta el nivel; coma lo reduce. Si está desactivado, la navegación lo indica y conserva el nivel. q vuelve a Filtros; otro q al nivel principal. h muestra ayuda. Los niveles usan la escala de la radio o porcentajes definidos. Un estado desconocido impide el cambio. FTX-1 recuerda el último nivel observado por YAC para Main/Sub; si no se conoce, usa 1. TS-590SG recuerda NB1/NB2; si no se conoce, usa NB1. Se indican radios o modos no compatibles.
+Selección de perfil: introduce el número de radio y Espacio para seleccionar; q cancela.
+Los ajustes exclusivos del Pi requieren su lanzador configurado.
 
-Reducción de ruido: f luego r cambia el estado actual; r dentro lo cambia de nuevo. Punto aumenta; coma disminuye; sin vueltas en los extremos. Si está desactivada, conserva el valor. q vuelve a Filtros; otro q al nivel principal. h muestra ayuda. FTDX10/FT-710: niveles 1-15; FTX-1: 1-10, recordados por Main/Sub, usando 1 si no se conoce el anterior. Icom usa porcentajes. Kenwood conserva el último tipo NR1/NR2 observado; si no se conoce, usa NR1. TS-590SG NR1: 1-10. TS-480 NR1: Auto y luego 1-9; coma desde 1 selecciona Auto. NR2: tiempo de seguimiento 2-20 milisegundos. La navegación sigue el tipo actual; cambie el tipo en la radio si es necesario. Se indican controles no compatibles; un estado desconocido impide el cambio.
-
-En modo FM de Kenwood, al activar se selecciona NR1.
-
-Notch: f luego a cambia Auto Notch; a dentro lo cambia de nuevo. TS-480 usa cancelación de batidos, recordando BC1/BC2 o usando BC1 si no se conoce. f luego n cambia Manual Notch; n dentro lo cambia de nuevo. Punto/coma suben/bajan frecuencia o posición mientras está activado, sin vueltas. w dentro cambia el ancho. Si está desactivado, conserva los ajustes. q vuelve a Filtros; otro q al nivel principal; h muestra ayuda. Yaesu: 10-3200 hercios; Icom: posición 0-255; TS-590SG: posición 0-127. Se usan nombres de ancho del fabricante. Si Auto/Manual son excluyentes, activar uno desactiva el otro. TS-590SG restaura el último ancho observado; si se desconoce, el primer encendido usa y anuncia Normal. Seleccione BC1/BC2 en la radio TS-480 si necesita otro tipo. Se indican funciones no compatibles; un estado desconocido impide el cambio. QMX no tiene control notch documentado.
-
-Contour: f c toggles On/Off. Navigation adjusts current frequency (10-3200 hertz). Inside Contour, l selects Contour level (-40 to +20, spoken as Dip/Neutral/Peak); w selects Contour width (1-11); c returns to frequency. When already on frequency, c toggles On/Off. Full stop increases and comma decreases the selected setting, stopping at endpoints. Off leaves settings unchanged. q returns to Filters, where l means Low Cut; q again returns to top level. Current settings are preserved on switching. FT-DX10, FT-710 and FTX-1 only; FTX-1 frequency/state follow selected Main/Sub, level/width are shared menu settings. APF is separate and is not altered.
-
-Verificar filtros: f v enumera los filtros conmutables activados en el modo y receptor actuales, leyendo la radio. v dentro de un ajuste informa sin salir del control. Se omiten los filtros desactivados o no compatibles; se anuncian los estados desconocidos. El ancho de banda y los cortes inferior/superior no se cuentan como filtros conmutables. FTX-1 identifica el receptor principal o secundario. No cambia ajustes.
-
-Revisión con v repetida: la primera v da el resumen de filtros activados. Las siguientes v consecutivas muestran un filtro compatible cada vez, incluido desactivado o desconocido, y vuelven al resumen. Se lee el estado actual. Otro comando o un cambio de modo/receptor reinicia el resumen. q sale de Filtros; dentro de un ajuste, q vuelve primero a Filtros. La v principal no cambia.
-
-Ajustes s m abre la ganancia de micrófono guiada. Solo punto/coma cambian ganancia; PTT y potencia RF son manuales. h lee preparación e instrucciones de medición.
-
-Ajustes s a cambia los presets AGC admitidos; repite a. s h lee ayuda. AGC controla recepción y no requiere transmitir.
-
-Ajustes s e abre Procesador sin cambios. e conmuta, punto/coma ajustan. Kenwood i/o Entrada/Salida. n cancela y restaura originales; q conserva. h ayuda.
-
-En FM, w también lee CTCSS/DCS activos en radios compatibles con i: tono/código, TX o Ambos y polaridad DCS. Si está desactivado no añade nada. Un fallo de lectura indica tono/código desconocido. FTX-1 sigue Main/Sub. No cambia ajustes.
-
-l: Configurar split/repetidor; otra l desactiva. h dentro da ayuda.
-
-Pulsaciones consecutivas de w alternan estado normal y detalles actuales de split/repetidor: frecuencia de recepción, transmisión y tono/código FM activo. Se anuncia desactivado; los fallos de lectura son desconocidos. Otro comando reinicia la secuencia.
-
-x: Antenas. Entrada lee rutas; x antena principal, r entrada RX, q vuelve, h ayuda. Si compatible.
-
-t: Inicia la sintonización con el sintonizador configurado. Si está apagado, actívelo en Ajustes. El fin del ciclo no garantiza una adaptación correcta.
-
-d: Decodificadores; c CW, r RTTY, h ayuda, q Atrás. Dentro, e detiene/reinicia; q mantiene la captura.
-
-Corrección FTX-1: Ajustes t cambia el tipo de sintonizador de la antena transmisora (Optima: interno, interno rápido, externo, ATAS; Field: externo/ATAS). Un estado AC en reposo no se anuncia como apagado. La selección no inicia la sintonización. t principal usa el comando corregido. Verificar indica el tipo, sin confirmar bypass ni adaptación correcta.
+Recuperación: Error de radio y Espere inician un plazo de 60 segundos. Radio conectada reanuda el uso; si no, Cancelando cierra YAC. h durante la espera lee la ayuda.

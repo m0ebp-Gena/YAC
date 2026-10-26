@@ -1,0 +1,54 @@
+BOOT SPEECH AND STARTUP WAIT - 23 OCTOBER 2026
+
+Use the existing working YAC source and configuration. This ZIP contains the
+actual updated launcher and boot-speech files, not a different test routine.
+
+Expected on reboot: Speakup is quiet during boot. The launcher waits for
+systemd boot jobs to finish, clears queued boot speech and restores speech.
+YAC should then read Welcome followed by your saved name. First-time users
+hear the normal setup prompts. Saved Braille only stays silent by choice.
+The boot wait is bounded to 90 seconds. If it fails, speech is restored and
+YAC does not start. Independent recovery restores speech after two minutes
+if the launcher never completes its handover. Real Pi testing is required.
+
+PUT THESE FILES IN PLACE
+
+From this extracted folder, as user yac, run each command when ready:
+
+install -m 755 pi-launcher.py ~/.local/bin/yac-pi
+sudo install -d -m 755 /usr/local/libexec
+sudo install -m 755 boot-speech.py /usr/local/libexec/yac-boot-speech
+sudo /usr/local/libexec/yac-boot-speech arm
+sudo install -d -m 755 /etc/systemd/system/espeakup.service.d
+sudo install -m 644 yac-boot-speech.conf /etc/systemd/system/espeakup.service.d/yac-boot-speech.conf
+sudo install -m 644 yac-boot-speech-recovery.service /etc/systemd/system/yac-boot-speech-recovery.service
+sudo install -m 644 yac-boot-speech-recovery.timer /etc/systemd/system/yac-boot-speech-recovery.timer
+sudo systemctl daemon-reload
+sudo systemctl enable yac-boot-speech-recovery.timer
+
+The existing pi_audio.py and /usr/local/libexec/yac-pi-audio helper are
+required and unchanged. Keep them where your working setup has them.
+Keep the working .profile launcher lines and CW service unchanged.
+No changes to espeakup's main service file or YAC settings are needed.
+The arm command prevents the new hook muting speech if espeakup restarts
+in this current session. The boot marker disappears on the next reboot.
+
+When ready to test:
+  sudo reboot
+
+Do not start the recovery timer with --now in the current session.
+Do not add the boot wait to the CW service or to a systemd boot service:
+the launcher waits from your existing console login shell.
+
+MANUAL RECOVERY IF NEEDED, FROM SSH
+
+  sudo /usr/local/libexec/yac-boot-speech recover
+
+To undo just the new boot mute hook:
+  sudo rm /etc/systemd/system/espeakup.service.d/yac-boot-speech.conf
+  sudo systemctl disable --now yac-boot-speech-recovery.timer
+  sudo systemctl daemon-reload
+  sudo /usr/local/libexec/yac-boot-speech recover
+
+The hook and recovery file names above are dedicated to YAC. All installation
+commands are supplied for you to run manually; there is no install script.

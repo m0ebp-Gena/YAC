@@ -135,13 +135,13 @@ class Icom7300Tests(unittest.TestCase):
                 with self.subTest(model=radio.model_id, failure=failure):
                     if failure == 'reject': serial.reject = 5
                     else: serial.mismatch = True
-                    self.assertIn('restored', yac._set_frequency(ROOT, radio, 'en', '14.185'))
+                    self.assertIn('Freq Restored', yac._set_frequency(ROOT, radio, 'en', '14.185'))
                     self.assertEqual(serial.frequencies[0], 7159123)
 
     def test_missing_frequency_prevents_change(self):
         for radio, serial in self.radios():
             serial.reject = 3
-            self.assertIn('cancelled', yac._set_frequency(ROOT, radio, 'en', '14.185'))
+            self.assertIn('Radio Error', yac._set_frequency(ROOT, radio, 'en', '14.185'))
             self.assertFalse(any(packet[4] == 5 for packet in serial.writes))
 
     def test_supported_modes_and_steps(self):

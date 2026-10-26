@@ -7,3 +7,6 @@ IC-705 RTTY: select RTTY mode first. YAC uses the uniquely identified companion 
 A start failure can mean wrong mode, missing audio dependency, invalid audio input, ambiguous USB ports, keying assignments or rejected CAT settings. Details go to the YAC debug log. No decoder transmits or changes operating frequency, mode or power.
 
 d then a: guided receive audio setup; h inside explains selection and level checks.
+
+Decoder could not start. Check mode and decoder setup; press h for help.
+Decoder input lost; capture stopped. Check radio settings.

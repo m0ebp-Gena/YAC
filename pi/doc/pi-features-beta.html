@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pi features beta — 22 October 2026 — YAC documentation</title><style>
+:root { color-scheme: light dark; font: 120%/1.65 system-ui, sans-serif; }
+body { max-width: 76ch; margin: auto; padding: 1rem; }
+a { text-decoration: underline; text-underline-offset: .15em; }
+a:focus-visible { outline: .2rem solid currentColor; outline-offset: .2rem; }
+pre { padding: 1rem; border: 1px solid; white-space: pre-wrap; overflow-wrap: anywhere; }
+code { font-size: 1em; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid; padding: .5rem; text-align: left; vertical-align: top; overflow-wrap: anywhere; }
+h1, h2, h3, h4 { line-height: 1.3; }
+@media print { nav, .skip { display: none; } body { max-width: none; } }
+</style></head>
+<body><a class="skip" href="#main">Skip to main content</a>
+<nav aria-label="Document navigation"><p><a href="index.html">All documents</a></p><p>On this page:</p><ul><li><a href="#section-2">Install once</a></li><li><a href="#section-3">Start at the Pi local console</a></li><li><a href="#section-4">Test checklist</a></li></ul></nav>
+<main id="main" tabindex="-1"><h1 id="section-1">Pi features beta — 22 October 2026</h1>
+<p>This ZIP combines the four new Settings controls for testing on your existing
+Pi image. It includes all YAC source and Pi launcher/helper materials. Pi notes
+remain separate under <code>pi/doc</code>; ordinary source and Windows packages exclude them.</p>
+<h2 id="section-2">Install once</h2>
+<p>Quit YAC first. Copy <code>yac-pi-features-beta-2026-10-22.zip</code> to <code>/home/yac</code>.
+In your Pi SSH session, run these two commands one at a time as user yac.</p>
+<p>Start copying the next two lines:</p>
+<pre><code class="language-sh">unzip -o /home/yac/yac-pi-features-beta-2026-10-22.zip -d /home/yac/yac-pi-features-beta-2026-10-22
+sh /home/yac/yac-pi-features-beta-2026-10-22/pi/install-features-beta.sh
+</code></pre>
+<p>End copying at the sh line above.</p>
+<p>The installer uses the existing Python environment, checks the application
+lock, updates YAC and installs the speech/audio/Wi-Fi helpers. It may ask for
+your sudo password. It does not repeat apt package installation or edit your
+boot configuration, .profile, saved audio output, launcher INI or personal
+YAC preferences. No reboot is needed. If YAC is still running, close it first
+and rerun the installer. Wait for “Pi features beta installation complete.”</p>
+<h2 id="section-3">Start at the Pi local console</h2>
+<p>Start copying the next line:</p>
+<pre><code class="language-sh">python3 /home/yac/.local/bin/yac-pi
+</code></pre>
+<p>End copying at the python3 line above.</p>
+<ul>
+<li><code>s o</code>: speech options. Rate is selected initially. <code>.</code> increases and <code>,</code>
+decreases. Every adjustment applies and saves immediately. <code>r</code> rate, <code>v</code>
+volume, <code>p</code> pitch, <code>u</code> punctuation, <code>t</code> test, <code>d</code> YAC defaults, <code>h</code> help,
+<code>q</code> back keeping changes. There is no separate save key.</li>
+<li><code>s b</code>: access mode. <code>b</code> speech and braille, <code>r</code> braille only, <code>s</code> speech
+only, <code>h</code> help, <code>q</code> back. Each choice applies and saves immediately. Braille
+input/output remains available in every mode. In braille-only mode, use
+<code>s</code> or <code>b</code> within this menu to restore speech.</li>
+<li><code>s w</code>: country, SSID and private password entry. Space confirms connection,
+<code>e</code> edits and <code>q</code> returns before connecting. Ctrl+C cancels an entry; typed
+letters and punctuation in fields are literal. It supports visible home
+networks. Connection does not prove internet access.</li>
+<li><code>s u</code>: update. Space hands over after closing the radio. The updater offers
+<code>r</code> release notes, <code>q</code> cancel and Space install. It checks published releases,
+not this unpublished local ZIP. Without internet, read the error and press
+Enter to return to YAC. It does not update the operating system or Pi kit.</li>
+</ul>
+<p><code>s s</code> remains tuning step.</p>
+<h2 id="section-4">Test checklist</h2>
+<p>Change a speech value then q; reopen to verify it stayed. Test access modes
+and return to speech; reboot to check the saved mode and speech settings.
+Try Wi-Fi with the correct country and your router&#39;s SSID/password; check
+persistence after reboot and a failed-password/cancel path. Test the updater
+without internet, then check release notes/cancel with internet. Do not expect
+unpublished changes to be available through s u.</p>
+<p>The user has already confirmed that their image starts with Ethernet unplugged
+and no Wi-Fi configured. Automated tests pass; these latest menu/backend changes
+still require hardware testing. Nothing has been pushed or published.</p>
+<p>For publication cleanup later, use <code>sudo yac-image-clear-wifi</code> at the local
+console, then type YES. See <a href="pi-wifi.html">Wi-Fi and cleanup</a> for seed-file checks
+and <a href="pi-speech-options.html">speech controls</a> for details. Removing identity and
+completing the image licence/source review remain separate release tasks.</p>
+</main>
+<footer><p>YAC documentation. <a href="index.html">All documents</a></p></footer>
+</body></html>

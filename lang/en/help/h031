@@ -1,0 +1,9 @@
+Bandwidth
+
+Single control: full stop widens the bandwidth; comma narrows it.
+Separate edges: p selects Low Cut, then alternates Upper Cut and Low Cut.
+Full stop raises the selected edge; comma lowers it. Selecting an edge reads its current value without changing it.
+Each adjustment is applied immediately and confirmed by reading the radio.
+From Default, full stop selects the narrowest numeric width; comma selects the widest.
+h reads this help. q finishes with Done and keeps changes, returning to Filters.
+Not Supported means no bandwidth control is available for this radio and mode; YAC returns to Filters without changing anything.

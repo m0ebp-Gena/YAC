@@ -1,4 +1,4 @@
-Mikrofonverstärkung: Ablauf vor dem Fortfahren lesen. Leertaste bestätigt Bereitschaft; q bricht ab; h öffnet Hilfe.
+Mikrofonverstärkung: Ablauf vor dem Fortfahren lesen. Bei Continue Y/N? fährt y fort; n oder q bricht ab und kehrt zu Einstellungen zurück. h zeigt diese Hilfe.
 
 Passende Antenne oder geeignete künstliche Last anschließen. YAC kann die Last nicht prüfen. Kleine Leistung macht eine ungeeignete Last nicht sicher. Geeignete Leistung selbst einstellen und Sprachprozessor ausschalten. YAC ändert nur Mikrofonverstärkung; weder Leistung, Frequenz noch Betriebsart. YAC startet kein Senden.
 
@@ -7,3 +7,4 @@ Im Empfang beginnen. YAC meldet aktuelle Verstärkung. PTT halten, normal sprech
 Bei losgelassener PTT erhöht Punkt die Verstärkung, Komma senkt sie. Bestätigte Änderungen melden den Wert und löschen die Spitze. Endwerte stoppen. v liest Verstärkung; Leertaste löscht Spitze; h liest Hilfe. PTT loslassen und q für Zurück zu Einstellungen; Verstärkung bleibt. Selbst geänderte Vorbereitungseinstellungen selbst zurücksetzen.
 
 Modellspezifische Betriebsarten, Skalen, Meter und ALC-Zonen stehen in der Radiodatei unter doc/supported-radios.
+Falls nötig, wählt YAC die Anzeige der automatischen Pegelregelung und bestätigt den Messwert. Beim Verlassen im Empfang wird die bekannte vorherige Anzeige wiederhergestellt. Bei Fehlern bleibt die Wiederherstellung für den nächsten Aufruf vorgemerkt.

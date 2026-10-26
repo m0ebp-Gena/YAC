@@ -1,0 +1,15 @@
+Update YAC
+YAC checks GitHub using the existing internet connection.
+
+Looking: checking for an update.
+No Internet: GitHub could not be reached; returns to Settings.
+No Update: no newer release; returns to Settings.
+Update Found: asks Read Notes Y/N?. Whether you read or skip the notes, Update Y/N? follows.
+
+h: read this help again.
+n: skip notes at Read Notes Y/N?; decline installation and return to Settings at Update Y/N?.
+q: cancel and return to Settings. During notes, q leaves only the notes.
+r: read the release notes again. Long notes use Space for the next page and q to leave. Afterwards, Update Y/N? appears.
+y: read notes at Read Notes Y/N?. At Update Y/N?, download, verify and install, then restart YAC.
+
+The radio stays connected until installation begins. Saved settings are kept. Local-file installation is not available. On the Pi, separate helpers and boot setup are not updated.

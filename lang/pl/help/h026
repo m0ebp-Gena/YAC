@@ -1,11 +1,20 @@
-s w: Konfiguracja Wi-Fi jest dostępna tylko w obrazie Raspberry Pi. Tutaj użyj ustawień Wi-Fi systemu.
-Konfiguracja Wi-Fi: kraj, nazwa sieci i hasło. Ctrl+C anuluje wpisywanie; interpunkcja i litery poleceń są zwykłymi znakami.
-Kraj WLAN: GB. Wpisz dwie litery, na przykład GB, DE, ES lub PL. Pusty Enter zachowuje obecny kraj:
-Nieprawidłowy kraj. Wpisz dwuliterowy kod; UK jest akceptowane jako GB.
-Nazwa sieci (SSID), dokładnie jak ustawiono w routerze:
-Hasło. Wpisywanie jest ukryte, echo klawiszy Speakup chwilowo wyłączone. Pusty Enter dla sieci otwartej. Ctrl+C anuluje:
-Nieprawidłowa nazwa sieci. Użyj od 1 do 32 bajtów UTF-8 bez znaków sterujących.
-Nieprawidłowe hasło dla tej sieci. Sprawdź długość i rodzaj zabezpieczeń.
-Kraj GB, sieć S S I D. Spacja łączy i zapisuje; e edytuje; q wraca bez łączenia.
-Łączenie z Wi-Fi. Może potrwać do dwóch minut.
-Wi-Fi połączone i zapisane. Aktualizator sprawdza dostęp do internetu osobno.
+Konfiguracja Wi-Fi: s w z menu głównego. Nic nie jest stosowane przed potwierdzeniem połączenia Spacją.
+
+Anulowano: anulowano wpisywanie lub nazwa sieci była pusta. Wpisane dane są odrzucane; powrót do Ustawień. Powtórz tam w lub s w z menu głównego.
+Ctrl+C: anuluje w każdym polu. Przy potwierdzeniu anuluje także q.
+e: przy potwierdzeniu wraca do pól do edycji.
+h: przy Kraju wpisz h i Enter; przy potwierdzeniu naciśnij h. Pomoc wraca do tego samego pola.
+Hasło: wpisywanie ukryte; echo klawiszy Speakup chwilowo wyłączone i potem przywrócone. Puste oznacza sieć otwartą, nie anulowanie. h, q, spacje i interpunkcja w nazwie sieci i haśle są zwykłymi znakami.
+Kraj: wpisz dwuliterowy kod. UK jest akceptowane jako GB. Pusty Enter zachowuje bieżący kraj, jeśli istnieje.
+Łączenie: połączenie w toku; może potrwać dwie minuty.
+Nazwa sieci: dokładna SSID, od 1 do 32 bajtów UTF-8, bez znaków sterujących. Pusty Enter anuluje.
+Nieprawidłowe: wpis nie został przyjęty. Żądanie kończy się, a wpisane dane są odrzucane. Powrót do Ustawień; powtórz w z prawidłowymi danymi.
+Połączono: Wi-Fi połączone i zapisane; nie potwierdza dostępu do internetu.
+y: przy potwierdzeniu łączy i zapisuje. Do tego momentu anulowanie lub nieprawidłowy wpis nie zmieniają połączenia.
+
+Konfiguracja Wi-Fi niedostępna. Sprawdź pomocnik obrazu, uprawnienia i NetworkManager.
+Nie znaleziono adaptera Wi-Fi.
+Nie udało się ustawić kraju WLAN.
+Nie znaleziono sieci. Sprawdź dokładny SSID, router i sygnał.
+Połączenie nieudane. Sprawdź hasło i sygnał. Poprzednia zapisana sieć została zachowana.
+Nie można przygotować prywatnego wpisywania. Nie poproszono o hasło.

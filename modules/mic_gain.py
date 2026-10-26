@@ -46,11 +46,44 @@ def alc(yac, radio, spec):
         match = re.search(r'RM4(\d{3})000;', yac._cat_exchange(radio, 'RM4;'))
         value = int(match[1]) if match else None
         return value if value is not None and value <= 255 else None
-    # RM; only reads. In particular, do not send RM3; to select a meter.
+    # Preparation selects ALC only when the read does not already include it.
     match = re.search(r'RM3(\d{4});', yac._cat_exchange(radio, 'RM;'))
     value = int(match[1]) if match else None
     maximum = 10 if radio.model_id == '020' else 30
     return value if value is not None and value <= maximum else None
+
+
+def prepare_meter(yac, radio, spec):
+    """Use ALC already returned, or select it while retaining a known meter."""
+    if spec['family'] != 'kenwood':
+        return None
+    response = yac._cat_exchange(radio, 'RM;')
+    readings = re.findall(r'RM([123])(\d{4});', response)
+    maximum = 10 if radio.model_id == '020' else 30
+    if any(meter == '3' and int(value) <= maximum for meter, value in readings):
+        return None
+    if len(readings) != 1:
+        raise RuntimeError('Cannot determine meter selection')
+    previous = readings[0][0]
+    radio._yac_mic_meter_restore = previous
+    yac._cat_exchange(radio, 'RM3;')
+    if alc(yac, radio, spec) is None:
+        raise RuntimeError('ALC meter selection was not confirmed')
+    return previous
+
+
+def restore_meter(yac, radio, spec):
+    previous = getattr(radio, '_yac_mic_meter_restore', None)
+    if previous is None:
+        return True
+    if tx_state(yac, radio, spec) is not False:
+        return False
+    yac._cat_exchange(radio, f'RM{previous};')
+    readings = re.findall(r'RM([123])(\d{4});', yac._cat_exchange(radio, 'RM;'))
+    if len(readings) != 1 or readings[0][0] != previous:
+        return False
+    del radio._yac_mic_meter_restore
+    return True
 
 
 def adjust(yac, radio, spec, direction):
@@ -104,9 +137,9 @@ def control(yac, root, radio, language, read_key, watch):
         say(token)
         while True:
             key = read_key().casefold()
-            if watch.lost or key in {'q', '\x03', '\x04'}:
+            if watch.lost or key in {'n', 'q', '\x03', '\x04'}:
                 return False
-            if key == ' ':
+            if key == 'y':
                 return True
             if key == 'h':
                 chat_int.show_response(help_int.get_help(root, language, 'h008'))
@@ -116,21 +149,30 @@ def control(yac, root, radio, language, read_key, watch):
     if spec is None:
         say('l129')
         return
-    started = False
     try:
-        if not choice('l209'):
+        chat_int.show_response(help_int.get_help(root, language, 'h008'))
+        if not choice('l007'):
             return
         mode = yac._current_mode(radio)
+        if mode is None:
+            chat_int.show_response(yac._radio_error(root, radio, language))
+            return
         if mode not in {'LSB', 'USB', 'AM'} or (spec['family'] == 'kenwood' and mode == 'AM'):
-            say('l216')
+            say('l129')
             return
         current = settings.read(yac, radio, spec)
         if current is None or tx_state(yac, radio, spec) is not False:
             say('l217')
             return
+        try:
+            if not restore_meter(yac, radio, spec):
+                raise RuntimeError('Previous meter restoration pending')
+            prepare_meter(yac, radio, spec)
+        except (RuntimeError, OSError):
+            chat_int.show_response(yac._radio_error(root, radio, language))
+            return
         say('l211', value=round(int(current) * 100 / spec['maximum']))
         say('l212')
-        started = True
         peak = Peak()
         next_sample = 0
         changed_mode = False
@@ -139,9 +181,13 @@ def control(yac, root, radio, language, read_key, watch):
             if watch.lost or changed_mode or monotonic() < next_sample:
                 return
             next_sample = monotonic() + 0.3
-            if yac._current_mode(radio) != mode:
+            actual_mode = yac._current_mode(radio)
+            if actual_mode != mode:
                 changed_mode = True
-                say('l216')
+                if actual_mode is None:
+                    chat_int.show_response(yac._radio_error(root, radio, language))
+                else:
+                    say('l001')
                 return
             transmitting = tx_state(yac, radio, spec)
             result = peak.sample(transmitting, alc(yac, radio, spec) if transmitting else None)
@@ -166,28 +212,36 @@ def control(yac, root, radio, language, read_key, watch):
                 if tx_state(yac, radio, spec) is not False:
                     say('l217')
                     continue
-                if yac._current_mode(radio) != mode:
-                    say('l216')
+                actual_mode = yac._current_mode(radio)
+                if actual_mode != mode:
+                    if actual_mode is None:
+                        chat_int.show_response(yac._radio_error(root, radio, language))
+                    else:
+                        say('l001')
                     break
                 value = adjust(yac, radio, spec, 1 if key == yac.UP_KEY else -1)
                 if value is None:
-                    say('l131')
+                    chat_int.show_response(yac._radio_error(root, radio, language))
                 else:
                     peak.reset()
                     say('l211', value=round(value * 100 / spec['maximum']))
             elif key == 'v':
                 current = settings.read(yac, radio, spec)
                 if current is None:
-                    say('l214')
+                    chat_int.show_response(yac._radio_error(root, radio, language))
                 else:
                     say('l211', value=round(int(current) * 100 / spec['maximum']))
             elif key == ' ':
                 peak.reset()
                 say('l215')
     except (EOFError, KeyboardInterrupt, RuntimeError, OSError):
-        if not started:
-            say('l220')
+        pass
     finally:
-        if started:
-            say('l220')
+        if getattr(radio, '_yac_mic_meter_restore', None) is not None and not watch.lost:
+            try:
+                restored = restore_meter(yac, radio, spec)
+            except (RuntimeError, OSError):
+                restored = False
+            if not restored:
+                chat_int.show_response(yac._radio_error(root, radio, language))
         chat_int.show_done(root, language)

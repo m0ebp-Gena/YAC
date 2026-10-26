@@ -1,0 +1,11 @@
+[Unit]
+Description=Restore YAC Speakup speech preferences
+Requires=espeakup.service
+After=espeakup.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/libexec/yac-speakup-settings --restore
+
+[Install]
+WantedBy=multi-user.target

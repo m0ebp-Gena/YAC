@@ -9,11 +9,24 @@ class Unknown(Exception):
     pass
 
 
+class Unsupported(Exception):
+    pass
+
+
+class CommandFileError(Exception):
+    pass
+
+
 class Antennas:
     def __init__(self, yac, root, radio):
         self.yac, self.radio = yac, radio
         path = root / radio.radio_id_path / 'antennas.json'
-        self.spec = json.loads(path.read_text(encoding='utf-8')) if path.exists() else None
+        try:
+            self.spec = json.loads(path.read_text(encoding='utf-8')) if path.exists() else None
+            if self.spec is not None and self.spec['kind'] not in {'fixed', 'ts590', 'ts480', 'ftx1', 'civ'}:
+                raise ValueError('Invalid antenna definition')
+        except (OSError, UnicodeError, ValueError, KeyError, TypeError) as error:
+            raise CommandFileError() from error
         if self.spec and self.spec['kind'] == 'ts480' and ts480_control.variant(yac, radio) is None:
             self.spec = None
 
@@ -33,11 +46,16 @@ class Antennas:
             return self.cat('AN;', r'AN([12]);')
         if kind == 'ftx1':
             frequency = self.yac._current_frequency(self.yac.project_root(), self.radio)
-            if frequency is None or not 0.03 <= float(frequency) <= 54:
+            if frequency is None:
                 raise Unknown
+            if not 0.03 <= float(frequency) <= 54:
+                raise Unsupported
             # PC selector 2 identifies the SPA-1 power command context. Do not
             # offer SPA-1 antenna routing in the standalone Field context.
-            if not re.fullmatch(r'PC2\d{3};', self.yac._cat_exchange(self.radio, 'PC;').strip()):
+            power = self.yac._cat_exchange(self.radio, 'PC;').strip()
+            if re.fullmatch(r'PC1\d{3};', power):
+                raise Unsupported
+            if not re.fullmatch(r'PC2\d{3};', power):
                 raise Unknown
             selected = self.cat('EX030704;', r'EX030704([01]);')
             operation = self.cat('EX030703;', r'EX030703([012]);')
@@ -126,13 +144,19 @@ def operate(yac, root, radio, language, action=None):
         result=backend.change(action,state) if action else 'ok'
         if result == 'unsupported': return label('l129')
         if result == 'select1': return label('l263')
-        # Even on failure, report actual routing if it remains readable.
+        if result == 'failed':
+            return yac._radio_error(root, radio, language)
         current=backend.read() if action else state
         tx,rx=backend.routes(current)
-        response=label('l260',tx=tx,rx=label('l261') if rx == 'RX' else rx)
-        return label('l264')+' '+response if result == 'failed' else response
+        receive = label('l261') if rx == 'RX' else rx
+        response = f'{label("l260")}, TX {tx}, RX {receive}'
+        return response
+    except Unsupported:
+        return label('l129')
+    except (CommandFileError, KeyError, TypeError):
+        return label('l053')
     except (Unknown,OSError,RuntimeError,ValueError):
-        return label('l262')
+        return yac._radio_error(root, radio, language)
 
 
 def control(yac, root, radio, language, read_key, watch):

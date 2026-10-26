@@ -84,14 +84,14 @@ class TS480Tests(unittest.TestCase):
                 spec=power_control.prepare(yac,ROOT,radio)
                 maximum=200 if variant=='0' else 100
                 self.assertEqual(power_control.set_value(yac,radio,spec,str(maximum)),None)
-                self.assertEqual(power_control.set_value(yac,radio,spec,str(maximum+1)),'l146')
+                self.assertEqual(power_control.set_value(yac,radio,spec,str(maximum+1)),'l356')
                 rig.mode='5'; rig.values['PC']='020'
                 self.assertEqual(power_control.prepare(yac,ROOT,radio)['maximum'],maximum//4)
                 rig.mode='2'
                 self.assertEqual(verify_settings.cycle(yac,ROOT,radio,'en','preamp'),'preamp on')
-                self.assertEqual(verify_settings.cycle(yac,ROOT,radio,'en','attenuator'),'Attenuator on')
+                self.assertEqual(verify_settings.cycle(yac,ROOT,radio,'en','attenuator'),'ATT on')
                 result=verify_settings.cycle(yac,ROOT,radio,'en','tuner')
-                self.assertEqual(result,'tuner internal' if variant=='1' else 'Not supported')
+                self.assertEqual(result,'tuner internal' if variant=='1' else 'Not Supported')
                 self.assertFalse(any(c.startswith('AC') and c.endswith('1;') for c in rig.commands))
                 rig.frequencies[rig.vfo]=52000000; rig.mode='2'; rig.values['PC']='020'
                 self.assertEqual(power_control.prepare(yac,ROOT,radio)['maximum'],100)
@@ -125,7 +125,7 @@ class TS480Tests(unittest.TestCase):
             self.assertEqual(yac._offset_action(ROOT,radio,'en',2,1),'Clear')
             self.assertEqual((rig.offset,rig.rit,rig.xit),(0,'0','0'))
             rig.scan='1'; before=len(rig.commands)
-            self.assertEqual(yac._offset_action(ROOT,radio,'en',0,1),'Could not read the offset setting.')
+            self.assertEqual(yac._offset_action(ROOT,radio,'en',0,1),'Radio Error')
             self.assertFalse(any(c.startswith(('RU','RD','RC','RT','XT')) for c in rig.commands[before:]))
 
     def test_ctcss_on_verified_ts480_only(self):
@@ -141,11 +141,11 @@ class TS480Tests(unittest.TestCase):
     def test_qmx_or_ambiguous_id_gets_no_ts480_setters(self):
         radio=self.radio()
         with patch.object(yac,'_cat_exchange',return_value='?;') as exchange:
-            self.assertEqual(gain_control.adjust(yac,ROOT,radio,'en','r',1),'Not supported')
+            self.assertEqual(gain_control.adjust(yac,ROOT,radio,'en','r',1),'Not Supported')
             self.assertIsNone(power_control.prepare(yac,ROOT,radio))
             self.assertIsNone(yac._tone_radio_kind(radio))
             self.assertFalse(yac._zero_offsets(radio))
-            self.assertEqual(ts480_control.select_vfo(yac,ROOT,radio,'en'),'Not supported')
+            self.assertEqual(ts480_control.select_vfo(yac,ROOT,radio,'en'),'Not Supported')
             self.assertTrue(all(c.args[1]=='TY;' for c in exchange.call_args_list))
 
 

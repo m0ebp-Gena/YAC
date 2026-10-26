@@ -1,0 +1,6 @@
+Radio selection
+
+Type the radio's number. YAC prints its number and name.
+Press Space to connect to that radio.
+Press h to read this help.
+Press q to cancel startup. YAC prints Aborted and exits.

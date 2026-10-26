@@ -123,16 +123,19 @@ def restore(destination, backup, names):
             shutil.copy2(saved, target)
 
 
-def run(destination, key=read_key):
-    print('Checking for YAC updates over the internet...', flush=True)
-    release = newest_release(json.loads(fetch(API, 2 * 1024 * 1024)))
-    marker = destination / 'release.json'
-    current = json.loads(marker.read_text()) if marker.is_file() else {}
-    if current.get('tag') == release['tag_name'] or current.get('published_at', '') >= release['published_at']:
-        print('YAC is up to date.')
-        return 0
+def run(destination, key=read_key, *, selected_release=None):
+    if selected_release is None:
+        print('Checking for YAC updates over the internet...', flush=True)
+        release = newest_release(json.loads(fetch(API, 2 * 1024 * 1024)))
+        marker = destination / 'release.json'
+        current = json.loads(marker.read_text()) if marker.is_file() else {}
+        if current.get('tag') == release['tag_name'] or current.get('published_at', '') >= release['published_at']:
+            print('YAC is up to date.')
+            return 0
+    else:
+        release = selected_release
     archive, checksum = asset_pair(release)
-    while True:
+    while selected_release is None:
         print('A new YAC update is available. r read changes; q cancel; Space install.', end='', flush=True)
         choice = key().casefold()
         print()
@@ -156,6 +159,7 @@ def run(destination, key=read_key):
             # The installer uses this metadata only after successful setup.
             (source / 'release.json').write_text(json.dumps({'tag': release['tag_name'], 'published_at': release['published_at']}))
             protected = ['yac.py', 'modules', 'lang', 'rad_cmds', 'doc', 'LICENSE', 'COPYING',
+                         'yac.ini.example', 'error-codes.txt',
                          'changelog.txt', 'update_yac.py', 'release.json', 'run-yac', 'update-yac',
                          'LINUX-MACOS-SETUP.txt', 'KEY-BINDINGS-English.txt', 'TASTENBELEGUNG-Deutsch.txt',
                          'SKROTY-KLAWISZOWE-Polski.txt', 'TECLAS-Espanol.txt']
@@ -170,16 +174,19 @@ def run(destination, key=read_key):
                 elif original.is_file():
                     shutil.copy2(original, backup / name)
             try:
-                result = subprocess.run([sys.executable, str(source / 'install_yac.py'), '--update'], check=False)
+                arguments = {'capture_output': True, 'text': True} if selected_release is not None else {}
+                result = subprocess.run([sys.executable, str(source / 'install_yac.py'), '--update'], check=False, **arguments)
             except OSError:
                 restore(destination, backup, protected)
                 raise
             if result.returncode:
                 restore(destination, backup, protected)
             if result.returncode:
-                print('Update did not complete. Please keep the messages above for support.')
+                if selected_release is None:
+                    print('Update did not complete. Please keep the messages above for support.')
                 return result.returncode
-    print('YAC update installed. Start YAC when ready.')
+    if selected_release is None:
+        print('YAC update installed. Start YAC when ready.')
     return 0
 
 

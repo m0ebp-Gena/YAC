@@ -1,65 +1,59 @@
-b: Band Select (full stop or comma, h help; q or another command exits)
-e: frequency in MHz (e.g. 7.2)
-m: Mode Select (full stop or comma, h help; q or another command exits)
-full stop or comma: increase/decrease frequency by the configured step
-z: round the current frequency to the nearest 1 kHz
-s: Settings; v selects FTX-1 Main/Sub or Icom VFO A/B (first press selects A)
-s then s: save the step size in hertz for the current mode
-w: read signal strength, frequency and mode
-q: quit YAC; y confirms, n or q cancels. Inside controls, q returns immediately.
-o: Offset; o cycles Receive/Transmit/Clear; full stop adds 10 Hz, comma subtracts 10 Hz; either clears in Clear; q exits
-i: Tone input; i cycles CTCSS/DCS N/DCS I; enter a value, Enter, then t for TX or b for Both when offered; q exits, h gives help
-Profile selection: enter a number to highlight a radio, Space to select it, or q to cancel. Press h on the profile screen for this help.
-p: cycle preamp stages and off
-u: cycle attenuator levels and off
-v: verify attenuator, preamp, configured power and supported tuner status
-s then t: cycle supported tuner settings; repeat t, q leaves Settings
-Tuner status describes the radio setting. Independent RF-sensing tuners are not detected. Off preserves the selected tuner except ATAS, which must be deselected to switch off. Tuner selection never starts tuning.
-Power is reported in watts for Yaesu/Kenwood and as the relative setting percentage for Icom; it is not measured transmitted power. Unknown means a supported setting could not be read.
-Opening Offset starts in Receive at zero hertz. Another command key exits.
-Mode selection starts at the radio's current mode and loops through the modes.
-Band selection starts at the current band. Icom and Kenwood band selection
-stops at each end; Yaesu follows the radio's band behavior.
-At an upper band limit, use comma to go down, or e to enter a frequency.
+YAC commands, in key order. Press keys separately.
+Commands depend on the radio and current mode.
 
-a adjusts AF Gain. r adjusts Squelch in FM, RF Gain in other modes. Starts at the current radio value, shown as a rounded percentage. Full stop increases; comma decreases. Steps are about 3 percent. Stops at each end without looping. q leaves and keeps the setting. Another command key leaves and starts that command.
+a: AF Gain. Full stop increases; comma decreases.
+b: Band. Full stop next; comma previous.
+d: Decoders. c CW; r RTTY; a receive audio setup.
+e: New frequency. Enter MHz, then Enter.
+f: Filters. See the filter keys below.
+h: Help. Use h inside a control for its detailed help.
+i: Tone/code input. Repeat i for CTCSS, DCS normal or DCS inverted where supported. Enter a value, then follow the prompts.
+l: Split/repeater setup. Repeat l to turn it off. h then Enter at the input gives help.
+m: Mode. Full stop next; comma previous.
+o: Offset. Repeat o for Receive, Transmit, Clear. Full stop adds 10 hertz; comma subtracts. Either movement key clears in Clear.
+p: Cycle preamp stages and off.
+q: Quit YAC. y confirms; n or q cancels. Inside a control or menu, q returns and keeps changes unless its help says otherwise.
+r: RF Gain, or Squelch in FM. Full stop increases; comma decreases.
+s: Settings. See the settings keys below.
+t: Start the configured tuner. Available only with a supported tuner. Select or enable it with s t first.
+u: Cycle attenuator levels and off.
+v: Read attenuator, preamp, power and supported tuner status. Power is the configured setting, not measured RF output.
+w: Read signal strength, frequency, mode and active FM tone/code. Repeat w for split/repeater details.
+x: Antennas. Entry reads routing; repeat x changes main antenna; r changes receive input.
+z: Round frequency to the nearest kilohertz.
 
-Settings: s then p opens the power edit field. Enter a whole number in the displayed units and range, then Enter; blank cancels. Successful changes are silent. Leave Settings with q and press v to check power.
+Comma: decrease frequency by the configured step.
+Full stop: increase frequency by the configured step.
 
-Power edit: whole watts; h then Enter for help; blank Enter cancels. Icom watt entries are estimated and converted to a relative percentage; v reports that percentage. Success is silent. Leave Settings with q before v.
+Filters: press f, then:
+a: Auto Notch, or supported Beat Cancel. Repeat a to toggle.
+b: Noise Blanker. Repeat b to toggle; full stop/comma adjust level while On.
+c: Contour. Repeat c to toggle; full stop/comma adjust frequency while On. l selects level; w selects width; c returns to frequency.
+h: Filter help.
+l: Low Cut. Full stop/comma adjust.
+n: Manual Notch. Repeat n to toggle; full stop/comma adjust position while On; w changes width.
+p: Bandwidth. Full stop/comma adjust.
+q: Return to the main menu. From an adjustment, q first returns to Filters.
+r: Noise Reduction. Repeat r to toggle; full stop/comma adjust level while On.
+u: Upper Cut. Full stop/comma adjust.
+v: Read filters currently On. Repeat v to review individual filter states.
 
-Filters: p adjusts direct receive bandwidth; l adjusts Low Cut; u adjusts Upper Cut where supported. Full stop increases; comma decreases. Starts at the current setting and stops at each end. q keeps the setting and returns to Filters; q again returns to the top level. h gives help. In high/low-cut configuration, p directs you to l or u. Changing one edge keeps the other edge unchanged. Fixed widths remain unchanged. Unsupported controls or modes say Not supported. A symbolic Yaesu default is reported without guessing its width; select a numeric width on the radio before adjusting. QMX uses enabled CW passbands or SSB receive width; menu changes are saved by the radio and may automatically adjust its CW centre/offset/sidetone according to radio settings.
+Settings: press s, then:
+a: Read current AGC. Repeat a to select the next preset; q finishes.
+b: Pi speech/braille mode. Full stop next; comma previous; q applies and saves.
+e: Speech Processor. Entry reads settings; e toggles; full stop/comma adjust while On. Kenwood i/o select Input/Output. n restores entry settings; q keeps changes.
+h: Settings help.
+m: Guided Mic Gain. Follow preparation prompts; full stop/comma adjust. PTT remains under your control.
+o: Pi speech settings. r rate; v volume; p pitch; u punctuation; full stop/comma adjust; t tests; d defaults. Changes save immediately.
+p: Output power. Enter whole watts, then Enter. Blank Enter or q then Enter cancels. Successful changes announce the entered value. Icom uses an estimated conversion to relative power; v reports its percentage.
+q: Return to the main menu; after AGC selection, announces Done.
+s: Tuning step. Enter whole hertz, then Enter.
+t: Cycle supported tuner settings. Repeat t. Selecting a tuner does not start tuning.
+u: Update YAC. Shows help, then checks GitHub. r reads notes; y installs; n or q returns.
+v: Select supported VFO A/B or Main/Sub.
+w: Pi Wi-Fi setup. Follow the prompts; h gives help where offered.
 
-Noise Blanker: f then b toggles the current state and reports On or Off. Inside the control, b toggles again. Full stop increases level; comma decreases it. When off, navigation reports Off and leaves the level unchanged. q returns to Filters; q again returns to the top level. h gives help. Levels use the radio scale, or percent where defined. Unknown status prevents a toggle. FTX-1 remembers the last on level observed by YAC, separately for Main/Sub; when none is known, On uses level 1. TS-590SG remembers the last observed NB1/NB2 selection; when none is known, On selects NB1. Unsupported radios or modes report Not supported.
+Profile selection: type a radio number, then Space to select; q cancels.
+Pi-only settings require the configured Pi launcher.
 
-Noise Reduction: f then r toggles the current state; r inside toggles again. Full stop increases the setting; comma decreases it; endpoints do not loop. While Off, navigation leaves the setting unchanged and reports Off. q returns to Filters; q again returns to the top level. h gives help. FTDX10/FT-710 levels are 1-15; FTX-1 levels 1-10, remembered separately per Main/Sub, with level 1 used if no previous on level is known. Icom levels are reported as percentages. Kenwood retains the last observed NR1/NR2 type; if unknown, On selects NR1. TS-590SG NR1 levels are 1-10. TS-480 NR1 offers Auto then 1-9; comma from 1 selects Auto. NR2 following time is 2-20 milliseconds. Nav follows the radio current NR type; it does not select the other type. Choose a different type on the radio if needed. Unsupported radios or modes report Not supported; unknown state prevents a toggle.
-
-In Kenwood FM mode, switching On selects NR1.
-
-Notch: f then a toggles Auto Notch; a inside toggles again. TS-480 uses Beat Cancel instead, retaining the last observed BC1/BC2 type, defaulting to BC1. f then n toggles Manual Notch; n inside toggles again. Full stop/comma raise/lower its frequency or position while On, stopping at endpoints. w inside Manual Notch cycles width. While Off, movement and w keep settings unchanged. q returns to Filters; q again returns to the top level; h gives help. Yaesu reports 10-3200 hertz; Icom reports position 0-255; TS-590SG reports position 0-127. Width choices follow manufacturer names. Where Auto/Manual are mutually exclusive, switching one On switches the other Off. TS-590SG restores the last manual width observed by YAC; if none is known, first On uses and announces Normal. Select BC1/BC2 on the TS-480 radio if a different type is needed. Unsupported functions/modes report Not supported; unknown status prevents toggling. QMX has no documented notch control.
-
-Contour: f c toggles On/Off. Navigation adjusts current frequency (10-3200 hertz). Inside Contour, l selects Contour level (-40 to +20, spoken as Dip/Neutral/Peak); w selects Contour width (1-11); c returns to frequency. When already on frequency, c toggles On/Off. Full stop increases and comma decreases the selected setting, stopping at endpoints. Off leaves settings unchanged. q returns to Filters, where l means Low Cut; q again returns to top level. Current settings are preserved on switching. FT-DX10, FT-710 and FTX-1 only; FTX-1 frequency/state follow selected Main/Sub, level/width are shared menu settings. APF is separate and is not altered.
-
-Filter Verify: f v lists switchable filters currently On for the current mode/receiver, using live readback. v inside any filter adjustment gives the same report without leaving the control. Off and unsupported filters are omitted; unreadable states are announced as unknown. If every applicable state is known and Off, says No switchable filters On. Bandwidth/low/upper cuts have no switchable On/Off state and are not included. FTX-1 reports Main or Sub. Verify changes no settings.
-
-Repeated v review: first v gives the filters-On summary. Further consecutive v presses show one applicable filter at a time, including Off or unknown, then return to the summary. Each status is read live. Any other command restarts the next v at the summary; a receive-mode or receiver change also restarts review. q leaves Filters when at the submenu; inside an adjustment, q first returns to Filters. Main v is unchanged.
-
-Settings s m opens guided Mic Gain adjustment. YAC changes only mic gain in response to full stop/comma. Preparation acknowledgements are required; PTT and RF power remain under your control. h inside reads the complete preparation and meter guidance.
-
-Settings s a cycles the supported AGC presets; repeat a. s h reads Settings help. AGC is a receiver control and needs no transmission.
-
-Settings s e opens Speech Processor without changes. e toggles; full stop/comma adjust. Kenwood i/o choose Input/Output. n cancels and restores entry processor settings; q keeps changes. h gives full help.
-
-In FM, w also reads active CTCSS/DCS on radios supported by i: tone/code, TX or Both, and DCS polarity. Off adds nothing. Unreadable signalling reports Tone/code unknown. FTX-1 follows Main/Sub. No settings are changed.
-
-l: Split/repeater setup; l again turns it off. h inside gives details.
-
-Consecutive w presses alternate normal status and live split/repeater details: receive frequency, transmit frequency and active FM tone/code. Off is announced; failed reads are unknown. Any other command resets the sequence.
-
-x: Antennas. Entry reads routing; repeat x cycles main antennas, r receive input, q Back, h help. Where supported.
-
-t: Start tuning with the configured tuner. Off must first be enabled in Settings. Reports the cycle ending, not a guaranteed antenna match.
-
-d: Decoders; c for CW, r for RTTY, h for help, q Back. Inside, e stops/restarts; q keeps capture running.
-
-FTX-1 correction: Settings t cycles configured tuner types for the transmitting antenna (internal, internal fast, external, ATAS on Optima; external/ATAS on Field). Idle AC status is not reported as tuner Off. Selection does not start tuning. Top-level t uses the corrected native start command. Verify reports the configured type, not proof of bypass or successful matching.
+Radio recovery: Radio Error and Stand by start a 60-second recovery period. Radio Restored resumes operation; otherwise Aborting ends YAC. Press h while waiting for recovery help.

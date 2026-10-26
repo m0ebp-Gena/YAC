@@ -3,4 +3,6 @@ Each language should be displayed on the screen being assigned a number. Number 
 This file should enter the selected language in the ini file fusing label l000.  then exit.
 l000
 l002
-l005
+l007
+Use the shared Continue Y/N? label in the selected language.
+Y confirms the language; N returns to language selection. Space does not confirm.

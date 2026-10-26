@@ -9,7 +9,7 @@ def operate(yac, root, radio, language, *, toggle=False, direction=0):
         return label('l129')
     mode = yac._current_mode_code(radio)
     if mode is None:
-        return label('l163')
+        return yac._radio_error(root, radio, language)
     if str(mode).upper() not in feature['modes']:
         return label('l129')
     side = str(yac._yaesu_vfo_side) if radio.model_id == '0840' else '0'
@@ -19,7 +19,7 @@ def operate(yac, root, radio, language, *, toggle=False, direction=0):
     current = settings.read(yac, radio, state_spec)
     state = str(current) if current is not None else None
     if state not in state_spec['on_values'] + [state_spec['off']]:
-        return label('l163')
+        return yac._radio_error(root, radio, language)
     if not hasattr(radio, '_nr_memory'):
         radio._nr_memory = {}
     memory = radio._nr_memory
@@ -35,35 +35,35 @@ def operate(yac, root, radio, language, *, toggle=False, direction=0):
         if not enabled and target not in allowed_on:
             target = allowed_on[0]
         if not settings._write(yac, radio, state_spec, target):
-            return label('l165')
+            return yac._radio_error(root, radio, language)
         actual = settings.read(yac, radio, state_spec)
         if actual is None or str(actual) != target:
-            return label('l165')
+            return yac._radio_error(root, radio, language)
         token = 'l161' if target == state_spec['off'] else feature.get('on_labels', {}).get(target, 'l160')
         return label(token)
     if not enabled:
         return label('l161')
     level_spec = feature.get('levels', {}).get(state, feature.get('level'))
     if level_spec is None:
-        return label('l164')
+        return label('l053')
     level_spec = expand(level_spec)
     combined = feature.get('combined', False)
     current_level = int(current) if combined else settings.read(yac, radio, level_spec)
     if current_level is None:
-        return label('l164')
+        return yac._radio_error(root, radio, language)
     value = int(current_level)
     if not level_spec['minimum'] <= value <= level_spec['maximum']:
-        return label('l164')
+        return yac._radio_error(root, radio, language)
     target = max(level_spec['minimum'], min(level_spec['maximum'],
                  value + direction * level_spec['step']))
     if target != value:
         digits = 4 if level_spec.get('encoding') == 'bcd' else level_spec.get('digits', 2)
         payload = f'{target:0{digits}d}'
         if not settings._write(yac, radio, level_spec, payload):
-            return label('l165')
+            return yac._radio_error(root, radio, language)
         actual = settings.read(yac, radio, level_spec)
         if actual is None or int(actual) != target:
-            return label('l165')
+            return yac._radio_error(root, radio, language)
         value = int(actual)
         if combined:
             memory[memory_key] = f'{value:0{digits}d}'

@@ -7,7 +7,6 @@ if ! command -v python3 >/dev/null 2>&1; then
     echo 'On macOS, Python is also available from https://www.python.org/downloads/macos/.'
     exit 1
 fi
-echo "Python found: $(python3 --version 2>&1)"
 if ! python3 -c 'import sys; sys.exit(0 if sys.version_info >= (3, 10) else 1)'; then
     echo 'YAC requires Python 3.10 or newer. Consult your package manager instructions and run this script again after installing it.'
     exit 1

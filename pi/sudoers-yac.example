@@ -1,0 +1,1 @@
+yac ALL=(root) NOPASSWD: /usr/local/libexec/yac-pi-audio "", /usr/local/libexec/yac-speakup-settings "", /usr/local/libexec/yac-pi-wifi "", /usr/bin/systemctl poweroff

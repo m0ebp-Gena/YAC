@@ -9,7 +9,7 @@ import tempfile
 from pathlib import Path
 
 
-MAX_CALL_LENGTH = 10
+from modules.ini_settings import MAX_CALL_LENGTH, save_error
 
 
 def _read_label(root: Path, language: str, label_id: str, fallback: str) -> str:
@@ -22,6 +22,13 @@ def _read_label(root: Path, language: str, label_id: str, fallback: str) -> str:
 
 
 def _save_call(ini_path: Path, call: str) -> None:
+    try:
+        _write_call(ini_path, call)
+    except (OSError, UnicodeError) as error:
+        save_error(ini_path, error)
+
+
+def _write_call(ini_path: Path, call: str) -> None:
     """Set [yac] call= while preserving radio profiles and other INI content."""
     contents = ini_path.read_text(encoding="utf-8-sig") if ini_path.exists() else ""
     newline = "\r\n" if "\r\n" in contents else "\n"
@@ -183,33 +190,33 @@ def collect_name(
     root: Path, ini_path: Path, language: str, *, initial: str = ""
 ) -> str:
     """Collect a name/callsign of at most 10 characters and save it to yac.ini."""
-    from modules import lang_sel
+    from modules import help_int, lang_sel
 
-    prompt = _read_label(root, language, "l004", "What should the program call you?")
-    instruction = _read_label(
-        root, language, "l006", "Enter your callsign or name. Maximum 10 characters."
-    )
+    prompt = _read_label(root, language, "l004", "Name / Call?")
+    entered_label = _read_label(root, language, "l006", "Name / Call =")
     confirmation = _read_label(
-        root, language, "l007", "Press Space to confirm or E to edit your input."
+        root, language, "l007", "Continue Y/N?"
     )
 
+    print(help_int.get_help(root, language, 'h028'))
     name = initial[:MAX_CALL_LENGTH]
     while True:
         print(prompt)
-        print(instruction)
         name = _edit_line(name).strip()
         if not name:
             continue
 
-        print(name)
+        print(f'{entered_label} {name}')
         print(confirmation)
         while True:
-            key = lang_sel.read_key()
-            if key == " ":
+            key = lang_sel.read_key().casefold()
+            if key == "y":
                 _save_call(ini_path, name)
                 os.system("cls" if os.name == "nt" else "clear")
                 return name
-            # Accept both the label's E instruction and N used in the module rules.
-            if key.casefold() in {"e", "n"}:
+            if key == "h":
+                print(help_int.get_help(root, language, 'h028'))
+                print(confirmation)
+            if key == "n":
                 print()
                 break

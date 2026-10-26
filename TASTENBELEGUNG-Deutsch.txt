@@ -88,7 +88,7 @@ Wiederholte v-Prüfung: Das erste v zeigt die Übersicht eingeschalteter Filter.
 
 s dann m   Mikrofonverstärkung: Vorbereitung, manuelle PTT, Punkt/Komma einstellen; h hilft. YAC ändert nur Mikrofonverstärkung.
 
-s dann a   Unterstützte AGC-Stufen durchschalten; a wiederholen. Rücklesen geprüft. s h gibt Einstellungshilfe.
+s dann a   Aktuelle AGC ohne Änderung lesen; a wiederholen für nächste Stufe. Rücklesen geprüft. q meldet Fertig. s h gibt Hilfe.
 
 s dann e   Sprachprozessor: nur lesen beim Öffnen; e schaltet; Punkt/Komma bei Ein. Kenwood i/o Eingang/Ausgang. n verwirft und stellt wieder her; q behält; h hilft.
 
@@ -98,6 +98,6 @@ s b: h Hilfe; b Sprache und Braille; r Nur Braille; s Nur Sprache; q Zurück. Je
 s o: h Hilfe; . erhöhen; , verringern; q Zurück. r Tempo; v Lautstärke; p Tonhöhe; u Satzzeichen; t Test; d Vorgaben. Änderungen wirken und speichern sofort.
 h Hilfe; r Tempo; v Lautstärke; p Tonhöhe; u Satzzeichen; . erhöhen; , verringern; t Test; d Vorgaben; q Zurück. Jede Änderung wirkt sofort und wird gespeichert. Anfangs ist Tempo ausgewählt. Tempo und Tonhöhe: 0 bis 9; Lautstärke: 1 bis 9. Satzzeichen: Keine, Einige, Meiste, Alle. q behält Änderungen. d stellt sofort die YAC-Vorgaben her: Tempo 2, Lautstärke 5, Tonhöhe 5, Einige Satzzeichen. t zeigt einen Testsatz mit den aktuellen Einstellungen. Systemlautstärke, Braille und andere Speakup-Einstellungen bleiben unverändert.
 
-s u: YAC aktualisieren. Leertaste schliesst die Funkgeraeteverbindung und oeffnet die Aktualisierung; q kehrt zu Einstellungen zurueck.
+s u: YAC aktualisieren. Zeigt Hilfe und Suche. Kein Internet oder Kein Update führt zu Einstellungen zurück. Update gefunden fragt Hinweise Y/N?, dann Update Y/N?. y bestätigt; n überspringt Hinweise oder lehnt Installation ab; q kehrt zurück. Lange Hinweise: Leertaste weiter; q beendet die Hinweise.
 
 s w: WLAN-Einrichtung ist nur im Raspberry-Pi-Abbild verfügbar. Hier die WLAN-Einstellungen des Betriebssystems verwenden. WLAN-Einrichtung: Land, Netzwerkname und Passwort. Strg+C bricht die Eingabe ab; Satzzeichen und Befehlsbuchstaben sind normale Zeichen.

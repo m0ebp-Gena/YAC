@@ -19,10 +19,10 @@ class TunerTests(unittest.TestCase):
             advance.busy = True
         advance.busy = False
         with patch('modules.tuner_control.time.sleep', side_effect=advance), patch('builtins.print'):
-            self.assertEqual(yac._dispatch(ROOT, radio, 'en', 't', None), 'Tuning cycle finished')
+            self.assertEqual(yac._dispatch(ROOT, radio, 'en', 't', None), 'Tune Finished')
         self.assertIn(bytes.fromhex('FEFE94E01C0102FD'), serial.writes)
         serial.reject_setting = True
-        self.assertEqual(yac._dispatch(ROOT, radio, 'en', 't', None), 'Tune failed or tuner bypassed')
+        self.assertEqual(yac._dispatch(ROOT, radio, 'en', 't', None), 'Tune Failed')
 
     def test_ts480_sat_tunes_hx_does_not(self):
         from tests.test_ts480 import TS480, TS480Tests
@@ -38,7 +38,7 @@ class TunerTests(unittest.TestCase):
             with patch.object(yac, '_cat_exchange', side_effect=emulator.exchange), \
                  patch('modules.tuner_control.time.sleep', side_effect=advance), patch('builtins.print'):
                 result = tuner_control.tune(yac, ROOT, TS480Tests().radio(), 'en')
-            self.assertEqual(result, 'Tuning cycle finished' if variant == '1' else 'Not supported')
+            self.assertEqual(result, 'Tune Finished' if variant == '1' else 'Not Supported')
             self.assertEqual('AC111;' in emulator.commands, variant == '1')
 
     def run_cycle(self, path, states, selection=None, **options):
@@ -63,7 +63,7 @@ class TunerTests(unittest.TestCase):
         for path, idle, busy, start, selected in profiles:
             with self.subTest(path=path, start=start):
                 result, writes = self.run_cycle('rad_cmds/'+path, [idle, busy, idle], selected)
-                self.assertEqual(result, 'Tuning cycle finished')
+                self.assertEqual(result, 'Tune Finished')
                 self.assertEqual(writes, [start])
 
     def test_off_unknown_and_already_tuning_never_write(self):
@@ -73,17 +73,17 @@ class TunerTests(unittest.TestCase):
 
     def test_ignored_start_not_reported_as_completion(self):
         result, writes = self.run_cycle('rad_cmds/yaesu/CAT/models/0800', ['001']*7)
-        self.assertEqual(result, 'Tune result unconfirmed')
+        self.assertEqual(result, 'Tune Unverified')
         self.assertEqual(writes, ['002'])
 
     def test_timeout_stops_without_restarting(self):
         result, writes = self.run_cycle('rad_cmds/yaesu/CAT/models/0800',
                                         ['001', '002', '002', '000'], polls=2)
         self.assertEqual(writes, ['002', '000'])
-        self.assertIn('stop requested', result)
+        self.assertIn('Tune Timed Out', result)
 
     def test_lost_connection_requests_stop_and_reports_unconfirmed(self):
         result, writes = self.run_cycle('rad_cmds/yaesu/CAT/models/0800',
                                         ['001', None, None])
         self.assertEqual(writes, ['002', '000'])
-        self.assertEqual(result, 'Tuning stop could not be confirmed')
+        self.assertEqual(result, 'Stop Unverified')

@@ -24,11 +24,11 @@ class ContourTests(unittest.TestCase):
                 return prefix+state[prefix]+';'
             with patch.object(yac,'_current_mode_code',return_value='2'),patch.object(yac,'_yaesu_vfo_side',1),patch.object(yac,'_cat_exchange',side_effect=exchange):
                 self.assertEqual(contour.operate(yac,ROOT,radio,'en',toggle=True),'Contour On')
-                self.assertEqual(contour.operate(yac,ROOT,radio,'en',direction=1),'Contour frequency 3010 hertz')
-                self.assertEqual(contour.operate(yac,ROOT,radio,'en',parameter='level',direction=1),'Contour level Neutral')
+                self.assertEqual(contour.operate(yac,ROOT,radio,'en',direction=1),'Contour 3010 Hz')
+                self.assertEqual(contour.operate(yac,ROOT,radio,'en',parameter='level',direction=1),'Neutral')
                 self.assertIn(menu+'+00;',commands)
-                self.assertEqual(contour.operate(yac,ROOT,radio,'en',parameter='level',direction=1),'Contour level Peak 1')
-                self.assertEqual(contour.operate(yac,ROOT,radio,'en',parameter='width',direction=-1),'Contour width 4')
+                self.assertEqual(contour.operate(yac,ROOT,radio,'en',parameter='level',direction=1),'Peak Level 1')
+                self.assertEqual(contour.operate(yac,ROOT,radio,'en',parameter='width',direction=-1),'Width 4')
                 self.assertEqual(contour.operate(yac,ROOT,radio,'en',toggle=True),'Contour Off')
                 before=dict(state)
                 for parameter in ['frequency','level','width']:
@@ -37,18 +37,18 @@ class ContourTests(unittest.TestCase):
     def test_limits_and_failed_readback(self):
         radio=create_dummy_radio()
         radio.serial.contour.update({'CO00':'0001','CO01':'3200','EX030202':'-40','EX030203':'11'})
-        self.assertEqual(contour.operate(yac,ROOT,radio,'en',direction=1),'Contour frequency 3200 hertz')
-        self.assertEqual(contour.operate(yac,ROOT,radio,'en',parameter='level',direction=-1),'Contour level Dip 40')
-        self.assertEqual(contour.operate(yac,ROOT,radio,'en',parameter='width',direction=1),'Contour width 11')
+        self.assertEqual(contour.operate(yac,ROOT,radio,'en',direction=1),'Contour 3200 Hz')
+        self.assertEqual(contour.operate(yac,ROOT,radio,'en',parameter='level',direction=-1),'Dip Level 40')
+        self.assertEqual(contour.operate(yac,ROOT,radio,'en',parameter='width',direction=1),'Width 11')
         with patch.object(yac,'_current_mode_code',return_value='2'),patch.object(yac,'_cat_exchange',side_effect=lambda r,c:'CO000001;' if c=='CO00;' else 'CO013000;'):
-            self.assertEqual(contour.operate(yac,ROOT,radio,'en',direction=1),'Contour change failed')
+            self.assertEqual(contour.operate(yac,ROOT,radio,'en',direction=1),'Radio Error')
     def test_unknown_and_unsupported_never_write(self):
         radio=create_dummy_radio()
         with patch.object(yac,'_current_mode_code',return_value='4'),patch.object(yac,'_cat_exchange') as exchange:
-            self.assertEqual(contour.operate(yac,ROOT,radio,'en',toggle=True),'Not supported')
+            self.assertEqual(contour.operate(yac,ROOT,radio,'en',toggle=True),'Not Supported')
             exchange.assert_not_called()
         with patch.object(yac,'_current_mode_code',return_value='2'),patch.object(yac,'_cat_exchange',return_value='?;') as exchange:
-            self.assertEqual(contour.operate(yac,ROOT,radio,'en',toggle=True),'Contour setting unknown')
+            self.assertEqual(contour.operate(yac,ROOT,radio,'en',toggle=True),'Radio Error')
             self.assertEqual(exchange.call_count,1)
     def test_menu_level_width_frequency_and_q_context(self):
         radio=create_dummy_radio()
@@ -60,9 +60,9 @@ class ContourTests(unittest.TestCase):
         self.assertEqual(radio.serial.contour['EX030203'],'09')
         self.assertEqual(radio.serial.contour['CO01'],'1210')
         self.assertEqual(radio.serial.contour['CO00'],'0000')
-        self.assertIn('Contour level Dip 14',output.getvalue())
-        self.assertIn('Contour width 9',output.getvalue())
-        self.assertIn('Contour frequency 1200 hertz',output.getvalue())
+        self.assertIn('Dip Level 14',output.getvalue())
+        self.assertIn('Width 9',output.getvalue())
+        self.assertIn('Contour 1200 Hz',output.getvalue())
 
 if __name__=='__main__': unittest.main()
 

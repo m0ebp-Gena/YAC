@@ -35,6 +35,20 @@ def release():
 
 
 class WindowsUpdateTests(unittest.TestCase):
+    def test_preselected_release_skips_lookup_and_second_confirmation(self):
+        with tempfile.TemporaryDirectory() as folder, \
+             patch.object(windows_update.sys,'platform','win32'), \
+             patch.object(windows_update.sys,'frozen',True,create=True), \
+             patch.object(windows_update.sys.stdin,'isatty',return_value=True), \
+             patch.object(updater,'read_key',side_effect=AssertionError('second confirmation')), \
+             patch.object(updater,'fetch',side_effect=[archive(),b'0'*64+b'  YAC-001-beta-2026-10-22.zip']) as fetch, \
+             patch.object(windows_update.subprocess,'Popen') as launch:
+            with self.assertRaisesRegex(ValueError,'checksum failed'):
+                windows_update.run(Path(folder),selected_release=release())
+            self.assertEqual(fetch.call_count,2)
+            self.assertNotIn(updater.API,[call.args[0] for call in fetch.call_args_list])
+            launch.assert_not_called()
+
     def test_asset_pair_uses_windows_package_and_existing_checksum_name(self):
         pair = updater.asset_pair(release(), windows=True)
         self.assertEqual(pair[0]['name'], 'YAC-001-beta-2026-10-22.zip')

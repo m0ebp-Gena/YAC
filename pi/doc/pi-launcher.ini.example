@@ -1,0 +1,19 @@
+[launcher]
+# Source installer's default location; change if running an extracted copy.
+yac_command = ~/.local/yac/run-yac
+
+# YAC's s b saves this mode. braille mutes Speakup and bypasses audio selection
+# and preparation on startup. Attached braille input/output remains available.
+# both, speech, or braille (braille skips all launcher audio changes).
+access_mode = both
+
+# First-run selection writes these after Enter confirms audible speech.
+# Do not fill in another user's device when preparing the image.
+audio_setup_complete = no
+audio_card =
+audio_device =
+
+# Use amixer to identify these. Empty alsa_control leaves audio untouched.
+alsa_card = default
+alsa_control =
+volume = 70

@@ -3,7 +3,7 @@ import io
 import string
 import tempfile
 import unittest
-from contextlib import redirect_stdout
+from contextlib import redirect_stdout, redirect_stderr
 from pathlib import Path
 from unittest.mock import patch
 
@@ -16,6 +16,15 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class DemoTests(unittest.TestCase):
+    def test_startup_cancellation_uses_shared_abort_label(self):
+        for language in ('en','de','es','pl'):
+            with self.subTest(language=language),patch.object(yac,'_read_settings',return_value={'lang':language}), \
+                 patch.object(yac,'_configure_debug'),patch.object(yac,'connect_radio',return_value=None), \
+                 redirect_stdout(io.StringIO()) as output,redirect_stderr(io.StringIO()) as errors:
+                self.assertEqual(yac._main([]),1)
+                self.assertEqual(errors.getvalue().strip(),yac._read_label(ROOT,language,'l355',''))
+                self.assertEqual(output.getvalue(),'')
+
     def test_real_radio_connection_stays_under_cursor_until_first_command(self):
         radio = create_dummy_radio()
         radio.is_dummy = False
@@ -38,14 +47,14 @@ class DemoTests(unittest.TestCase):
         def first_command():
             if 'Quit' in output.getvalue():
                 return 'y'
-            self.assertTrue(output.getvalue().endswith('No radio detected. Using simulated FT-DX10.'))
+            self.assertTrue(output.getvalue().endswith('Demo Mode'))
             return 'q'
         with patch.object(yac, 'connect_radio', return_value=radio), \
              patch.object(yac, '_read_settings', return_value={'call': 'TEST', 'lang': 'en'}), \
              patch.object(lang_sel, 'read_key', side_effect=first_command), redirect_stdout(output):
             self.assertEqual(yac.main([]), 0)
         self.assertIn('Bye TEST', output.getvalue())
-        self.assertEqual(output.getvalue().count('No radio detected.'), 1)
+        self.assertEqual(output.getvalue().count('Demo Mode'), 1)
 
     def test_failed_discovery_enters_spanish_interface_without_saving_fake_radio(self):
         with tempfile.TemporaryDirectory(dir=ROOT/'local_storage') as directory:
@@ -64,7 +73,7 @@ class DemoTests(unittest.TestCase):
                  patch.object(yac, '_read_settings', return_value={'call':'EA3GZA','lang':'es'}), \
                  patch.object(lang_sel, 'read_key', side_effect=lambda: next(keys)), redirect_stdout(output):
                 self.assertEqual(yac.main([]), 0)
-            self.assertEqual(output.getvalue().count('Ninguna radio detectada. Usando un FT-DX10 simulado.'), 1)
+            self.assertEqual(output.getvalue().count('Modo Demo'), 1)
             self.assertIn('Hasta luego EA3GZA', output.getvalue())
             self.assertNotIn('Falló', output.getvalue())
             self.assertFalse(radio.serial.is_open)
@@ -81,7 +90,7 @@ class DemoTests(unittest.TestCase):
         self.assertEqual(yac._yaesu_offset_state(radio), (0, False, False))
 
     def test_spanish_selection_and_complete_translations(self):
-        with patch.object(lang_sel, 'read_key', side_effect=['4', ' ']), redirect_stdout(io.StringIO()):
+        with patch.object(lang_sel, 'read_key', side_effect=['4', 'y']), redirect_stdout(io.StringIO()):
             self.assertEqual(lang_sel.show_language_menu(ROOT), 'es')
         formatter = string.Formatter()
         for group in ['labels', 'help']:
@@ -94,14 +103,14 @@ class DemoTests(unittest.TestCase):
 
     def test_language_reselection_keeps_confirmation_under_cursor(self):
         output = io.StringIO()
-        keys = iter(['2', 'n', '1', ' '])
+        keys = iter(['2', 'n', '1', 'y'])
         expected = iter([None, 'de', None, 'en'])
         def read():
             language = next(expected)
             self.assertFalse(output.getvalue().endswith('\n'))
             if language:
                 self.assertTrue(output.getvalue().endswith(
-                    lang_sel.read_label(ROOT, language, 'l005')))
+                    lang_sel.read_label(ROOT, language, 'l007')))
             return next(keys)
         with patch.object(lang_sel, 'read_key', side_effect=read), redirect_stdout(output):
             self.assertEqual(lang_sel.show_language_menu(ROOT), 'en')
@@ -120,7 +129,7 @@ class IC9700Tests(unittest.TestCase):
     def test_status_frequency_ranges_and_bands(self):
         self.assertEqual(yac._radio_status(ROOT, self.radio, 'en'), 'S 9 145.5 FM')
         for value in ['7.2', '200', '500', '1301']:
-            self.assertIn('outside', yac._set_frequency(ROOT, self.radio, 'en', value))
+            self.assertEqual('Invalid', yac._set_frequency(ROOT, self.radio, 'en', value))
         self.assertFalse(any(packet[4] == 5 for packet in self.serial.writes))
         self.assertEqual(yac._set_frequency(ROOT, self.radio, 'en', '145.525'), '145.525')
         self.assertTrue(yac._icom_band_change(self.radio, 1))
@@ -132,7 +141,7 @@ class IC9700Tests(unittest.TestCase):
 
     def test_rit_without_unsupported_xit_commands(self):
         self.assertIn('Receive', yac._offset_action(ROOT, self.radio, 'en', 0, 1))
-        self.assertIn('not supported', yac._offset_action(ROOT, self.radio, 'en', 1, 1))
+        self.assertIn('Not Supported', yac._offset_action(ROOT, self.radio, 'en', 1, 1))
         yac._offset_action(ROOT, self.radio, 'en', 2, 1)
         self.assertEqual((self.serial.offset, self.serial.rit), (0, False))
         self.assertEqual(yac._round_frequency_to_khz(ROOT, self.radio, 'en'), '145.5')

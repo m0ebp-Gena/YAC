@@ -87,8 +87,11 @@ Settings `s u` opens the updater on installed Linux/macOS source versions and
 portable Windows builds. See [Updating YAC](doc/updating-yac.html).
 
 Real connections are checked quietly every five seconds while waiting for
-command keys. After repeated failures, YAC attempts to reconnect to the same
-device and model without restoring radio settings or entering simulated mode.
+command keys. An unusable radio-status response or repeated connection failures
+announces Radio Error, then Stand by. YAC retries the same device and model for
+up to 60 seconds, without resetting radio settings or entering simulated mode.
+Radio Restored resumes operation; otherwise Aborting closes YAC. Press h during
+recovery for help.
 The connection and simulated-mode messages stay under the terminal cursor
 until a command is entered. Polling pauses during editable fields.
 

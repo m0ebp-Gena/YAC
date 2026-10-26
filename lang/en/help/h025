@@ -1,1 +1,4 @@
 h Help; o cycles Rate, Volume, Pitch, Punctuation, like the offset selector. Rate is selected on entry. Full stop increases; comma decreases. Each adjustment applies and saves immediately; q keeps changes and returns. t Test; d immediately applies YAC defaults: rate 2, volume 5, pitch 5, punctuation Some. Rate and pitch range 0 to 9, volume 1 to 9. Punctuation: None, Some, Most, All.
+
+Speakup settings are unavailable. Check the Pi helper setup; no access settings were changed.
+Could not change or save the setting. Check the current settings.

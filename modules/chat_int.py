@@ -42,7 +42,7 @@ def show_request(call: str, request: str, *, prompt_open: bool = False) -> None:
 
 def show_frequency_prompt(root: Path, language: str) -> None:
     finish_response()
-    sys.stdout.write("e: ")
+    sys.stdout.write(label(root, language, "l033", "New frequency") + " ")
     sys.stdout.flush()
 
 

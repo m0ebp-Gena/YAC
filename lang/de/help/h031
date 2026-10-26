@@ -1,0 +1,9 @@
+Bandbreite
+
+Ein Regler: Punkt verbreitert die Bandbreite; Komma verengt sie.
+Getrennte Grenzen: p wählt zuerst die untere Grenze, danach abwechselnd die obere und untere.
+Punkt erhöht die gewählte Grenze; Komma senkt sie. Die Auswahl liest den aktuellen Wert ohne Änderung.
+Jede Änderung wirkt sofort und wird durch Rücklesen bestätigt.
+Bei Standard wählt Punkt die schmalste numerische Bandbreite, Komma die breiteste.
+h zeigt diese Hilfe. q beendet mit Fertig und erhält Änderungen; zurück zu Filter.
+Nicht unterstützt bedeutet: keine Bandbreitenregelung für Gerät und Modus. YAC kehrt ohne Änderung zu Filter zurück.

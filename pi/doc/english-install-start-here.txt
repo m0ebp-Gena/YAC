@@ -1,0 +1,48 @@
+YAC PI SOURCE AND LAUNCHER - ENGLISH ONLY - 23 OCTOBER 2026
+
+Extract into a NEW folder, not over the previous multilingual package.
+Nothing installs or runs on extraction.
+
+When you choose, from the extracted folder as your normal Pi user:
+  sh install.sh
+
+The installer asks before proceeding. It places English YAC source in
+~/.local/yac, creates its Python environment, installs pyserial if needed,
+places the launcher and audio module in ~/.local/bin, and installs the
+privileged audio and speech helpers and their exact sudo permissions.
+It sets YAC's language to English, preserving other YAC preferences and
+any existing launcher INI. No other language files are shipped. It does
+not delete files from a previous installation.
+
+Required packages: python3, python3-venv, alsa-utils, espeak-ng, espeakup,
+sudo. Missing packages are reported; apt is not run by the installer.
+Internet access is needed if pyserial must be downloaded.
+
+Installation does not start YAC or the audio selection, change login or
+boot files, change ALSA/mixers, or stop/restart Speakup. Wi-Fi helper and
+boot-speech service installation are outside this audio-test setup.
+
+When ready, at the Pi LOCAL console:
+  python3 ~/.local/bin/yac-pi --audio-setup
+
+This is the ACTUAL launcher and selection routine, unchanged. It briefly
+stops espeakup, tests playback outputs and their mixer volume, applies the
+confirmed ALSA default and restarts espeakup, then starts YAC. Press Enter
+when the prompt is audible. Ctrl+C attempts to restore espeakup. Five
+unanswered minutes request shutdown. Mixer changes are not rolled back
+on cancellation. An existing non-YAC /etc/asound.conf is not overwritten.
+
+Check Speakup reads YAC and the console after quitting YAC and answering N
+to shutdown. Actual Pi playback/recovery must still be tested on hardware.
+
+If an older ~/.config/yac/pi-launcher.ini exists, check that access_mode
+is both or speech and yac_command is ~/.local/yac/run-yac. Braille-only
+mode bypasses selection. The installer deliberately preserves that file.
+
+Recovery reference from another SSH session, if needed:
+  sudo systemctl restart espeakup
+  echo 6 | sudo tee /sys/accessibility/speakup/silent
+
+If audio routing caused the failure, restore your prior /etc/asound.conf
+and restart espeakup. Record its contents before testing if it exists.
+The installer has not run any of these commands on your Pi.

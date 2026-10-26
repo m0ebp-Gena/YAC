@@ -1060,7 +1060,7 @@ def main() -> int:
     )
     root = project_root()
     if radio is None:
-        print(_read_label(root, language, "l028", "YAC could not find a responding radio."))
+        print(_read_label(root, language, "l049", "Not Available"))
         return 1
 
     _clear_console()

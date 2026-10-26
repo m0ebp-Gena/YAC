@@ -1,0 +1,120 @@
+YAC SOURCE + PI LAUNCHER - MANUAL SETUP - 23 OCTOBER 2026
+
+This is the actual launcher and audio selection routine, without a separate
+test mode. Nothing runs on extraction. No installer or automatic setup
+script is included. Perform each step yourself when ready.
+
+Audio selection temporarily stops espeakup, tests each ALSA playback PCM,
+adjusts its playback mixers to the configured volume, then saves the
+confirmed output in /etc/asound.conf and restarts espeakup. Press Enter
+when you hear the prompt. Ctrl+C cancels and attempts to restart espeakup.
+Five minutes without confirmation requests poweroff. These are the real
+behaviours to test. Hardware success has not been verified here.
+
+MANUAL PREPARATION
+
+Extract the ZIP into your home directory and change into its extracted
+folder. Run the following separately as your normal Pi login user.
+
+Check prerequisites (install only missing packages when you choose):
+  command -v python3 aplay amixer espeak-ng
+  systemctl is-active espeakup
+  cat /sys/accessibility/speakup/synth
+
+The synthesizer should be soft and espeakup should be active. Packages
+needed are python3, python3-venv, alsa-utils, espeak-ng and espeakup.
+
+Create the YAC environment manually:
+  python3 -m venv .venv
+  .venv/bin/python -m pip install -r requirements.txt
+
+The launcher needs an executable command for YAC. Create a file named
+run-yac in this extracted folder containing these three lines exactly:
+
+#!/bin/sh
+cd "$(dirname "$0")" || exit 1
+exec "$PWD/.venv/bin/python" "$PWD/yac.py" "$@"
+
+Then make that command executable:
+  chmod +x run-yac
+
+Install the actual audio helper manually:
+  sudo install -d -m 755 /usr/local/libexec
+  sudo install -m 755 pi/audio-settings.py /usr/local/libexec/yac-pi-audio
+
+Create launcher settings:
+  mkdir -p ~/.config/yac
+
+If ~/.config/yac/pi-launcher.ini already exists, copy it somewhere safe
+before editing. Create or edit it with nano or your preferred editor.
+For this first test use the following, replacing /home/YOURUSER/... with
+the absolute path of this extracted folder. Do not use a relative path.
+
+[launcher]
+yac_command = /home/YOURUSER/yac-source-manual-2026-10-23/run-yac
+access_mode = both
+volume = 70
+alsa_control =
+audio_setup_complete = no
+
+The helper uses sudo -n, so give only that helper passwordless permission.
+Find your account name with whoami, then open:
+  sudo visudo -f /etc/sudoers.d/yac-pi-audio
+
+Add this single line, replacing YOURUSER with that account name:
+YOURUSER ALL=(root) NOPASSWD: /usr/local/libexec/yac-pi-audio ""
+
+For the actual five-minute inactivity shutdown and closing shutdown prompt,
+add a second line in that file:
+YOURUSER ALL=(root) NOPASSWD: /usr/bin/systemctl poweroff
+
+Save and check:
+  sudo visudo -c
+
+No login, boot-muting or startup service changes are needed for this manual
+console test. The helper may ask systemd to stop a recovery timer that is
+not installed; that request is allowed to fail by the existing routine.
+
+RUN THE REAL SELECTION AT THE PI LOCAL CONSOLE
+
+From the extracted folder, as your normal user:
+  python3 pi-launcher.py --audio-setup
+
+This forces the actual selection even if an output was previously saved.
+Do not use braille-only mode for this test: it bypasses audio selection.
+Speakup will temporarily go quiet while direct hardware prompts cycle.
+Press Enter when you hear the prompt. YAC then starts. Confirm that Speakup
+reads YAC and, after quitting YAC and answering N to shutdown, reads the
+console normally. Check again after a reboot when you are ready.
+
+No mixer changes are rolled back on cancellation. Successful selection
+changes the system ALSA default; cancelling later does not undo a previous
+selection. The helper refuses to replace an existing /etc/asound.conf that
+was not created by YAC. Review any such file yourself rather than deleting it.
+
+RECOVERY REFERENCE
+
+If speech fails to return, these can be run from another SSH connection:
+  sudo systemctl restart espeakup
+  echo 6 | sudo tee /sys/accessibility/speakup/silent
+
+If the selected ALSA default prevents speech, restore your previous
+/etc/asound.conf manually. If none existed before the test, inspect the
+new file: only remove it if its first line is
+# Managed by YAC Pi audio selection
+Then restart espeakup. Record your existing audio configuration before
+starting if you want to be able to restore it exactly.
+
+PACKAGE CONTENTS
+
+All application source, languages, radio definitions, launcher, audio
+module and Pi Python helpers are included. Other Pi features may require
+additional manual helper/permission setup later; this first setup covers
+the real audio selection. CW goodbye cues are included under pi/cw and
+can be copied to ~/.local/share/cw when you want them. Missing cues print
+a message; they do not prevent audio selection.
+
+No installation/update shell scripts, personal INI, logs, boot changes,
+or executable Windows builds are included. update_yac.py is application
+source used by the user-invoked update menu; it does not run on extraction.
+Older general docs may mention installers absent from this manual ZIP.

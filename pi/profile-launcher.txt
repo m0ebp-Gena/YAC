@@ -1,0 +1,3 @@
+if [ -z "${SSH_CONNECTION:-}" ] && [ "$(tty 2>/dev/null)" = /dev/tty1 ] && [ ! -e "$HOME/.config/yac/disable-autostart" ]; then
+    python3 "$HOME/.local/bin/yac-pi"
+fi

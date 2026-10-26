@@ -114,7 +114,7 @@ def control(root, language, read_key, watch, *, modes=False):
             say('l319')
             return False
     if not image_enabled():
-        say('l296')
+        say('l129')
         return
     try:
         if modes:
@@ -170,4 +170,4 @@ def control(root, language, read_key, watch, *, modes=False):
             if change({k: v for k, v in DEFAULTS.items() if current[k] != v}):
                 say('l316')
         elif not modes and key == 't':
-            say('l323')
+            chat_int.show_response(help_int.get_help(root, language, 'h032'))

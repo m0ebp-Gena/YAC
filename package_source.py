@@ -19,7 +19,7 @@ files = [root / name for name in (
     "doc/decoder-controls.md", "doc/CWKit-LICENSE.txt",
     "doc/AUDIO-LICENSES.txt",
     "doc/split-controls.md", "doc/antenna-controls.md", "doc/tuner-controls.md",
-    "yac.ini.example",
+    "yac.ini.example", "error-codes.txt",
     "KEY-BINDINGS-English.txt", "TASTENBELEGUNG-Deutsch.txt",
     "SKROTY-KLAWISZOWE-Polski.txt", "TECLAS-Espanol.txt",
     "doc/linux-macos-setup.txt", "doc/debian-trixie-setup.txt",

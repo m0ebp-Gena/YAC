@@ -15,6 +15,7 @@ import zipfile
 from modules.update_control import REQUEST
 
 DATA_NAMES = {'_internal', 'lang', 'rad_cmds', 'doc', 'LICENSE', 'COPYING', 'changelog.txt',
+              'yac.ini.example', 'error-codes.txt',
               'release.json', 'yac.ini', 'KEY-BINDINGS-English.txt', 'TASTENBELEGUNG-Deutsch.txt',
               'SKROTY-KLAWISZOWE-Polski.txt', 'TECLAS-Espanol.txt', 'START-HERE-English.txt',
               'HIER-STARTEN-Deutsch.txt', 'ZACZNIJ-TUTAJ-Polski.txt', 'EMPIEZA-AQUI-Espanol.txt'}
@@ -142,22 +143,25 @@ if ($Success) {
 '''
 
 
-def run(destination):
+def run(destination, *, selected_release=None):
     import os
     import update_yac as updater
     if sys.platform != 'win32' or not getattr(sys, 'frozen', False):
         raise ValueError('Windows updates require the portable YAC executable.')
     if not sys.stdin.isatty():
         raise ValueError('Run YAC in an interactive console.')
-    print('Checking for YAC updates over the internet...', flush=True)
-    release = updater.newest_release(json.loads(updater.fetch(updater.API, 2 * 1024 * 1024)))
-    marker = destination / 'release.json'
-    current = json.loads(marker.read_text()) if marker.is_file() else {}
-    if current.get('tag') == release['tag_name'] or current.get('published_at', '') >= release['published_at']:
-        print('YAC is up to date.')
-        return 0
+    if selected_release is None:
+        print('Checking for YAC updates over the internet...', flush=True)
+        release = updater.newest_release(json.loads(updater.fetch(updater.API, 2 * 1024 * 1024)))
+        marker = destination / 'release.json'
+        current = json.loads(marker.read_text()) if marker.is_file() else {}
+        if current.get('tag') == release['tag_name'] or current.get('published_at', '') >= release['published_at']:
+            print('YAC is up to date.')
+            return 0
+    else:
+        release = selected_release
     archive, checksum = updater.asset_pair(release, windows=True)
-    while True:
+    while selected_release is None:
         print('A new YAC update is available. r read changes; q cancel; Space install.', flush=True)
         key = updater.read_key().casefold()
         if key in ('q', '\x03', '\x04', ''):

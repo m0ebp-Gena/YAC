@@ -33,9 +33,9 @@ class WhereReviewTests(unittest.TestCase):
         before=dict(cat.state)
         with patch.object(yac,'_cat_exchange',side_effect=cat.exchange),patch.object(yac,'_yaesu_vfo_side',0):
             text=split_control.report(yac,ROOT,cat.radio,'en')
-            self.assertEqual(text,'Repeater On, receive 145.6 MHz, transmit 145 MHz, CTCSS 88.5 Hz TX')
+            self.assertEqual(text,'Repeater On, RX 145.6 MHz, TX 145 MHz, Minus 600000 Hz, CTCSS 88.5 Hz TX')
             cat.state['EX010318']='0032'
-            self.assertIn('transmit 144 MHz',split_control.report(yac,ROOT,cat.radio,'en'))
+            self.assertIn('TX 144 MHz',split_control.report(yac,ROOT,cat.radio,'en'))
         before['EX010318']='0032'
         self.assertEqual(cat.state,before)
         self.assertTrue(all(c[:-1] in cat.state or c in {'IF;','OI;'} for c in cat.commands))
@@ -45,20 +45,20 @@ class WhereReviewTests(unittest.TestCase):
         cat.state.update({'ST':'1','FT':'1','FB':'014200000'})
         with patch.object(yac,'_cat_exchange',side_effect=cat.exchange):
             self.assertEqual(split_control.report(yac,ROOT,cat.radio,'en'),
-                             'Split On, receive 14.195 MHz, transmit 14.2 MHz')
+                             'Split On, RX 14.195 MHz, TX 14.2 MHz')
             cat.state['FT']='0'
-            self.assertIn('transmit 14.195 MHz',split_control.report(yac,ROOT,cat.radio,'en'))
+            self.assertIn('TX 14.195 MHz',split_control.report(yac,ROOT,cat.radio,'en'))
 
     def test_icom_native_duplex_and_off_and_failed_read(self):
         civ=Civ(fm=True)
         civ.state.update({(15,None):b'\x11',(22,93):b'\x00'})
         with patch.object(yac,'_civ_exchange',side_effect=civ.exchange),patch.object(yac,'_civ_send',side_effect=civ.send):
             self.assertEqual(split_control.report(yac,ROOT,civ.radio,'en'),
-                             'Repeater On, receive 145.6 MHz, transmit 145 MHz')
+                             'Repeater On, RX 145.6 MHz, TX 145 MHz, Minus 600000 Hz')
             civ.state[(15,None)]=b'\x00'
-            self.assertEqual(split_control.report(yac,ROOT,civ.radio,'en'),'Split/repeater Off')
+            self.assertEqual(split_control.report(yac,ROOT,civ.radio,'en'),'Simplex')
             civ.state[(15,None)]=b'\xff'
-            self.assertEqual(split_control.report(yac,ROOT,civ.radio,'en'),'Split/repeater details unknown.')
+            self.assertEqual(split_control.report(yac,ROOT,civ.radio,'en'),'Radio Error')
         self.assertEqual(civ.sent,[])
 
     def test_icom_hf_and_unknown_ars(self):
@@ -66,15 +66,15 @@ class WhereReviewTests(unittest.TestCase):
         civ.state[(15,None)]=b'\x01'
         with patch.object(yac,'_civ_exchange',side_effect=civ.exchange):
             self.assertEqual(split_control.report(yac,ROOT,civ.radio,'en'),
-                             'Split On, receive 14.195 MHz, transmit 7.1 MHz')
+                             'Split On, RX 14.195 MHz, TX 7.1 MHz')
         cat=Cat(fm=True)
         cat.state['OS0']='3'
         with patch.object(yac,'_cat_exchange',side_effect=cat.exchange):
-            self.assertEqual(split_control.report(yac,ROOT,cat.radio,'en'),'Split/repeater details unknown.')
+            self.assertEqual(split_control.report(yac,ROOT,cat.radio,'en'),'Not Supported')
 
     def test_ftx_follows_radio_receive_side_after_external_selection(self):
         cat=Cat(side=1)
         cat.state.update({'ST':'1','FT':'0'})
         with patch.object(yac,'_cat_exchange',side_effect=cat.exchange),patch.object(yac,'_yaesu_vfo_side',0):
             self.assertEqual(split_control.report(yac,ROOT,cat.radio,'en'),
-                             'Split On, receive 7.1 MHz, transmit 14.195 MHz')
+                             'Split On, RX 7.1 MHz, TX 14.195 MHz')

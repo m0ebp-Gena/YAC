@@ -1,10 +1,10 @@
-Einstellungen: a AGC; m Mikrofonverstärkung; p Leistung; s Schrittweite; t Tuner; v VFO/Empfänger; e Sprachprozessor. q kehrt zurück und meldet Zurück. h liest diese Hilfe.
+Einstellungen: a AGC; m Mikrofonverstärkung; p Leistung; s Schrittweite; t Tuner; v VFO/Empfänger; e Sprachprozessor. q kehrt zurück und meldet Zurück, nach AGC-Auswahl Fertig. h liest diese Hilfe.
 
-a wählt die nächste AGC-Einstellung und bestätigt sie. Schnell erholt sich früher nach einem starken Signal, Langsam hält die Verstärkungsreduzierung länger. Nach Gehör wählen. Aus erlaubt größere Lautstärkeschwankungen. Kein Senden nötig.
+s a liest die aktuelle AGC-Einstellung, ohne sie zu ändern. Erneutes a wählt die nächste Einstellung und bestätigt sie. q beendet und meldet Fertig. Schnell erholt sich früher nach einem starken Signal, Langsam hält die Verstärkungsreduzierung länger. Nach Gehör wählen. Aus erlaubt größere Lautstärkeschwankungen. Kein Senden nötig.
 
 m öffnet die geführte Mikrofoneinstellung. Vorbereitungshinweise befolgen; h darin erklärt Tasten, Test und ALC-Rückmeldung. PTT bedienen Sie selbst.
 
-p meldet aktuelle Leistung und Eingabebereich. Ganze Watt eingeben und Enter drücken; leeres Enter bricht ab. Bestätigung nennt den eingegebenen Wert und Gesetzt. Das ist eine Einstellung, keine gemessene Sendeleistung. h und Enter geben Leistungshilfe.
+p meldet aktuelle Leistung und Eingabebereich. Ganze Watt eingeben und Enter drücken; leeres Enter bricht ab. Bestätigung nennt den eingegebenen Wert und Gesetzt. Das ist eine Einstellung, keine gemessene Sendeleistung. h und Enter geben Leistungshilfe. Leeres Enter oder q und Enter brechen ab und kehren zu Einstellungen zurück.
 
 s öffnet die Schrittweite für die aktuelle Betriebsart. t schaltet Tuner-Auswahl weiter und bestätigt sie; es startet keine Abstimmung. Einstellungen verlassen und t drücken, um abzustimmen. v wählt den unterstützten VFO oder Empfänger und meldet die Auswahl.
 
@@ -13,10 +13,16 @@ e öffnet den Sprachprozessor und liest Einstellungen. e darin schaltet; Punkt e
 Modellspezifische Auswahl, Grenzen und Ausnahmen stehen in doc/supported-radios in der nach Ihrem Radio benannten Textdatei. READ-ME.txt erklärt diese Hinweise. Sprachausgaben erscheinen auch als Text für die Braillezeile. Nicht unterstützte Funktionen und fehlgeschlagene oder unbekannte Abfragen werden gemeldet.
 
 
-s b: h Hilfe; b wechselt zwischen Sprache und Braille, Nur Braille, Nur Sprache, wie bei der Offset-Auswahl. Die Auswahl allein ändert nichts. Punkt oder Komma wendet den gewählten Modus an und speichert ihn. Nur Braille schaltet Speakup stumm. Sprache erfordert einen laufenden Sprachdienst. Angeschlossenes Braille bleibt in jedem Modus verfügbar. q kehrt zurück und verwirft eine nicht angewendete Auswahl.
-s o: h Hilfe; o nächste Option; . erhöhen; , verringern; q Zurück. t Test; d Standardwerte. Änderungen werden sofort angewendet und gespeichert.
-h Hilfe; o wechselt zwischen Geschwindigkeit, Lautstärke, Tonhöhe und Zeichensetzung, wie bei Offset. Anfangs ist Geschwindigkeit gewählt. Punkt erhöht; Komma verringert. Jede Änderung gilt sofort und wird gespeichert; q behält Änderungen und kehrt zurück. t Test; d YAC-Standardwerte sofort anwenden: Geschwindigkeit 2, Lautstärke 5, Tonhöhe 5, Zeichensetzung Einige. Geschwindigkeit und Tonhöhe 0 bis 9, Lautstärke 1 bis 9.
+s b: Punkt oder b wählt den nächsten Modus; Komma den vorherigen. q wendet an, speichert und kehrt zurück. h liest Hilfe. Nur Braille schaltet Speakup stumm; angeschlossenes Braille bleibt in jedem Modus verfügbar.
 
-s u: YAC aktualisieren. Leertaste schliesst die Funkgeraeteverbindung und oeffnet die Aktualisierung; q kehrt zu Einstellungen zurueck.
+s o: r Tempo; v Lautstärke; p Tonhöhe; u Satzzeichen; Punkt erhöht; Komma verringert; t Test; d Standardwerte; h Hilfe; q kehrt zurück. Änderungen gelten und speichern sofort.
+
+s u: YAC aktualisieren. Zeigt Hilfe und Suche. Kein Internet oder Kein Update führt zu Einstellungen zurück. Update gefunden fragt Hinweise Y/N?, dann Update Y/N?. y bestätigt; n überspringt Hinweise oder lehnt Installation ab; q kehrt zurück. Lange Hinweise: Leertaste weiter; q beendet die Hinweise.
 
 s w: WLAN-Einrichtung ist nur im Raspberry-Pi-Abbild verfügbar. Hier die WLAN-Einstellungen des Betriebssystems verwenden. WLAN-Einrichtung: Land, Netzwerkname und Passwort. Strg+C bricht die Eingabe ab; Satzzeichen und Befehlsbuchstaben sind normale Zeichen.
+
+Abstimmvorgang beendet
+Abstimmung fehlgeschlagen oder Tuner umgangen
+Abstimmergebnis nicht bestätigt
+Zeitüberschreitung; Stopp angefordert
+Stopp der Abstimmung nicht bestätigt

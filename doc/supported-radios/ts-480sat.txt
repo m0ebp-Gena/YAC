@@ -49,8 +49,9 @@ or the mic-gain value. The CAT data range does not establish the raw dot
 count at the recommended operating boundary. No calibrated raw threshold is
 provided here.
 
-YAC reads RM without changing the meter selection. If ALC is unavailable,
-select the ALC meter yourself and repeat. Missing readings are not zero.
+YAC reads ALC automatically. If necessary, it selects the ALC meter and
+restores the known previous meter on exit while receiving. Missing readings
+are not zero; selection or restoration failures are reported.
 
 AM uses the power-meter response to speech rather than this SSB ALC procedure.
 FM uses separate microphone-gain choices. Neither procedure is enabled by the
@@ -83,4 +84,4 @@ SETTINGS HELP - MODEL DETAILS
 AGC cycles Fast, Slow, Off; FM AGC adjustment is unavailable. Speech Processor i/o selects Input/Output within that control. Unknown readings prevent AGC changes; rejected or unconfirmed changes report failure. See in-command h for the operating procedure and feedback.
 
 MIC GAIN - MODEL DETAILS
-Use the marked SSB ALC zone/limit in the radio manual. Select the ALC meter on the radio if CAT does not return it. Gain steps are 1 on 0-100. AM/FM adjustment is not enabled.
+Use the marked SSB ALC zone/limit in the radio manual. YAC prepares the ALC meter automatically when necessary. Gain steps are 1 on 0-100. AM/FM adjustment is not enabled.

@@ -192,3 +192,11 @@ recognises the older dated YAC-source ZIP names. Existing installations without
 release metadata will be offered the newest published release once. Pre-updater
 versions must be updated manually first. Until a package containing this updater
 is released, existing public downloads do not provide this command.
+
+Installer prompts
+
+Enter accepts Yes at Install YAC?, Create YAC launcher? and Create update
+launcher?. Answer n to skip. Existing launchers are preserved silently.
+YAC uses its own private Python environment; other environments are unchanged.
+If no launcher is created or its directory is outside PATH, the installer
+prints the full launch path. The Pi installer finishes with yac-pi.

@@ -40,7 +40,7 @@ class IC7600Tests(unittest.TestCase):
         self.assertEqual(yac._radio_status(ROOT, self.radio, 'en'), 'S 9 7.159123 LSB')
         for value in ['0.029999', '60.000001', '70.2', '145.5']:
             self.serial.writes.clear()
-            self.assertIn('outside', yac._set_frequency(ROOT, self.radio, 'en', value))
+            self.assertEqual('Invalid', yac._set_frequency(ROOT, self.radio, 'en', value))
             self.assertEqual(self.serial.writes, [])
         self.assertEqual(yac._set_frequency(ROOT, self.radio, 'en', '14.185001'), '14.185001')
         for code, label in yac._available_modes(self.radio):
@@ -68,7 +68,7 @@ class IC7600Tests(unittest.TestCase):
 
     def test_rejected_setting_restores_frequency(self):
         self.serial.mismatch = True
-        self.assertIn('restored', yac._set_frequency(ROOT, self.radio, 'en', '14.185'))
+        self.assertIn('Freq Restored', yac._set_frequency(ROOT, self.radio, 'en', '14.185'))
         self.assertEqual(self.serial.frequencies[0], 7159123)
 
 

@@ -1,0 +1,8 @@
+Recuperar conexión
+
+Cancelando: la radio no se recuperó en 60 segundos. YAC cierra la conexión y sale. Comprueba radio, alimentación y cable USB; después inicia YAC otra vez.
+Error de radio: YAC no recibió datos utilizables o fallaron varias comprobaciones de conexión.
+Espere: YAC reintenta la misma radio aproximadamente cada cinco segundos, hasta 60 segundos tras Error de radio. No hace falta actuar durante la espera. No restablece ajustes ni cambia a simulación.
+h: leer esta ayuda durante la recuperación.
+q: salir de YAC mediante la confirmación habitual.
+Radio conectada: la misma radio responde otra vez; continúa el funcionamiento normal.

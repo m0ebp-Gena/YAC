@@ -5,9 +5,9 @@ INICIO
 1. Extrae todo el ZIP a una carpeta donde puedas guardar archivos.
 2. Mantén los archivos y subcarpetas juntos. Ejecuta YAC-001-beta.exe
    desde la carpeta extraída. No necesitas instalar Python.
-3. Maximiza el terminal: Alt+Espacio, suelta las teclas y pulsa x.
+3. Maximiza el terminal: Alt+y, suelta las teclas y pulsa x.
 4. Sigue las preguntas de idioma y nombre/indicativo. Selecciona el número
-   y confirma con Espacio: inglés 1, alemán 2, polaco 3, español 4.
+   y confirma con y: inglés 1, alemán 2, polaco 3, español 4.
 
 CONEXIÓN DE RADIO
 Conecta y enciende la radio. Cierra otros programas que usen su puerto COM.

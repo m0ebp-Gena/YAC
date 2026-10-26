@@ -1,0 +1,15 @@
+Actualizar YAC
+YAC consulta GitHub mediante la conexión a internet existente.
+
+Buscando: comprobando si hay actualización.
+Nueva versión: pregunta Notas Y/N?. Tras leer u omitir las notas, pregunta Update Y/N?.
+Sin internet: no se pudo acceder a GitHub; vuelve a Ajustes.
+Sin novedades: no hay versión posterior; vuelve a Ajustes.
+
+h: leer esta ayuda de nuevo.
+n: omitir notas en Notas Y/N?; rechazar instalación y volver a Ajustes en Update Y/N?.
+q: cancelar y volver a Ajustes. En las notas, q solo sale de las notas.
+r: leer las notas otra vez. En notas largas, Espacio avanza y q sale. Después aparece Update Y/N?.
+y: leer notas en Notas Y/N?. En Update Y/N?, descargar, verificar e instalar, y reiniciar YAC.
+
+La radio sigue conectada hasta iniciar la instalación. Se conservan los ajustes. No permite instalar archivos locales. En el Pi no actualiza auxiliares separados ni el arranque.

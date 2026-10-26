@@ -19,6 +19,26 @@ def radio(model="IC-705"):
 
 
 class ToneInput(unittest.TestCase):
+    def test_tone_failures_have_distinct_responses(self):
+        from unittest.mock import MagicMock
+        for language in ('en', 'de', 'es', 'pl'):
+            with patch.object(yac, '_current_frequency', return_value='145.5'), patch.object(yac, '_current_mode', return_value='FM'):
+                for definition in (None, MagicMock()):
+                    if definition is not None:
+                        definition.read_text.return_value = 'malformed'
+                    with patch.object(yac, '_radio_command_file', return_value=definition), patch.object(yac, '_cat_exchange') as exchange:
+                        result = yac._set_tone(ROOT, radio('0840'), language, '023', 'Both', 'DCS N')
+                        self.assertEqual(result, yac._read_label(ROOT, language, 'l053', ''))
+                        exchange.assert_not_called()
+                with patch.object(yac, '_tone_command', return_value=False), patch.object(yac, '_radio_error', return_value='recovering') as recovery:
+                    self.assertEqual(yac._set_tone(ROOT, radio(), language, '88.5', 'TX', 'CTCSS'), 'recovering')
+                    recovery.assert_called_once()
+                missing = next(value for value in yac.CTCSS_TONES if value not in yac.TS590_CTCSS)
+                with patch.object(yac, '_tone_radio_kind', return_value='ts590'), patch.object(yac, '_tone_band_supported', return_value=True), patch.object(yac, '_tone_command') as command:
+                    result = yac._set_tone(ROOT, radio(), language, missing, 'TX', 'CTCSS')
+                    self.assertEqual(result, yac._read_label(ROOT, language, 'l356', ''))
+                    command.assert_not_called()
+
     def edit(self, selection, keys, initial=""):
         with patch.object(os, "name", "nt"), patch.object(name_call_sel, "_read_edit_key", side_effect=keys), redirect_stdout(io.StringIO()):
             return yac._edit_tone(selection, initial)
@@ -78,7 +98,7 @@ class ToneInput(unittest.TestCase):
 
     def test_invalid_code_stays_in_field_without_target_prompt(self):
         output, edit, setting = self.control([("i", ""), ("enter", "888"), ("q", "888")], [])
-        self.assertIn("Invalid tone/code", output)
+        self.assertIn("Invalid", output)
         self.assertNotIn("TX/Both", output)
         setting.assert_not_called()
 
@@ -137,7 +157,7 @@ class ToneInput(unittest.TestCase):
 
     def test_wrong_mode_prevents_radio_write(self):
         with patch.object(yac, "_current_frequency", return_value="145.5"), patch.object(yac, "_current_mode", return_value="USB"), patch.object(yac, "_tone_command") as command:
-            self.assertIn("FM", yac._set_tone(ROOT, radio(), "en", "88.5", "TX", "CTCSS"))
+            self.assertEqual("Not Supported", yac._set_tone(ROOT, radio(), "en", "88.5", "TX", "CTCSS"))
             command.assert_not_called()
 
 

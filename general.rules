@@ -1,0 +1,61 @@
+1. Help
+
+1a. Explain key presses, expected responses, their meanings and what the user can do next.
+
+1b. Arrange help topics alphabetically so users can find them quickly. This does not change menu, mode or control order.
+
+1c. No help opened with h contains named radio models or model-specific settings. Keep those in separate radio notes.
+
+1d. Generic examples may explain relevant limits: "If maximum output is 6 W, enter no more than 6."
+
+1e. Explain how to leave the control and whether changes are kept.
+
+1f. Long help uses a pager, with q to leave. Individual help topics should fit on one screen and return without requiring q. Help must be explicit without repetition.
+
+2. General principles
+
+2a. Keep operating responses brief: the setting, "Invalid", "Aborted" or necessary status.
+
+2b. Aborted: no entry was received. End the request without a change. The user can repeat the command.
+
+2c. Invalid: the entry was not acceptable. End the request without a change. The user can repeat the command with a valid value.
+
+2d. Return to the level where the request began.
+
+2e. Done finishes a control; Back leaves a menu.
+
+2f. Keep English, German, Spanish and Polish labels and help aligned.
+
+2g. Preserve established selection orders, including the radio's mode order and Receive, Transmit, Clear for offsets.
+
+2h. In help and announced signed values, spell out Plus and Minus using the selected language. Do not rely on screen readers speaking punctuation. Explain the sign key users must type.
+
+3. Modular design
+
+3a. Keep radio definitions, language resources, interaction controls and presentation separate, so radios and languages can be added or removed without rewriting unrelated parts. Preserve responsiveness when extending YAC.
+
+4. Selectors
+
+4a. On entry, read the current setting without changing it.
+
+4b. Full stop selects the next choice; comma selects the previous choice. Apply each selection immediately wherever the control supports it, and announce the selected setting.
+
+4c. h explains the controls; q finishes with Done.
+
+4d. If immediate application is not possible, explain the required confirmation in help.
+
+5. Labels
+
+5a. Labels are reusable text loaded from the selected language's labels directory. The 15-character limit applies to fixed label wording, not placeholders, substituted values or assembled radio-status output.
+
+5b. Radio data obtained through CAT/CI-V is separate and is not subject to that limit.
+
+5c. Explanations belong in help.
+
+5d. Use common abbreviations in labels, such as Freq for frequency, NB for noise blanker, NR for noise reduction ATT for attenuator and BC for Beat Cancel. In help, write the full names instead of those abbreviations. Apply this consistently in every language.
+
+6. Working documents
+
+6a. Use plain text (.txt) for reports, test sheets, review lists and other working documents unless the user explicitly requests another format.
+
+6b. Do not open pop-ups or embedded document previews. Use normal chat and ordinary file links.

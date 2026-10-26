@@ -1,1 +1,6 @@
 Audio odbioru: kropka następne wejście; przecinek poprzednie; c zmienia fizyczny kanał. v sprawdza poziom przez sekundę bez odtwarzania. e zapisuje; q Wstecz; h pomoc. Tylko v otwiera wejście; e sprawdza format bez przechwytywania. Podawana jest nazwa i system audio. Kilka wpisów może oznaczać to samo urządzenie. Wybierz radio, nie mikrofon. Poziom nie potwierdza tożsamości urządzenia. Sprawdź ze stałym sygnałem odbioru. Numery kanałów nie gwarantują Main/Sub. Zapisana nazwa i system muszą pasować jednoznacznie; bez zastępowania brakującego urządzenia. Nie zmienia domyślnych urządzeń, mowy ani odtwarzania. Otwarcie ustawień zatrzymuje dekodowanie audio; uruchom je ponownie jawnie. Wymagane opcjonalne sounddevice/PortAudio. Tylko e zapisuje.
+
+Sprawdzanie poziomu przez sekundę
+Wejście niedostępne, niejednoznaczne lub niezgodne; nie zapisano
+Audio niedostępne. Zainstaluj opcjonalną zależność audio.
+Przesterowanie audio; zmniejsz poziom USB w radiu

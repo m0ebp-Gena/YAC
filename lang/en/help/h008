@@ -1,4 +1,4 @@
-Mic Gain: read this sequence before continuing. Space accepts the readiness prompt; q cancels. h opens help.
+Microphone Gain: read this procedure before continuing. At Continue Y/N?, y proceeds; n or q cancels and returns to Settings. h reads this help.
 
 Connect a correctly matched antenna or suitable dummy load. YAC cannot check the load. Lower power does not make an unsuitable load safe. Set suitable power yourself and switch speech processing off for basic adjustment. YAC changes only microphone gain; it does not change power, frequency or mode, or start transmission.
 
@@ -7,3 +7,4 @@ Start in receive. YAC announces current gain. Hold physical PTT, speak normally,
 With PTT released, full stop increases gain; comma decreases it. Each confirmed change announces gain and resets the peak. Values stop at the ends. v reads gain; Space clears the peak; h reads help. Release PTT and press q to return to Settings with Back, keeping gain. Restore any preparation settings you changed yourself.
 
 Model-specific modes, scales, meter setup and recommended ALC zones are in your radio's text file under doc/supported-radios.
+Where meter selection is needed, YAC selects the automatic level control meter and confirms its reading. It restores the known previous meter on exit while receiving. A failed or disconnected radio can prevent restoration; YAC retains a pending restoration for the next entry.
