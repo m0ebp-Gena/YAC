@@ -35,6 +35,38 @@ def release():
 
 
 class WindowsUpdateTests(unittest.TestCase):
+    @unittest.skipUnless(POWERSHELL.is_file(), 'Windows PowerShell required')
+    def test_real_dropbox_cloud_file_is_accepted_without_modification(self):
+        cloud = Path(__file__).resolve().parents[1] / 'COPYING'
+        before = cloud.read_bytes()
+        with tempfile.TemporaryDirectory() as folder:
+            base = Path(folder)
+            script = windows_update.installer_script(base, base, base, 'YAC.exe', 'YAC.exe', 2147483000)
+            definitions = script.split("try {\n    Write-Host 'Waiting", 1)[0]
+            check = definitions + '\nAssert-ApplicationFile ' + windows_update.literal(cloud) + "\nWrite-Output 'Cloud file accepted'"
+            result = subprocess.run([str(POWERSHELL), '-NoProfile', '-EncodedCommand',
+                base64.b64encode(check.encode('utf-16le')).decode()], capture_output=True, text=True, timeout=30)
+            self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+            self.assertIn('Cloud file accepted', result.stdout)
+        self.assertEqual(cloud.read_bytes(), before)
+
+    @unittest.skipUnless(POWERSHELL.is_file(), 'Windows PowerShell required')
+    def test_real_directory_junction_is_still_rejected(self):
+        with tempfile.TemporaryDirectory() as folder:
+            base = Path(folder)
+            outside = base / 'outside'
+            outside.mkdir()
+            (outside / 'keep.txt').write_text('untouched')
+            junction = base / 'linked'
+            script = windows_update.installer_script(base, base, base, 'YAC.exe', 'YAC.exe', 2147483000)
+            definitions = script.split("try {\n    Write-Host 'Waiting", 1)[0]
+            check = definitions + '\nNew-Item -ItemType Junction -Path ' + windows_update.literal(junction) + ' -Target ' + windows_update.literal(outside) + " | Out-Null\ntry { Assert-ApplicationFile " + windows_update.literal(junction) + " } finally { [IO.Directory]::Delete(" + windows_update.literal(junction) + ') }'
+            result = subprocess.run([str(POWERSHELL), '-NoProfile', '-EncodedCommand',
+                base64.b64encode(check.encode('utf-16le')).decode()], capture_output=True, text=True, timeout=30)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('Refusing to replace a linked application file', result.stderr)
+            self.assertEqual((outside / 'keep.txt').read_text(), 'untouched')
+
     def test_flat_archive_extracts_without_an_extra_user_folder(self):
         stream = io.BytesIO()
         with zipfile.ZipFile(io.BytesIO(archive())) as old, zipfile.ZipFile(stream, 'w') as flat:

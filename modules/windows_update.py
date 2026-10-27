@@ -95,6 +95,63 @@ function ChildPath($Base, $Name) {
     if ([IO.Path]::GetDirectoryName($Result) -ne $Base) { throw 'Update path escaped its folder' }
     return $Result
 }
+function Assert-ApplicationFile($Path) {
+    $Item = Get-Item -LiteralPath $Path -Force
+    if (-not ($Item.Attributes -band [IO.FileAttributes]::ReparsePoint)) { return }
+    # Cloud files and symbolic links both carry ReparsePoint. Inspect the
+    # actual tag without following it; the attribute alone is insufficient.
+    if (-not ('YacReparseTag' -as [type])) {
+        Add-Type -TypeDefinition @'
+using System;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
+using Microsoft.Win32.SafeHandles;
+public static class YacReparseTag {
+    [StructLayout(LayoutKind.Sequential)]
+    public struct TagInfo { public uint Attributes; public uint Tag; }
+    [DllImport("kernel32.dll", CharSet=CharSet.Unicode, SetLastError=true)]
+    static extern SafeFileHandle CreateFile(string path, uint access, uint share,
+        IntPtr security, uint disposition, uint flags, IntPtr template);
+    [DllImport("kernel32.dll", SetLastError=true)]
+    static extern bool GetFileInformationByHandleEx(SafeFileHandle handle,
+        int infoClass, out TagInfo info, uint size);
+    public static uint Read(string path) {
+        using (var handle = CreateFile(path, 0x80, 7, IntPtr.Zero, 3,
+                                      0x02200000, IntPtr.Zero)) {
+            if (handle.IsInvalid) throw new Win32Exception(Marshal.GetLastWin32Error());
+            TagInfo info;
+            if (!GetFileInformationByHandleEx(handle, 9, out info, 8))
+                throw new Win32Exception(Marshal.GetLastWin32Error());
+            return info.Tag;
+        }
+    }
+}
+'@
+    }
+    $Tag = [YacReparseTag]::Read($Path)
+    # Accept the Microsoft cloud placeholder tag family (CLOUD through CLOUD_F).
+    # Reject links, junctions and unknown reparse types rather than follow them.
+    if (($Tag -band [uint32]4294905855) -ne [uint32]2415919130) {
+        throw ('Refusing to replace a linked application file: ' + $Path)
+    }
+}
+function Move-ApplicationFile($From, $To) {
+    # Move-Item can recursively move cloud directories and leave a partial
+    # backup when a scanner holds one child. Use a single rename instead.
+    for ($Attempt = 0; $Attempt -lt 12; $Attempt++) {
+        try {
+            if ([IO.Directory]::Exists($From)) { [IO.Directory]::Move($From, $To) }
+            else { [IO.File]::Move($From, $To) }
+            return
+        } catch {
+            $Cause = $_.Exception
+            while ($Cause.InnerException) { $Cause = $Cause.InnerException }
+            $Code = $Cause.HResult -band 65535
+            if ($Code -notin @(32, 33) -or $Attempt -eq 11) { throw }
+            Start-Sleep -Milliseconds 500
+        }
+    }
+}
 try {
     Write-Host 'Waiting for YAC to close before installing the update.'
     $Parent = Get-Process -Id $ParentPid -ErrorAction SilentlyContinue
@@ -108,10 +165,8 @@ try {
         $Saved = ChildPath $Backup $Name
         $Incoming = ChildPath $Source $Name
         if (Test-Path -LiteralPath $Target) {
-            if ((Get-Item -LiteralPath $Target -Force).Attributes -band [IO.FileAttributes]::ReparsePoint) {
-                throw 'Refusing to replace a linked application file'
-            }
-            Move-Item -LiteralPath $Target -Destination $Saved
+            Assert-ApplicationFile $Target
+            Move-ApplicationFile $Target $Saved
         }
         $Changed.Add($Name)
         if (Test-Path -LiteralPath $Incoming) { Copy-Item -LiteralPath $Incoming -Destination $Target -Recurse }
@@ -127,7 +182,7 @@ try {
             $Target = ChildPath $Destination $Name
             $Saved = ChildPath $Backup $Name
             if (Test-Path -LiteralPath $Target) { Remove-Item -LiteralPath $Target -Recurse -Force }
-            if (Test-Path -LiteralPath $Saved) { Move-Item -LiteralPath $Saved -Destination $Target }
+            if (Test-Path -LiteralPath $Saved) { Move-ApplicationFile $Saved $Target }
         } catch { Write-Host ('Could not restore ' + $Name + ': ' + $_.Exception.Message) }
     }
     Write-Host ('Update recovery files are at ' + $Stage)

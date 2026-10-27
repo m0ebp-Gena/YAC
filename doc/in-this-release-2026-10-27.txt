@@ -1,4 +1,14 @@
-27 October 2026 revision 7
+27 October 2026 revision 8
+
+Windows installation in Dropbox
+
+The Windows updater now distinguishes cloud placeholder files from symbolic
+links and directory junctions. Dropbox files can be replaced normally;
+actual links and unknown reparse types are still rejected. The previous
+updater could stop before replacing files with Refusing to replace a linked
+application file. This was not an executable-in-use error.
+Backup and rollback moves now use atomic renames with bounded retries for
+temporary sharing locks, avoiding partial directory moves in synced folders.
 
 Control announcements
 

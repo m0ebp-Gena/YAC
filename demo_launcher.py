@@ -8,6 +8,17 @@ import yac
 def main():
     root = Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else Path(__file__).resolve().parent
     yac.project_root = lambda: root
+    if '--check-demo-session' in sys.argv:
+        from unittest.mock import patch
+        from modules.dummy_radio import create_dummy_radio
+        keys = iter(['w', 'b', 'q', 'q', 'y'])
+        with patch.object(yac, 'connect_radio', return_value=create_dummy_radio()), \
+             patch.object(yac, '_configure_debug'), \
+             patch.object(yac.lang_sel, 'read_key', side_effect=lambda **kwargs: next(keys)):
+            result = yac.main([])
+        assert result == 0
+        print('Demo restart and command checks passed. No radio ports were opened.')
+        return result
     if '--check-update-connection' in sys.argv:
         import json
         import update_yac
