@@ -72,10 +72,10 @@ for directory in ('lang', 'rad_cmds', 'doc/supported-radios'):
 with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED) as package:
     for path in sorted(source.rglob('*')):
         if path.is_file():
-            package.write(path, str(Path(folder) / path.relative_to(source)))
+            package.write(path, path.relative_to(source).as_posix())
 with zipfile.ZipFile(archive) as package:
     assert package.testzip() is None
-    assert {name.split('/')[0] for name in package.namelist()} == {folder}
+    assert 'YAC-' + version + '.exe' in package.namelist()
     guides = {
         "yac.ini.example": "yac.ini.example",
         "error-codes.txt": "error-codes.txt",
@@ -84,22 +84,24 @@ with zipfile.ZipFile(archive) as package:
         "changelog.txt": "changelog.txt",
     }
     for destination_name, source_name in guides.items():
-        assert package.read(folder + '/' + destination_name) == (root / source_name).read_bytes()
+        assert package.read(destination_name) == (root / source_name).read_bytes()
     for relative, original in documents(root, 'win').items():
-        assert package.read(folder + '/' + relative.as_posix()) == original.read_bytes()
+        assert package.read(relative.as_posix()) == original.read_bytes()
     assert not any(name.endswith(('/START-HERE.txt', '/START-HERE-DE.txt', '/START-HERE-PL.txt')) for name in package.namelist())
     for model in ('ic-705', 'ic-7300', 'ic-7300mk2', 'ic-9700', 'ic-7600'):
-        assert folder + '/rad_cmds/icom/CI-V/models/' + model + '/profile.json' in package.namelist()
-    assert folder + '/rad_cmds/yaesu/CAT/models/0840/set/dcs_polarity' in package.namelist()
-    assert package.read(folder + '/yac.ini').replace(b'\r\n', b'\n') == expected_settings
-    assert folder + '/YAC-' + version + '.exe' in package.namelist()
+        assert 'rad_cmds/icom/CI-V/models/' + model + '/profile.json' in package.namelist()
+    assert 'rad_cmds/yaesu/CAT/models/0840/set/dcs_polarity' in package.namelist()
+    assert package.read('yac.ini').replace(b'\r\n', b'\n') == expected_settings
+    assert 'YAC-' + version + '.exe' in package.namelist()
 checksum = hashlib.sha256(archive.read_bytes()).hexdigest()
 archive.with_suffix('.sha256').write_text(checksum + '  ' + archive.name + '\n', encoding='ascii')
 artifacts = [archive, archive.with_suffix('.sha256')]
 legacy = staging / ('YAC-' + version + release_suffix + '-' + args.date + '.zip')
-shutil.copyfile(archive, legacy)
+with zipfile.ZipFile(archive) as current, zipfile.ZipFile(legacy, 'w', zipfile.ZIP_DEFLATED) as compatibility:
+    for name in current.namelist():
+        compatibility.writestr(folder + '/' + name, current.read(name))
 legacy_checksum = legacy.with_suffix('.sha256')
-legacy_checksum.write_text(checksum + '  ' + legacy.name + '\n', encoding='ascii')
+legacy_checksum.write_text(hashlib.sha256(legacy.read_bytes()).hexdigest() + '  ' + legacy.name + '\n', encoding='ascii')
 artifacts.extend([legacy, legacy_checksum])
 if args.include_demo:
     artifacts.append(source)

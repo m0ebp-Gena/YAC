@@ -1,6 +1,6 @@
 Ayuda: Procesador de voz
 
-Procesador: s e lee estado y nivel sin cambios. e activa/desactiva; punto/coma ajustan estando activo. Kenwood i selecciona Entrada, o Salida; se conserva el otro nivel. v lee; h ayuda. q termina conservando cambios. n significa Sin cambios: restaura estado y niveles nativos originales y verifica lectura; si no hubo edición no escribe. Ambos vuelven con Atrás.
+Procesador: s e lee estado y nivel sin cambios. e activa/desactiva; punto/coma ajustan estando activo. Kenwood i selecciona Entrada, o Salida; se conserva el otro nivel. v lee; h ayuda. q termina conservando cambios. n significa Sin cambios: restaura estado y niveles nativos originales y verifica lectura; si no hubo edición no escribe. Ambos vuelven con Nivel principal.
 
 Suelta PTT antes de cambiar o restaurar. YAC solo modifica procesador, nunca potencia, frecuencia, modo, micrófono, ecualizador ni AMC; no inicia transmisión. Restaurar requiere frecuencia, modo y receptor originales. Si falla se conserva la instantánea durante esta ejecución; valores en log diagnóstico si está activo. Vuelve al contexto original, suelta PTT, abre s e y reintenta n. q acepta valores actuales. Un fallo del programa no garantiza restauración.
 

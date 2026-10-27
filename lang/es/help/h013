@@ -1,7 +1,7 @@
 Ayuda: Decodificadores
 
 Decodificadores: c abre CW; r abre RTTY. La captura empieza al entrar si la configuración lo permite. Solo funciona un decodificador a la vez.
-Dentro: e detiene o reinicia explícitamente. q anuncia Atrás y mantiene la captura. Otro q vuelve al nivel principal. Cambiar de decodificador detiene el anterior. Salir de YAC detiene la captura y restaura los ajustes originales.
+Dentro: e detiene o reinicia explícitamente. q anuncia Nivel principal y mantiene la captura. Otro q vuelve al nivel principal. Cambiar de decodificador detiene el anterior. Salir de YAC detiene la captura y restaura los ajustes originales.
 v revisa el texto más reciente; coma el anterior; punto el siguiente. Bloques de 60 caracteres. n borra el texto. El texto nuevo aparece automáticamente solo en la vista del decodificador; fuera se captura en silencio. Utilice la voz y braille de su terminal. h muestra esta ayuda.
 TS-590SG: seleccione CW primero. Seguimiento automático de velocidad. Más/menos ajustan el umbral de 1 a 30. Se restauran el estado del decodificador y Auto Information al detenerlo.
 Otras radios compatibles: CW por audio experimental, con tono fijo y temporización automática. Instale las dependencias opcionales de requirements-decoders.txt. Configure explícitamente cw_audio_device en yac.ini, cw_audio_pitch_hz para el tono recibido y cw_audio_channel para Main/Sub. No se selecciona un micrófono predeterminado. Pausa al detectar transmisión o si el estado es desconocido; el sondeo no es instantáneo. Puede cometer errores.

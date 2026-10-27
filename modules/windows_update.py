@@ -27,6 +27,8 @@ def extract(data, target):
         if not members or len(members) > 20000 or sum(i.file_size for i in members) > 256 * 1024 * 1024:
             raise ValueError('Invalid Windows archive size.')
         roots, seen, programs = set(), set(), set()
+        flat = any('/' not in item.filename and re.fullmatch(r'YAC(?:-[A-Za-z0-9-]+)?\.exe', item.filename)
+                   for item in members)
         for item in members:
             path = PurePosixPath(item.filename)
             if (not path.parts or path.is_absolute() or '..' in path.parts or
@@ -44,23 +46,25 @@ def extract(data, target):
                 raise ValueError('Windows archive has a link or duplicate path.')
             seen.add(key)
             roots.add(path.parts[0])
-            if len(path.parts) >= 2:
-                name = path.parts[1]
+            relative = path.parts if flat else path.parts[1:]
+            if relative:
+                name = relative[0]
                 program = bool(re.fullmatch(r'YAC(?:-[A-Za-z0-9-]+)?\.exe', name))
                 if name not in DATA_NAMES and not program:
                     raise ValueError('Unexpected Windows package content: ' + name)
                 if program:
-                    if len(path.parts) != 2 or item.is_dir():
+                    if len(relative) != 1 or item.is_dir():
                         raise ValueError('Invalid Windows executable path.')
                     programs.add(name)
-        if len(roots) != 1 or len(programs) != 1:
+        if (not flat and len(roots) != 1) or len(programs) != 1:
             raise ValueError('Expected one Windows folder and executable.')
-        source = target / next(iter(roots))
+        source = target / ('package' if flat else next(iter(roots)))
+        prefix = '' if flat else source.name + '/'
         required = ('yac.ini', 'lang/en/labels/l000', 'LICENSE')
-        if (not all((source.name + '/' + n).casefold() in seen for n in required) or
-                not any(n.startswith((source.name + '/_internal/').casefold()) for n in seen)):
+        if (not all((prefix + n).casefold() in seen for n in required) or
+                not any(n.startswith((prefix + '_internal/').casefold()) for n in seen)):
             raise ValueError('Incomplete Windows package.')
-        package.extractall(target)
+        package.extractall(source if flat else target)
     return source, next(iter(programs))
 
 

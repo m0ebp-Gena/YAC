@@ -6,7 +6,7 @@ Conecta una antena adaptada o carga artificial adecuada. YAC no comprueba la car
 
 Empieza en recepción. YAC anuncia ganancia actual. Mantén PTT, habla normalmente y suéltalo. YAC anuncia el pico ALC muestreado, o desconocido si falla la lectura. Puede omitir picos breves. Son unidades brutas, no vatios ni porcentajes calibrados; no hay valoración automática.
 
-Con PTT suelto, punto aumenta ganancia y coma disminuye. Cada cambio confirmado anuncia ganancia y borra el pico. Se detiene en los extremos. v lee ganancia; Espacio borra el pico; h lee ayuda. Suelta PTT y pulsa q para volver a Ajustes con Atrás, conservando ganancia. Restaura tú los ajustes previos que cambiaste.
+Con PTT suelto, punto aumenta ganancia y coma disminuye. Cada cambio confirmado anuncia ganancia y borra el pico. Se detiene en los extremos. v lee ganancia; Espacio borra el pico; h lee ayuda. Suelta PTT y pulsa q para volver a Ajustes con Nivel principal, conservando ganancia. Restaura tú los ajustes previos que cambiaste.
 
 Modos, escalas, medidor y zonas ALC de cada modelo están en el archivo de tu radio en doc/supported-radios.
 Cuando es necesario, YAC selecciona el medidor de control automático de nivel y confirma su lectura. Al salir en recepción restaura la selección anterior conocida. Si falla, conserva la restauración pendiente para la próxima entrada.

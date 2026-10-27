@@ -1,0 +1,46 @@
+27 October 2026 revision 7
+
+Control announcements
+
+Band selection reads the current band on entry, for example Band Select
+40M, without changing the radio. Frequency entry uses New Freq. Leaving a
+submenu for the top level announces Top Level. English, German, Spanish
+and Polish resources are included.
+
+YAC pauses for one second after the welcome and after the goodbye, with
+no extra keypress. The saved name/callsign remains part of the welcome.
+The pause does not change Mac Terminal window closing behaviour.
+
+Update connections
+
+Mac and Windows include the same Mozilla certificate bundle. Secure
+connections retain hostname and certificate verification. Windows also
+includes the companion certificate file required by the Python runtime
+used for this build. The packaged executable is checked for certificate
+loading and live GitHub access before publication. Connection failures
+now record their underlying exception in the debug log.
+Linux keeps its existing system certificate handling.
+
+Windows package layout and existing installations
+
+The Windows portable download contains the executable directly alongside
+its supporting files. Windows Extract All creates the enclosing folder;
+there is no second dated folder to open. Keep the extracted files together.
+
+The GitHub portable download uses the name yac-win-portable so existing
+updaters select the separate, compatible YAC-001-beta archive. Older
+Mac/Linux updaters retain the yac-source.zip compatibility asset. Each
+published archive has a matching checksum. Installed settings are retained.
+
+Verification and remaining limits
+
+Mac IC-705 testing with VoiceOver, keyboard input and braille output and
+Windows FT-DX10 testing with NVDA and NABCC braille input/output were
+reported by the user. This does not establish every supported radio or
+platform configuration. Mac braille input remains limited by the tested
+table setup. The reported current-step announcement and radio-loss delay
+remain outstanding. Pi image packages are not part of this release.
+
+This publication enables the remaining live update tests: reading release
+notes, declining an update, installing it, restarting and retaining settings.
+Those user-operated checks must not be reported as passed before retesting.

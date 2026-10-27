@@ -9,7 +9,7 @@ h: Read this help.
 l: Low Cut. Full stop increases; comma decreases the lower edge.
 n: Manual Notch. Press n again to switch On or Off. Full stop/comma adjust position while On; w changes width.
 p: Bandwidth. Full stop increases; comma decreases. Where separate edges are required, use l and u.
-q: Finish an adjustment and keep its setting; announces Done. Press q again to leave Filters; announces Back.
+q: Finish an adjustment and keep its setting; announces Done. Press q again to leave Filters; announces Top Level.
 r: Noise Reduction. Press r again to switch On or Off. Full stop/comma adjust level while On.
 u: Upper Cut. Full stop increases; comma decreases the upper edge.
 v: Read filters currently On. Repeat v to review individual filter states, including Off or unknown. Another command restarts the review. Reading status changes nothing.

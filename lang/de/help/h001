@@ -35,7 +35,7 @@ h: Filterhilfe.
 l: Untere Grenzfrequenz. Punkt/Komma ändern.
 n: Manueller Notch. n schaltet um; Punkt/Komma ändern die Position bei Ein; w ändert die Breite.
 p: Bandbreite. Punkt/Komma ändern.
-q: Zurück zum Hauptmenü. Aus einer Einstellung kehrt q zunächst zu Filter zurück.
+q: Hauptebene zum Hauptmenü. Aus einer Einstellung kehrt q zunächst zu Filter zurück.
 r: Noise Reduction. r schaltet um; Punkt/Komma ändern den Pegel bei Ein.
 u: Obere Grenzfrequenz. Punkt/Komma ändern.
 v: Eingeschaltete Filter lesen. v wiederholen für einzelne Filterzustände.
@@ -48,7 +48,7 @@ h: Einstellungshilfe.
 m: Geführte Mikrofonverstärkung. Vorbereitungshinweisen folgen; Punkt/Komma ändern. PTT bedienen Sie selbst.
 o: Pi-Spracheinstellungen. r Tempo; v Lautstärke; p Tonhöhe; u Satzzeichen; Punkt/Komma ändern; t Test; d Standardwerte. Änderungen werden sofort gespeichert.
 p: Ausgangsleistung. Ganze Watt und Enter eingeben. Leeres Enter oder q und Enter brechen ab. Erfolg nennt den eingegebenen Wert. Icom verwendet eine geschätzte Umrechnung; v meldet den relativen Prozentwert.
-q: Zurück zum Hauptmenü; nach AGC-Auswahl wird Fertig angesagt.
+q: Hauptebene zum Hauptmenü; nach AGC-Auswahl wird Fertig angesagt.
 s: Schrittweite. Ganze Hertz und Enter eingeben.
 t: Unterstützte Tuner-Einstellungen durchschalten. t wiederholen. Die Auswahl startet keine Abstimmung.
 u: YAC aktualisieren. Zeigt Hilfe und prüft GitHub. r liest Hinweise; y installiert; n oder q kehrt zurück.

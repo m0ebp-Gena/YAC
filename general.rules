@@ -24,7 +24,7 @@
 
 2d. Return to the level where the request began.
 
-2e. Done finishes a control; Back leaves a menu.
+2e. Done finishes a control; Top Level announces leaving a submenu for the top level.
 
 2f. Keep English, German, Spanish and Polish labels and help aligned.
 
@@ -79,3 +79,17 @@
 7f. Packaging changes must preserve GitHub updates for existing installations. Keep legacy-compatible release assets while older updaters require their names; update and verify asset selection, checksums, extraction and installation before publishing renamed packages. Documentation reorganisation must also preserve installed help and update compatibility.
 
 7g. Treat clear packaging and accessible first-use instructions as part of release readiness alongside the core platform tests. Record implementation and verification separately from agreement on these rules; saving a rule does not mean a package already implements it.
+
+7h. Keep only the current user test packages in the project root. Move superseded packages, extracted builds and their checksums into previous-builds before handing over a new build. Keep staging and verification files out of the user's test location. Give one exact package path; do not ask the user to browse staging folders or choose between revisions.
+
+7i. Deliver complete packages, never instructions to replace individual installer or runtime files. Give exact installation and test steps, expected responses and the installed location. Distinguish a GitHub connection check from a full update installation test; check the published release before claiming that an update can be tested.
+
+7j. Windows user ZIPs contain the executable and its supporting files directly, without another enclosing dated folder. Normal Extract All must lead to the executable after opening just one extracted folder. Preserve updater compatibility separately.
+
+8. Cleanup and verification
+
+8a. Cleanup failures must not be overlooked or accepted as normal. Investigate and resolve file locks, open handles and other causes, and remove only confirmed temporary files created by the relevant operation.
+
+8b. Do not suppress or ignore cleanup errors to declare a clean test run or successful verification. Report functional results and cleanup failures separately, identify any leftovers, and keep cleanup outstanding until it has been verified.
+
+8c. Preserve user files and intentional build artifacts. If cleanup work is deferred, record it explicitly; deferral does not count as resolution.

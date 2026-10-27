@@ -16,7 +16,7 @@ class Installer(unittest.TestCase):
         test_root = Path(__file__).resolve().parents[1] / "builds/.work/test-installs"
         test_root.mkdir(exist_ok=True)
         # Dropbox may briefly hold directories open after a file operation.
-        self.temporary = tempfile.TemporaryDirectory(dir=test_root, ignore_cleanup_errors=True)
+        self.temporary = tempfile.TemporaryDirectory(dir=test_root)
         assert Path(self.temporary.name).resolve().is_relative_to(test_root.resolve())
         self.addCleanup(self.temporary.cleanup)
         self.base = Path(self.temporary.name)
@@ -86,6 +86,8 @@ class Installer(unittest.TestCase):
         destination = self.home / "Applications/yac"
         self.assertEqual(result, 0)
         self.assertTrue((destination / "yac.py").is_file())
+        self.assertTrue(any('from modules.update_certificates import context; context()' in call.args[0]
+                            for call in commands.call_args_list))
         self.assertIn(str(destination / "run-yac"), output)
         self.assertIn(str(destination / ".venv/bin/python"), (destination / "run-yac").read_text())
         self.assertEqual((legacy / "yac.ini").read_text(), "old settings")

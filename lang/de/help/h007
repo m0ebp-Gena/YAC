@@ -9,7 +9,7 @@ h: Diese Hilfe lesen.
 l: Untere Grenzfrequenz. Punkt erhöht; Komma verringert die untere Grenze.
 n: Manueller Notch. Erneutes n schaltet Ein oder Aus. Punkt/Komma ändern die Position bei Ein; w ändert die Breite.
 p: Bandbreite. Punkt erhöht; Komma verringert. Bei getrennten Grenzen l und u verwenden.
-q: Einstellung beenden und behalten; meldet Fertig. Erneutes q verlässt Filter; meldet Zurück.
+q: Einstellung beenden und behalten; meldet Fertig. Erneutes q verlässt Filter; meldet Hauptebene.
 r: Noise Reduction. Erneutes r schaltet Ein oder Aus. Punkt/Komma ändern den Pegel bei Ein.
 u: Obere Grenzfrequenz. Punkt erhöht; Komma verringert die obere Grenze.
 v: Eingeschaltete Filter lesen. v wiederholen für einzelne Zustände, einschließlich Aus oder unbekannt. Ein anderer Befehl startet die Übersicht neu. Lesen ändert nichts.

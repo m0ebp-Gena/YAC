@@ -1,6 +1,6 @@
 Hilfe: Einstellungsmenü
 
-Einstellungen: a AGC; m Mikrofonverstärkung; p Leistung; s Schrittweite; t Tuner; v VFO/Empfänger; e Sprachprozessor. q kehrt zurück und meldet Zurück, nach AGC-Auswahl Fertig. h liest diese Hilfe.
+Einstellungen: a AGC; m Mikrofonverstärkung; p Leistung; s Schrittweite; t Tuner; v VFO/Empfänger; e Sprachprozessor. q kehrt zurück und meldet Hauptebene, nach AGC-Auswahl Fertig. h liest diese Hilfe.
 
 s a liest die aktuelle AGC-Einstellung, ohne sie zu ändern. Erneutes a wählt die nächste Einstellung und bestätigt sie. q beendet und meldet Fertig. Schnell erholt sich früher nach einem starken Signal, Langsam hält die Verstärkungsreduzierung länger. Nach Gehör wählen. Aus erlaubt größere Lautstärkeschwankungen. Kein Senden nötig.
 

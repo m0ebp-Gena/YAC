@@ -96,5 +96,5 @@ class AgcTests(unittest.TestCase):
         self.assertNotIn('AGC Fast', output.getvalue().splitlines())
         self.assertIn('a selects the next AGC setting', output.getvalue())
         self.assertIn('Done', output.getvalue())
-        self.assertNotIn('Back', output.getvalue().splitlines())
+        self.assertNotIn('Top Level', output.getvalue().splitlines())
         self.assertIn('Bye test', output.getvalue())

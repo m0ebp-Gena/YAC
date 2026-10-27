@@ -8,7 +8,7 @@ y: Bei Bestätigung verbinden und speichern. Bis dahin lassen Abbruch oder ungü
 Netzwerkname: Exakte SSID eingeben, 1 bis 32 UTF-8-Bytes ohne Steuerzeichen. Leeres Enter bricht ab.
 Passwort: Eingabe verborgen; Speakup-Tastenecho vorübergehend aus und danach wiederhergestellt. Leer bedeutet offenes Netz, keinen Abbruch. h, q, Leerzeichen und Satzzeichen sind in Netzwerkname und Passwort normale Zeichen.
 Strg+C: In jedem Feld abbrechen. Bei Bestätigung bricht auch q ab.
-Ungültig: Eingabe nicht akzeptiert. Anfrage endet; eingegebene Daten werden verworfen. Zurück zu Einstellungen; w mit gültigen Daten wiederholen.
+Ungültig: Eingabe nicht akzeptiert. Anfrage endet; eingegebene Daten werden verworfen. Hauptebene zu Einstellungen; w mit gültigen Daten wiederholen.
 Verbinden: Verbindung läuft; kann zwei Minuten dauern.
 Verbunden: WLAN verbunden und gespeichert; Internetzugang ist damit nicht bestätigt.
 e: Bei Bestätigung zurück zu den Eingabefeldern.

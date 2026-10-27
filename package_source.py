@@ -65,7 +65,7 @@ with zipfile.ZipFile(archive) as package:
 # Validate the actual release artifact through the same extraction path used on update.
 import tempfile
 import update_yac
-with tempfile.TemporaryDirectory(prefix='source-check-', dir=staging, ignore_cleanup_errors=True) as temporary:
+with tempfile.TemporaryDirectory(prefix='yac-source-check-') as temporary:
     extracted = update_yac.extract_source(archive.read_bytes(), Path(temporary))
     assert (extracted / 'modules/__init__.py').is_file()
 checksum = Path(str(archive) + '.sha256')

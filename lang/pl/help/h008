@@ -6,7 +6,7 @@ Podłącz dopasowaną antenę lub odpowiednie sztuczne obciążenie. YAC nie spr
 
 Zacznij od odbioru. YAC podaje wzmocnienie. Przytrzymaj PTT, mów normalnie i puść PTT. YAC podaje próbkowany szczyt ALC lub nieznany przy błędzie odczytu. Krótkie szczyty mogą zostać pominięte. To surowe jednostki, nie waty ani skalibrowane procenty; bez automatycznej oceny.
 
-Po puszczeniu PTT kropka zwiększa, przecinek zmniejsza wzmocnienie. Potwierdzona zmiana podaje wartość i zeruje szczyt. Końce nie zapętlają się. v czyta wzmocnienie; Spacja zeruje szczyt; h czyta pomoc. Puść PTT i q, aby wrócić do Ustawień z Wstecz, zachowując wzmocnienie. Sam przywróć zmienione ustawienia przygotowania.
+Po puszczeniu PTT kropka zwiększa, przecinek zmniejsza wzmocnienie. Potwierdzona zmiana podaje wartość i zeruje szczyt. Końce nie zapętlają się. v czyta wzmocnienie; Spacja zeruje szczyt; h czyta pomoc. Puść PTT i q, aby wrócić do Ustawień z Poziom główny, zachowując wzmocnienie. Sam przywróć zmienione ustawienia przygotowania.
 
 Emisje, skale, ustawienia miernika i strefy ALC danego modelu są w pliku radia w doc/supported-radios.
 W razie potrzeby YAC wybiera miernik automatycznej regulacji poziomu i potwierdza odczyt. Przy wyjściu podczas odbioru przywraca znany poprzedni miernik. Po błędzie zachowuje oczekujące przywrócenie do następnego wejścia.

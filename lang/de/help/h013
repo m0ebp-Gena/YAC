@@ -1,7 +1,7 @@
 Hilfe: Decoder
 
 Decoder: c öffnet CW, r RTTY. Die Erfassung startet beim Öffnen, sofern die Einrichtung dies erlaubt. Nur ein Decoder läuft gleichzeitig.
-Im Decoder: e stoppt oder startet ausdrücklich. q meldet Zurück; die Erfassung läuft weiter. Nochmals q führt zu den Hauptfunktionen. Ein anderer Decoder beendet die bisherige Erfassung. Beim Beenden stellt YAC die ursprünglichen Radio-Decoder-Einstellungen wieder her.
+Im Decoder: e stoppt oder startet ausdrücklich. q meldet Hauptebene; die Erfassung läuft weiter. Nochmals q führt zu den Hauptfunktionen. Ein anderer Decoder beendet die bisherige Erfassung. Beim Beenden stellt YAC die ursprünglichen Radio-Decoder-Einstellungen wieder her.
 v liest den neuesten Text; Komma früheren Text; Punkt späteren Text. Abschnitte haben 60 Zeichen. n löscht Text. Neuer Text erscheint automatisch nur in der Decoder-Ansicht; sonst wird still erfasst. Sprachausgabe und Braille erfolgen durch die vorhandene Terminal-Zugangstechnik. h gibt Hilfe.
 TS-590SG: zuerst CW wählen. Der interne Decoder folgt der Geschwindigkeit automatisch. Plus/Minus ändern die Schwelle 1 bis 30. Decoderstatus und Auto Information werden beim Stopp wiederhergestellt.
 Andere unterstützte Radios: experimentelle Audio-CW-Dekodierung mit fester Tonhöhe und automatischer Zeitmessung. Optionale Abhängigkeiten aus requirements-decoders.txt installieren. cw_audio_device in yac.ini ausdrücklich setzen, cw_audio_pitch_hz an den Empfangston und cw_audio_channel an Main/Sub anpassen. Kein Standardmikrofon wird gewählt. Bei erkanntem Senden oder unbekanntem Sendestatus pausiert die Dekodierung; die Abfrage ist nicht sofortig. Empfangsfehler sind möglich.

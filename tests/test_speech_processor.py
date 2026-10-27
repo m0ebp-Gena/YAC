@@ -169,7 +169,7 @@ class ProcessorTests(unittest.TestCase):
         with patch.object(yac, 'connect_radio', return_value=radio), patch.object(yac, '_read_settings', return_value={'call':'test','lang':'en'}), patch.object(lang_sel, 'read_key', side_effect=lambda **kwargs: next(keys)), redirect_stdout(io.StringIO()) as output:
             self.assertEqual(yac.main([]), 0)
         self.assertEqual(output.getvalue().count('Done'), 1)
-        self.assertEqual(output.getvalue().splitlines().count('Back'), 1)
+        self.assertEqual(output.getvalue().splitlines().count('Top Level'), 1)
         self.assertFalse(radio.serial.processor_on)
 
     def test_n_in_meter_preparation_cancels_control(self):

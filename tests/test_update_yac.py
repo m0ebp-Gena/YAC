@@ -4,6 +4,7 @@ import io
 import json
 from pathlib import Path
 import subprocess
+import ssl
 import tempfile
 import unittest
 from contextlib import redirect_stdout
@@ -28,6 +29,42 @@ def release():
 
 
 class Updates(unittest.TestCase):
+    def test_portable_windows_download_coexists_with_legacy_update_asset(self):
+        base = 'https://github.com/m0ebp-Gena/YAC/releases/download/v-test/'
+        names = ['yac-win-portable-2026-10-27-r7.zip', 'YAC-001-beta-r7-2026-10-27.zip']
+        assets = [dict(name=n, browser_download_url=base+n)
+                  for name in names for n in (name, name+'.sha256')]
+        self.assertEqual(updater.asset_pair({'assets':assets}, windows=True)[0]['name'], names[0])
+
+    def test_mac_and_windows_fetch_use_verified_context(self):
+        from modules.update_certificates import context
+        # Simulate Python having no preconfigured roots, as on the failing Mac.
+        def empty_trust():
+            return ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+        with patch('modules.update_certificates.ssl.create_default_context', side_effect=empty_trust):
+            trust = context()
+        self.assertGreater(trust.cert_store_stats()['x509_ca'], 0)
+        self.assertTrue(trust.check_hostname)
+        self.assertEqual(trust.verify_mode, ssl.CERT_REQUIRED)
+        for platform in ('darwin', 'win32'):
+            with patch.object(updater.sys, 'platform', platform), patch.object(updater.urllib.request, 'urlopen') as opened:
+                response = opened.return_value.__enter__.return_value
+                response.geturl.return_value = 'https://github.com/test'
+                response.read.return_value = b'ok'
+                for url in (updater.API, 'https://github.com/test.zip.sha256', 'https://github.com/test.zip'):
+                    self.assertEqual(updater.fetch(url, 100), b'ok')
+                    supplied = opened.call_args.kwargs['context']
+                    self.assertTrue(supplied.check_hostname)
+                    self.assertEqual(supplied.verify_mode, ssl.CERT_REQUIRED)
+
+    def test_linux_fetch_keeps_default_trust(self):
+        with patch.object(updater.sys, 'platform', 'linux'), patch.object(updater.urllib.request, 'urlopen') as opened:
+            response = opened.return_value.__enter__.return_value
+            response.geturl.return_value = updater.API
+            response.read.return_value = b'ok'
+            updater.fetch(updater.API, 100)
+            self.assertNotIn('context', opened.call_args.kwargs)
+
     def test_platform_names_preferred_over_compatibility_assets(self):
         base = 'https://github.com/m0ebp-Gena/YAC/releases/download/v-test/'
         names = ['yac-win-2026-10-26-r4.zip', 'yac-mac-linux-2026-10-26-r4.zip',

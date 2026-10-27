@@ -9,7 +9,7 @@ h: Leer esta ayuda.
 l: Corte inferior. Punto aumenta; coma disminuye el límite inferior.
 n: Notch manual. Otra n activa o desactiva. Punto/coma ajustan la posición estando activado; w cambia anchura.
 p: Ancho de banda. Punto aumenta; coma disminuye. Si requiere límites separados, usa l y u.
-q: Terminar el ajuste y conservarlo; anuncia Listo. Otra q sale de Filtros; anuncia Atrás.
+q: Terminar el ajuste y conservarlo; anuncia Listo. Otra q sale de Filtros; anuncia Nivel principal.
 r: Noise Reduction. Otra r activa o desactiva. Punto/coma ajustan el nivel estando activado.
 u: Corte superior. Punto aumenta; coma disminuye el límite superior.
 v: Leer filtros activados. Repite v para estados individuales, incluidos desactivado o desconocido. Otro comando reinicia la revisión. Leer el estado no cambia nada.

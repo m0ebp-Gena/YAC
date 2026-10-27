@@ -144,9 +144,9 @@ class NoiseReductionTests(unittest.TestCase):
         # Finishing an adjustment says Done; leaving menus says Back.
         self.assertEqual(before_keys[3], 'Done')
         for index in (4, 6):
-            self.assertEqual(before_keys[index], 'Back')
+            self.assertEqual(before_keys[index], 'Top Level')
         self.assertEqual(output.getvalue().splitlines().count('Done'), 1)
-        self.assertEqual(output.getvalue().splitlines().count('Back'), 2)
+        self.assertEqual(output.getvalue().splitlines().count('Top Level'), 2)
 
     def test_translated_labels_have_matching_fields(self):
         fields=lambda s:{f for _,f,_,_ in string.Formatter().parse(s) if f}

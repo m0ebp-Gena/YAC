@@ -16,6 +16,25 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class DemoTests(unittest.TestCase):
+    def test_band_entry_reads_current_band_without_changing_it(self):
+        for language in ('en', 'de', 'es', 'pl'):
+            with self.subTest(language=language):
+                radio = create_dummy_radio()
+                keys = iter(['b', 'q', 'q', 'y'])
+                output = io.StringIO()
+                with patch.object(yac, 'connect_radio', return_value=radio), \
+                     patch.object(yac, '_read_settings', return_value={'call':'TEST', 'lang':language}), \
+                     patch.object(yac, '_current_frequency', return_value='7.159') as read, \
+                     patch.object(yac, '_band_change') as change, \
+                     patch.object(yac.time, 'sleep'), \
+                     patch.object(lang_sel, 'read_key', side_effect=lambda: next(keys)), redirect_stdout(output):
+                    self.assertEqual(yac.main([]), 0)
+                expected = yac._read_label(ROOT, language, 'l090', '').format(
+                    band=yac._band_name(ROOT, language, '7.159'))
+                self.assertIn(expected, output.getvalue())
+                read.assert_called_once()
+                change.assert_not_called()
+
     def test_startup_cancellation_uses_shared_abort_label(self):
         for language in ('en','de','es','pl'):
             with self.subTest(language=language),patch.object(yac,'_read_settings',return_value={'lang':language}), \

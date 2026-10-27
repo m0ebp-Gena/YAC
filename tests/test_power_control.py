@@ -110,7 +110,7 @@ class PowerTests(unittest.TestCase):
         self.assertEqual(radio.serial.power,'033')
         self.assertEqual(output.getvalue().count('Power 33 W'),1)
         self.assertIn('33W Set',output.getvalue())
-        self.assertEqual(output.getvalue().count('Back'),1)
+        self.assertEqual(output.getvalue().count('Top Level'),1)
         self.assertIn('Bye test',output.getvalue())
 
     def test_705_battery_is_a_limit_not_a_rescaled_percentage(self):

@@ -8,7 +8,19 @@ import yac
 def main():
     root = Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else Path(__file__).resolve().parent
     yac.project_root = lambda: root
+    if '--check-update-connection' in sys.argv:
+        import json
+        import update_yac
+        releases = json.loads(update_yac.fetch(update_yac.API, 2 * 1024 * 1024))
+        release = update_yac.newest_release(releases)
+        print('Verified GitHub connection from packaged YAC: ' + release['tag_name'])
+        return
     if "--check-package" in sys.argv:
+        from modules.update_certificates import context
+        import ssl
+        trust = context()
+        assert trust.cert_store_stats()['x509_ca'] > 0
+        assert trust.check_hostname and trust.verify_mode == ssl.CERT_REQUIRED
         import sounddevice
         from modules.cw_audio import ToneDecoder
         from modules.decoder_text import TextBuffer
@@ -90,6 +102,7 @@ def main():
         assert speech_processor.set_status(yac, radio, spec, True)
         assert speech_processor.restore(yac, root, radio, spec, original, context)
         print("YAC package check passed. Python and pyserial are bundled.")
+        print("Bundled update certificates loaded; hostname and certificate verification enabled.")
         print("Simulated gain, power, bandwidth, noise, notch and Contour controls passed.")
         print("Settings and optional logs stay in: " + str(root))
         print("No radio ports were opened.")

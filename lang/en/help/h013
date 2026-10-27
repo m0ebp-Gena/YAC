@@ -1,7 +1,7 @@
 Help For The Decoders
 
 Decoders: c opens CW decoding; r opens RTTY decoding. Capture starts on entry when setup allows it. Only one decoder runs at a time.
-Inside a decoder: e explicitly stops or restarts capture. q says Back and leaves capture running. q again returns to the main controls. Returning to another decoder stops the previous capture. YAC exit stops capture and restores native decoder settings.
+Inside a decoder: e explicitly stops or restarts capture. q says Top Level and leaves capture running. q again returns to the main controls. Returning to another decoder stops the previous capture. YAC exit stops capture and restores native decoder settings.
 v reviews the latest text; comma reviews earlier text; full stop later text. Review chunks are 60 characters. n clears received text. New text appears automatically only inside the decoder view; capture continues quietly elsewhere. Terminal speech and braille read that text using your existing accessibility setup. h gives this help.
 TS-590SG CW: select CW mode first. Native decoder tracks speed automatically. Plus and minus adjust its threshold, 1 to 30. YAC preserves decoder enable and Auto Information settings and restores them on stop.
 Other supported radios: CW uses received audio, not CAT text. This first version is experimental and uses a fixed pitch with automatic timing. Install the optional requirements-decoders.txt dependencies and explicitly configure cw_audio_device in yac.ini. Match cw_audio_pitch_hz to the received tone and choose cw_audio_channel for Main/Sub. No microphone or default device is selected automatically. Decoder pauses when transmit status is detected or cannot be read; polling is not instantaneous. Audio distortion, noise and hand sending can cause mistakes.

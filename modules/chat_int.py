@@ -42,7 +42,7 @@ def show_request(call: str, request: str, *, prompt_open: bool = False) -> None:
 
 def show_frequency_prompt(root: Path, language: str) -> None:
     finish_response()
-    sys.stdout.write(label(root, language, "l033", "New frequency") + " ")
+    sys.stdout.write(label(root, language, "l033", "New Freq") + " ")
     sys.stdout.flush()
 
 
@@ -73,7 +73,7 @@ def show_goodbye(root: Path, language: str, call: str = "") -> None:
 
 
 def show_back(root: Path, language: str) -> None:
-    show_response(label(root, language, "l207", "Back"))
+    show_response(label(root, language, "l207", "Top Level"))
 
 
 def show_done(root: Path, language: str) -> None:

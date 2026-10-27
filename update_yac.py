@@ -23,7 +23,11 @@ LOG.addHandler(logging.NullHandler())
 
 def fetch(url, limit):
     request = urllib.request.Request(url, headers={'User-Agent': 'yac-update', 'Accept': 'application/vnd.github+json'})
-    with urllib.request.urlopen(request, timeout=30) as response:
+    options = {}
+    if sys.platform in {'darwin', 'win32'}:
+        from modules.update_certificates import context
+        options['context'] = context()
+    with urllib.request.urlopen(request, timeout=30, **options) as response:
         if urllib.parse.urlparse(response.geturl()).scheme != "https":
             raise ValueError("Insecure download redirect.")
         data = response.read(limit + 1)
@@ -43,7 +47,7 @@ def asset_pair(release, windows=False):
     assets = {a['name']: a for a in release.get('assets', [])}
     platform = 'win' if windows else 'mac-linux'
     names = [n for n in assets if re.fullmatch(
-        r'yac-' + platform + r'-\d{4}-\d{2}-\d{2}(?:-r\d+)?\.zip', n)]
+        r'yac-' + platform + (r'(?:-portable)?' if windows else '') + r'-\d{4}-\d{2}-\d{2}(?:-r\d+)?\.zip', n)]
     if not names:
         names = [n for n in assets if
              (bool(re.fullmatch(r'YAC-(?!source-)[A-Za-z0-9-]+-\d{4}-\d{2}-\d{2}\.zip', n))

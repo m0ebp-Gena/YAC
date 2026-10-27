@@ -9,7 +9,7 @@ h: Czytaj tę pomoc.
 l: Dolne odcięcie. Kropka zwiększa; przecinek zmniejsza dolną granicę.
 n: Ręczny notch. Kolejne n włącza lub wyłącza. Kropka/przecinek zmieniają pozycję po włączeniu; w zmienia szerokość.
 p: Szerokość pasma. Kropka zwiększa; przecinek zmniejsza. Przy oddzielnych granicach użyj l i u.
-q: Zakończ regulację i zachowaj ustawienie; ogłasza Gotowe. Kolejne q opuszcza Filtry; ogłasza Wstecz.
+q: Zakończ regulację i zachowaj ustawienie; ogłasza Gotowe. Kolejne q opuszcza Filtry; ogłasza Poziom główny.
 r: Noise Reduction. Kolejne r włącza lub wyłącza. Kropka/przecinek zmieniają poziom po włączeniu.
 u: Górne odcięcie. Kropka zwiększa; przecinek zmniejsza górną granicę.
 v: Odczytaj włączone filtry. Powtarzaj v dla poszczególnych stanów, także wyłączonych lub nieznanych. Inne polecenie rozpoczyna przegląd od nowa. Odczyt niczego nie zmienia.

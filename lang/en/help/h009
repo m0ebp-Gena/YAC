@@ -1,6 +1,6 @@
 Help For The Settings Menu
 
-Settings: a AGC; m Mic Gain; p Power; s Step Size; t Tuner; v VFO/receiver; e Speech Processor. q returns and announces Back, or Done after AGC selection. h reads this help.
+Settings: a AGC; m Mic Gain; p Power; s Step Size; t Tuner; v VFO/receiver; e Speech Processor. q returns and announces Top Level, or Done after AGC selection. h reads this help.
 
 s a reads the current AGC setting without changing it. Another a selects the next AGC setting and announces the confirmed choice. q finishes and announces Done. Fast recovers sooner after a strong signal; Slow holds gain reduction longer. Choose by listening. Off allows larger changes in received volume. No transmission is needed.
 

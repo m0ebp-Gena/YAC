@@ -7,6 +7,7 @@ import sys
 import argparse
 import re
 import json
+import ssl
 from datetime import date
 from modules.package_layout import copy_documents
 
@@ -26,12 +27,19 @@ if not staging.is_relative_to((root / 'builds/.work').resolve()):
     raise ValueError('Stage the demo within builds/.work')
 env = os.environ.copy()
 env["PYTHONPATH"] = str(root / ".build-deps")
+ssl_data = []
+# This Python runtime's ssl module loads this companion file when creating
+# any SSLContext. Preserve it beside the frozen ssl module as well.
+runtime_ca = Path(ssl.__file__).with_name('codex-rejected-cas.pem')
+if runtime_ca.is_file():
+    ssl_data = ['--add-data', str(runtime_ca) + os.pathsep + '.']
 subprocess.run([sys.executable, "-m", "PyInstaller", "--noconfirm", "--clean",
                 "--onedir", "--console", "--name", "YAC", "--distpath", args.dist_dir,
                 "--workpath", "builds/.work/pyinstaller", "--specpath", "builds/.work/pyinstaller",
                 "--paths", str(root), "--hidden-import", "serial.tools.list_ports_windows",
+                "--add-data", str(root / 'modules/certificates') + os.pathsep + 'modules/certificates',
                 "--exclude-module", "numpy",
-                "demo_launcher.py"], cwd=root, env=env, check=True)
+                *ssl_data, "demo_launcher.py"], cwd=root, env=env, check=True)
 destination = root / args.dist_dir / "YAC"
 for language in ("en", "de", "pl", "es"):
     shutil.copytree(root / "lang" / language, destination / "lang" / language, dirs_exist_ok=True)

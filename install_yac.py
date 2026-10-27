@@ -139,6 +139,12 @@ def main(source=None, home=None, update=False, pi=False):
             print("Install Python venv/pip support (usually python3-venv), then run this installer again.")
             return 1
         try:
+            if sys.platform == 'darwin':
+                # The bundle ships with YAC: no HTTPS download is needed to
+                # repair Python installations without configured root trust.
+                subprocess.run([str(python), '-c',
+                    'from modules.update_certificates import context; context()'],
+                    cwd=destination, check=True, capture_output=True)
             if updating and python.is_file():
                 dependency = subprocess.run([str(python), "-c",
                     "import serial; from serial.tools import list_ports; from importlib.metadata import version; "

@@ -6,7 +6,7 @@ Connect a correctly matched antenna or suitable dummy load. YAC cannot check the
 
 Start in receive. YAC announces current gain. Hold physical PTT, speak normally, then release PTT. YAC announces sampled peak ALC, or unknown if readings failed. Brief peaks may be missed. These are raw meter units, not watts or calibrated percentages; no Good/Low/High judgement is made.
 
-With PTT released, full stop increases gain; comma decreases it. Each confirmed change announces gain and resets the peak. Values stop at the ends. v reads gain; Space clears the peak; h reads help. Release PTT and press q to return to Settings with Back, keeping gain. Restore any preparation settings you changed yourself.
+With PTT released, full stop increases gain; comma decreases it. Each confirmed change announces gain and resets the peak. Values stop at the ends. v reads gain; Space clears the peak; h reads help. Release PTT and press q to return to Settings with Top Level, keeping gain. Restore any preparation settings you changed yourself.
 
 Model-specific modes, scales, meter setup and recommended ALC zones are in your radio's text file under doc/supported-radios.
 Where meter selection is needed, YAC selects the automatic level control meter and confirms its reading. It restores the known previous meter on exit while receiving. A failed or disconnected radio can prevent restoration; YAC retains a pending restoration for the next entry.

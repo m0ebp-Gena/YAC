@@ -1725,6 +1725,7 @@ def connect_radio(ini_path: Path | None = None) -> RadioConnection | None:
 
     saved_call = settings.get("call", "").strip()
     _show_welcome(root, language, saved_call)
+    time.sleep(1)
     if not saved_call:
         collect_name(root, ini_path, language)
     print(_read_label(root, language, "l058", "Searching for a connected radio."))
@@ -1844,6 +1845,8 @@ def _main(argv: list[str] | None = None) -> int:
                 if not quit_control.confirm(root, language, read_radio_key):
                     continue
                 chat_int.show_goodbye(root, language, call)
+                sys.stdout.flush()
+                time.sleep(1)
                 break
             if watch.lost:
                 if key == "h":
@@ -1937,8 +1940,13 @@ def _main(argv: list[str] | None = None) -> int:
                     pending_key = mode_key
                     break
             elif key == "b":
+                frequency = _current_frequency(root, radio)
+                if frequency is None:
+                    chat_int.show_response(_radio_error(root, radio, language))
+                    continue
                 chat_int.show_response(
-                    _read_label(root, language, "l090", "Band Select")
+                    _read_label(root, language, "l090", "Band Select {band}").format(
+                        band=_band_name(root, language, frequency))
                 )
                 while True:
                     try:

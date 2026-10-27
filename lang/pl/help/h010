@@ -1,6 +1,6 @@
 Pomoc: Procesor mowy
 
-Procesor: s e odczytuje stan i poziom bez zmian. e włącza/wyłącza; kropka/przecinek regulują gdy włączony. Kenwood i wybiera Wejście, o Wyjście; drugi poziom bez zmian. v odczytuje; h pomaga. q kończy zachowując zmiany. n oznacza Bez zmian: przywraca początkowy stan i dokładne poziomy natywne, sprawdzając odczyt; bez edycji nie zapisuje. Oba wracają z Wstecz.
+Procesor: s e odczytuje stan i poziom bez zmian. e włącza/wyłącza; kropka/przecinek regulują gdy włączony. Kenwood i wybiera Wejście, o Wyjście; drugi poziom bez zmian. v odczytuje; h pomaga. q kończy zachowując zmiany. n oznacza Bez zmian: przywraca początkowy stan i dokładne poziomy natywne, sprawdzając odczyt; bez edycji nie zapisuje. Oba wracają z Poziom główny.
 
 Zwolnij PTT przed zmianą lub przywróceniem. YAC zmienia tylko procesor, nie moc, częstotliwość, emisję, mikrofon, korektor ani AMC i nie rozpoczyna nadawania. Przywrócenie wymaga początkowej częstotliwości, emisji i odbiornika. Po błędzie migawka pozostaje podczas tej sesji; początkowe wartości w logu, jeśli włączony. Wróć, zwolnij PTT, otwórz s e i ponów n. q akceptuje aktualne wartości. Awaria programu nie gwarantuje przywrócenia.
 

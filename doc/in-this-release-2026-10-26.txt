@@ -1,4 +1,10 @@
-26 October 2026 revision 2
+26 October 2026 revision 6
+
+Revision 6: Mac updates now use a bundled Mozilla root certificate set.
+The complete installer supplies and checks the bundle without a separate
+certificate download. Secure certificate verification remains enabled.
+Linux/Pi and Windows certificate handling is unchanged. Mac hardware
+verification and a published-release update installation test remain pending.
 
 - Fixed the missing modules/__init__.py that caused source updates to be rejected as incomplete.
 - Source packages are now checked by the actual updater extraction routine before publication.

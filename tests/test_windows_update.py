@@ -35,6 +35,17 @@ def release():
 
 
 class WindowsUpdateTests(unittest.TestCase):
+    def test_flat_archive_extracts_without_an_extra_user_folder(self):
+        stream = io.BytesIO()
+        with zipfile.ZipFile(io.BytesIO(archive())) as old, zipfile.ZipFile(stream, 'w') as flat:
+            for name in old.namelist():
+                flat.writestr(name.split('/', 1)[1], old.read(name))
+        with tempfile.TemporaryDirectory() as folder:
+            source, program = windows_update.extract(stream.getvalue(), Path(folder))
+            self.assertEqual(source, Path(folder) / 'package')
+            self.assertTrue((source / program).is_file())
+            self.assertTrue((source / 'lang/en/labels/l000').is_file())
+
     def test_preselected_release_skips_lookup_and_second_confirmation(self):
         with tempfile.TemporaryDirectory() as folder, \
              patch.object(windows_update.sys,'platform','win32'), \

@@ -29,6 +29,7 @@ def lookup(root):
     try:
         data = update_yac.fetch(update_yac.API, 2 * 1024 * 1024)
     except OSError as error:
+        LOG.warning('GitHub connection failed', exc_info=True)
         raise NoInternet from error
     release = update_yac.newest_release(json.loads(data))
     marker = root / 'release.json'
