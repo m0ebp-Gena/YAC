@@ -67,6 +67,7 @@ with zipfile.ZipFile(archive) as package:
     for relative, source in documents(root, 'mac-linux').items():
         assert package.read(folder + '/' + relative.as_posix()) == source.read_bytes()
     assert not any(name.endswith(("yac.ini", "YAC.exe", ".pyc", ".log")) for name in package.namelist())
+    assert not any(name.endswith('-template.txt') for name in package.namelist()), 'Private test template in public package'
 # Validate the actual release artifact through the same extraction path used on update.
 import tempfile
 import update_yac

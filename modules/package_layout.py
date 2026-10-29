@@ -21,8 +21,6 @@ def documents(root, platform):
         if platform != 'win':
             result[Path('doc/English') / name] = root / 'doc' / name
     result[Path('doc/English/BRAILLE-FS-START-HERE.txt')] = root / 'BRAILLE-FS-START-HERE.txt'
-    for path in (root / 'doc/checklists').glob('*.txt'):
-        result[Path('doc/English') / path.name] = path
     return result
 
 

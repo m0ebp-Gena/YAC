@@ -50,8 +50,8 @@ invented manufacturing details. No radio settings are changed by this report.
 ACCESSIBILITY AND DOCUMENTATION
 Step Size reads its saved value on entry and after an edit.
 English, German, Spanish and Polish resources include the new controls.
-Core and radio test sheets have been refreshed; use Save As for results
-and preserve each completed sheet with its matching debug log.
+Blank test templates are not included in public packages. The owner's
+project templates remain available for private testing.
 
 PACKAGES AND VALIDATION
 Complete Windows and Mac/Linux packages include these dated details.
@@ -64,3 +64,11 @@ No Pi image or complete Pi wrapper is included in this release.
 Automated tests and package checks use simulated radios. No physical radio
 has been keyed during release verification. Mac hardware installation and
 physical-radio/speech/braille checks remain for users to verify.
+
+COMPLETED RELEASE CHECKS
+The original release passed 478 automated tests and 19 final installer
+checks. The real Windows ZIP was installed in an isolated test folder:
+personal settings were preserved and the new executable checks passed.
+Both public downloads passed SHA-256 and updater extraction checks.
+Revision 2 removes blank test templates from both public packages and
+retains this factual verification record instead.

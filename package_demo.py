@@ -82,6 +82,7 @@ with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED) as package:
                 package.write(path, path.relative_to(source).as_posix())
 with zipfile.ZipFile(archive) as package:
     assert package.testzip() is None
+    assert not any(name.endswith('-template.txt') for name in package.namelist()), 'Private test template in public package'
     assert 'YAC-' + version + '.exe' in package.namelist()
     guides = {
         "yac.ini.example": "yac.ini.example",

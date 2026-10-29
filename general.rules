@@ -72,7 +72,7 @@
 
 6f. Keep Step Size and Power as separate test groups, with all Step Size checks together followed by all Power checks. Preserve a uniquely named copy of the relevant debug log beside each completed test sheet and record its filename in the sheet. Never overwrite an earlier log record. Use the log to review native commands and approximate power readback; approximate readback is not measured RF output.
 
-6g. Blank test sheets are plain-text files named with the suffix -template.txt. Mark master templates read-only (no write permission on Linux/Mac). Their opening instruction must request Save As to a new results file before entering answers. Use local_storage/testing/templates for the local masters and local_storage/testing/results for new completed sheets and their matching uniquely named debug logs. Never overwrite completed results or use a master template as a results file. Preserve read-only template permissions in generated packages.
+6g. Blank test sheets are plain-text files named with the suffix -template.txt. Mark master templates read-only (no write permission on Linux/Mac). Their opening instruction must request Save As to a new results file before entering answers. Use local_storage/testing/templates for the local masters and local_storage/testing/results for new completed sheets and their matching uniquely named debug logs. Never overwrite completed results or use a master template as a results file. Templates are for the owner and are not included in public packages. Provide a guided tester template only when requested. Public packages may include a concise factual record of completed checks and their limitations.
 
 7. Packaging and first use
 
