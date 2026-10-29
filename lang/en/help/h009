@@ -1,6 +1,8 @@
 Help For The Settings Menu
 
-Settings: a AGC; m Mic Gain; p Power; s Step Size; t Tuner; v VFO/receiver; e Speech Processor. q returns and announces Top Level, or Done after AGC selection. h reads this help.
+Settings: a AGC; m Mic Gain; p Power; r Region; s Step Size; t Tuner; v VFO/receiver; e Speech Processor. q returns and announces Top Level, or Done after AGC selection. h reads this help.
+
+Choose the region for the radio location with s r. Default: Region 1. Repeat r to cycle 1, 2, 3; each change saves immediately. h gives help; q returns to Settings with Done.
 
 s a reads the current AGC setting without changing it. Another a selects the next AGC setting and announces the confirmed choice. q finishes and announces Done. Fast recovers sooner after a strong signal; Slow holds gain reduction longer. Choose by listening. Off allows larger changes in received volume. No transmission is needed.
 
@@ -28,6 +30,9 @@ Tune failed or tuner bypassed
 Tune result unconfirmed
 Tuning timed out; stop requested
 Tuning stop could not be confirmed
+
+
+s i: Radio info. Reads identity and connection details, one value per line. i reads again; h help; q returns to Settings. No settings change.
 
 ***
 End of help

@@ -14,6 +14,7 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--date", default=date.today().isoformat())
 parser.add_argument("--stage-only", action="store_true", help="Create a checked local package without rotating release artifacts")
 parser.add_argument('--revision', type=int, default=0, help='Same-day release revision')
+parser.add_argument('--tag', help='GitHub release tag to record in the package')
 args = parser.parse_args()
 if args.revision < 0:
     parser.error('revision must be nonnegative')
@@ -29,7 +30,7 @@ files = [root / name for name in (
     "doc/ic-7600-support.md", "doc/ic-9700-support.md",
     "doc/filter-controls.md",
     "doc/ts-480-support.md",
-    "doc/mic-gain.md", "doc/speech-processor.txt", "doc/settings-controls.md",
+    "doc/mic-gain.md", "doc/speech-processor.txt", "doc/settings-controls.md", "doc/swr-controls.txt",
 )]
 files.extend(path for path in (root / 'doc').iterdir()
              if path.is_file() and path.suffix in {'.md', '.html'})
@@ -43,14 +44,18 @@ staging = root / 'builds/.work/packages'
 staging.mkdir(parents=True, exist_ok=True)
 archive = staging / (folder + '.zip')
 with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as package:
-    package.writestr(folder + '/release.json', json.dumps({'tag': 'v001-beta-' + args.date + release_suffix, 'published_at': args.date + 'T00:00:00Z'}))
+    package.writestr(folder + '/release.json', json.dumps({'tag': args.tag or 'v001-beta-' + args.date + release_suffix, 'published_at': args.date + 'T00:00:00Z'}))
     for path in sorted(files):
         entry = zipfile.ZipInfo((Path(folder) / path.relative_to(root)).as_posix())
-        entry.external_attr = (0o100755 if path.name == "install-yac.sh" else 0o100644) << 16
+        mode = 0o100755 if path.name == "install-yac.sh" else 0o100444 if path.name.endswith('-template.txt') else 0o100644
+        entry.external_attr = mode << 16
         entry.compress_type = zipfile.ZIP_DEFLATED
         package.writestr(entry, path.read_bytes())
     for relative, source in sorted(documents(root, 'mac-linux').items()):
-        package.writestr(folder + '/' + relative.as_posix(), source.read_bytes())
+        entry = zipfile.ZipInfo(folder + '/' + relative.as_posix())
+        entry.external_attr = (0o100444 if source.name.endswith('-template.txt') else 0o100644) << 16
+        entry.compress_type = zipfile.ZIP_DEFLATED
+        package.writestr(entry, source.read_bytes())
 with zipfile.ZipFile(archive) as package:
     assert package.testzip() is None
     assert b"\r" not in package.read(folder + "/install-yac.sh")

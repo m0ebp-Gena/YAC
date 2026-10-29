@@ -112,6 +112,18 @@ def main():
         context = speech_processor.context(yac, root, radio)
         assert speech_processor.set_status(yac, radio, spec, True)
         assert speech_processor.restore(yac, root, radio, spec, original, context)
+        from modules import radio_info, region_plan, swr_control
+        information = radio_info.report(yac, root, radio, 'en')
+        assert 'Model: FT-DX10 simulation' in information
+        assert 'Firmware: Demo 1.0' in information
+        assert region_plan.contains(root, 2, 7250000)
+        assert not region_plan.contains(root, 1, 121500000)
+        for language in yac.lang_sel.LANGUAGE_CODES:
+            for help_id in ('h034', 'h035', 'h036'):
+                assert (root / 'lang' / language / 'help' / help_id).is_file()
+            assert (root / 'lang' / language / 'hints/m000').is_file()
+        assert (root / 'doc/swr-controls.txt').is_file()
+        print('Radio information, region tables and new help resources checked.')
         print("YAC package check passed. Python and pyserial are bundled.")
         print("Bundled update certificates loaded; hostname and certificate verification enabled.")
         print("Simulated gain, power, bandwidth, noise, notch and Contour controls passed.")

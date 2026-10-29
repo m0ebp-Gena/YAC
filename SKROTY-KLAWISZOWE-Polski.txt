@@ -8,6 +8,7 @@ a          Wzmocnienie AF
 b          Wybór pasma
 e          Nowa częstotliwość w MHz; wpisz np. 7.103, potem Enter
 f          Otwórz Filtry
+g          Pomiar SWR: kolejne g mierzy; h pomoc; q wraca. Najpierw podłącz antenę.
 h          Pomoc
 i          Wprowadzanie tonu/kodu (CTCSS/DCS, jeśli obsługiwane); h: pomoc
 m          Wybór emisji
@@ -25,6 +26,7 @@ Przecinek  Zmniejsz częstotliwość o ustawiony krok
 
 USTAWIENIA — najpierw naciśnij s
 s potem p  Wpisz moc wyjściową i Enter. Puste pole anuluje.
+s potem r  Region: wejście odczytuje; r przełącza 1, 2, 3 i zapisuje. q do Ustawień.
 s potem s  Krok dla bieżącej emisji w hercach; wpisz wartość, potem Enter
 s potem t  Przełączaj ustawienia tunera; kolejne t wybiera następną opcję
 s potem v  Wybierz VFO A/B lub Main/Sub, jeśli obsługiwane
@@ -100,3 +102,5 @@ h Pomoc; r Tempo; v Głośność; p Wysokość; u Interpunkcja; . zwiększa; , z
 s u: Aktualizacja YAC. Wyświetla pomoc i Szukam. Brak internetu lub Brak zmian wraca do Ustawień. Nowa wersja pyta Opis Y/N?, potem Update Y/N?. y potwierdza; n pomija opis lub odmawia instalacji; q wraca. Przy długim opisie Spacja przechodzi dalej, q opuszcza opis.
 
 s w: Konfiguracja Wi-Fi jest dostępna tylko w obrazie Raspberry Pi. Tutaj użyj ustawień Wi-Fi systemu. Konfiguracja Wi-Fi: kraj, nazwa sieci i hasło. Ctrl+C anuluje wpisywanie; interpunkcja i litery poleceń są zwykłymi znakami.
+
+s i: Informacje o radiu. Identyfikacja i połączenie, jedna wartość w wierszu. i ponowny odczyt; h pomoc; q powrót do Ustawień. Bez zmian ustawień.

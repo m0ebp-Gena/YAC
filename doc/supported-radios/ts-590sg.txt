@@ -79,3 +79,7 @@ AGC cycles Fast, Slow, Off; FM AGC adjustment is unavailable. Speech Processor i
 
 MIC GAIN - MODEL DETAILS
 Use the marked SSB ALC zone/limit in the radio manual. YAC prepares the ALC meter automatically when necessary. Gain steps are 1 on 0-100. AM/FM adjustment is not enabled.
+
+GET SWR - DEVELOPMENT
+g then g uses an unmodulated 5 W AM carrier. The manufacturer VOICE3 SWR-dot announcement bins are used; this differs from Hamlib interpolation. Mode-specific power/mic slots, VOX, original mode, frequency and native power are restored.
+See doc/swr-controls.txt for the sequence, recovery and limitations.

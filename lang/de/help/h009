@@ -1,6 +1,8 @@
 Hilfe: Einstellungsmenü
 
-Einstellungen: a AGC; m Mikrofonverstärkung; p Leistung; s Schrittweite; t Tuner; v VFO/Empfänger; e Sprachprozessor. q kehrt zurück und meldet Hauptebene, nach AGC-Auswahl Fertig. h liest diese Hilfe.
+Einstellungen: a AGC; m Mikrofonverstärkung; p Leistung; r Region; s Schrittweite; t Tuner; v VFO/Empfänger; e Sprachprozessor. q kehrt zurück und meldet Hauptebene, nach AGC-Auswahl Fertig. h liest diese Hilfe.
+
+Wählen Sie mit s r die Region des Funkgerätestandorts. Vorgabe: Region 1. Erneutes r wechselt 1, 2, 3 und speichert sofort. h hilft; q meldet Fertig und kehrt zu Einstellungen zurück.
 
 s a liest die aktuelle AGC-Einstellung, ohne sie zu ändern. Erneutes a wählt die nächste Einstellung und bestätigt sie. q beendet und meldet Fertig. Schnell erholt sich früher nach einem starken Signal, Langsam hält die Verstärkungsreduzierung länger. Nach Gehör wählen. Aus erlaubt größere Lautstärkeschwankungen. Kein Senden nötig.
 
@@ -28,6 +30,9 @@ Abstimmung fehlgeschlagen oder Tuner umgangen
 Abstimmergebnis nicht bestätigt
 Zeitüberschreitung; Stopp angefordert
 Stopp der Abstimmung nicht bestätigt
+
+
+s i: Geräteinfo. Kennung und Verbindungsdaten, ein Wert pro Zeile. i erneut lesen; h Hilfe; q zurück zu Einstellungen. Keine Änderungen.
 
 ***
 Ende der Hilfe

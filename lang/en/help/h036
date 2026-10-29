@@ -1,0 +1,7 @@
+Radio information help
+
+Read-only radio and connection details, one value per line. USB details come first; radio identity comes last. Unavailable optional details are omitted. USB serial and processor ID are not the radio serial number. YAC region is your selected region. i reads again; h reads help; q returns to Settings with Done. No settings change.
+
+***
+End of help
+***

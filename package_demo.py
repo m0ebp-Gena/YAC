@@ -7,6 +7,7 @@ from datetime import date
 from modules.build_outputs import publish
 from modules.package_layout import LANGUAGES, documents
 import shutil
+import copy
 
 root = Path(__file__).resolve().parent
 parser = argparse.ArgumentParser(description="Create and verify a dated YAC demo ZIP.")
@@ -40,7 +41,7 @@ expected_files = {
 if {path.name for path in source.iterdir()} != expected_files | {'_internal', 'lang', 'rad_cmds', 'doc'}:
     raise RuntimeError('Unexpected files in the demo folder; build a clean package before distributing')
 release_guides = {'CWKit-LICENSE.txt', 'AUDIO-LICENSES.txt', 'decoder-controls.md', 'split-controls.md',
-                  'antenna-controls.md', 'tuner-controls.md'}
+                  'antenna-controls.md', 'tuner-controls.md', 'swr-controls.txt'}
 release_guides.update(path.name for path in (root / 'doc').iterdir()
                      if path.is_file() and path.suffix in {'.md', '.html'})
 release_details = root / 'doc' / ('in-this-release-' + args.date + '.txt')
@@ -72,7 +73,13 @@ for directory in ('lang', 'rad_cmds', 'doc/supported-radios'):
 with zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED) as package:
     for path in sorted(source.rglob('*')):
         if path.is_file():
-            package.write(path, path.relative_to(source).as_posix())
+            if path.name.endswith('-template.txt'):
+                entry = zipfile.ZipInfo(path.relative_to(source).as_posix())
+                entry.external_attr = 0o100444 << 16
+                entry.compress_type = zipfile.ZIP_DEFLATED
+                package.writestr(entry, path.read_bytes())
+            else:
+                package.write(path, path.relative_to(source).as_posix())
 with zipfile.ZipFile(archive) as package:
     assert package.testzip() is None
     assert 'YAC-' + version + '.exe' in package.namelist()
@@ -99,7 +106,9 @@ artifacts = [archive, archive.with_suffix('.sha256')]
 legacy = staging / ('YAC-' + version + release_suffix + '-' + args.date + '.zip')
 with zipfile.ZipFile(archive) as current, zipfile.ZipFile(legacy, 'w', zipfile.ZIP_DEFLATED) as compatibility:
     for name in current.namelist():
-        compatibility.writestr(folder + '/' + name, current.read(name))
+        entry = copy.copy(current.getinfo(name))
+        entry.filename = folder + '/' + name
+        compatibility.writestr(entry, current.read(name))
 legacy_checksum = legacy.with_suffix('.sha256')
 legacy_checksum.write_text(hashlib.sha256(legacy.read_bytes()).hexdigest() + '  ' + legacy.name + '\n', encoding='ascii')
 artifacts.extend([legacy, legacy_checksum])

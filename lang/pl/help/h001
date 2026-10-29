@@ -8,6 +8,7 @@ b: Pasmo. Kropka następne; przecinek poprzednie.
 d: Dekodery. c CW; r RTTY; a ustawienia dźwięku odbioru.
 e: Nowa częstotliwość. Wpisz MHz i Enter.
 f: Filtry. Klawisze filtrów poniżej.
+g: Pomiar SWR. Podłącz antenę; kolejne g mierzy i przywraca ustawienia. h pomaga; q wraca.
 h: Pomoc. h wewnątrz funkcji czyta szczegółową pomoc.
 i: Ton/kod. i przełącza CTCSS, DCS normalny i odwrócony, jeśli obsługiwane. Wpisz wartość i wykonuj polecenia.
 l: Split/przemiennik. Ponowne l wyłącza. h i Enter w polu wpisywania dają pomoc.
@@ -59,6 +60,8 @@ Wybór profilu: wpisz numer radia i Spację, aby wybrać; q anuluje.
 Ustawienia tylko dla Pi wymagają skonfigurowanego programu uruchamiającego Pi.
 
 Przywracanie: Błąd radia i Łączę Ponownie rozpoczynają 60 sekund prób. Radio powróciło wznawia obsługę; inaczej Kończenie zamyka YAC. h podczas oczekiwania czyta pomoc.
+
+Wybierz przez s r region lokalizacji radia. Domyślnie: Region 1. Kolejne r przełącza 1, 2, 3 i zapisuje od razu. h daje pomoc; q ogłasza Gotowe i wraca do Ustawień.
 
 ***
 Koniec pomocy

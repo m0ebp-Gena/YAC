@@ -1,0 +1,7 @@
+Hilfe zur Funkgeräteinfo
+
+Geräte- und Verbindungsdaten werden nur gelesen, ein Wert pro Zeile. USB-Daten zuerst, Gerätekennung zuletzt. Nicht verfügbare Zusatzdaten entfallen. USB-Seriennummer und Prozessor-ID sind keine Geräteseriennummer. YAC-Region ist die gewählte Region. i liest erneut; h Hilfe; q kehrt mit Fertig zu Einstellungen zurück. Keine Änderungen.
+
+***
+Ende der Hilfe
+***

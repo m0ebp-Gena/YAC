@@ -1,0 +1,108 @@
+GET SWR
+=======
+
+Press g at the top level. Connect an antenna suitable for the current frequency
+and check the frequency is clear. Press g again to measure, h for help or q to
+return. Entering the control does not transmit. Each measurement needs another
+g; there is no automatic repetition.
+
+YAC temporarily selects the model's carrier mode and measurement power. It
+allows a short settling interval and collects up to three readings within a
+nominal one-second transmit window,
+requests receive, verifies receive, restores the saved settings and then
+announces the result. A slow or disconnected serial link can delay the receive
+request; the one-second window is not a hardware transmitter watchdog.
+
+The response is SWR approx followed by the ratio, or SWR at least followed by
+the top of the calibrated range. These are meter estimates, not an assessment
+of the antenna or a prediction of whether a tuner will match it. No antenna
+tuner cycle is requested, and tuner selection is preserved.
+
+No valid RF, absent/unstable meter readings or insufficient measurement power
+produce SWR unavailable. Invalid means the frequency or context cannot be used.
+Memory, split, repeater shift, active offsets, scanning and unreadable context
+are refused. Use a normal simplex VFO. YAC does not change region or broaden
+the radio's transmit capabilities.
+
+Settings restoration
+--------------------
+YAC saves the native power setting, current frequency and mode. Frequency
+identifies the band; no band-change command or VFO swap is sent. Icom mode,
+data-mode state and filter selection are saved together. Carrier-mode power
+and mic-gain slots, VOX and any changed modulation-source settings are restored
+as well. The other VFO is not written.
+
+Receive is requested before restoring a user's higher configured power.
+Ctrl+C and measurement errors also run this restoration path. If receive cannot
+be confirmed, YAC says RX unconfirmed and retains the measurement settings.
+If a setting cannot be restored/read back, YAC says Restore failed. The saved
+transaction remains in memory. Use g again to retry restoration; other changing
+commands are blocked until it succeeds. YAC also retries before closing the
+radio on exit. Physical disconnection can prevent restoration; a successful
+result is never announced in its place.
+
+Model profiles
+--------------
+FT-DX10 and FT-710: unmodulated AM carrier, 5 W. AM source is temporarily MIC,
+with microphone gain zero; the DX10's AM-specific gain is also saved/muted.
+The model manuals do not prescribe a higher SWR-specific measurement power.
+SWR conversion uses the approximate Hamlib model tables. Those tables were
+derived from related-radio measurements and are not a physical YAC calibration.
+
+FTX-1: unmodulated AM; 1 W on the readable Field-head power selector and 5 W
+with SPA-1 selected. The original selector is preserved. Hamlib's FTX-1 SWR
+table explicitly remains provisional; do not describe it as hardware-verified.
+
+IC-7300, IC-7300MK2 and IC-7600: RTTY, requesting 35 W, with an approximate RF
+meter check above 30 W. This follows the manufacturer's RTTY/30-W measurement
+guidance rather than the earlier proposed universal 5-W setting.
+
+IC-705: RTTY, requesting 6 W, with an RF meter check above 5 W. The manual
+requires more than 5 W, so battery-only operation cannot run this measurement.
+
+IC-9700: RTTY; 30 W on 144/430 MHz and 3 W on 1200 MHz, checked against the
+corresponding approximate RF meter reading. The original native power value
+is restored, not a rounded conversion back from watts.
+
+TS-590SG: unmodulated AM, 5 W. Manufacturer VOICE3 SWR-dot announcement bins
+are used instead of Hamlib's differing interpolation. A zero/no-numeric bin
+is unavailable; the manufacturer's OVER bin is reported as at least 5.
+
+TS-480HX/SAT: numerical measurement is currently disabled. The manufacturer
+CAT reference describes 0-10 meter dots, whereas Hamlib's SWR calibration uses
+0-20. This disagreement must be resolved before reporting a numerical ratio.
+
+QMX/QMX Plus: not enabled. SW reports SWR directly, but PC is measured power,
+not a watt-setting command. A verified reversible carrier/power sequence has
+not been established. YAC must not send TS-480 commands merely because these
+radios share ID020.
+
+Region and resources
+--------------------
+Use s r to choose the region for the radio's location; Region 1 is the default.
+The regional gate excludes air/marine frequencies and unsupported regional
+segments. Current regional foundations do not enable automatic RF on the
+country-dependent 60-m and 4-m allocations. National rules still apply.
+
+Model procedures, native commands, calibration data and reference URLs are in
+each model's swr.json under rad_cmds. The measurement module, native transport,
+regional tables and all four language resources are separate. Sources include:
+
+https://www.yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/FTDX10_CAT_OM_ENG_2308-F.pdf
+https://www.yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/FT-710_CAT_OM_ENG_2306-C.pdf
+https://connect.yaesu.com/indivisual/wp-content/uploads/2025/11/FTX-1_CAT_OM_JPN_2512-D.pdf
+https://icomuk.co.uk/files/icom/PDF/advancedManuals/IC-705_ENG_Advanced_1a.pdf
+https://icomuk.co.uk/files/icom/PDF/advancedManuals/IC-9700_AdvancedManual_ENG_1.pdf
+https://www.icomeurope.com/wp-content/uploads/2026/02/IC-7300MK2_ENG_Advanced_0.pdf
+https://manuals.jvckenwood.com/download/files/B5A-0180-20.pdf
+https://www.kenwood.com/i/products/info/amateur/ts_480/pdf/ts_480_pc.pdf
+https://www.qrp-labs.com/images/qmx/manuals/cat_1_02_006.pdf
+https://github.com/Hamlib/Hamlib/tree/master/rigs
+
+Validation status
+-----------------
+Native CAT/CI-V emulator tests cover preparation, confirmed RF, conversion,
+USB/LSB and mode-slot restoration, cancellation, failed preparation, lost
+readback, uncertain RX, restoration retry and regional rejection. No physical
+radio was keyed during development. No visual meter comparison is required
+from a blind operator; remaining calibration limitations are recorded above.

@@ -46,10 +46,10 @@ def show_frequency_prompt(root: Path, language: str) -> None:
     sys.stdout.flush()
 
 
-def show_step_size_prompt(root: Path, language: str, mode: str) -> None:
-    prompt = label(root, language, "l069", "Step Size {mode}?")
+def show_step_size_prompt(root: Path, language: str, mode: str, value: int) -> None:
+    prompt = label(root, language, "l069", "Step Size {mode} {value} Hz?")
     finish_response()
-    sys.stdout.write(prompt.format(mode=mode) + " ")
+    sys.stdout.write(prompt.format(mode=mode, value=value) + " ")
     sys.stdout.flush()
 
 

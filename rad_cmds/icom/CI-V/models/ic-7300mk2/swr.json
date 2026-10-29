@@ -1,0 +1,120 @@
+{
+  "family": "icom",
+  "mode": "04 00 02",
+  "watts": 35,
+  "raw_maximum": 255,
+  "calibration": [
+    [
+      0,
+      1
+    ],
+    [
+      48,
+      1.5
+    ],
+    [
+      80,
+      2
+    ],
+    [
+      120,
+      3
+    ],
+    [
+      240,
+      6
+    ]
+  ],
+  "frequency_margin_hz": 3000,
+  "prepare": {
+    "vox": "00"
+  },
+  "fields": {
+    "vox": {
+      "protocol": "civ",
+      "read": "16 46",
+      "set": "16 46"
+    },
+    "swr": {
+      "protocol": "civ",
+      "read": "15 12",
+      "encoding": "bcd"
+    },
+    "rf": {
+      "protocol": "civ",
+      "read": "15 11",
+      "encoding": "bcd"
+    }
+  },
+  "sources": [
+    "https://github.com/Hamlib/Hamlib/blob/master/rigs/icom/ic7300.c",
+    "https://github.com/Hamlib/Hamlib/blob/master/rigs/icom/ic7300.c"
+  ],
+  "notes": "RTTY as specified by manufacturer. 35 W requests a margin above the stated 30 W minimum. Native relative power control is approximate. Original mode/data/filter and native power value are restored. RF meter must also reach the manufacturer measurement power; readings are approximate.",
+  "transmit_ranges_hz": [
+    [
+      1800000,
+      30000000
+    ],
+    [
+      50000000,
+      54000000
+    ]
+  ],
+  "rf_calibration": [
+    [
+      0,
+      0
+    ],
+    [
+      21,
+      5
+    ],
+    [
+      43,
+      10
+    ],
+    [
+      65,
+      15
+    ],
+    [
+      83,
+      20
+    ],
+    [
+      95,
+      25
+    ],
+    [
+      105,
+      30
+    ],
+    [
+      114,
+      35
+    ],
+    [
+      124,
+      40
+    ],
+    [
+      143,
+      50
+    ],
+    [
+      183,
+      75
+    ],
+    [
+      213,
+      100
+    ],
+    [
+      255,
+      120
+    ]
+  ],
+  "minimum_readback_watts": 31,
+  "settle_seconds": 0.2
+}

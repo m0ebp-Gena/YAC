@@ -33,6 +33,8 @@ def read_settings(path):
         raise IniError
     if len(settings.get('call', '')) > MAX_CALL_LENGTH:
         raise IniError(language)
+    if settings.get('region', '1') not in {'1', '2', '3'}:
+        raise IniError(language)
     platform = settings.get('platform', '').casefold()
     if platform and platform not in {'windows', 'linux', 'macos'}:
         raise IniError(language)

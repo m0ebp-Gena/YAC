@@ -947,6 +947,15 @@ def _step_size_key(mode: str | None) -> tuple[str, str] | None:
     return None
 
 
+def _step_size_value(settings: dict[str, str], setting_key: str) -> int:
+    """Read the effective YAC tuning step, including the established fallback."""
+    try:
+        value = int(settings.get(setting_key, STEP_SIZE_DEFAULTS[setting_key]))
+    except (TypeError, ValueError):
+        value = STEP_SIZE_DEFAULTS[setting_key]
+    return value if value > 0 else STEP_SIZE_DEFAULTS[setting_key]
+
+
 def _step_frequency(
     root: Path, radio: RadioConnection, language: str,
     settings: dict[str, str], direction: int,
@@ -956,12 +965,7 @@ def _step_frequency(
     if step_profile is None:
         return _read_label(root, language, "l072", "NOT Understood.")
     setting_key, _mode_name = step_profile
-    try:
-        step_hz = int(settings.get(setting_key, STEP_SIZE_DEFAULTS[setting_key]))
-    except (TypeError, ValueError):
-        step_hz = STEP_SIZE_DEFAULTS[setting_key]
-    if step_hz <= 0:
-        step_hz = STEP_SIZE_DEFAULTS[setting_key]
+    step_hz = _step_size_value(settings, setting_key)
     current_frequency = _current_frequency(root, radio)
     if current_frequency is None:
         return _radio_error(root, radio, language)
@@ -1728,6 +1732,11 @@ def connect_radio(ini_path: Path | None = None) -> RadioConnection | None:
     time.sleep(1)
     if not saved_call:
         collect_name(root, ini_path, language)
+    from modules import region_plan, hints
+    region = region_plan.selected(_read_settings(ini_path))
+    hint = hints.get_hint(root, language, 'm000', region=region)
+    if hint:
+        print(hint, flush=True)
     print(_read_label(root, language, "l058", "Searching for a connected radio."))
     sys.stdout.flush()
     DEBUG_LOG.info("Starting configured-port probe and radio discovery")
@@ -1835,6 +1844,9 @@ def _main(argv: list[str] | None = None) -> int:
             if not key:
                 continue
             key = key.casefold()
+            if getattr(radio, '_swr_pending', None) is not None and key not in {'g', 'q', 'h', 'w'}:
+                chat_int.show_response(_read_label(root, language, 'l373', 'Restore failed'))
+                continue
             if key != "w":
                 where_details_next = False
             DEBUG_LOG.debug("Top-level key=%r", key)
@@ -2016,6 +2028,16 @@ def _main(argv: list[str] | None = None) -> int:
                     if settings_key == "w":
                         wifi_control.control(root, language, read_radio_key, watch)
                         continue
+                    if settings_key == "r":
+                        from modules import region_control
+                        region_control.control(sys.modules[__name__], root, language,
+                                               read_radio_key, watch)
+                        continue
+                    if settings_key == "i":
+                        from modules import radio_info
+                        radio_info.control(sys.modules[__name__], root, radio, language,
+                                           read_radio_key, watch)
+                        continue
                     if settings_key == "u":
                         if update_control.confirm(root, language, read_radio_key):
                             return update_control.REQUEST
@@ -2032,7 +2054,8 @@ def _main(argv: list[str] | None = None) -> int:
                             response = _read_label(root, language, "l072", "NOT Understood.")
                             break
                         setting_key, mode_name = step_profile
-                        chat_int.show_step_size_prompt(root, language, mode_name)
+                        chat_int.show_step_size_prompt(root, language, mode_name,
+                                                       _step_size_value(settings, setting_key))
                         try:
                             entered_step = input().strip()
                         except (EOFError, KeyboardInterrupt):
@@ -2127,6 +2150,11 @@ def _main(argv: list[str] | None = None) -> int:
                     pending_key = settings_key
                     response = None
                     break
+            elif key == "g":
+                from modules import swr_control
+                swr_control.control(sys.modules[__name__], root, radio, language,
+                                    read_radio_key, watch)
+                response = None
             elif key == "d":
                 decoders.control(read_radio_key)
                 response = None
@@ -2214,6 +2242,10 @@ def _main(argv: list[str] | None = None) -> int:
         return 1
     finally:
         decoders.close()
+        from modules import swr_control
+        restore_error = swr_control.recover(radio)
+        if restore_error:
+            chat_int.show_response(_read_label(root, language, restore_error, 'Restore failed'))
         radio.close()
         del radio._yac_connection_watch
     return 0

@@ -31,3 +31,5 @@ Follow the language and name/callsign prompts. Press h for help; q then y quits.
 YAC uses your usual terminal screen reader and braille display. The required computer braille table is North American Computer Braille (NABCC). Mac selection of the required braille table remains unresolved; speech can be tested separately.
 
 Updates: s then u. Notes are optional before you accept the update. If something fails, record the build, platform, radio and what happened. Contact gena@m0ebp.uk. Logs may contain personal details; review before sharing.
+
+Region: default 1. Use s then r for the radio location; repeat r cycles 1, 2, 3 and saves. q returns to Settings. Get SWR: g opens, g again measures; connect an antenna and check the frequency is clear first. h gives help; q returns.

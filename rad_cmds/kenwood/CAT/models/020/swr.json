@@ -1,0 +1,71 @@
+{
+  "family": "kenwood",
+  "mode": "5",
+  "watts": 5,
+  "frequency_digits": 11,
+  "raw_maximum": 20,
+  "frequency_margin_hz": 100,
+  "prepare": {
+    "vox": "0",
+    "mic": "000"
+  },
+  "fields": {
+    "vox": {
+      "protocol": "cat",
+      "read": "VX;",
+      "pattern": "VX([01]);",
+      "set": "VX{value};"
+    },
+    "mic": {
+      "protocol": "cat",
+      "read": "MG;",
+      "pattern": "MG(\\d{3});",
+      "set": "MG{value};"
+    },
+    "mode": {
+      "protocol": "cat",
+      "read": "MD;",
+      "pattern": "MD([1-9]);",
+      "set": "MD{value};"
+    }
+  },
+  "sources": [
+    "https://github.com/Hamlib/Hamlib/blob/master/rigs/kenwood/ts480.c",
+    "https://www.kenwood.com/i/products/info/amateur/ts_480/pdf/ts_480_pc.pdf"
+  ],
+  "notes": "Approximate Hamlib TS-480 meter-dot calibration. Kenwood CAT manual lists 0-10 while Hamlib uses 0-20; numerical measurement is disabled until this discrepancy is resolved.",
+  "calibration": [
+    [
+      0,
+      1
+    ],
+    [
+      4,
+      1.5
+    ],
+    [
+      8,
+      2
+    ],
+    [
+      12,
+      3
+    ],
+    [
+      20,
+      10
+    ]
+  ],
+  "disabled": true,
+  "transmit_ranges_hz": [
+    [
+      1800000,
+      30000000
+    ],
+    [
+      50000000,
+      54000000
+    ]
+  ],
+  "settle_seconds": 0.5
+}

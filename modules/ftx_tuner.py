@@ -146,6 +146,7 @@ def cycle(yac, root, radio, language):
 
 
 def tune(yac, root, radio, language, *, polls=120, interval=0.5):
+    from modules import region_plan
     text = lambda token: label(yac, root, language, token)
     try:
         before = context(yac, radio)
@@ -156,6 +157,8 @@ def tune(yac, root, radio, language, *, polls=120, interval=0.5):
             raise Unknown
         if not 0.03 <= float(frequency) <= 54:
             return text('l129')
+        if not region_plan.permits_transmission(yac, root, radio):
+            return text('l356')
         # Hardware erratum: P1=1 also controls the Optima internal tuner.
         start = 'AC123;' if before.selected == '3' else 'AC103;'
         stop = 'AC120;' if before.selected == '3' else 'AC000;'

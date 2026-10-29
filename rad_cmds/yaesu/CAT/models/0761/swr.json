@@ -1,0 +1,102 @@
+{
+  "family": "yaesu",
+  "mode": "5",
+  "watts": 5,
+  "frequency_digits": 9,
+  "raw_maximum": 255,
+  "calibration": [
+    [
+      0,
+      1
+    ],
+    [
+      26,
+      1.2
+    ],
+    [
+      52,
+      1.5
+    ],
+    [
+      89,
+      2
+    ],
+    [
+      126,
+      3
+    ],
+    [
+      173,
+      4
+    ],
+    [
+      236,
+      5
+    ],
+    [
+      255,
+      25
+    ]
+  ],
+  "frequency_margin_hz": 100,
+  "prepare": {
+    "vox": "0",
+    "source": "0",
+    "mic": "000",
+    "am_gain": "0000"
+  },
+  "fields": {
+    "vox": {
+      "protocol": "cat",
+      "read": "VX;",
+      "pattern": "VX([01]);",
+      "set": "VX{value};"
+    },
+    "mic": {
+      "protocol": "cat",
+      "read": "MG;",
+      "pattern": "MG(\\d{3});",
+      "set": "MG{value};"
+    },
+    "source": {
+      "protocol": "cat",
+      "read": "EX010213;",
+      "pattern": "EX010213([0-3]);",
+      "set": "EX010213{value};"
+    },
+    "swr": {
+      "protocol": "cat",
+      "read": "RM6;",
+      "pattern": "RM6(\\d{3})000;",
+      "set": ""
+    },
+    "rf": {
+      "protocol": "cat",
+      "read": "RM5;",
+      "pattern": "RM5(\\d{3})000;",
+      "set": ""
+    },
+    "am_gain": {
+      "protocol": "cat",
+      "read": "EX010214;",
+      "pattern": "EX010214(\\d{4});",
+      "set": "EX010214{value};"
+    }
+  },
+  "sources": [
+    "https://github.com/Hamlib/Hamlib/blob/master/rigs/yaesu/ftdx10.h",
+    "https://www.yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/FTDX10_CAT_OM_ENG_2308-F.pdf"
+  ],
+  "notes": "Unmodulated AM carrier. Source forced to MIC, gain muted and restored. Conversion is approximate; calibration is not an antenna judgement.",
+  "transmit_ranges_hz": [
+    [
+      1800000,
+      30000000
+    ],
+    [
+      50000000,
+      54000000
+    ]
+  ],
+  "settle_seconds": 0.2
+}

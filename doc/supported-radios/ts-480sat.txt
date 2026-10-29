@@ -85,3 +85,7 @@ AGC cycles Fast, Slow, Off; FM AGC adjustment is unavailable. Speech Processor i
 
 MIC GAIN - MODEL DETAILS
 Use the marked SSB ALC zone/limit in the radio manual. YAC prepares the ALC meter automatically when necessary. Gain steps are 1 on 0-100. AM/FM adjustment is not enabled.
+
+GET SWR - DEVELOPMENT
+Get SWR currently reports Not supported. Kenwood documents meter dots 0-10, while Hamlib calibrates 0-20. Numerical SWR is disabled until that discrepancy is resolved.
+See doc/swr-controls.txt for the sequence, recovery and limitations.

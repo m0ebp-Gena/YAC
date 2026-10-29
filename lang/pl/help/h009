@@ -1,6 +1,8 @@
 Pomoc: Menu ustawień
 
-Ustawienia: a AGC; m wzmocnienie mikrofonu; p moc; s krok; t tuner; v VFO/odbiornik; e procesor mowy. q wraca i ogłasza Poziom główny, a po wyborze AGC Gotowe. h czyta tę pomoc.
+Ustawienia: a AGC; m wzmocnienie mikrofonu; p moc; r Region; s krok; t tuner; v VFO/odbiornik; e procesor mowy. q wraca i ogłasza Poziom główny, a po wyborze AGC Gotowe. h czyta tę pomoc.
+
+Wybierz przez s r region lokalizacji radia. Domyślnie: Region 1. Kolejne r przełącza 1, 2, 3 i zapisuje od razu. h daje pomoc; q ogłasza Gotowe i wraca do Ustawień.
 
 s a odczytuje bieżące AGC bez zmiany ustawienia. Kolejne a wybiera następne ustawienie i potwierdza wybór. q kończy i ogłasza Gotowe. Szybkie szybciej przywraca wzmocnienie po silnym sygnale; Wolne dłużej utrzymuje redukcję. Wybieraj słuchając. Wyłączenie pozwala na większe zmiany głośności. Bez nadawania.
 
@@ -28,6 +30,9 @@ Strojenie nieudane lub tuner wyłączony
 Wynik strojenia niepotwierdzony
 Przekroczono czas; wysłano zatrzymanie
 Nie potwierdzono zatrzymania strojenia
+
+
+s i: Informacje o radiu. Identyfikacja i połączenie, jedna wartość w wierszu. i ponowny odczyt; h pomoc; q powrót do Ustawień. Bez zmian ustawień.
 
 ***
 Koniec pomocy

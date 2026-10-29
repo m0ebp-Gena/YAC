@@ -17,8 +17,18 @@ def copy_changed(source, target):
             if item.name == "__pycache__" or item.suffix in {".pyc", ".zip"}:
                 continue
             copy_changed(item, target / item.name)
-    elif not target.is_file() or source.read_bytes() != target.read_bytes():
-        shutil.copyfile(source, target)
+    else:
+        template = source.name.endswith('-template.txt')
+        if not target.is_file() or source.read_bytes() != target.read_bytes():
+            if template and target.exists():
+                target.chmod(0o644)
+            try:
+                shutil.copyfile(source, target)
+            finally:
+                if template and target.exists():
+                    target.chmod(0o444)
+        elif template:
+            target.chmod(0o444)
 
 
 def ask(question):
@@ -118,7 +128,7 @@ def main(source=None, home=None, update=False, pi=False):
             if (source / 'doc' / directory).is_dir():
                 copy_changed(source / 'doc' / directory, destination / 'doc' / directory)
         for guide in (source / 'doc').glob('*'):
-            if guide.is_file() and (guide.suffix in {'.md', '.html'} or (guide.name.startswith('in-this-release-') and guide.suffix == '.txt')):
+            if guide.is_file() and (guide.suffix in {'.md', '.html'} or guide.name in {'swr-controls.txt', 'speech-processor.txt'} or (guide.name.startswith('in-this-release-') and guide.suffix == '.txt')):
                 (destination / 'doc').mkdir(parents=True, exist_ok=True)
                 copy_changed(guide, destination / 'doc' / guide.name)
         if (source / "doc/linux-macos-setup.txt").is_file():

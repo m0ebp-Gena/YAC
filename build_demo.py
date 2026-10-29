@@ -17,6 +17,7 @@ parser.add_argument("--date", default=date.today().isoformat(), help="Release da
 parser.add_argument("--dist-dir", default="builds/.work/demo-dist", help="Staging directory within builds")
 parser.add_argument('--stage-only', action='store_true', help='Build and verify without publishing release artifacts')
 parser.add_argument('--revision', type=int, default=0, help='Same-day release revision')
+parser.add_argument('--tag', help='GitHub release tag to record in the package')
 args = parser.parse_args()
 if args.revision < 0:
     parser.error('revision must be nonnegative')
@@ -47,7 +48,7 @@ shutil.copytree(root / "rad_cmds", destination / "rad_cmds", dirs_exist_ok=True)
 shutil.copytree(root / "doc/supported-radios", destination / "doc/supported-radios", dirs_exist_ok=True)
 shutil.copyfile(root / "doc/CWKit-LICENSE.txt", destination / "doc/CWKit-LICENSE.txt")
 shutil.copyfile(root / "doc/decoder-controls.md", destination / "doc/decoder-controls.md")
-for guide in ('split-controls.md', 'antenna-controls.md', 'tuner-controls.md', 'AUDIO-LICENSES.txt'):
+for guide in ('split-controls.md', 'antenna-controls.md', 'tuner-controls.md', 'AUDIO-LICENSES.txt', 'swr-controls.txt'):
     shutil.copyfile(root / 'doc' / guide, destination / 'doc' / guide)
 for guide in (root / 'doc').iterdir():
     if guide.is_file() and guide.suffix in {'.md', '.html'}:
@@ -57,7 +58,7 @@ if release_details.is_file():
     shutil.copyfile(release_details, destination / 'doc' / release_details.name)
 copy_documents(root, destination, 'win')
 (destination / "yac.ini").write_text("[yac]\nplatform=\nlang=\ncall=\ndebug=true\n", encoding="utf-8")
-(destination / 'release.json').write_text(json.dumps({'tag': 'v001-beta-' + args.date + release_suffix,
+(destination / 'release.json').write_text(json.dumps({'tag': args.tag or 'v001-beta-' + args.date + release_suffix,
                                                     'published_at': args.date + 'T00:00:00Z'}))
 guides = {
     "yac.ini.example": "yac.ini.example",

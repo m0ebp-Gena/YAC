@@ -17,3 +17,5 @@ Folgen Sie den Fragen zu Sprache und Name/Rufzeichen. h öffnet die Hilfe; q und
 YAC nutzt Ihren Screenreader und Ihre Braillezeile im Terminal. Erforderlich ist North American Computer Braille (NABCC). Die Auswahl der benötigten Brailletabelle auf dem Mac ist noch ungeklärt; Sprache kann getrennt getestet werden.
 
 Updates: s, dann u. Vor der Zustimmung können Sie die kurzen Neuerungen lesen oder überspringen. Notieren Sie bei Problemen Build, Plattform, Funkgerät und Ablauf. Kontakt: gena@m0ebp.uk. Prüfen Sie Protokolle vor dem Weitergeben auf persönliche Angaben.
+
+Region: Vorgabe 1. s dann r wählt den Funkgerätestandort; r wechselt 1, 2, 3 und speichert. q zu Einstellungen. SWR: g öffnet, erneutes g misst. Zuerst Antenne anschließen und freie Frequenz prüfen. h hilft; q zurück.

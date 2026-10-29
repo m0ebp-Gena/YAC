@@ -1,0 +1,31 @@
+YAC PACKAGE DISK USAGE
+Measured 29 October 2026. Existing 27 October r8 packages; no rebuild made.
+
+Windows: yac-win-portable-2026-10-27-r8.zip
+Download: 12,370,745 bytes (11.80 MiB).
+Extracted files: 29,277,053 bytes (27.92 MiB), 1,436 files.
+With ZIP retained: 41,647,798 bytes (39.72 MiB) of file contents.
+Estimated extracted allocation with 4 KiB clusters: 33.07 MiB, excluding
+directory metadata. Actual Size on disk depends on filesystem/compression.
+This portable package includes its runtime.
+
+Mac/Linux: yac-mac-linux-2026-10-27-r8.zip
+Download: 769,096 bytes (0.73 MiB).
+Extracted files: 1,258,011 bytes (1.20 MiB), 1,422 files.
+Estimated extracted allocation with 4 KiB blocks: 6.34 MiB, excluding
+directory metadata. Actual Size on disk depends on the filesystem.
+This is not the total installed Mac footprint. The installer creates a
+Python virtual environment and installs PySerial; the system Python must
+also exist. Pip contents, caches, Python version, symlinks versus copies,
+and filesystem allocation change the total. No Mac installation is present
+here to measure accurately. A true installed figure requires measuring the
+YAC destination on a Mac, with system Python accounted for separately.
+
+The source changes made after r8, including Radio info, are not in these
+ZIPs. These are measured existing-package sizes, not a size claim for a new
+release. User logs, recordings, saved settings and update backups can add
+space over time.
+
+Method: read ZIP directory entries, sum uncompressed regular-file sizes;
+estimate allocation by rounding each file to 4,096 bytes. No archives were
+extracted or modified for this measurement. MiB = 1,048,576 bytes.

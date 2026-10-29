@@ -1,6 +1,8 @@
 Ayuda: Menú de ajustes
 
-Ajustes: a AGC; m ganancia de micrófono; p potencia; s paso; t sintonizador; v VFO/receptor; e procesador de voz. q vuelve y anuncia Nivel principal, o Listo tras seleccionar AGC. h lee esta ayuda.
+Ajustes: a AGC; m ganancia de micrófono; p potencia; r Región; s paso; t sintonizador; v VFO/receptor; e procesador de voz. q vuelve y anuncia Nivel principal, o Listo tras seleccionar AGC. h lee esta ayuda.
+
+Elija con s r la región donde está la radio. Predeterminada: Región 1. Otra r recorre 1, 2, 3 y guarda inmediatamente. h da ayuda; q anuncia Listo y vuelve a Ajustes.
 
 s a lee el ajuste AGC actual sin cambiarlo. Otra a selecciona el ajuste siguiente y confirma la opción. q termina y anuncia Listo. Rápido recupera antes tras una señal fuerte; Lento mantiene la reducción más tiempo. Elige escuchando. Desactivado permite mayores cambios de volumen. No requiere transmitir.
 
@@ -28,6 +30,9 @@ Sintonización fallida o sintonizador desactivado
 Resultado de sintonización sin confirmar
 Tiempo agotado; parada solicitada
 No se pudo confirmar la parada
+
+
+s i: Información de radio. Identidad y conexión, un valor por línea. i vuelve a leer; h ayuda; q vuelve a Ajustes. No cambia ajustes.
 
 ***
 Fin de la ayuda

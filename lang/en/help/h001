@@ -8,6 +8,7 @@ b: Band. Full stop next; comma previous.
 d: Decoders. c CW; r RTTY; a receive audio setup.
 e: New frequency. Enter MHz, then Enter.
 f: Filters. See the filter keys below.
+g: Get SWR. Connect an antenna; g again measures and restores settings. h helps; q returns.
 h: Help. Use h inside a control for its detailed help.
 i: Tone/code input. Repeat i for CTCSS, DCS normal or DCS inverted where supported. Enter a value, then follow the prompts.
 l: Split/repeater setup. Repeat l to turn it off. h then Enter at the input gives help.
@@ -59,6 +60,8 @@ Profile selection: type a radio number, then Space to select; q cancels.
 Pi-only settings require the configured Pi launcher.
 
 Radio recovery: Radio Error and Reconnecting start a 60-second recovery period. Radio Restored resumes operation; otherwise Aborting ends YAC. Press h while waiting for recovery help.
+
+Choose the region for the radio location with s r. Default: Region 1. Repeat r to cycle 1, 2, 3; each change saves immediately. h gives help; q returns to Settings with Done.
 
 ***
 End of help

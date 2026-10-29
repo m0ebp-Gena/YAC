@@ -1,0 +1,95 @@
+{
+  "family": "yaesu",
+  "mode": "5",
+  "watts": 5,
+  "frequency_digits": 9,
+  "raw_maximum": 255,
+  "calibration": [
+    [
+      12,
+      1
+    ],
+    [
+      39,
+      1.35
+    ],
+    [
+      65,
+      1.5
+    ],
+    [
+      89,
+      2
+    ],
+    [
+      242,
+      5
+    ]
+  ],
+  "frequency_margin_hz": 100,
+  "prepare": {
+    "vox": "0",
+    "source": "0",
+    "mic": "000"
+  },
+  "fields": {
+    "vox": {
+      "protocol": "cat",
+      "read": "VX;",
+      "pattern": "VX([01]);",
+      "set": "VX{value};"
+    },
+    "mic": {
+      "protocol": "cat",
+      "read": "MG;",
+      "pattern": "MG(\\d{3});",
+      "set": "MG{value};"
+    },
+    "source": {
+      "protocol": "cat",
+      "read": "EX010213;",
+      "pattern": "EX010213([0-3]);",
+      "set": "EX010213{value};"
+    },
+    "swr": {
+      "protocol": "cat",
+      "read": "RM6;",
+      "pattern": "RM6(\\d{3})000;",
+      "set": ""
+    },
+    "rf": {
+      "protocol": "cat",
+      "read": "RM5;",
+      "pattern": "RM5(\\d{3})000;",
+      "set": ""
+    }
+  },
+  "sources": [
+    "https://github.com/Hamlib/Hamlib/blob/master/rigs/yaesu/ftx1/ftx1.h",
+    "https://connect.yaesu.com/indivisual/wp-content/uploads/2025/11/FTX-1_CAT_OM_JPN_2512-D.pdf"
+  ],
+  "notes": "Unmodulated AM carrier. Source forced to MIC, gain muted and restored. Conversion is approximate; calibration is not an antenna judgement. FTX-1 Hamlib calibration is provisional and explicitly requests hardware verification.",
+  "selector_power": {
+    "10": 1,
+    "100": 5
+  },
+  "transmit_ranges_hz": [
+    [
+      1800000,
+      30000000
+    ],
+    [
+      50000000,
+      54000000
+    ],
+    [
+      144000000,
+      148000000
+    ],
+    [
+      430000000,
+      450000000
+    ]
+  ],
+  "settle_seconds": 0.2
+}

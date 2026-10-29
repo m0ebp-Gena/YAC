@@ -1,7 +1,7 @@
 """Start the configured tuner once and observe its native tuning cycle."""
 import time
 
-from modules import verify_settings as settings
+from modules import verify_settings as settings, region_plan
 
 
 def tune(yac, root, radio, language, *, polls=120, interval=0.5):
@@ -25,6 +25,8 @@ def tune(yac, root, radio, language, *, polls=120, interval=0.5):
     start = config.get('start', config.get('start_by_state', {}).get(current))
     if start is None:
         return label('l128')
+    if not region_plan.permits_transmission(yac, root, radio):
+        return label('l356')
     if not settings._write(yac, radio, spec, start):
         return label('l267')
     print(label('l265'), flush=True)

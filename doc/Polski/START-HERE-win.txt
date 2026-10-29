@@ -17,3 +17,5 @@ Odpowiedz na pytania o język i imię/znak wywoławczy. h otwiera pomoc; q, a po
 YAC korzysta ze zwykłego czytnika ekranu i monitora brajlowskiego w terminalu. Wymagana tabela to North American Computer Braille (NABCC). Wybór wymaganej tabeli na Macu pozostaje nierozwiązany; mowę można testować osobno.
 
 Aktualizacja: s, potem u. Przed zgodą można przeczytać lub pominąć nowości. W razie problemu zapisz kompilację, platformę, radio i przebieg. Kontakt: gena@m0ebp.uk. Przed udostępnieniem dzienników sprawdź dane osobowe.
+
+Region: domyślnie 1. s potem r wybiera lokalizację radia; r przełącza 1, 2, 3 i zapisuje. q do Ustawień. SWR: g otwiera, kolejne g mierzy. Najpierw podłącz antenę i sprawdź, czy częstotliwość jest wolna. h pomaga; q wraca.

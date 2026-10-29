@@ -3,6 +3,8 @@
 [yac]
 lang=
 call=
+# Choose the region for the radio's location with Settings, r. Repeat r to cycle.
+region=1
 debug=0
 step_ssb=1000
 step_cw=500

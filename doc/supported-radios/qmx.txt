@@ -68,3 +68,7 @@ Speech Processor s e remains unavailable for this profile; sharing TS-480 CAT ID
 
 SETTINGS HELP - MODEL DETAILS
 AGC adjustment is not implemented for this model. Unknown readings prevent AGC changes; rejected or unconfirmed changes report failure. See in-command h for the operating procedure and feedback.
+
+GET SWR - DEVELOPMENT
+Get SWR currently reports Not supported. SW returns a ratio directly, but PC reads measured watts rather than setting them. A verified reversible carrier/power sequence is not yet available; TS-480 transmit commands are not used.
+See doc/swr-controls.txt for the sequence, recovery and limitations.

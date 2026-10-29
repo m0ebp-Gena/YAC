@@ -1,70 +1,173 @@
-Date: 
-Platform: 
-Build date/label: 
-Radio: 
-Mode: 
-Screen reader: 
-Braille display: 
-Text table: 
-Dots: 
-Manual changes: 
+READ-ONLY RADIO TEST TEMPLATE
+Save As a new .txt results file before entering answers. Use a date,
+platform, radio and build in its name. Keep the matching debug log beside
+it. Never overwrite an earlier result or log.
 
-Radio controls
+YAC radio controls test sheet
 
-Frequency read w 
-Frequency entry e 
-Frequency up . 
-Frequency down , 
-Frequency rounding z 
-Tuning step s s 
-Band b 
-Mode read w 
-Mode selection m 
-Signal w 
-Volume a 
-RF gain r 
-Squelch r 
-Preamp p 
-Attenuator u 
-Power read v 
-Power entry s p 
-Mic gain s m 
-AGC read s a 
-AGC change s a a 
-AGC exit s a q 
-Processor toggle s e e 
-Processor level s e 
-Processor restore s e n 
-Bandwidth f p 
-Low cut f l 
-Upper cut f u 
-Noise blanker toggle f b 
-Noise blanker level f b 
-Noise reduction toggle f r 
-Noise reduction level f r 
-Auto notch f a 
-Manual notch f n 
-Notch position f n 
-Notch width f n w 
-Contour toggle f c 
-Contour frequency f c 
-Contour level f c l 
-Contour width f c w 
-Filter status f v 
-Tuner status v 
-Tuner selection s t 
-Tuner activation t 
-Receive offset o 
-Transmit offset o o 
-Clear offsets o o o . 
-Split l 
-Split off l 
-Repeater shift l 
-Repeater shift off l 
-Tone i 
-DCS i i 
-Main antenna x x 
-Receive antenna x r 
-VFO s v 
+Run each grouped task in one go. If every state passes, type P beside the
+question. If any state fails, type F and explain which state failed and
+what happened. Use Not tested if not exercised, or Not applicable if the
+radio does not provide the function in this configuration.
 
-Problems: 
+Use the core sheet for startup, access, dial/z, band, mode, Verify, frequency
+entry, Step Size, Power, help, reconnection, updates and quit/restart.
+Record that sheet's filename below rather than duplicating its answers.
+This sheet covers the additional radio controls.
+
+Occasionally compare the braille display with what is spoken. Make at least
+two comparisons if using both, and identify them at the bottom.
+
+Date:
+Platform:
+Build date/label:
+Radio:
+Mode:
+Screen reader:
+Braille display:
+Text table:
+Dots:
+Manual changes:
+Core results filename:
+Debug log record filename:
+
+Test each control in an appropriate supported band and mode. Note any
+changes of band or mode alongside its result. Confirm the radio changes,
+audibly where detectable or by readback. Restore the entry setting after
+each group where practical. q finishes a control; submenu q returns to
+Top Level. Use h for the control's detailed help where needed.
+
+Signal (w): reports signal strength; the report responds to changes in the
+received signal. This does not establish meter calibration.
+Signal?
+
+RF Gain (r . , q, outside FM): reads the current value, increases and
+decreases, with the radio response matching the reported setting.
+RF Gain?
+
+Squelch (r . , q, in FM): reads the current value, increases and decreases;
+confirm that the squelch opens and closes where the signal permits.
+Squelch?
+
+Preamp (p; v): cycles the available stages and Off; Verify reflects the
+selected state and the received signal changes where detectable.
+Preamp?
+
+Attenuator (u; v): cycles available levels and Off; Verify reflects the
+selected state and attenuation can be heard where detectable.
+Attenuator?
+
+AGC (s a, repeat a, q): reads the current setting without changing it,
+cycles supported settings and announces the confirmed choices.
+AGC?
+
+Mic Gain (s m; v . , q inside): follow the built-in preparation and PTT
+procedure. Current gain reads correctly; increases and decreases are
+confirmed; available ALC feedback is reported. PTT remains user-controlled.
+Mic Gain?
+
+Speech Processor (s e; e . , v n q inside): reads the entry settings,
+toggles On/Off, adjusts levels both ways while On, reads back the changes
+and n restores the entry settings. On Kenwood, check Input/Output with i/o
+where offered. Follow the built-in procedure for any audio/ALC checks.
+Speech Processor?
+
+Bandwidth (f p . , q): reads the current bandwidth, increases and decreases;
+confirm the effect on received audio where detectable.
+Bandwidth?
+
+Low Cut (f l . , q): reads the current lower edge and adjusts both ways;
+confirm the audio effect where detectable.
+Low Cut?
+
+Upper Cut (f u . , q): reads the current upper edge and adjusts both ways;
+confirm the audio effect where detectable.
+Upper Cut?
+
+Noise Blanker (f b; b . , q inside): reads state/level, toggles On/Off and
+adjusts level both ways while On. Check its effect with suitable noise
+where available, noting if an audio check could not be made.
+Noise Blanker?
+
+Noise Reduction (f r; r . , q inside): reads state/level, toggles On/Off and
+adjusts level both ways while On; confirm the audio effect where detectable.
+Noise Reduction?
+
+Auto Notch or Beat Cancel (f a, repeat a): reads the state and toggles
+On/Off; confirm the effect with a suitable interfering tone where available.
+Auto Notch or Beat Cancel?
+
+Manual Notch (f n; n . , w q inside): reads state/position, toggles On/Off,
+adjusts position both ways while On and changes width where supported.
+Confirm the effect with a suitable interfering tone where available.
+Manual Notch?
+
+Contour (f c; c . , l w q inside): reads state/settings, toggles On/Off,
+adjusts frequency, level and width both ways where supported; confirm the
+audio effect where detectable.
+Contour?
+
+Filter status (f v, repeat v): reports filters currently On and reviews
+individual states; changing a known filter is reflected in the report.
+Filter status?
+
+Tuner selection (s t, repeat t; v): reads/cycles supported tuner settings
+and confirms the selection; selecting alone does not start a tuning cycle.
+Tuner selection?
+
+Tuner operation (t; v): using the configured tuner and its appropriate
+setup, tuning starts, completion is recognised and status is correct.
+Tuner operation?
+
+Receive offset (o . , q): reads the current setting; increases/decreases
+in the announced signed increments; receive frequency changes accordingly.
+Receive offset?
+
+Transmit offset (o o . , q): reads the current setting and adjusts both
+ways; the reported transmit offset agrees with the radio's readback.
+Transmit offset?
+
+Clear offsets (o o o .): clears the offsets and reports the cleared state.
+Clear offsets?
+
+Split (l outside FM, repeat l to switch off; w): accepts the transmit
+frequency, confirms the separate receive/transmit settings and switches Off.
+Split?
+
+Repeater shift (l in FM, repeat l to switch off; w): accepts a supported
+signed shift, reports the receive/transmit relationship and switches Off.
+Repeater shift?
+
+CTCSS (i; w): accepts a supported tone and offered transmit/receive choice;
+status agrees with the configured tone and routing.
+CTCSS?
+
+DCS (i to select normal/inverted where supported; w): accepts a supported
+code, preserves leading zeros and confirms the selected polarity/routing.
+DCS?
+
+Main antenna (x, repeat x; q): reads the current routing without changing
+it, cycles supported main antennas and confirms the selected routing.
+Main antenna?
+
+Receive antenna (x r; q): reads and changes supported receive routing,
+with the announced transmit/receive paths matching the radio's readback.
+Receive antenna?
+
+VFO or receiver (s v): reads/cycles supported A/B or Main/Sub selections;
+frequency/mode reporting follows the selected control target.
+VFO or receiver?
+
+Speech and braille comparison
+
+Were at least two comparisons made between the braille display and what
+was spoken? P or F; use Not applicable if either output was unavailable.
+At least two comparisons?
+Comparison 1 - test and result:
+Comparison 2 - test and result:
+
+Save the relevant debug log beside this sheet using a new filename. Record
+its filename above. Logs support review of native commands and approximate
+power readback; they do not establish measured RF output.
+
+Other problems or comments:

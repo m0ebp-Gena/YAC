@@ -56,6 +56,8 @@
 
 5d. Use common abbreviations in labels, such as Freq for frequency, NB for noise blanker, NR for noise reduction ATT for attenuator and BC for Beat Cancel. In help, write the full names instead of those abbreviations. Apply this consistently in every language.
 
+5e. Occasionally YAC needs to print brief factual information outside labels and help. Store these messages in each language's hints subdirectory, using identifiers such as m000. Keep their use to a minimum. Messages should not exceed 50 characters, including substituted values, except in special circumstances. Keep translations aligned; put operating instructions in help or START-HERE.
+
 6. Working documents
 
 6a. Use plain text (.txt) for reports, test sheets, review lists and other working documents unless the user explicitly requests another format.
@@ -63,6 +65,14 @@
 6b. Do not open pop-ups or embedded document previews. Use normal chat and ordinary file links.
 
 6c. Release notes shown before an update contain only short decision-making headlines. Put full explanations in doc/in-this-release-YYYY-MM-DD.txt and include that dated file in every platform package.
+
+6d. Group related test states into one task with one answer. State what to check and give the activation keys. Ask for P if all states pass, or F followed by which states failed and what happened. Keep all checks for a feature together; do not scatter entry, cancellation and invalid-input checks throughout a sheet. Allow Not tested and Not applicable without implying a pass.
+
+6e. At the start of a test sheet, ask testers using both speech and braille to compare them occasionally during testing. At the end, ask them to confirm at least two comparisons and identify the tests compared. Preserve completed test results when revising blank templates.
+
+6f. Keep Step Size and Power as separate test groups, with all Step Size checks together followed by all Power checks. Preserve a uniquely named copy of the relevant debug log beside each completed test sheet and record its filename in the sheet. Never overwrite an earlier log record. Use the log to review native commands and approximate power readback; approximate readback is not measured RF output.
+
+6g. Blank test sheets are plain-text files named with the suffix -template.txt. Mark master templates read-only (no write permission on Linux/Mac). Their opening instruction must request Save As to a new results file before entering answers. Use local_storage/testing/templates for the local masters and local_storage/testing/results for new completed sheets and their matching uniquely named debug logs. Never overwrite completed results or use a master template as a results file. Preserve read-only template permissions in generated packages.
 
 7. Packaging and first use
 

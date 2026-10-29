@@ -31,3 +31,5 @@ Responda a las preguntas de idioma y nombre/indicativo. h muestra ayuda; q segui
 YAC utiliza su lector de pantalla y línea braille habituales en el terminal. La tabla requerida es North American Computer Braille (NABCC). La selección de esa tabla en Mac sigue sin resolverse; la voz puede probarse por separado.
 
 Actualizaciones: s y después u. Puede leer u omitir las novedades antes de aceptar. Si algo falla, anote versión de prueba, plataforma, radio y lo ocurrido. Contacto: gena@m0ebp.uk. Revise los datos personales de los registros antes de compartirlos.
+
+Región: predeterminada 1. s y r elige la ubicación de la radio; r recorre 1, 2, 3 y guarda. q vuelve a Ajustes. SWR: g abre, otra g mide. Conecte antes una antena y compruebe que la frecuencia esté libre. h ayuda; q vuelve.

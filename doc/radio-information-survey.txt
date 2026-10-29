@@ -1,0 +1,108 @@
+RADIO INFORMATION SURVEY
+29 October 2026
+
+Purpose
+Assess the read-only s i (Radio info) control, implemented 29 October 2026.
+Exclude frequency, band, mode and other operating status.
+
+Key availability and current YAC
+s i now opens Radio info in Settings; i repeats, h helps and q returns.
+YAC already discovers CAT model IDs and CI-V identities, stores connection
+details, and distinguishes TS-480 types using TY.
+The new report reads QMX/TS-590SG firmware using model-specific profiles.
+
+Manufacturer documentation findings
+
+Yaesu FT-DX10
+ID; returns model ID 0761. The reviewed CAT reference provides no documented
+firmware-version, sales-region, radio-serial or production-date query.
+
+Yaesu FT-710
+ID; returns model ID 0800. Same limitations in the reviewed CAT reference.
+
+Yaesu FTX-1 series
+ID; returns fixed model-family ID 0840. This does not distinguish every
+sales package or regional variant. Its CAT manual directs firmware checking
+to the radio's SOFT VERSION screen. That menu-chart entry has no readable
+CAT value format: listing the screen does not establish a version query.
+No documented radio-serial or production-date query found.
+
+Kenwood TS-590SG
+ID; returns 023; FV; returns a firmware string, e.g. FV1.00;.
+No documented sales-region, radio-serial or production-date query found in
+the reviewed PC command reference.
+
+Kenwood TS-480HX and TS-480SAT
+ID; returns 020, also emulated by QMX: insufficient alone for identification.
+TY; distinguishes HX 200 W, SAT 100 W with AT, Japanese 50 W and Japanese
+20 W firmware types. This is type information, not a firmware version.
+The non-Japanese types do not establish Europe versus Americas or location.
+No FV version command, radio-serial or production-date query found in the
+reviewed PC reference.
+
+Icom IC-705, IC-7300, IC-7600 and IC-9700
+The reviewed CI-V command tables document transceiver identification
+(19 00). This should be distinguished from the configurable CI-V address.
+No documented general query for installed firmware versions, factory sales
+region, radio serial number or production date found in these tables.
+Version information available on a radio screen does not by itself make
+it retrievable through CI-V.
+
+Icom IC-7300MK2
+Included in scope. Manufacturer's basic/advanced manuals and the official
+CI-V guide download listing located. Advanced manual documents checking
+firmware at startup or SET > Others > Information > Version.
+The separate CI-V PDF could not be retrieved in this survey. Its exact
+identity/firmware/serial capabilities remain unconfirmed; do not copy the
+original IC-7300's command assumptions into a new information profile.
+
+QRP Labs QMX and QMX+
+Common QMX-series CAT manual documents VN; for firmware; OM; for model code
+(the example QMX code is QC); newer documentation also lists UI; for a
+24-hex-digit unique STM32 processor ID. Keep raw model codes until mappings
+for each variant are verified. ID; always returns compatibility ID 020.
+UI is a processor identifier, not a manufacturer's radio serial number.
+Availability on an older installed firmware must be checked; a failed query
+means unavailable. No documented production-date query found.
+
+Recommended report
+Use modular model profiles containing only documented read-only queries.
+Report USB details first, then port, active baud rate, protocol, CI-V address
+where applicable, and YAC region. Finish with processor ID where readable,
+manufacturer, confirmed variant, model and firmware where readable.
+Label YAC region explicitly: it is the user's selected
+operating region, not a value discovered from the radio's hardware.
+Optional connection details: port, protocol, baud and actual CI-V address.
+If included, label a USB serial as USB interface ID: adapters can have their
+own serial unrelated to the radio. Never derive production year from USB ID,
+firmware release date, model introduction date or an undocumented serial rule.
+Unknown optional fields should be omitted or briefly marked unavailable.
+Read on entry; h explains, q returns to Settings. No transmitter keying,
+menu writes or settings changes are needed for this information function.
+
+Manufacturer sources (accessed 29 October 2026)
+
+Yaesu FT-DX10 CAT reference, ID p.13:
+https://www.yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/FTDX10_CAT_OM_ENG_2308-F.pdf
+Yaesu FT-710 CAT reference, ID p.13:
+https://www.yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/FT-710_CAT_OM_ENG_2306-C.pdf
+Yaesu FTX-1 CAT reference, firmware instructions cover; ID p.17:
+https://www.yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/FTX-1_CAT_OM_ENG_2508-C.pdf
+Kenwood TS-590S/SG PC reference, FV p.12, ID p.13:
+https://www.kenwood.com/i/products/info/amateur/pdf/ts590_g_pc_command_e_rev2.pdf
+Kenwood TS-480 PC reference, TY p.22:
+https://www.kenwood.com/i/products/info/amateur/ts_480/pdf/ts_480_pc.pdf
+QRP Labs QMX-series CAT reference, OM p.4, UI/VN p.10:
+https://www.qrp-labs.com/images/qmx/manuals/cat_1_04_004.pdf
+Icom IC-705 CI-V reference:
+https://www.icomeurope.com/wp-content/uploads/2020/08/IC-705_ENG_CI-V_1_20200721.pdf
+Icom IC-7300 Full Manual, control command table (indexed text consulted):
+https://www.icomfrance.com/uploads/files/produit/not-IC-7300_ENG_FM_12-en.pdf
+Icom IC-7600 manual, English command table in German edition:
+https://www.icomeurope.com/wp-content/uploads/2020/11/IC-7600_IM_D_upgrade_20151103.pdf
+Icom IC-9700 CI-V reference:
+https://www.icomfrance.com/uploads/files/produit/not-IC-9700_ENG_CI-V_3a-en.pdf
+Icom IC-7300MK2 advanced manual, firmware section 11:
+https://www.icomeurope.com/wp-content/uploads/2026/02/IC-7300MK2_ENG_Advanced_0.pdf
+Icom IC-7300MK2 separate CI-V guide listing (PDF retrieval outstanding):
+https://www.icomjapan.com/support/manual/4486/

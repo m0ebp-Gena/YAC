@@ -8,6 +8,7 @@ b: Banda. Punto siguiente; coma anterior.
 d: Decodificadores. c CW; r RTTY; a configurar audio de recepción.
 e: Nueva frecuencia. Introduce MHz y pulsa Enter.
 f: Filtros. Consulta las teclas de filtros más abajo.
+g: Medir SWR. Conecte una antena; otra g mide y restaura los ajustes. h ayuda; q vuelve.
 h: Ayuda. h dentro de un control lee su ayuda detallada.
 i: Introducir tono/código. Repite i para CTCSS, DCS normal o invertido, donde se admita. Introduce un valor y sigue las indicaciones.
 l: Configurar split/repetidor. Repite l para desactivar. h y Enter en el campo dan ayuda.
@@ -59,6 +60,8 @@ Selección de perfil: introduce el número de radio y Espacio para seleccionar; 
 Los ajustes exclusivos del Pi requieren su lanzador configurado.
 
 Recuperación: Error de radio y Reconectando inician un plazo de 60 segundos. Radio conectada reanuda el uso; si no, Cancelando cierra YAC. h durante la espera lee la ayuda.
+
+Elija con s r la región donde está la radio. Predeterminada: Región 1. Otra r recorre 1, 2, 3 y guarda inmediatamente. h da ayuda; q anuncia Listo y vuelve a Ajustes.
 
 ***
 Fin de la ayuda

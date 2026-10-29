@@ -1,5 +1,11 @@
 YAC changes
 
+29 October 2026
+- Get SWR with model-specific preparation and restoration checks.
+- Select Region 1, 2 or 3; current region stated at startup.
+- Radio info: identity, available firmware and active connection details.
+- Step Size reads its saved value; translated help and refreshed test sheets.
+
 26 October 2026 revision 4
 - Clear Windows and Mac/Linux package names; compatible updates from earlier builds.
 - Separate language documentation folders and platform-specific START-HERE guides.

@@ -1,0 +1,35 @@
+{
+  "queries": [
+    {
+      "read": "VN;",
+      "pattern": "VN([0-9]+_[0-9]+_[0-9]+QMX\\+?);",
+      "field": "firmware",
+      "manufacturer": "QRP Labs",
+      "model": "QMX series"
+    },
+    {
+      "read": "UI;",
+      "pattern": "UI([0-9A-Fa-f]{24});",
+      "field": "processor",
+      "requires": "firmware"
+    },
+    {
+      "read": "TY;",
+      "pattern": "TY\\d{2}([0-3]);",
+      "field": "variant",
+      "unless": "firmware",
+      "manufacturer": "Kenwood",
+      "model": "TS-480",
+      "values": {
+        "0": "TS-480HX (200 W)",
+        "1": "TS-480SAT (100 W + AT)",
+        "2": "TS-480 (Japan 50 W)",
+        "3": "TS-480 (Japan 20 W)"
+      }
+    }
+  ],
+  "sources": [
+    "https://www.qrp-labs.com/images/qmx/manuals/cat_1_04_004.pdf",
+    "https://www.kenwood.com/i/products/info/amateur/ts_480/pdf/ts_480_pc.pdf"
+  ]
+}

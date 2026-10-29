@@ -1,0 +1,16 @@
+{
+  "manufacturer": "YAC Demo",
+  "model": "FT-DX10 simulation",
+  "usb": {
+    "description": "Simulated connection",
+    "product": "YAC practice radio",
+    "interface": "Virtual CAT",
+    "serial_number": "DEMO-USB-0001"
+  },
+  "simulated": {
+    "serial": "DEMO-RADIO-0001",
+    "year": "2026 (demo)",
+    "variant": "Practice station",
+    "firmware": "Demo 1.0"
+  }
+}

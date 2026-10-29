@@ -1,0 +1,66 @@
+YAC 001 - 29 October 2026 (stable release channel)
+
+Published as a normal GitHub release at the owner's request. The application
+still displays its existing 001 beta version label; channel selection does
+not imply physical-radio or Mac hardware validation.
+
+GET SWR
+Press g at the top level, then g to authorise measurement after connecting
+an antenna. h gives help; q returns. This is separate from tuner operation.
+YAC uses model-specific carrier and power settings, stops transmission and
+restores/verifies saved settings before announcing an approximate SWR.
+Errors and cancellation also attempt restoration. An unconfirmed receive
+state or failed restoration is announced; a failed result is not presented
+as a successful measurement. Serial timeouts and a disconnected radio can
+prevent immediate stopping or restoration: software is not a hardware timer.
+The configured regional envelope, model range and current radio context
+are checked before measurement. Split, memory and repeater contexts are
+not supported by this new measurement routine.
+Profiles cover FT-DX10, FT-710, FTX-1, IC-705, IC-7300, IC-7300MK2,
+IC-7600, IC-9700 and TS-590SG. Manufacturer procedures govern settings.
+The IC-705 measurement requires external DC power. FTX-1 SWR conversion
+remains provisional. TS-480 and QMX measurement remain unavailable pending
+verified conversion/control details. See doc/swr-controls.txt and the
+separate radio notes. Meter conversions are approximate, not calibration.
+
+REGION
+Settings s r reads the current region. Repeated r cycles 1, 2 and 3 and
+saves each selection; q returns to Settings. Default: Region 1.
+Startup briefly states the current region after name/call confirmation,
+before radio discovery. Check that the region suits the radio's location.
+Region tables are separate from radio profiles and can be updated. They
+guard YAC-initiated tuning and SWR RF; receive tuning is unaffected.
+Regional envelopes are not national permissions or mode-by-mode band plans.
+Country-dependent 60 m and 4 m automatic RF are not enabled by these tables.
+
+RADIO INFORMATION
+Settings s i prints available information, one labelled value per line.
+USB details come first; radio identity and readable firmware come last.
+Port, active baud rate, protocol, actual CI-V address where applicable,
+and the selected YAC region are included. i refreshes; h explains;
+q returns to Settings. Optional unavailable details are omitted.
+QMX-series and TS-590SG firmware can be read through documented commands;
+TS-480 type identification distinguishes available variants.
+USB serial and QMX processor ID are labelled separately: neither is a
+manufacturer's radio serial number. YAC region is a user preference, not
+a detected factory region. The demo supplies clearly simulated identity,
+firmware, serial and production-year values. Real radios are not assigned
+invented manufacturing details. No radio settings are changed by this report.
+
+ACCESSIBILITY AND DOCUMENTATION
+Step Size reads its saved value on entry and after an edit.
+English, German, Spanish and Polish resources include the new controls.
+Core and radio test sheets have been refreshed; use Save As for results
+and preserve each completed sheet with its matching debug log.
+
+PACKAGES AND VALIDATION
+Complete Windows and Mac/Linux packages include these dated details.
+The Windows ZIP extracts directly to the executable and supporting files.
+Mac/Linux users run sh install-yac.sh from the extracted folder.
+START-HERE and key charts are in the language-specific doc directories.
+Existing installations can use s u after publication; recognised legacy
+asset names and matching checksums are retained for older updaters.
+No Pi image or complete Pi wrapper is included in this release.
+Automated tests and package checks use simulated radios. No physical radio
+has been keyed during release verification. Mac hardware installation and
+physical-radio/speech/braille checks remain for users to verify.

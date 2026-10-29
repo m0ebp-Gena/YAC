@@ -137,6 +137,27 @@ class Installer(unittest.TestCase):
         installed = self.home / '.local/yac/doc' / details.name
         self.assertEqual(installed.read_bytes(), details.read_bytes())
 
+    def test_swr_guide_and_readonly_template_survive_install_and_update(self):
+        documentation = self.source / 'doc'
+        template = documentation / 'English/checklist-radio-template.txt'
+        template.parent.mkdir(parents=True)
+        template.write_text('Save As before completing.')
+        (documentation / 'swr-controls.txt').write_text('Get SWR help.')
+        destination = self.home / '.local/yac/doc'
+        try:
+            self.assertEqual(self.run_setup([True])[0], 0)
+            installed = destination / 'English' / template.name
+            self.assertEqual((destination / 'swr-controls.txt').read_text(), 'Get SWR help.')
+            self.assertFalse(installed.stat().st_mode & 0o200)
+            template.write_text('Updated template; Save As.')
+            self.assertEqual(self.run_setup([True])[0], 0)
+            self.assertEqual(installed.read_text(), 'Updated template; Save As.')
+            self.assertFalse(installed.stat().st_mode & 0o200)
+        finally:
+            installed = destination / 'English' / template.name
+            if installed.exists():
+                installed.chmod(0o644)
+
     def test_recovery_files_are_installed_without_replacing_personal_ini(self):
         destination=self.home/'.local/yac'
         destination.mkdir(parents=True)

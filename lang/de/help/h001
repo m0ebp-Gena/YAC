@@ -8,6 +8,7 @@ b: Band. Punkt weiter; Komma zurück.
 d: Decoder. c CW; r RTTY; a Empfangsaudio einrichten.
 e: Neue Frequenz. MHz eingeben, dann Enter.
 f: Filter. Siehe Filtertasten unten.
+g: SWR messen. Antenne anschließen; erneutes g misst und stellt Einstellungen wieder her. h hilft; q zurück.
 h: Hilfe. h innerhalb einer Funktion liest deren ausführliche Hilfe.
 i: Ton/Code eingeben. i wechselt zwischen CTCSS, DCS normal und DCS invertiert, soweit unterstützt. Wert eingeben und den Ansagen folgen.
 l: Split/Relais einrichten. Erneutes l schaltet aus. h und Enter im Eingabefeld geben Hilfe.
@@ -59,6 +60,8 @@ Profilauswahl: Radionummer eingeben, dann Leertaste zum Auswählen; q bricht ab.
 Pi-Einstellungen erfordern den konfigurierten Pi-Starter.
 
 Wiederherstellung: Funkfehler und Neu Verbinden starten eine Frist von 60 Sekunden. Radio wieder da setzt die Bedienung fort; sonst beendet Abbruch YAC. h liest währenddessen die Hilfe.
+
+Wählen Sie mit s r die Region des Funkgerätestandorts. Vorgabe: Region 1. Erneutes r wechselt 1, 2, 3 und speichert sofort. h hilft; q meldet Fertig und kehrt zu Einstellungen zurück.
 
 ***
 Ende der Hilfe

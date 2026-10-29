@@ -1,72 +1,122 @@
-Answers: Pass / Fail / Not tested / Not applicable 
-Unavailable features: record under Problems. 
+READ-ONLY TEST TEMPLATE
+Save As a new .txt file in the results folder before entering answers.
+Use a name identifying the date, platform and build, for example:
+2026-10-30-win-r8-test.txt
+Keep its debug log beside it, for example 2026-10-30-win-r8-debug.log.
+Never overwrite an earlier test or log.
 
-Date: 
-Platform: 
-Build date/label: 
-Radio: 
-Mode: 
-Screen reader: 
-Braille display: 
-Text table: 
-Dots: 
-Manual changes: 
+YAC core test sheet
 
-Core YAC 
+Run each grouped task in one go. If every state passes, type P beside the
+question. If any state fails, type F and explain which state failed and what
+happened. Use Not tested or Not applicable where appropriate.
 
-Installs cleanly 
-Starts cleanly 
-Finds radio 
-Speech readable w 
-Braille readable w 
-Keyboard input w 
-Braille input w 
-AF Gain read a 
-AF Gain increases audibly . 
-AF Gain decreases audibly , 
-AF Gain exit q 
-Knob tuning tracked: turn dial, w 
-Band read b 
-Band changes . 
-Band restored , 
-Band exit q 
-Mode read m 
-Mode changes . 
-Mode restored , 
-Mode exit q 
-Frequency entry e 
-Frequency confirmed w 
-Power abort s p Enter 
-Power invalid s p text Enter 
-Frequency abort e Enter 
-Frequency invalid e text Enter 
-Step abort s s Enter 
-Step invalid s s 0 Enter 
-Main help h 
-Filter help f h 
-Settings help s h 
-Settings exit s q 
-Filter exit f q 
-Radio loss announced 
-Radio return announced 
-Control after reconnect a . , q 
-Preferences retained after restart 
-Update lookup s u 
-Update notes declined n 
-Update declined n 
-Update installed s u n y 
-Starts after update 
-Control after update a . , q 
-Quit cancelled q n 
-Quit q y 
+Occasionally during testing, compare what is on the braille display with
+what is spoken. Make at least two comparisons if using both speech and
+braille, and identify them at the bottom of this sheet.
 
-Pi image only 
+Date:
+Platform:
+Build date/label:
+Radio:
+Mode:
+Screen reader:
+Braille display:
+Text table:
+Dots:
+Manual changes:
+Debug log record filename:
 
-Speech setting saved s o 
-Speech setting after reboot s o 
-Braille only s b 
-Speech restored s b 
-Wi-Fi entry s w 
-Pi shutdown 
+Startup: installs where applicable, starts cleanly and finds the radio.
+Startup?
 
-Problems: 
+Access (w): speech and braille are readable; keyboard and braille input work.
+Access?
+
+Verify (v): reports current preamp, attenuator, power and supported tuner
+settings. Change a known setting using its control, repeat v and confirm
+the report changes accordingly; then restore the original setting.
+Verify?
+
+AF Gain (a . , q): reads the current %, increases and decreases; the audio
+changes accordingly. q finishes the control.
+AF Gain?
+
+Dial tuning (turn radio dial, w, z): YAC tracks the dial frequency; z rounds
+to the nearest kHz and the new frequency is confirmed.
+Dial tuning?
+
+Band Select (b . , q): reads the current band, changes in both directions
+and leaves the control. Confirm the radio changes, audibly where detectable
+or by readback.
+Band Select?
+
+Mode Select (m . , q): reads the current mode, changes in both directions
+and leaves the control. Confirm the radio changes, audibly where detectable
+or by readback.
+Mode Select?
+
+Freq entry (e, w): accepts a valid MHz value and w confirms it; empty Enter
+aborts without a change; text then Enter is rejected without a change;
+h then Enter reads help and returns to the entry.
+Freq entry?
+
+Step Size (s s): reads the mode's current step in Hz; accepts a valid whole
+Hz value; empty Enter aborts; 0 then Enter is rejected. Rejected or aborted
+entries keep the current value and return to Settings.
+Step Size?
+
+Power (s p; s v): reads the current setting, accepts a suitable valid value
+and reports readback; empty Enter aborts; text then Enter is rejected.
+Cancelled or rejected entries keep the current setting. Keep the debug log
+for review of native commands and approximate readback. This does not test
+measured RF output or require transmitting.
+Power?
+
+Help and menus (h; f h q; s h q): main, Filters and Settings help are
+readable; leaving each submenu announces Top Level.
+Help and menus?
+
+Radio reconnection (a . , q after reconnect): loss and return are announced;
+AF Gain control works after reconnection. Note any delay or silence.
+Radio reconnection?
+
+Update (s u): finds an available update; reading and skipping notes work;
+declining installation keeps YAC running; accepting installs the update;
+YAC starts afterwards, retains settings and AF Gain works (a . , q).
+This group needs a newer published release. If none is available, record
+Not tested and note whether GitHub lookup reported up to date.
+Update?
+
+Quit and restart (q n; q y; start YAC again): n keeps YAC running; y quits;
+the goodbye is heard; restart remembers the name/callsign and language.
+On Mac, YAC exiting does not require Terminal to return to the desktop.
+Quit and restart?
+
+Additional tests for Raspberry Pi testing
+
+Speech settings (s o): a changed setting is kept after quitting and after
+rebooting the Pi.
+Speech settings?
+
+Speech and braille (s b): braille-only works; speech can be restored.
+Speech and braille?
+
+Wi-Fi (s w): entry and connection work.
+Wi-Fi?
+
+Shutdown: Pi shuts down cleanly.
+Shutdown?
+
+Speech and braille comparison
+
+Were at least two comparisons made between the braille display and what
+was spoken? P or F; use Not applicable if either output was unavailable.
+At least two comparisons?
+Comparison 1 - test and result:
+Comparison 2 - test and result:
+
+Save a copy of the relevant debug log beside this sheet, using a new filename
+without overwriting an earlier log. Record its filename above.
+
+Other problems or comments:

@@ -8,6 +8,7 @@ a          AF-Verstärkung
 b          Bandauswahl
 e          Neue Frequenz in MHz; z. B. 7.103 eingeben, dann Eingabetaste
 f          Filter öffnen
+g          SWR messen: g misst; h Hilfe; q zurück. Zuerst Antenne anschließen.
 h          Hilfe
 i          Ton-/Codeeingabe (CTCSS/DCS, soweit unterstützt); h: Hilfe
 m          Betriebsart auswählen
@@ -25,6 +26,7 @@ Komma      Frequenz um die eingestellte Schrittweite verringern
 
 EINSTELLUNGEN — zuerst s drücken
 s dann p   Sendeleistung eingeben, dann Eingabetaste. Leer: Abbrechen.
+s dann r   Region: zuerst lesen; r wechselt 1, 2, 3 und speichert. q zu Einstellungen.
 s dann s   Schrittweite der aktuellen Betriebsart in Hz; Wert, Eingabetaste
 s dann t   Tunereinstellungen durchschalten; t für die nächste Auswahl
 s dann v   VFO A/B oder Main/Sub auswählen, soweit unterstützt
@@ -101,3 +103,5 @@ h Hilfe; r Tempo; v Lautstärke; p Tonhöhe; u Satzzeichen; . erhöhen; , verrin
 s u: YAC aktualisieren. Zeigt Hilfe und Suche. Kein Internet oder Kein Update führt zu Einstellungen zurück. Update gefunden fragt Hinweise Y/N?, dann Update Y/N?. y bestätigt; n überspringt Hinweise oder lehnt Installation ab; q kehrt zurück. Lange Hinweise: Leertaste weiter; q beendet die Hinweise.
 
 s w: WLAN-Einrichtung ist nur im Raspberry-Pi-Abbild verfügbar. Hier die WLAN-Einstellungen des Betriebssystems verwenden. WLAN-Einrichtung: Land, Netzwerkname und Passwort. Strg+C bricht die Eingabe ab; Satzzeichen und Befehlsbuchstaben sind normale Zeichen.
+
+s i: Geräteinfo. Kennung und Verbindungsdaten, ein Wert pro Zeile. i erneut lesen; h Hilfe; q zurück zu Einstellungen. Keine Änderungen.

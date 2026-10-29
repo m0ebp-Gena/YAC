@@ -7,6 +7,13 @@ from tests.test_verify_settings import ROOT
 
 
 class TunerTests(unittest.TestCase):
+    def setUp(self):
+        # These tests exercise the native cycle state machine. Region and TX
+        # frequency protocol checks are covered by test_region_control.
+        guard = patch('modules.region_plan.permits_transmission', return_value=True)
+        guard.start()
+        self.addCleanup(guard.stop)
+
     def test_icom_real_frame_and_rejection(self):
         from tests.test_verify_settings import SettingsSerial, RadioConnection
         serial = SettingsSerial(0x94)

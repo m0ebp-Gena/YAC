@@ -8,6 +8,7 @@ a          Ganancia AF
 b          Selección de banda
 e          Nueva frecuencia en MHz; escribe por ejemplo 7.103, luego Intro
 f          Abrir Filtros
+g          Medir SWR: otra g mide; h ayuda; q vuelve. Conecte antes una antena.
 h          Ayuda
 i          Entrada de tono/código (CTCSS/DCS si es compatible); h: ayuda
 m          Selección de modo
@@ -25,6 +26,7 @@ Coma       Disminuir la frecuencia según el paso configurado
 
 AJUSTES — pulsa s primero
 s luego p  Escribir potencia y pulsar Intro. Vacío cancela.
+s luego r  Región: lee al entrar; r recorre 1, 2, 3 y guarda. q vuelve a Ajustes.
 s luego s  Paso del modo actual en hercios; escribe un valor, luego Intro
 s luego t  Alternar ajustes del sintonizador; repetir t para la siguiente opción
 s luego v  Seleccionar VFO A/B o Main/Sub, si es compatible
@@ -100,3 +102,5 @@ h Ayuda; r Velocidad; v Volumen; p Tono; u Puntuación; . aumenta; , reduce; t P
 s u: Actualizar YAC. Muestra ayuda y Buscando. Sin internet o Sin novedades vuelve a Ajustes. Nueva versión pregunta Notas Y/N? y después Update Y/N?. y acepta; n omite notas o rechaza instalación; q vuelve. En notas largas, Espacio avanza y q sale de las notas.
 
 s w: La configuración Wi-Fi solo está disponible en la imagen Raspberry Pi. Aquí use los ajustes Wi-Fi del sistema. Configuración Wi-Fi: país, nombre de red y contraseña. Ctrl+C cancela; puntuación y letras de comandos son caracteres normales.
+
+s i: Información de radio. Identidad y conexión, un valor por línea. i vuelve a leer; h ayuda; q vuelve a Ajustes. No cambia ajustes.

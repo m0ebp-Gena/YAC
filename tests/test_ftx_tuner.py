@@ -47,6 +47,10 @@ class FTX:
 
 class FTXTunerTests(unittest.TestCase):
     def setUp(self):
+        # Keep hardware-errata tests focused on the native tuner sequence;
+        # actual regional TX-frequency checks have separate transport tests.
+        guard = patch('modules.region_plan.permits_transmission', return_value=True)
+        guard.start(); self.addCleanup(guard.stop)
         self.radio=create_dummy_radio();self.radio.model_id='0840'
         self.ftx=FTX()
         self.patch=patch.object(yac,'_cat_exchange',side_effect=self.ftx.exchange)

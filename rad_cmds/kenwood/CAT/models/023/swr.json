@@ -1,0 +1,96 @@
+{
+  "family": "kenwood",
+  "mode": "5",
+  "watts": 5,
+  "frequency_digits": 11,
+  "raw_maximum": 30,
+  "frequency_margin_hz": 100,
+  "prepare": {
+    "vox": "0",
+    "mic": "000",
+    "data": "0"
+  },
+  "fields": {
+    "vox": {
+      "protocol": "cat",
+      "read": "VX;",
+      "pattern": "VX([01]);",
+      "set": "VX{value};"
+    },
+    "mic": {
+      "protocol": "cat",
+      "read": "MG;",
+      "pattern": "MG(\\d{3});",
+      "set": "MG{value};"
+    },
+    "mode": {
+      "protocol": "cat",
+      "read": "MD;",
+      "pattern": "MD([1-9]);",
+      "set": "MD{value};"
+    },
+    "data": {
+      "protocol": "cat",
+      "read": "DA;",
+      "pattern": "DA([01]);",
+      "set": "DA{value};"
+    }
+  },
+  "sources": [
+    "https://manuals.jvckenwood.com/download/files/B5A-0180-20.pdf",
+    "https://www.kenwood.com/i/products/info/amateur/pdf/ts590_g_pc_command_en_rev3.pdf"
+  ],
+  "notes": "Unmodulated AM at 5 W with microphone gain zero, no ATU or TX Tune cycle. SWR bins follow manufacturer VOICE3 table rather than Hamlib interpolation. Original and AM-specific DATA flags are saved and restored in the matching mode.",
+  "bins": [
+    [
+      1,
+      1,
+      1
+    ],
+    [
+      2,
+      6,
+      1.5
+    ],
+    [
+      7,
+      11,
+      2
+    ],
+    [
+      12,
+      16,
+      3
+    ],
+    [
+      17,
+      24,
+      5
+    ],
+    [
+      25,
+      30,
+      5
+    ]
+  ],
+  "transmit_ranges_hz": [
+    [
+      1800000,
+      30000000
+    ],
+    [
+      50000000,
+      54000000
+    ]
+  ],
+  "over_from": 25,
+  "settle_seconds": 0.5,
+  "mode_snapshot_fields": {
+    "data": [
+      "1",
+      "2",
+      "4",
+      "5"
+    ]
+  }
+}
