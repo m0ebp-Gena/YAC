@@ -1,0 +1,45 @@
+YAC 001 - 30 October 2026 revision 8
+
+VERSION
+Windows executable and welcome screen identify Version 001, without beta.
+Mac/Linux uses the same Version 001. Release metadata uses stable tags.
+
+SWR
+Press g to open, then g to confirm one measurement. The reminder is
+Ensure an antenna is connected! h gives help; q cancels before measuring.
+After the result, YAC returns automatically to top level.
+FT-DX10 measures in CW-U at 5 W for a nominal one second, returns to
+receive, then restores mode, frequency and power. Microphone gain, AM
+settings and VOX are untouched. SWR conversion/reporting is unchanged.
+The DX10 transmit setter is paired with a status query so a silent-setter
+reply timeout does not consume the measurement window.
+
+TUNER
+s t reads the current tuner without changing it. Full stop selects next;
+comma selects previous. h gives help. q keeps the setting and returns
+to Settings. A further q returns to top level, where t starts tuning.
+The DX10 choices are Off, Internal, External and ATAS. Selected tuner and
+On/Off status are reported separately. Leaving ATAS changes selection
+before requesting bypass, avoiding the previous selection block.
+DX10, FT-710 and FTX-1 check tuner status immediately after tuning-start;
+each model retains its own native commands and choices.
+
+CHECKS AND LIMITS
+DX10 hardware logs show selection cycling without a block. On 20 m and
+40 m, tuning lasted about eight seconds, ended with the tuner On and was
+followed by SWR meter estimates of 1.0 and 1.1. Later tests on 40 m and 15 m also ended with the tuner On and SWR
+estimates of 1.1 and 1.0. Brief returns to Off were seen on 10 m and
+17 m; the cause remains unexplained. The first RX check sometimes reported TX2;
+a retry confirmed receive before restoring power and mode.
+FT-710 and FTX-1 timing changes have automated checks only. SWR readings
+are estimates, not physical calibration or measured RF power.
+
+OTHER CW PROFILES
+FT-710, FTX-1 and TS-590SG SWR measurement changes from AM to CW,
+with the DX10 nominal one-second timing and immediate TX state queries.
+Microphone gain, modulation source and VOX are untouched. Existing power
+choices, calibration and result labels remain. TS-590SG restores the
+original applicable DATA flag as well as mode, frequency and power.
+Disabled TS-480 profiles remain disabled, now recording CW as their
+prospective mode. Icom RTTY profiles are unchanged. New CW sequences
+need physical testing on these models; only DX10 has hardware evidence.

@@ -52,7 +52,13 @@ class TunerTests(unittest.TestCase):
         from types import SimpleNamespace
         radio = SimpleNamespace(radio_id_path=path, protocol='CAT', model_id='test')
         spec = verify_settings.catalog(ROOT, radio)['tuner']
-        with patch.object(verify_settings, 'read', side_effect=states), \
+        def immediate_exchange(radio, command):
+            self.assertEqual(command, 'AC002;AC;')
+            verify_settings._write(yac, radio, spec, '002')
+            value = verify_settings.read(yac, radio, spec)
+            return 'AC' + value + ';' if value is not None else ''
+        with patch.object(yac, '_cat_exchange', side_effect=immediate_exchange), \
+             patch.object(verify_settings, 'read', side_effect=states), \
              patch.object(verify_settings, '_tuner_state', return_value=selection), \
              patch.object(verify_settings, '_write', return_value=True) as write, \
              patch('modules.tuner_control.time.sleep'), patch('builtins.print'):
@@ -72,6 +78,30 @@ class TunerTests(unittest.TestCase):
                 result, writes = self.run_cycle('rad_cmds/'+path, [idle, busy, idle], selected)
                 self.assertEqual(result, 'Tune Finished')
                 self.assertEqual(writes, [start])
+
+    def test_yaesu_observes_busy_in_start_reply_before_sleeping(self):
+        from types import SimpleNamespace
+        radio = SimpleNamespace(radio_id_path='rad_cmds/yaesu/CAT/models/0761', protocol='CAT', model_id='0761')
+        events = []
+        def exchange(radio, command):
+            events.append(command)
+            return 'AC002;'
+        with patch.object(verify_settings, 'read', side_effect=['001', '001']), \
+             patch.object(verify_settings, '_tuner_state', return_value='0'), \
+             patch.object(yac, '_cat_exchange', side_effect=exchange), \
+             patch('modules.tuner_control.time.sleep', side_effect=lambda _: events.append('sleep')), \
+             patch('builtins.print'):
+            self.assertEqual(tuner_control.tune(yac, ROOT, radio, 'en'), 'Tune Finished')
+        self.assertEqual(events, ['AC002;AC;', 'sleep'])
+        radio.radio_id_path = 'rad_cmds/yaesu/CAT/models/0800'
+        radio.model_id = '0800'
+        events.clear()
+        with patch.object(verify_settings, 'read', side_effect=['001', '001']), \
+             patch.object(yac, '_cat_exchange', side_effect=exchange), \
+             patch('modules.tuner_control.time.sleep', side_effect=lambda _: events.append('sleep')), \
+             patch('builtins.print'):
+            self.assertEqual(tuner_control.tune(yac, ROOT, radio, 'en'), 'Tune Finished')
+        self.assertEqual(events, ['AC002;AC;', 'sleep'])
 
     def test_off_unknown_and_already_tuning_never_write(self):
         for state in ('000', None, '002'):
@@ -94,3 +124,19 @@ class TunerTests(unittest.TestCase):
                                         ['001', None, None])
         self.assertEqual(writes, ['002', '000'])
         self.assertEqual(result, 'Stop Unverified')
+
+    def test_selector_reads_entry_and_stays_until_q(self):
+        from modules.dummy_radio import create_dummy_radio
+        from contextlib import redirect_stdout
+        import io
+        radio = create_dummy_radio()
+        before = radio.serial.tuner
+        keys = iter(['h','x','t','.','.',',','q','sentinel'])
+        with redirect_stdout(io.StringIO()) as out:
+            tuner_control.control(yac, ROOT, radio, 'en', lambda: next(keys))
+        self.assertEqual(next(keys), 'sentinel')
+        self.assertEqual(before, '000')
+        self.assertEqual(radio.serial.tuner_selection, '0')
+        self.assertEqual(radio.serial.tuner, '001')
+        self.assertIn('Done', out.getvalue())
+        self.assertNotIn('Top Level', out.getvalue())

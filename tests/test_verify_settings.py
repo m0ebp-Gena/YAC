@@ -46,27 +46,43 @@ class SettingsSerial(IcomSerial):
 class VerifySettingsTests(unittest.TestCase):
     def test_demo_reports_live_values_and_cycles_all_settings(self):
         radio = create_dummy_radio()
-        expected = 'ATT off, preamp off, Power 20 W, tuner off'
+        expected = 'ATT off, preamp off, Power 20 W, tuner internal, tuner off'
         self.assertEqual(controls.verify(yac, ROOT, radio, 'en'), expected)
         self.assertEqual(controls.cycle(yac, ROOT, radio, 'en', 'preamp'), 'preamp 1')
         self.assertEqual(controls.cycle(yac, ROOT, radio, 'en', 'preamp'), 'preamp 2')
         self.assertEqual(controls.cycle(yac, ROOT, radio, 'en', 'preamp'), 'preamp off')
         for expected in ('ATT 6 dB', 'ATT 12 dB', 'ATT 18 dB', 'ATT off'):
             self.assertEqual(controls.cycle(yac, ROOT, radio, 'en', 'attenuator'), expected)
-        for expected in ('tuner internal','Tuner Ext 1','Tuner Ext 2','Tuner Ext 3','tuner off'):
+        for expected in ('tuner internal, tuner on','tuner external, tuner on','tuner ATAS, tuner on','tuner internal, tuner off'):
             self.assertEqual(controls.cycle(yac, ROOT, radio, 'en', 'tuner'), expected)
         radio.serial.preamp = '2'  # A change made outside YAC is immediately visible.
         self.assertIn('preamp 2', controls.verify(yac, ROOT, radio, 'en'))
 
     def test_keyboard_routes_top_level_and_settings_keys(self):
         radio = create_dummy_radio()
-        keys = iter(['v','p','p','u','s','t','t','q','v','q', 'y'])
+        keys = iter(['v','p','p','u','s','t','.','.','q','q','v','q', 'y'])
         output = io.StringIO()
         with patch.object(yac, 'connect_radio', return_value=radio), \
              patch.object(yac, '_read_settings', return_value={'call':'test','lang':'en'}), \
              patch.object(lang_sel, 'read_key', side_effect=lambda: next(keys)), redirect_stdout(output):
             self.assertEqual(yac.main([]), 0)
-        self.assertIn('ATT 6 dB, preamp 2, Power 20 W, Tuner Ext 1', output.getvalue())
+        self.assertIn('ATT 6 dB, preamp 2, Power 20 W, tuner external', output.getvalue())
+
+    def test_tuner_q_returns_to_settings_before_power_and_top_level(self):
+        radio = create_dummy_radio()
+        keys = iter(['s','t','q','p','q','q','y'])
+        output = io.StringIO()
+        def power_edit(*args):
+            self.assertIn('Done', output.getvalue())
+            self.assertNotIn('Top Level', output.getvalue())
+        with patch.object(yac, 'connect_radio', return_value=radio), \
+             patch.object(yac, '_read_settings', return_value={'call':'test','lang':'en'}), \
+             patch.object(lang_sel, 'read_key', side_effect=lambda: next(keys)), \
+             patch.object(yac.power_control, 'edit', side_effect=power_edit) as edit, \
+             redirect_stdout(output):
+            self.assertEqual(yac.main([]), 0)
+        edit.assert_called_once()
+        self.assertEqual(radio.serial.tuner, '000')  # Entry and q do not change it.
 
     def test_icom_frames_readback_and_rejected_change(self):
         serial = SettingsSerial(0x94)
@@ -116,14 +132,56 @@ class VerifySettingsTests(unittest.TestCase):
         spec = controls.catalog(ROOT, radio)['power']
         self.assertEqual(controls.describe(yac, ROOT, radio, 'en', 'power', spec), 'power unknown')
 
-    def test_failed_tuner_disable_does_not_change_selection_or_enable(self):
+    def test_dx10_can_leave_atas_even_when_bypass_is_ignored(self):
         radio = create_dummy_radio()
-        with patch.object(yac, '_cat_exchange', side_effect=lambda r,c: 'AC001;' if c=='AC;' else 'EX0301050;') as exchange:
+        radio.serial.tuner_selection = '2'
+        radio.serial.tuner = '001'
+        original_exchange = yac._cat_exchange
+        commands = []
+        def exchange(radio, command):
+            commands.append(command)
+            if command == 'AC000;' and radio.serial.tuner_selection == '2':
+                return ''  # Hardware log: ATAS remains enabled.
+            return original_exchange(radio, command)
+        with patch.object(yac, '_cat_exchange', side_effect=exchange):
+            self.assertEqual(controls.cycle(yac, ROOT, radio, 'en', 'tuner'),
+                             'tuner internal, tuner off')
+            self.assertEqual(controls.cycle(yac, ROOT, radio, 'en', 'tuner'),
+                             'tuner internal, tuner on')
+        self.assertLess(commands.index('EX0301050;'), commands.index('AC000;'))
+        self.assertEqual(radio.serial.tuner_selection, '0')
+        self.assertEqual(radio.serial.tuner, '001')
+
+    def test_dx10_selects_atas_without_enabling_or_starting_rf(self):
+        radio = create_dummy_radio()
+        radio.serial.tuner_selection = '1'
+        radio.serial.tuner = '001'
+        original_exchange = yac._cat_exchange
+        commands = []
+        def exchange(radio, command):
+            commands.append(command)
+            return original_exchange(radio, command)
+        with patch.object(yac, '_cat_exchange', side_effect=exchange):
+            self.assertEqual(controls.cycle(yac, ROOT, radio, 'en', 'tuner'), 'tuner ATAS, tuner on')
+        self.assertIn('EX0301052;', commands)
+        self.assertFalse(any(c.startswith('TX') or c in ('AC000;', 'AC001;', 'AC002;') for c in commands))
+
+    def test_dx10_failed_menu_change_restores_original_selection(self):
+        radio = create_dummy_radio()
+        radio.serial.tuner_selection = '0'
+        radio.serial.tuner = '001'
+        original_exchange = yac._cat_exchange
+        commands = []
+        def exchange(radio, command):
+            commands.append(command)
+            if command == 'EX0301051;':
+                return ''  # Radio ignored the menu change.
+            return original_exchange(radio, command)
+        with patch.object(yac, '_cat_exchange', side_effect=exchange):
             self.assertEqual(controls.cycle(yac, ROOT, radio, 'en', 'tuner'), 'Radio Error')
-        commands = [call.args[1] for call in exchange.call_args_list]
-        self.assertIn('AC000;', commands)
-        self.assertNotIn('EX0301051;', commands)
-        self.assertNotIn('AC001;', commands)
+        self.assertEqual(radio.serial.tuner_selection, '0')
+        self.assertEqual(radio.serial.tuner, '001')
+        self.assertNotIn('AC000;', commands)
 
     def test_ftx_band_specific_preamp_and_power_format(self):
         radio = create_dummy_radio()

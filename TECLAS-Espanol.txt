@@ -8,7 +8,7 @@ a          Ganancia AF
 b          Selección de banda
 e          Nueva frecuencia en MHz; escribe por ejemplo 7.103, luego Intro
 f          Abrir Filtros
-g          Medir SWR: otra g mide; h ayuda; q vuelve. Conecte antes una antena.
+g          SWR: g mide una vez y vuelve al nivel principal; h ayuda; q cancela. Conecte antes una antena.
 h          Ayuda
 i          Entrada de tono/código (CTCSS/DCS si es compatible); h: ayuda
 m          Selección de modo
@@ -28,7 +28,7 @@ AJUSTES — pulsa s primero
 s luego p  Escribir potencia y pulsar Intro. Vacío cancela.
 s luego r  Región: lee al entrar; r recorre 1, 2, 3 y guarda. q vuelve a Ajustes.
 s luego s  Paso del modo actual en hercios; escribe un valor, luego Intro
-s luego t  Alternar ajustes del sintonizador; repetir t para la siguiente opción
+s luego t  Sintonizador: lee estado; punto siguiente, coma anterior; q vuelve a Ajustes.
 s luego v  Seleccionar VFO A/B o Main/Sub, si es compatible
 q          Salir de Ajustes
 

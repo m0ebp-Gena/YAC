@@ -20,6 +20,7 @@ venv/
 
 # Generated packages and build output.
 /builds/
+/Latest/
 /previous-builds/
 /.demo-build/
 /demo-dist/

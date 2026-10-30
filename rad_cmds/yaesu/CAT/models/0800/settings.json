@@ -51,7 +51,8 @@
       "idle": [
         "001"
       ],
-      "stop": "000"
+      "stop": "000",
+      "immediate_query": true
     }
   },
   "af_gain": {

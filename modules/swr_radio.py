@@ -161,6 +161,20 @@ class Radio:
                 raise Unavailable('TX/RX command rejected')
         else:
             command = ('TX1;' if on else 'TX0;') if self.family == 'yaesu' else ('TX0;' if on else 'RX;')
+            if self.family == 'yaesu':
+                # Setters are silent. Send the state query in the same write,
+                # so the serial reply wait is spent on an actual response.
+                answer = self.yac._cat_exchange(self.radio, command + 'TX;').strip()
+                if answer != ('TX1;' if on else 'TX0;'):
+                    raise Unavailable('TX/RX not confirmed')
+                return
+            if self.family == 'kenwood':
+                # Kenwood TX/RX setters are silent too. IF carries the
+                # actual TX state, so obtain it without a setter timeout.
+                state = self.cat(command + 'IF;', r'IF([^;]{35});')[26]
+                if state != ('1' if on else '0'):
+                    raise Unavailable('TX/RX not confirmed')
+                return
             self.yac._cat_exchange(self.radio, command)
         if self.tx_state() is not on:
             raise Unavailable('TX/RX not confirmed')

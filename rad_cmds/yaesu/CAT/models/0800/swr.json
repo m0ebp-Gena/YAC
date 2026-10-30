@@ -1,6 +1,6 @@
 {
   "family": "yaesu",
-  "mode": "5",
+  "mode": "3",
   "watts": 5,
   "frequency_digits": 9,
   "raw_maximum": 255,
@@ -39,30 +39,8 @@
     ]
   ],
   "frequency_margin_hz": 100,
-  "prepare": {
-    "vox": "0",
-    "source": "0",
-    "mic": "000"
-  },
+  "prepare": {},
   "fields": {
-    "vox": {
-      "protocol": "cat",
-      "read": "VX;",
-      "pattern": "VX([01]);",
-      "set": "VX{value};"
-    },
-    "mic": {
-      "protocol": "cat",
-      "read": "MG;",
-      "pattern": "MG(\\d{3});",
-      "set": "MG{value};"
-    },
-    "source": {
-      "protocol": "cat",
-      "read": "EX010214;",
-      "pattern": "EX010214([0-3]);",
-      "set": "EX010214{value};"
-    },
     "swr": {
       "protocol": "cat",
       "read": "RM6;",
@@ -80,7 +58,7 @@
     "https://github.com/Hamlib/Hamlib/blob/master/rigs/yaesu/ft710.h",
     "https://www.yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/FT-710_CAT_OM_ENG_2306-C.pdf"
   ],
-  "notes": "Unmodulated AM carrier. Source forced to MIC, gain muted and restored. Conversion is approximate; calibration is not an antenna judgement.",
+  "notes": "CW-U carrier for one second. Original mode, frequency and native power restored; microphone gain, VOX and modulation settings untouched. SWR conversion is approximate. Physical CW verification on this model is pending.",
   "transmit_ranges_hz": [
     [
       1800000,
@@ -91,5 +69,8 @@
       54000000
     ]
   ],
-  "settle_seconds": 0.2
+  "settle_seconds": 0.2,
+  "transmit_seconds": 1.0,
+  "sample_count": 2,
+  "sample_interval_seconds": 0
 }

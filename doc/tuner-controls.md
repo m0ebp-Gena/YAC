@@ -1,7 +1,10 @@
 Tuner operation
 ===============
 
-Select and enable the desired tuner with Settings, t. At the top level, t
+Settings, t reads the current tuner without changing it. Inside the control,
+full stop selects next, comma selects previous. Each choice applies
+immediately; q keeps it and returns to Settings. Another q leaves Settings.
+Select and enable the desired tuner here before tuning. At the top level, t
 starts one native tune cycle. It can transmit the radio's tuning signal.
 Tuner off is reported without enabling a different device or starting RF.
 No frequency, mode, power or tuner-selection menu is changed by YAC.
@@ -56,3 +59,25 @@ https://github.com/Hamlib/Hamlib/blob/master/rigs/yaesu/ftx1/ftx1_tx.c
 
 The trace proves the old rejection; corrected menu writes and tuning still
 need a physical-radio retest. No live radio was accessed during this fix.
+
+FT-DX10 selection correction (30 October 2026)
+--------------------------------------------
+The operating manual lists INT, EXT and ATAS (page 99). The CAT menu
+table lists INT/EXT1/EXT2/EXT3, which conflicts with the operating manual.
+The DX10 profile uses menu values 0/1/2 as Internal/External/ATAS.
+Settings t cycles Off, Internal, External, ATAS. Leaving ATAS changes
+the menu to Internal before requesting bypass; it does not require
+ATAS to acknowledge Off first. Selecting Internal then enables it.
+Selection does not start RF. A failed readback is still a failure.
+SWR measurement preserves the existing tuner state; tune separately
+with top-level t before using g then g when a matched reading is wanted.
+
+FT-710 and FTX-1 tuning timing (30 October 2026)
+---------------------------------------------
+Like DX10, FT-710 now sends AC002;AC; in one exchange and observes
+the first state before polling. FTX-1 uses the same timing with its own
+AC103;AC; or ATAS AC123;AC; commands. The normal half-second polling
+interval remains after that first reading. A missing reply still requests
+stop; rejection, timeout and unobserved completion remain distinct.
+These two model changes have automated transport checks, but have not
+been verified on physical FT-710 or FTX-1 hardware.

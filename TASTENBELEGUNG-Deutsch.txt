@@ -8,7 +8,7 @@ a          AF-Verstärkung
 b          Bandauswahl
 e          Neue Frequenz in MHz; z. B. 7.103 eingeben, dann Eingabetaste
 f          Filter öffnen
-g          SWR messen: g misst; h Hilfe; q zurück. Zuerst Antenne anschließen.
+g          SWR: g misst einmal und kehrt zur Hauptebene zurück; h Hilfe; q Abbruch. Zuerst Antenne anschließen.
 h          Hilfe
 i          Ton-/Codeeingabe (CTCSS/DCS, soweit unterstützt); h: Hilfe
 m          Betriebsart auswählen
@@ -28,7 +28,7 @@ EINSTELLUNGEN — zuerst s drücken
 s dann p   Sendeleistung eingeben, dann Eingabetaste. Leer: Abbrechen.
 s dann r   Region: zuerst lesen; r wechselt 1, 2, 3 und speichert. q zu Einstellungen.
 s dann s   Schrittweite der aktuellen Betriebsart in Hz; Wert, Eingabetaste
-s dann t   Tunereinstellungen durchschalten; t für die nächste Auswahl
+s dann t   Tuner: liest aktuellen Zustand; Punkt weiter, Komma zurück; q zu Einstellungen.
 s dann v   VFO A/B oder Main/Sub auswählen, soweit unterstützt
 q          Einstellungen verlassen
 

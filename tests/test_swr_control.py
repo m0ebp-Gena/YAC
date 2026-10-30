@@ -38,6 +38,8 @@ class CarrierCat(Cat):
         self.apply_but_reject_start = False
 
     def exchange(self, radio, command):
+        if command in ('TX1;TX;', 'TX0;TX;'):
+            return self.exchange(radio, command[:4]) + self.exchange(radio, 'TX;')
         if command == 'TX1;':
             self.tx_seen = True
             self.state['TX'] = '1'
@@ -96,12 +98,14 @@ class CarrierKenwood(TS480):
         self.radio = RadioConnection(None, 'test', 38400, 'CAT', '023', 'TS-590SG')
         self.values.update({'MG': '057', 'VX': '1', 'DA': '1'})
         self.mode = '2'
-        self.powers = {'2': '020', '5': '015'}
-        self.mics = {'2': '057', '5': '025'}
-        self.data_modes = {'2': '1', '5': '1'}
+        self.powers = {'2': '020', '3': '015', '5': '025'}
+        self.mics = {'2': '057', '3': '033', '5': '025'}
+        self.data_modes = {'2': '1', '3': '0', '5': '1'}
         self.tx = False
 
     def exchange(self, radio, command):
+        if command in ('TX0;IF;', 'RX;IF;'):
+            return self.exchange(radio, command[:-3]) + self.exchange(radio, 'IF;')
         if command in ('TX0;', 'RX;'):
             self.commands.append(command)
             self.tx = command == 'TX0;'
@@ -149,11 +153,35 @@ class SWRTests(unittest.TestCase):
                 self.assertIsNone(rig.radio._swr_pending)
                 commands = rig.commands
                 start, stop = commands.index('TX1;'), commands.index('TX0;')
-                self.assertLess(commands.index('MD05;'), start)
+                self.assertLess(commands.index('MD03;'), start)
                 self.assertLess(start, stop)
                 self.assertGreater(commands.index('MD0' + mode + ';'), stop)
-                self.assertGreater(commands.index('VX1;'), stop)
+                self.assertFalse(any(c.startswith(('MG', 'VX', 'EX010213', 'EX010214')) for c in commands))
+                if model != '0840':
+                    self.assertLess(commands.index('PC005;'), start)
                 self.assertFalse(any(c.startswith('AC') for c in commands))
+
+    def test_cw_models_sample_with_realistic_delays_within_one_second(self):
+        for rig in (CarrierCat(), CarrierCat('0800'), CarrierCat('0840'), CarrierKenwood()):
+            with self.subTest(model=rig.radio.model_id):
+                yaesu = isinstance(rig, CarrierCat)
+                before = dict(rig.state if yaesu else rig.values)
+                clock = Clock()
+                edges = []
+                def exchange(radio, command):
+                    if command.startswith(('TX1;', 'TX0;', 'RX;')):
+                        edges.append((command, clock.time()))
+                    answer = rig.exchange(radio, command)
+                    clock.sleep(0.05 if answer else 0.85)
+                    return answer
+                with patch.object(yac, '_cat_exchange', side_effect=exchange), redirect_stdout(io.StringIO()):
+                    result = swr.measure(yac, ROOT, rig.radio, 'en', clock=clock.time, sleep=clock.sleep)
+                self.assertEqual(result, 'SWR approx 1.5' if yaesu else 'SWR approx 2.0')
+                expected = ['TX1;TX;', 'TX0;TX;'] if yaesu else ['TX0;IF;', 'RX;IF;']
+                self.assertEqual([edge[0] for edge in edges], expected)
+                self.assertAlmostEqual(edges[1][1] - edges[0][1], 1.0)
+                self.assertGreaterEqual(rig.commands.count('RM6;' if yaesu else 'RM;'), 2)
+                self.assertEqual(rig.state if yaesu else rig.values, before)
 
     def test_ftx_sub_preserves_main_and_selects_low_power_head(self):
         rig = CarrierCat('0840', side=1)
@@ -211,8 +239,13 @@ class SWRTests(unittest.TestCase):
         before = dict(rig.values)
         self.assertEqual(self.measure_cat(rig), 'SWR approx 2.0')
         self.assertEqual(rig.values, before)
-        self.assertEqual(rig.powers['5'], '015')
+        self.assertEqual(rig.powers['3'], '015')
+        self.assertEqual(rig.powers['5'], '025')
         self.assertEqual(rig.mics['5'], '025')
+        self.assertEqual(rig.mics['3'], '033')
+        self.assertIn('MD3;', rig.commands)
+        self.assertNotIn('MD5;', rig.commands)
+        self.assertFalse(any(c.startswith(('MG', 'VX')) for c in rig.commands))
         self.assertEqual(rig.data_modes['5'], '1')
         self.assertEqual(rig.values['DA'], '1')
         self.assertFalse(rig.tx)
@@ -338,8 +371,24 @@ class SWRTests(unittest.TestCase):
              patch.object(swr, 'measure') as measure, redirect_stdout(io.StringIO()) as out:
             self.assertEqual(yac.main([]), 0)
         self.assertIn('Get SWR', out.getvalue())
-        self.assertIn('Connect an antenna', out.getvalue())
+        self.assertIn('Ensure an antenna is connected!', out.getvalue())
         measure.assert_not_called()
+
+    def test_measurement_finishes_and_next_key_is_top_level_settings(self):
+        from modules import lang_sel
+        from modules.dummy_radio import create_dummy_radio
+        radio = create_dummy_radio()
+        keys = iter(['g', 'g', 's', 'q', 'q', 'y'])
+        with patch.object(yac, 'connect_radio', return_value=radio), \
+             patch.object(yac, '_read_settings', return_value={'call': 'Test', 'lang': 'en'}), \
+             patch.object(lang_sel, 'read_key', side_effect=lambda: next(keys)), \
+             patch.object(swr, 'measure', return_value='SWR approx 1.1') as measure, \
+             redirect_stdout(io.StringIO()) as out:
+            self.assertEqual(yac.main([]), 0)
+        measure.assert_called_once()
+        self.assertIn('SWR approx 1.1', out.getvalue())
+        self.assertIn('Top Level', out.getvalue())
+        self.assertIn('Settings', out.getvalue())
 
     def test_entry_help_and_q_do_not_transmit(self):
         rig = CarrierCat()
@@ -347,7 +396,7 @@ class SWRTests(unittest.TestCase):
         with patch.object(yac, '_cat_exchange', side_effect=rig.exchange), redirect_stdout(io.StringIO()) as out:
             swr.control(yac, ROOT, rig.radio, 'en', lambda: next(keys))
         self.assertEqual(rig.commands, [])
-        self.assertIn('Connect an antenna', out.getvalue())
+        self.assertIn('Ensure an antenna is connected!', out.getvalue())
 
     def test_conversion_endpoints_and_manufacturer_590_bins(self):
         import json

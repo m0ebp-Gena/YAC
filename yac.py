@@ -22,7 +22,7 @@ from modules import speech_processor, split_control, antenna_control, access_con
 
 
 DEBUG_LOG = logging.getLogger("yac")
-VERSION = "001 beta"
+VERSION = "001"
 _yaesu_vfo_side = 0  # FTX-1 CAT: 0=MAIN, 1=SUB. Selection lasts this session.
 UP_KEY = "."
 DOWN_KEY = ","
@@ -2109,8 +2109,9 @@ def _main(argv: list[str] | None = None) -> int:
                         continue
                     if settings_key == "t":
                         chat_int.show_request(call, settings_key)
-                        chat_int.show_response(verify_settings.cycle(
-                            sys.modules[__name__], root, radio, language, "tuner"))
+                        from modules import tuner_control
+                        tuner_control.control(sys.modules[__name__], root, radio, language,
+                                              read_radio_key, watch)
                         continue
                     if settings_key == "v":
                         global _yaesu_vfo_side

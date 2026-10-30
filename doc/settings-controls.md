@@ -46,7 +46,7 @@ Tuner distinctions
 ------------------
 
 Tuner status describes the radio's configuration. An independent RF-sensing
-external tuner cannot be detected. FT-DX10 exposes internal and external 1/2/3
+external tuner cannot be detected. FT-DX10 exposes internal, external and ATAS
 selection; FTX-1 exposes internal, internal fast, external and ATAS. Model
 variant, connected hardware, frequency and firmware may prevent a particular
 selection; rejected or unconfirmed changes are reported as failed.

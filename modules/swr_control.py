@@ -3,7 +3,7 @@ import logging
 import statistics
 import time
 
-from modules import chat_int, help_int, region_plan, split_control, swr_radio
+from modules import chat_int, help_int, hints, region_plan, split_control, swr_radio
 
 LOG = logging.getLogger('yac')
 ERRORS = (OSError, RuntimeError, ValueError, KeyError, TypeError,
@@ -118,7 +118,7 @@ def measure(yac, root, radio, language, *, clock=time.monotonic, sleep=time.slee
     try:
         # Journal extra originals before changing mode. Mode-specific slots
         # are captured again by change() after selecting the carrier mode.
-        for field in b.spec.get('prepare', {}):
+        for field in dict.fromkeys((*b.spec.get('prepare', {}), *b.spec.get('mode_snapshot_fields', {}))):
             allowed_modes = b.spec.get('mode_snapshot_fields', {}).get(field)
             if allowed_modes is None or original['mode'] in allowed_modes:
                 transaction.original[field] = b.read(field)
@@ -153,8 +153,8 @@ def measure(yac, root, radio, language, *, clock=time.monotonic, sleep=time.slee
         samples = []
         # Nominal one second, never extended to chase an absent reading.
         # A serial timeout can delay a stop; the finally path always requests RX.
-        while clock() - start < 1.0 and len(samples) < 3:
-            sleep(min(0.15, max(0, 1.0 - (clock() - start))))
+        while clock() - start < 1.0 and len(samples) < b.spec.get('sample_count', 3):
+            sleep(min(b.spec.get('sample_interval_seconds', 0.15), max(0, 1.0 - (clock() - start))))
             if clock() - start >= 1.0:
                 break
             if int(b.read('frequency')) != hz:
@@ -165,6 +165,8 @@ def measure(yac, root, radio, language, *, clock=time.monotonic, sleep=time.slee
             over = sum(item[1] for item in samples) >= 2
             if max(item[0] for item in samples) - min(item[0] for item in samples) <= max(0.2, value * 0.1):
                 result = label('l376' if over else 'l375', value=f'{value:.1f}')
+        if samples and b.spec.get('transmit_seconds'):
+            sleep(max(0, b.spec['transmit_seconds'] - (clock() - start)))
         LOG.debug('SWR model=%s frequency=%s native_power=%s samples=%s',
                   radio.model_id, hz, target, samples)
     except KeyboardInterrupt:
@@ -183,6 +185,7 @@ def measure(yac, root, radio, language, *, clock=time.monotonic, sleep=time.slee
 def control(yac, root, radio, language, read_key, watch=None):
     say = lambda token: chat_int.show_response(yac._read_label(root, language, token, ''))
     say('l370')
+    chat_int.show_response(hints.get_hint(root, language, 'm001'))
     say('l371')
     while True:
         try:
@@ -197,6 +200,8 @@ def control(yac, root, radio, language, read_key, watch=None):
             return
         if key == 'g':
             chat_int.show_response(measure(yac, root, radio, language))
+            chat_int.show_back(root, language)
+            return
         elif key == 'h':
             chat_int.show_response(help_int.get_help(root, language, 'h035'))
         elif key == 'q':

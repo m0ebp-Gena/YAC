@@ -101,7 +101,7 @@ def describe(yac, root, radio, language):
         return label(yac, root, language, 'l128')
 
 
-def cycle(yac, root, radio, language):
+def cycle(yac, root, radio, language, *, direction=1):
     try:
         ac = status(yac, radio)
         if busy(ac):
@@ -113,7 +113,7 @@ def cycle(yac, root, radio, language):
         if not 0.03 <= float(frequency) <= 54:
             return label(yac, root, language, 'l129')
         choices = ('0', '1', '2', '3') if before.power == '2' else ('2', '3')
-        target = choices[(choices.index(before.selected) + 1) % len(choices)]
+        target = choices[(choices.index(before.selected) + direction) % len(choices)]
         saved_type = menu(yac, radio, before.setting) if before.setting else None
         changed = []
         try:
@@ -162,8 +162,14 @@ def tune(yac, root, radio, language, *, polls=120, interval=0.5):
         # Hardware erratum: P1=1 also controls the Optima internal tuner.
         start = 'AC123;' if before.selected == '3' else 'AC103;'
         stop = 'AC120;' if before.selected == '3' else 'AC000;'
-        if '?;' in send(yac, radio, start):
+        # Like DX10, pair the silent start setter with a real status query.
+        # Preserve the model's AC103/AC123 commands and read the first state
+        # before sleeping, so a brief cycle can still be observed.
+        answer = send(yac, radio, start + 'AC;')
+        if '?;' in answer:
             return text('l267')
+        match = re.fullmatch(r'AC([01][02][0-3]);', answer.strip())
+        first_state = match[1] if match else None
     except (Unknown, ValueError):
         return text('l128')
     print(text('l265'), flush=True)
@@ -172,11 +178,16 @@ def tune(yac, root, radio, language, *, polls=120, interval=0.5):
     for count in range(polls):
         if time.monotonic() >= deadline:
             break
-        time.sleep(interval)
-        try:
-            ac = status(yac, radio)
-        except Unknown:
-            break
+        if count == 0:
+            ac = first_state
+            if ac is None:
+                break  # The start may have taken effect; request stop below.
+        else:
+            time.sleep(interval)
+            try:
+                ac = status(yac, radio)
+            except Unknown:
+                break
         if busy(ac):
             seen_busy = True
         elif seen_busy:

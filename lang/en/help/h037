@@ -1,0 +1,7 @@
+Tuner selection help
+
+Entry reads the current tuner without changing it. full stop selects the next choice; comma selects the previous choice. Each selection applies immediately and is checked. Selection does not start tuning. h reads help. q finishes with Done and returns to Settings, keeping changes. Press q again to return to top level, where t starts tuning.
+
+***
+End of help
+***

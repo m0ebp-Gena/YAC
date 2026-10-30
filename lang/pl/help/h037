@@ -1,0 +1,7 @@
+Pomoc wyboru tunera
+
+Wejście odczytuje bieżący tuner bez zmiany. kropka wybiera następną opcję; przecinek poprzednią. Każdy wybór jest stosowany od razu i sprawdzany. Wybór nie rozpoczyna strojenia. h czyta pomoc. q ogłasza Gotowe i wraca do Ustawień, zachowując zmiany. Kolejne q wraca do poziomu głównego, gdzie t rozpoczyna strojenie.
+
+***
+Koniec pomocy
+***

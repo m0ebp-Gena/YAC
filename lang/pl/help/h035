@@ -1,6 +1,6 @@
 Pomoc: Pomiar SWR
 
-Podłącz antenę odpowiednią dla tej częstotliwości i sprawdź, czy częstotliwość jest wolna. g krótko nadaje, aby zmierzyć SWR. YAC kończy nadawanie i przywraca ustawienia przed podaniem wyniku. Nieprawidłowe oznacza nieodpowiednią częstotliwość lub stan radia. g powtarza; h czyta pomoc; q ogłasza Gotowe i wraca do poziomu głównego.
+Podłącz antenę odpowiednią dla tej częstotliwości i sprawdź, czy częstotliwość jest wolna. g krótko nadaje, aby zmierzyć SWR. YAC kończy nadawanie i przywraca ustawienia przed podaniem wyniku. Nieprawidłowe oznacza nieodpowiednią częstotliwość lub stan radia. Po jednym pomiarze i przywróceniu ustawień YAC podaje wynik i automatycznie wraca do poziomu głównego. Aby zmierzyć ponownie, otwórz g jeszcze raz. h czyta pomoc; q anuluje i wraca bez pomiaru.
 
 ***
 Koniec pomocy

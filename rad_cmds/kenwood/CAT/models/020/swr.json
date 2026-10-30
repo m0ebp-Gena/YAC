@@ -1,27 +1,12 @@
 {
   "family": "kenwood",
-  "mode": "5",
+  "mode": "3",
   "watts": 5,
   "frequency_digits": 11,
   "raw_maximum": 20,
   "frequency_margin_hz": 100,
-  "prepare": {
-    "vox": "0",
-    "mic": "000"
-  },
+  "prepare": {},
   "fields": {
-    "vox": {
-      "protocol": "cat",
-      "read": "VX;",
-      "pattern": "VX([01]);",
-      "set": "VX{value};"
-    },
-    "mic": {
-      "protocol": "cat",
-      "read": "MG;",
-      "pattern": "MG(\\d{3});",
-      "set": "MG{value};"
-    },
     "mode": {
       "protocol": "cat",
       "read": "MD;",

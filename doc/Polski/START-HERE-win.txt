@@ -6,11 +6,11 @@ Podłącz i włącz radio. Zamknij inne programy używające jego portu szeregow
 
 WINDOWS 64-BIT
 
-1. Najpierw rozpakuj cały ZIP. Otwórz rozpakowany folder i uruchom YAC-001-beta.exe. Instalacja ani Python nie są potrzebne.
+1. Najpierw rozpakuj cały ZIP. Otwórz rozpakowany folder i uruchom YAC-001.exe. Instalacja ani Python nie są potrzebne.
 2. Maksymalizacja terminala: naciśnij Alt+Spacja, zwolnij, potem x.
 
 OPCJONALNY SKRÓT NA PULPICIE
-Najpierw wybierz ostateczne miejsce folderu. Zaznacz YAC-001-beta.exe i naciśnij Shift+F10. Strzałkami wybierz Wyślij do, otwórz podmenu i wybierz Pulpit (utwórz skrót). W Windows 11 w razie potrzeby najpierw wybierz Pokaż więcej opcji. Następnie możesz uruchamiać YAC skrótem na Pulpicie. Późniejsze przeniesienie folderu programu może zepsuć skrót.
+Najpierw wybierz ostateczne miejsce folderu. Zaznacz YAC-001.exe i naciśnij Shift+F10. Strzałkami wybierz Wyślij do, otwórz podmenu i wybierz Pulpit (utwórz skrót). W Windows 11 w razie potrzeby najpierw wybierz Pokaż więcej opcji. Następnie możesz uruchamiać YAC skrótem na Pulpicie. Późniejsze przeniesienie folderu programu może zepsuć skrót.
 
 Odpowiedz na pytania o język i imię/znak wywoławczy. h otwiera pomoc; q, a potem y kończy YAC. Skróty są w SKROTY-KLAWISZOWE-Polski.txt w tym folderze dokumentacji.
 

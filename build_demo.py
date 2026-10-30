@@ -58,7 +58,7 @@ if release_details.is_file():
     shutil.copyfile(release_details, destination / 'doc' / release_details.name)
 copy_documents(root, destination, 'win')
 (destination / "yac.ini").write_text("[yac]\nplatform=\nlang=\ncall=\ndebug=true\n", encoding="utf-8")
-(destination / 'release.json').write_text(json.dumps({'tag': args.tag or 'v001-beta-' + args.date + release_suffix,
+(destination / 'release.json').write_text(json.dumps({'tag': args.tag or 'v001-' + args.date + release_suffix,
                                                     'published_at': args.date + 'T00:00:00Z'}))
 guides = {
     "yac.ini.example": "yac.ini.example",

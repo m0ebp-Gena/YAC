@@ -118,6 +118,26 @@ def _select_tuner(yac, radio, spec, current, target):
         if write_checked(spec['selection'], selection):
             write_checked(spec, raw)
 
+    if spec.get('selection_first'):
+        # DX10 ATAS can keep reporting enabled after a bypass request.
+        # Change the tuner-routing menu first; do not require the old
+        # device to confirm Off before allowing the operator to leave it.
+        selected = (spec['off_selection'] if target == 'off' and current == 'atas'
+                    else selection if target == 'off'
+                    else spec['atas_selection'] if target == 'atas' else target)
+        if selected != selection and not write_checked(spec['selection'], selected):
+            restore()
+            return False
+        if target != 'atas':
+            enabled = spec['off'] if target == 'off' else spec['enable'][selected]
+            if not write_checked(spec, enabled):
+                restore()
+                return False
+        if _tuner_state(yac, radio, spec) != target:
+            restore()
+            return False
+        return True
+
     off = spec['off'].replace('{selection}', raw[:2])
     if raw != off and not write_checked(spec, off):
         restore()
@@ -144,6 +164,14 @@ def describe(yac, root, radio, language, name, spec):
     if name == 'tuner' and spec.get('kind') == 'ftx1':
         from modules import ftx_tuner
         return ftx_tuner.describe(yac, root, radio, language)
+    if name == 'tuner' and spec.get('show_selection_and_state'):
+        raw = read(yac, radio, spec)
+        selected = read(yac, radio, spec['selection'])
+        selection_label = spec['selection']['states'].get(selected)
+        state_label = spec['states'].get(raw)
+        if selection_label and state_label:
+            return _label(yac, root, language, selection_label) + ', ' + _label(yac, root, language, state_label)
+        return _label(yac, root, language, 'l128')
     selected_band = band(yac, radio) if spec.get('band_states') else 0
     value = (_tuner_state(yac, radio, spec) if name == 'tuner' else
              read(yac, radio, spec, selected_band) if selected_band is not None else None)
@@ -168,13 +196,13 @@ def verify(yac, root, radio, language):
                      for name in ('attenuator', 'preamp', 'power', 'tuner') if name in features) or _label(yac, root, language, 'l129')
 
 
-def cycle(yac, root, radio, language, name):
+def cycle(yac, root, radio, language, name, *, direction=1):
     spec = catalog(root, radio, yac).get(name)
     if spec is None:
         return _label(yac, root, language, 'l129')
     if name == 'tuner' and spec.get('kind') == 'ftx1':
         from modules import ftx_tuner
-        return ftx_tuner.cycle(yac, root, radio, language)
+        return ftx_tuner.cycle(yac, root, radio, language, direction=direction)
     selected_band = band(yac, radio) if spec.get('band_states') else 0
     if selected_band is None:
         return describe(yac, root, radio, language, name, spec)
@@ -183,7 +211,7 @@ def cycle(yac, root, radio, language, name):
     if current not in choices:
         # Unknown or actively tuning: do not invent a starting state.
         return describe(yac, root, radio, language, name, spec)
-    target = choices[(choices.index(current) + 1) % len(choices)]
+    target = choices[(choices.index(current) + direction) % len(choices)]
     if name == 'tuner' and spec.get('selection'):
         if not _select_tuner(yac, radio, spec, current, target):
             return yac._radio_error(root, radio, language)

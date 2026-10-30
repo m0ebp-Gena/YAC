@@ -6,11 +6,11 @@ Connect and power on the radio. Close other programs using its serial port. A ma
 
 WINDOWS 64-BIT
 
-1. Extract the whole ZIP first. Open the extracted folder and run YAC-001-beta.exe. No installation or Python is required.
+1. Extract the whole ZIP first. Open the extracted folder and run YAC-001.exe. No installation or Python is required.
 2. To maximise the terminal, press Alt+Space, release, then x.
 
 OPTIONAL DESKTOP SHORTCUT
-Choose the folder's final location first. Select YAC-001-beta.exe and press Shift+F10. Use the arrow keys to find Send to; open its submenu and choose Desktop (create shortcut). On Windows 11, choose Show more options first if necessary. You can then start YAC from that desktop shortcut. Moving the program folder afterwards can break the shortcut.
+Choose the folder's final location first. Select YAC-001.exe and press Shift+F10. Use the arrow keys to find Send to; open its submenu and choose Desktop (create shortcut). On Windows 11, choose Show more options first if necessary. You can then start YAC from that desktop shortcut. Moving the program folder afterwards can break the shortcut.
 
 Follow the language and name/callsign prompts. Press h for help; q then y quits. Commands are in KEY-BINDINGS-English.txt in this documentation folder.
 

@@ -10,7 +10,7 @@ m opens guided microphone adjustment. Follow the preparation prompts; h inside e
 
 p announces current power and the entry range. Type whole watts and press Enter; blank Enter cancels. A confirmed change announces the entered value followed by Set. This is a setting, not measured transmitted power. h then Enter gives power help. Blank Enter or q then Enter cancels and returns to Settings.
 
-s opens tuning step entry for the current mode. t cycles tuner choices and announces the confirmed setting; it does not start tuning. Leave Settings and press t to start a tuning cycle. v selects the supported VFO or receiver and reports the selection.
+s opens tuning step entry for the current mode. t opens tuner selection and reads the current setting without changing it. Inside, full stop selects next, comma previous; q keeps changes and returns to Settings. Selection does not start tuning. Leave Settings and press t to start a tuning cycle. v selects the supported VFO or receiver and reports the selection.
 
 e opens Speech Processor and reads its settings. e inside toggles it; full stop increases and comma decreases the selected level. n cancels and restores entry processor settings; q keeps changes. h inside explains the available controls and feedback.
 
@@ -33,6 +33,8 @@ Tuning stop could not be confirmed
 
 
 s i: Radio info. Reads identity and connection details, one value per line. i reads again; h help; q returns to Settings. No settings change.
+
+s t: Entry reads the current tuner without changing it. full stop selects the next choice; comma selects the previous choice. Each selection applies immediately and is checked. Selection does not start tuning. h reads help. q finishes with Done and returns to Settings, keeping changes. Press q again to return to top level, where t starts tuning.
 
 ***
 End of help

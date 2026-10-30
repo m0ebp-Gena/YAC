@@ -2,7 +2,7 @@
 
 YAC is a keyboard-operated amateur radio controller designed with speech and
 braille access in mind. It runs in a terminal and uses your screen reader for
-speech and braille output. The current version is **001 beta**.
+speech and braille output. The current version is **001**.
 
 Controls include reading signal strength, frequency and mode; tuning; band and
 mode selection; AF Gain, RF Gain/squelch; preamp and attenuator selection;

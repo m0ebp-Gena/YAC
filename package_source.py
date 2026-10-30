@@ -44,7 +44,7 @@ staging = root / 'builds/.work/packages'
 staging.mkdir(parents=True, exist_ok=True)
 archive = staging / (folder + '.zip')
 with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as package:
-    package.writestr(folder + '/release.json', json.dumps({'tag': args.tag or 'v001-beta-' + args.date + release_suffix, 'published_at': args.date + 'T00:00:00Z'}))
+    package.writestr(folder + '/release.json', json.dumps({'tag': args.tag or 'v001-' + args.date + release_suffix, 'published_at': args.date + 'T00:00:00Z'}))
     for path in sorted(files):
         entry = zipfile.ZipInfo((Path(folder) / path.relative_to(root)).as_posix())
         mode = 0o100755 if path.name == "install-yac.sh" else 0o100444 if path.name.endswith('-template.txt') else 0o100644

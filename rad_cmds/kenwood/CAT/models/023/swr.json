@@ -1,28 +1,12 @@
 {
   "family": "kenwood",
-  "mode": "5",
+  "mode": "3",
   "watts": 5,
   "frequency_digits": 11,
   "raw_maximum": 30,
   "frequency_margin_hz": 100,
-  "prepare": {
-    "vox": "0",
-    "mic": "000",
-    "data": "0"
-  },
+  "prepare": {},
   "fields": {
-    "vox": {
-      "protocol": "cat",
-      "read": "VX;",
-      "pattern": "VX([01]);",
-      "set": "VX{value};"
-    },
-    "mic": {
-      "protocol": "cat",
-      "read": "MG;",
-      "pattern": "MG(\\d{3});",
-      "set": "MG{value};"
-    },
     "mode": {
       "protocol": "cat",
       "read": "MD;",
@@ -40,7 +24,7 @@
     "https://manuals.jvckenwood.com/download/files/B5A-0180-20.pdf",
     "https://www.kenwood.com/i/products/info/amateur/pdf/ts590_g_pc_command_en_rev3.pdf"
   ],
-  "notes": "Unmodulated AM at 5 W with microphone gain zero, no ATU or TX Tune cycle. SWR bins follow manufacturer VOICE3 table rather than Hamlib interpolation. Original and AM-specific DATA flags are saved and restored in the matching mode.",
+  "notes": "CW at 5 W for one second. Microphone gain and VOX untouched. Original mode, frequency, native power and applicable original DATA flag restored. Manufacturer VOICE3 SWR bins unchanged. Physical CW carrier verification is pending.",
   "bins": [
     [
       1,
@@ -84,7 +68,7 @@
     ]
   ],
   "over_from": 25,
-  "settle_seconds": 0.5,
+  "settle_seconds": 0.2,
   "mode_snapshot_fields": {
     "data": [
       "1",
@@ -92,5 +76,8 @@
       "4",
       "5"
     ]
-  }
+  },
+  "transmit_seconds": 1.0,
+  "sample_count": 2,
+  "sample_interval_seconds": 0
 }

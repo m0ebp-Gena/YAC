@@ -1,4 +1,4 @@
-"""Download published YAC beta releases without Git (GPL-3.0-only)."""
+"""Download published YAC releases without Git (GPL-3.0-only)."""
 import hashlib
 import json
 import logging

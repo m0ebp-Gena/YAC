@@ -1,6 +1,6 @@
 {
   "family": "yaesu",
-  "mode": "5",
+  "mode": "3",
   "watts": 5,
   "frequency_digits": 9,
   "raw_maximum": 255,
@@ -27,30 +27,8 @@
     ]
   ],
   "frequency_margin_hz": 100,
-  "prepare": {
-    "vox": "0",
-    "source": "0",
-    "mic": "000"
-  },
+  "prepare": {},
   "fields": {
-    "vox": {
-      "protocol": "cat",
-      "read": "VX;",
-      "pattern": "VX([01]);",
-      "set": "VX{value};"
-    },
-    "mic": {
-      "protocol": "cat",
-      "read": "MG;",
-      "pattern": "MG(\\d{3});",
-      "set": "MG{value};"
-    },
-    "source": {
-      "protocol": "cat",
-      "read": "EX010213;",
-      "pattern": "EX010213([0-3]);",
-      "set": "EX010213{value};"
-    },
     "swr": {
       "protocol": "cat",
       "read": "RM6;",
@@ -68,7 +46,7 @@
     "https://github.com/Hamlib/Hamlib/blob/master/rigs/yaesu/ftx1/ftx1.h",
     "https://connect.yaesu.com/indivisual/wp-content/uploads/2025/11/FTX-1_CAT_OM_JPN_2512-D.pdf"
   ],
-  "notes": "Unmodulated AM carrier. Source forced to MIC, gain muted and restored. Conversion is approximate; calibration is not an antenna judgement. FTX-1 Hamlib calibration is provisional and explicitly requests hardware verification.",
+  "notes": "CW-U carrier for one second. Original mode, frequency and native power restored; microphone gain, VOX and modulation settings untouched. SWR conversion is approximate. Physical CW verification on this model is pending. Field head uses 1 W and SPA-1 uses 5 W; original power selector is preserved. FTX-1 SWR calibration remains provisional.",
   "selector_power": {
     "10": 1,
     "100": 5
@@ -91,5 +69,8 @@
       450000000
     ]
   ],
-  "settle_seconds": 0.2
+  "settle_seconds": 0.2,
+  "transmit_seconds": 1.0,
+  "sample_count": 2,
+  "sample_interval_seconds": 0
 }

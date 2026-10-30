@@ -81,5 +81,5 @@ MIC GAIN - MODEL DETAILS
 Use the marked SSB ALC zone/limit in the radio manual. YAC prepares the ALC meter automatically when necessary. Gain steps are 1 on 0-100. AM/FM adjustment is not enabled.
 
 GET SWR - DEVELOPMENT
-g then g uses an unmodulated 5 W AM carrier. The manufacturer VOICE3 SWR-dot announcement bins are used; this differs from Hamlib interpolation. Mode-specific power/mic slots, VOX, original mode, frequency and native power are restored.
+g then g uses CW at 5 W for one second. Physical CW testing is pending. The manufacturer VOICE3 SWR-dot announcement bins are used; this differs from Hamlib interpolation. Mode-specific power slots, original mode, frequency, native power and applicable DATA flag are restored. Microphone gain and VOX are untouched.
 See doc/swr-controls.txt for the sequence, recovery and limitations.

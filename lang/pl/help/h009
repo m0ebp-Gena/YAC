@@ -10,7 +10,7 @@ m otwiera prowadzone ustawianie mikrofonu. Wykonaj przygotowania; h wewnątrz wy
 
 p podaje aktualną moc i zakres wpisywania. Wpisz całe waty i Enter; pusty Enter anuluje. Potwierdzenie podaje wpisaną wartość i Ustawiono. To ustawienie, nie zmierzona moc nadawania. h i Enter czytają pomoc mocy. Pusty Enter lub q i Enter anulują i wracają do Ustawień.
 
-s otwiera krok dla bieżącej emisji. t przełącza wybór tunera i potwierdza ustawienie; nie rozpoczyna strojenia. Wyjdź z Ustawień i naciśnij t, aby stroić. v wybiera obsługiwany VFO lub odbiornik i podaje wybór.
+s otwiera krok dla bieżącej emisji. t otwiera wybór tunera i odczytuje stan bez zmiany. Wewnątrz kropka wybiera następny, przecinek poprzedni; q zachowuje zmiany i wraca do Ustawień. Wybór nie rozpoczyna strojenia. Wyjdź z Ustawień i naciśnij t, aby stroić. v wybiera obsługiwany VFO lub odbiornik i podaje wybór.
 
 e otwiera procesor i czyta ustawienia. e wewnątrz przełącza; kropka zwiększa, przecinek zmniejsza. n przywraca początkowe ustawienia procesora; q zachowuje zmiany. h wewnątrz wyjaśnia obsługę i komunikaty.
 
@@ -33,6 +33,8 @@ Nie potwierdzono zatrzymania strojenia
 
 
 s i: Informacje o radiu. Identyfikacja i połączenie, jedna wartość w wierszu. i ponowny odczyt; h pomoc; q powrót do Ustawień. Bez zmian ustawień.
+
+s t: Wejście odczytuje bieżący tuner bez zmiany. kropka wybiera następną opcję; przecinek poprzednią. Każdy wybór jest stosowany od razu i sprawdzany. Wybór nie rozpoczyna strojenia. h czyta pomoc. q ogłasza Gotowe i wraca do Ustawień, zachowując zmiany. Kolejne q wraca do poziomu głównego, gdzie t rozpoczyna strojenie.
 
 ***
 Koniec pomocy

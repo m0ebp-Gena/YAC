@@ -1,6 +1,6 @@
 {
   "family": "yaesu",
-  "mode": "5",
+  "mode": "3",
   "watts": 5,
   "frequency_digits": 9,
   "raw_maximum": 255,
@@ -39,31 +39,8 @@
     ]
   ],
   "frequency_margin_hz": 100,
-  "prepare": {
-    "vox": "0",
-    "source": "0",
-    "mic": "000",
-    "am_gain": "0000"
-  },
+  "prepare": {},
   "fields": {
-    "vox": {
-      "protocol": "cat",
-      "read": "VX;",
-      "pattern": "VX([01]);",
-      "set": "VX{value};"
-    },
-    "mic": {
-      "protocol": "cat",
-      "read": "MG;",
-      "pattern": "MG(\\d{3});",
-      "set": "MG{value};"
-    },
-    "source": {
-      "protocol": "cat",
-      "read": "EX010213;",
-      "pattern": "EX010213([0-3]);",
-      "set": "EX010213{value};"
-    },
     "swr": {
       "protocol": "cat",
       "read": "RM6;",
@@ -75,19 +52,13 @@
       "read": "RM5;",
       "pattern": "RM5(\\d{3})000;",
       "set": ""
-    },
-    "am_gain": {
-      "protocol": "cat",
-      "read": "EX010214;",
-      "pattern": "EX010214(\\d{4});",
-      "set": "EX010214{value};"
     }
   },
   "sources": [
     "https://github.com/Hamlib/Hamlib/blob/master/rigs/yaesu/ftdx10.h",
     "https://www.yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/FTDX10_CAT_OM_ENG_2308-F.pdf"
   ],
-  "notes": "Unmodulated AM carrier. Source forced to MIC, gain muted and restored. Conversion is approximate; calibration is not an antenna judgement.",
+  "notes": "CW-U at 5 W for one second. Original mode and power restored; microphone and modulation settings untouched. SWR conversion is approximate.",
   "transmit_ranges_hz": [
     [
       1800000,
@@ -98,5 +69,8 @@
       54000000
     ]
   ],
-  "settle_seconds": 0.2
+  "settle_seconds": 0.2,
+  "transmit_seconds": 1,
+  "sample_interval_seconds": 0,
+  "sample_count": 2
 }

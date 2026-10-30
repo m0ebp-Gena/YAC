@@ -91,5 +91,10 @@ PHYSICAL TEST UPDATE - 18 OCTOBER 2026
 Gena signed off mic gain adjustment, tuner selection and tuning on FTX-1 Optima. ALC raw readings require comparison with the visual recommended zone; this part is not calibrated or signed off. This is not coverage of all bands, modes or Field configurations.
 
 GET SWR - DEVELOPMENT
-g then g uses an unmodulated AM carrier: 1 W with the Field selector, 5 W with SPA-1. Main/Sub, original native power, mode, frequency, source, mic gain and VOX are preserved/restored. Hamlib explicitly marks its FTX-1 SWR calibration provisional; YAC does not claim physical calibration.
+g then g uses CW for one second: 1 W with the Field selector, 5 W with SPA-1. Main/Sub, native power selector, mode and frequency are preserved/restored. Microphone gain, VOX and modulation source are untouched. Physical CW testing is pending. Hamlib explicitly marks its FTX-1 SWR calibration provisional; YAC does not claim physical calibration.
 See doc/swr-controls.txt for the sequence, recovery and limitations.
+
+TUNER TIMING - 30 OCTOBER 2026
+Tuning start includes an immediate CAT status query, using the model
+specific AC103 or ATAS AC123 command. Subsequent polling remains every
+half second. Automated checks pass; physical timing testing is pending.

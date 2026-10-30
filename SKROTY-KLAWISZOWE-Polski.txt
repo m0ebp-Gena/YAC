@@ -8,7 +8,7 @@ a          Wzmocnienie AF
 b          Wybór pasma
 e          Nowa częstotliwość w MHz; wpisz np. 7.103, potem Enter
 f          Otwórz Filtry
-g          Pomiar SWR: kolejne g mierzy; h pomoc; q wraca. Najpierw podłącz antenę.
+g          SWR: g mierzy raz i wraca do poziomu głównego; h pomoc; q anuluje. Najpierw podłącz antenę.
 h          Pomoc
 i          Wprowadzanie tonu/kodu (CTCSS/DCS, jeśli obsługiwane); h: pomoc
 m          Wybór emisji
@@ -28,7 +28,7 @@ USTAWIENIA — najpierw naciśnij s
 s potem p  Wpisz moc wyjściową i Enter. Puste pole anuluje.
 s potem r  Region: wejście odczytuje; r przełącza 1, 2, 3 i zapisuje. q do Ustawień.
 s potem s  Krok dla bieżącej emisji w hercach; wpisz wartość, potem Enter
-s potem t  Przełączaj ustawienia tunera; kolejne t wybiera następną opcję
+s potem t  Tuner: odczyt stanu; kropka następny, przecinek poprzedni; q wraca do Ustawień.
 s potem v  Wybierz VFO A/B lub Main/Sub, jeśli obsługiwane
 q          Opuść Ustawienia
 

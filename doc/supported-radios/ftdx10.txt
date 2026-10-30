@@ -80,5 +80,18 @@ MIC GAIN - MODEL DETAILS
 Use the marked SSB ALC zone/limit in the radio manual. Raw CAT readings are not yet calibrated to that zone. Gain steps are 1 on 0-100. SSB and AM raw ALC are supported; FM is not enabled.
 
 GET SWR - DEVELOPMENT
-g then g measures with an unmodulated 5 W AM carrier. AM source, AM-specific gain, mic gain, VOX, native power, frequency and original mode are saved/restored. The approximate Hamlib DX10 SWR curve is derived from related-radio testing.
+g then g measures with CW-U at 5 W for one second. Native power, frequency and original mode are saved/restored. Microphone gain, AM settings and VOX are untouched. The approximate Hamlib DX10 SWR curve is derived from related-radio testing.
 See doc/swr-controls.txt for the sequence, recovery and limitations.
+
+TUNER STATUS
+YAC reports the selected tuner separately from On/Off. Internal remains
+selected when the tuner is Off. Tuning is checked immediately after start.
+
+TUNER SELECTION CORRECTION - 30 OCTOBER 2026
+Settings t cycles Off, Internal, External, ATAS. The operating manual
+lists INT/EXT/ATAS; the CAT menu table conflicts with this (EXT1/2/3).
+Leaving ATAS selects the internal tuner, then bypasses it. Press t again
+to enable Internal. YAC does not require ATAS to report Off before
+changing the tuner selection. Selection changes do not start tuning.
+At top level, t starts the selected tuner. SWR g then g measures with
+the existing tuner state and does not select or start a tuner.

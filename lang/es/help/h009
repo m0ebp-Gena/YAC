@@ -10,7 +10,7 @@ m abre el ajuste guiado del micrófono. Sigue las indicaciones previas; h dentro
 
 p anuncia la potencia actual y el intervalo de entrada. Introduce vatios enteros y pulsa Enter; Enter vacío cancela. La confirmación indica el valor introducido y Establecido. Es un ajuste, no potencia transmitida medida. h y Enter dan ayuda de potencia. Enter vacío o q y Enter cancelan y vuelven a Ajustes.
 
-s abre el paso para el modo actual. t recorre opciones del sintonizador y confirma el ajuste; no inicia la sintonización. Sal de Ajustes y pulsa t para iniciarla. v selecciona el VFO o receptor admitido y anuncia la selección.
+s abre el paso para el modo actual. t abre la selección y lee el estado sin cambiarlo. Dentro, punto avanza, coma retrocede; q conserva cambios y vuelve a Ajustes. Seleccionar no inicia la sintonización. Sal de Ajustes y pulsa t para iniciarla. v selecciona el VFO o receptor admitido y anuncia la selección.
 
 e abre el procesador y lee ajustes. e dentro conmuta; punto aumenta y coma disminuye. n restaura los ajustes iniciales del procesador; q conserva cambios. h dentro explica controles y respuestas.
 
@@ -33,6 +33,8 @@ No se pudo confirmar la parada
 
 
 s i: Información de radio. Identidad y conexión, un valor por línea. i vuelve a leer; h ayuda; q vuelve a Ajustes. No cambia ajustes.
+
+s t: Al entrar se lee el sintonizador actual sin cambiarlo. punto selecciona la opción siguiente; coma la anterior. Cada selección se aplica inmediatamente y se comprueba. Seleccionar no inicia la sintonización. h lee la ayuda. q anuncia Listo y vuelve a Ajustes, conservando los cambios. Otra q vuelve al nivel principal, donde t inicia la sintonización.
 
 ***
 Fin de la ayuda

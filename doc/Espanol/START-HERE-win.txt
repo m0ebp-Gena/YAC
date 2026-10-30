@@ -6,11 +6,11 @@ Conecte y encienda la radio. Cierre otros programas que utilicen su puerto serie
 
 WINDOWS DE 64 BITS
 
-1. Extraiga primero todo el ZIP. Abra la carpeta extraída y ejecute YAC-001-beta.exe. No necesita instalación ni Python.
+1. Extraiga primero todo el ZIP. Abra la carpeta extraída y ejecute YAC-001.exe. No necesita instalación ni Python.
 2. Maximice el terminal pulsando Alt+Espacio, suelte y pulse x.
 
 ACCESO DIRECTO OPCIONAL EN EL ESCRITORIO
-Elija primero la ubicación definitiva de la carpeta. Seleccione YAC-001-beta.exe y pulse Mayús+F10. Con las flechas busque Enviar a, abra el submenú y elija Escritorio (crear acceso directo). En Windows 11, elija antes Mostrar más opciones si hace falta. Ya puede iniciar YAC desde ese acceso directo. Si mueve después la carpeta del programa, el acceso directo puede dejar de funcionar.
+Elija primero la ubicación definitiva de la carpeta. Seleccione YAC-001.exe y pulse Mayús+F10. Con las flechas busque Enviar a, abra el submenú y elija Escritorio (crear acceso directo). En Windows 11, elija antes Mostrar más opciones si hace falta. Ya puede iniciar YAC desde ese acceso directo. Si mueve después la carpeta del programa, el acceso directo puede dejar de funcionar.
 
 Responda a las preguntas de idioma y nombre/indicativo. h muestra ayuda; q seguido de y sale. Las teclas están en TECLAS-Espanol.txt en esta carpeta de documentación.
 

@@ -10,7 +10,7 @@ m öffnet die geführte Mikrofoneinstellung. Vorbereitungshinweise befolgen; h d
 
 p meldet aktuelle Leistung und Eingabebereich. Ganze Watt eingeben und Enter drücken; leeres Enter bricht ab. Bestätigung nennt den eingegebenen Wert und Gesetzt. Das ist eine Einstellung, keine gemessene Sendeleistung. h und Enter geben Leistungshilfe. Leeres Enter oder q und Enter brechen ab und kehren zu Einstellungen zurück.
 
-s öffnet die Schrittweite für die aktuelle Betriebsart. t schaltet Tuner-Auswahl weiter und bestätigt sie; es startet keine Abstimmung. Einstellungen verlassen und t drücken, um abzustimmen. v wählt den unterstützten VFO oder Empfänger und meldet die Auswahl.
+s öffnet die Schrittweite für die aktuelle Betriebsart. t öffnet die Tunerauswahl und liest ohne Änderung. Darin wählt Punkt weiter, Komma zurück; q behält Änderungen und kehrt zu Einstellungen zurück. Die Auswahl startet keine Abstimmung. Einstellungen verlassen und t drücken, um abzustimmen. v wählt den unterstützten VFO oder Empfänger und meldet die Auswahl.
 
 e öffnet den Sprachprozessor und liest Einstellungen. e darin schaltet; Punkt erhöht, Komma verringert. n stellt ursprüngliche Prozessorwerte wieder her; q behält Änderungen. h darin erklärt Bedienung und Rückmeldungen.
 
@@ -33,6 +33,8 @@ Stopp der Abstimmung nicht bestätigt
 
 
 s i: Geräteinfo. Kennung und Verbindungsdaten, ein Wert pro Zeile. i erneut lesen; h Hilfe; q zurück zu Einstellungen. Keine Änderungen.
+
+s t: Beim Öffnen wird der aktuelle Tuner gelesen, ohne ihn zu ändern. Punkt wählt die nächste Option; Komma die vorherige. Jede Auswahl wird sofort angewendet und geprüft. Die Auswahl startet keine Abstimmung. h liest die Hilfe. q meldet Fertig und kehrt zu Einstellungen zurück; Änderungen bleiben erhalten. Ein weiteres q führt zur Hauptebene, wo t die Abstimmung startet.
 
 ***
 Ende der Hilfe

@@ -4,7 +4,8 @@ GET SWR
 Press g at the top level. Connect an antenna suitable for the current frequency
 and check the frequency is clear. Press g again to measure, h for help or q to
 return. Entering the control does not transmit. Each measurement needs another
-g; there is no automatic repetition.
+g; there is no automatic repetition. After measuring and restoring, YAC
+reports the result and returns automatically to top level. No q is needed.
 
 YAC temporarily selects the model's carrier mode and measurement power. It
 allows a short settling interval and collects up to three readings within a
@@ -43,15 +44,20 @@ result is never announced in its place.
 
 Model profiles
 --------------
-FT-DX10 and FT-710: unmodulated AM carrier, 5 W. AM source is temporarily MIC,
-with microphone gain zero; the DX10's AM-specific gain is also saved/muted.
+FT-DX10: CW-U at 5 W for one second. Original mode and power are restored.
+Microphone gain, modulation source and VOX are untouched.
+
+FT-710: CW at 5 W for one second, following the tested DX10 approach.
+Microphone gain, modulation source and VOX are untouched.
+Physical carrier verification on the FT-710 is pending.
 The model manuals do not prescribe a higher SWR-specific measurement power.
 SWR conversion uses the approximate Hamlib model tables. Those tables were
 derived from related-radio measurements and are not a physical YAC calibration.
 
-FTX-1: unmodulated AM; 1 W on the readable Field-head power selector and 5 W
+FTX-1: CW for one second; 1 W on the readable Field-head power selector and 5 W
 with SPA-1 selected. The original selector is preserved. Hamlib's FTX-1 SWR
 table explicitly remains provisional; do not describe it as hardware-verified.
+Microphone gain, source and VOX are untouched. Physical CW testing is pending.
 
 IC-7300, IC-7300MK2 and IC-7600: RTTY, requesting 35 W, with an approximate RF
 meter check above 30 W. This follows the manufacturer's RTTY/30-W measurement
@@ -64,7 +70,9 @@ IC-9700: RTTY; 30 W on 144/430 MHz and 3 W on 1200 MHz, checked against the
 corresponding approximate RF meter reading. The original native power value
 is restored, not a rounded conversion back from watts.
 
-TS-590SG: unmodulated AM, 5 W. Manufacturer VOICE3 SWR-dot announcement bins
+TS-590SG: CW, 5 W, for one second. Microphone gain and VOX are untouched.
+The original mode, frequency, native power and applicable DATA flag are restored.
+Physical CW testing is pending. Manufacturer VOICE3 SWR-dot announcement bins
 are used instead of Hamlib's differing interpolation. A zero/no-numeric bin
 is unavailable; the manufacturer's OVER bin is reported as at least 5.
 

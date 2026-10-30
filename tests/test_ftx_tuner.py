@@ -20,6 +20,11 @@ class FTX:
         self.tune_reads=0
 
     def exchange(self, radio, command):
+        if command in ('AC103;AC;', 'AC123;AC;'):
+            if command == self.reject:
+                self.commands.append(command)
+                return '?;'
+            return self.exchange(radio, command[:6]) + self.exchange(radio, 'AC;')
         self.commands.append(command)
         if command == self.reject: return '?;'
         if command == 'PC;': return f'PC{self.power}020;'
@@ -135,10 +140,38 @@ class FTXTunerTests(unittest.TestCase):
     def test_timeout_requests_native_stop(self):
         self.ftx.tune_reads=0
         def exchange(radio,command):
-            if command=='AC103;':
-                self.ftx.ac='103';self.ftx.commands.append(command);return ''
+            if command=='AC103;AC;':
+                self.ftx.ac='103';self.ftx.commands.append('AC103;');return 'AC103;'
             return self.ftx.exchange(radio,command)
         with patch.object(yac,'_cat_exchange',side_effect=exchange), \
              patch('modules.ftx_tuner.time.sleep'),patch('builtins.print'):
             self.assertIn('Tune Timed Out',tuner_control.tune(yac,ROOT,self.radio,'en',polls=2))
+        self.assertIn('AC000;',self.ftx.commands)
+
+    def test_initial_busy_reply_is_read_before_first_sleep(self):
+        events=[]
+        def exchange(radio,command):
+            events.append(command)
+            return self.ftx.exchange(radio,command)
+        with patch.object(yac,'_cat_exchange',side_effect=exchange), \
+             patch('modules.ftx_tuner.time.sleep',side_effect=lambda _:events.append('sleep')), \
+             patch('builtins.print'):
+            self.assertEqual(tuner_control.tune(yac,ROOT,self.radio,'en'),'Tune Finished')
+        start=events.index('AC103;AC;')
+        self.assertEqual(events[start:],['AC103;AC;','sleep','AC;'])
+
+    def test_rejected_compound_start_does_not_claim_completion(self):
+        self.ftx.reject='AC103;AC;'
+        with patch('modules.ftx_tuner.time.sleep'),patch('builtins.print'):
+            self.assertEqual(tuner_control.tune(yac,ROOT,self.radio,'en'),'Tune Failed')
+
+    def test_missing_initial_reply_requests_stop(self):
+        def exchange(radio,command):
+            if command=='AC103;AC;':
+                self.ftx.ac='103'
+                return ''
+            return self.ftx.exchange(radio,command)
+        with patch.object(yac,'_cat_exchange',side_effect=exchange), \
+             patch('modules.ftx_tuner.time.sleep'),patch('builtins.print'):
+            self.assertIn('Tune Timed Out',tuner_control.tune(yac,ROOT,self.radio,'en'))
         self.assertIn('AC000;',self.ftx.commands)

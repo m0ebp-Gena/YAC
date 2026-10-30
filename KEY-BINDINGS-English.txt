@@ -9,7 +9,7 @@ b          Band selection
 d          Decoders: c CW, r RTTY, h help, q Back; e inside stops/restarts capture
 e          New frequency in MHz; type a value such as 7.103, then Enter
 f          Open Filters
-g          Get SWR: g again measures; h help; q returns. Connect an antenna first.
+g          Get SWR: g measures once, then returns to top level; h help; q cancels. Connect an antenna first.
 h          Help
 i          Tone/code input (CTCSS/DCS where supported); h gives help
 l          Split/repeater setup; l again turns it off. h then Enter inside for help
@@ -33,7 +33,7 @@ SETTINGS — press s first
 s then p   Edit output power; type a value, then Enter. Blank cancels.
 s then r   Region: entry reads; repeat r cycles 1, 2, 3 and saves. q returns to Settings.
 s then s   Set the current mode's tuning step in hertz; value, then Enter
-s then t   Cycle supported tuner settings; repeat t for the next choice
+s then t   Tuner: reads current state; full stop next, comma previous; q returns to Settings.
 s then v   Select VFO A/B or Main/Sub, where supported
 q          Leave Settings
 

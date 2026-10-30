@@ -4,7 +4,7 @@ Windows-64-Bit-Demo
 START
 1. Entpacken Sie das gesamte ZIP in einen beschreibbaren Ordner.
 2. Lassen Sie Dateien und Unterordner zusammen. Starten Sie
-   YAC-001-beta.exe im entpackten Ordner. Python ist nicht erforderlich.
+   YAC-001.exe im entpackten Ordner. Python ist nicht erforderlich.
 3. Terminal maximieren: Alt+y, loslassen, dann x.
 4. Folgen Sie den Fragen zu Sprache und Name/Rufzeichen. Sprachnummer
    wählen und mit y bestätigen: Englisch 1, Deutsch 2, Polnisch 3,

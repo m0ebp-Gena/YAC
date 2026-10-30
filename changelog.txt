@@ -1,5 +1,12 @@
 YAC changes
 
+30 October 2026
+- Version 001 identity corrected for Windows and Mac/Linux.
+- SWR returns automatically; clearer antenna reminder.
+- Tuner selection stays open; q returns to Settings.
+- Yaesu tuner selections and first status-check timing corrected.
+- CW SWR measurements for FT-DX10, FT-710, FTX-1 and TS-590SG.
+
 29 October 2026
 - Get SWR with model-specific preparation and restoration checks.
 - Select Region 1, 2 or 3; current region stated at startup.

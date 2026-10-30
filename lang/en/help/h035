@@ -1,6 +1,6 @@
 Help For Get SWR
 
-Connect an antenna suitable for this frequency and check the frequency is clear. g transmits briefly to measure SWR; YAC stops transmitting and restores your settings before reporting. Invalid means the frequency or radio context is unsuitable. g repeats; h reads help; q finishes with Done and returns to the top level.
+Connect an antenna suitable for this frequency and check the frequency is clear. g transmits briefly to measure SWR; YAC stops transmitting and restores your settings before reporting. Invalid means the frequency or radio context is unsuitable. After one measurement and restoration, YAC reports the result and returns automatically to top level. To measure again, open g again. h reads help; q cancels and returns without measuring.
 
 ***
 End of help

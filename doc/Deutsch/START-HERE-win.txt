@@ -6,11 +6,11 @@ Schließen Sie das Funkgerät an und schalten Sie es ein. Beenden Sie andere Pro
 
 WINDOWS 64-BIT
 
-1. Entpacken Sie zuerst die gesamte ZIP-Datei. Öffnen Sie den entpackten Ordner und starten Sie YAC-001-beta.exe. Installation oder Python sind nicht nötig.
+1. Entpacken Sie zuerst die gesamte ZIP-Datei. Öffnen Sie den entpackten Ordner und starten Sie YAC-001.exe. Installation oder Python sind nicht nötig.
 2. Terminal maximieren: Alt+Leertaste drücken, loslassen, dann x.
 
 OPTIONALE DESKTOPVERKNÜPFUNG
-Wählen Sie zuerst den endgültigen Speicherort. Markieren Sie YAC-001-beta.exe und drücken Sie Umschalt+F10. Wählen Sie mit den Pfeiltasten Senden an und im Untermenü Desktop (Verknüpfung erstellen). Unter Windows 11 wählen Sie gegebenenfalls zuerst Weitere Optionen anzeigen. Danach startet die Desktopverknüpfung YAC. Ein späteres Verschieben des Programmordners kann die Verknüpfung ungültig machen.
+Wählen Sie zuerst den endgültigen Speicherort. Markieren Sie YAC-001.exe und drücken Sie Umschalt+F10. Wählen Sie mit den Pfeiltasten Senden an und im Untermenü Desktop (Verknüpfung erstellen). Unter Windows 11 wählen Sie gegebenenfalls zuerst Weitere Optionen anzeigen. Danach startet die Desktopverknüpfung YAC. Ein späteres Verschieben des Programmordners kann die Verknüpfung ungültig machen.
 
 Folgen Sie den Fragen zu Sprache und Name/Rufzeichen. h öffnet die Hilfe; q und dann y beendet YAC. Die Tasten stehen in TASTENBELEGUNG-Deutsch.txt in diesem Dokumentationsordner.
 

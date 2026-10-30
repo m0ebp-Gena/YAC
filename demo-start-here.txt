@@ -3,7 +3,7 @@ Windows 64-bit demo
 
 START
 1. Extract the whole ZIP to a writable folder, such as Documents.
-2. Keep all files and subfolders together. Run YAC-001-beta.exe from the
+2. Keep all files and subfolders together. Run YAC-001.exe from the
    extracted folder. No separate installation or Python is needed.
 3. Maximise the terminal: Alt+Space, release, then x.
 4. Follow the language and name/callsign prompts. Choose a language number

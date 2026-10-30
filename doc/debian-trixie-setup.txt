@@ -1,4 +1,4 @@
-YAC 001 beta - Debian Trixie quick start
+YAC 001 - Debian Trixie quick start
 ======================================
 
 Transfer the downloaded YAC source ZIP to your home directory on the

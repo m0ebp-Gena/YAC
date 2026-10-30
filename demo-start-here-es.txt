@@ -3,7 +3,7 @@ Demostración para Windows de 64 bits
 
 INICIO
 1. Extrae todo el ZIP a una carpeta donde puedas guardar archivos.
-2. Mantén los archivos y subcarpetas juntos. Ejecuta YAC-001-beta.exe
+2. Mantén los archivos y subcarpetas juntos. Ejecuta YAC-001.exe
    desde la carpeta extraída. No necesitas instalar Python.
 3. Maximiza el terminal: Alt+y, suelta las teclas y pulsa x.
 4. Sigue las preguntas de idioma y nombre/indicativo. Selecciona el número

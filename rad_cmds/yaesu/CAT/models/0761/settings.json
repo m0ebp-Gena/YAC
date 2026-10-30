@@ -39,8 +39,7 @@
       "off",
       "0",
       "1",
-      "2",
-      "3"
+      "atas"
     ],
     "set": "AC{value};",
     "states": {
@@ -51,21 +50,18 @@
     "selection": {
       "protocol": "cat",
       "read": "EX030105;",
-      "pattern": "EX030105([0123]);",
+      "pattern": "EX030105([012]);",
       "set": "EX030105{value};",
       "states": {
         "0": "l122",
-        "1": "l133",
-        "2": "l134",
-        "3": "l135"
+        "1": "l123",
+        "2": "l124"
       }
     },
     "off": "000",
     "enable": {
       "0": "001",
-      "1": "001",
-      "2": "001",
-      "3": "001"
+      "1": "001"
     },
     "tune": {
       "start": "002",
@@ -75,8 +71,13 @@
       "idle": [
         "001"
       ],
-      "stop": "000"
-    }
+      "stop": "000",
+      "immediate_query": true
+    },
+    "show_selection_and_state": true,
+    "atas_selection": "2",
+    "selection_first": true,
+    "off_selection": "0"
   },
   "af_gain": {
     "protocol": "cat",

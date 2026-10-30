@@ -3,7 +3,7 @@ Wersja demonstracyjna dla 64-bitowego Windows
 
 START
 1. Rozpakuj cały ZIP do folderu, w którym możesz zapisywać pliki.
-2. Zachowaj wszystkie pliki i podfoldery razem. Uruchom YAC-001-beta.exe
+2. Zachowaj wszystkie pliki i podfoldery razem. Uruchom YAC-001.exe
    z rozpakowanego folderu. Nie musisz instalować Pythona.
 3. Zmaksymalizuj terminal: Alt+y, zwolnij klawisze, potem x.
 4. Wybierz język i podaj imię/znak wywoławczy. Numer języka zatwierdź
