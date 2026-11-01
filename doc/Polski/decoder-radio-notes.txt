@@ -1,0 +1,5 @@
+Uwagi o dekoderach dla modeli radia
+
+TS-590SG: najpierw wybierz CW. Szybkość jest śledzona automatycznie. Plus/minus regulują próg 1 do 30. Stan dekodera i Auto Information są przywracane po zatrzymaniu.
+
+IC-705 RTTY: najpierw wybierz RTTY. Używa jednoznacznie powiązanego portu USB B i przywraca jego funkcję. Odmawia przy DV/Weather oraz SEND/kluczowaniu na B. Przy niejednoznaczności ustaw rtty_port na zweryfikowany port B tego radia. Inne modele RTTY nie są jeszcze obsługiwane.

@@ -2,6 +2,10 @@ Help For Get SWR
 
 Connect an antenna suitable for this frequency and check the frequency is clear. g transmits briefly to measure SWR; YAC stops transmitting and restores your settings before reporting. Invalid means the frequency or radio context is unsuitable. After one measurement and restoration, YAC reports the result and returns automatically to top level. To measure again, open g again. h reads help; q cancels and returns without measuring.
 
+High SWR means an approximate reading of 2.5 or above. An internal tuner has a limited matching range. It adjusts the match seen by the transmitter; it does not remove losses in the antenna system. Higher SWR can still be usable, depending on the feed line and equipment. SWR alone does not measure antenna efficiency.
+
+Near 1 to 1 with Good match replaces a result rounded to 1.0. It indicates a near-unity meter reading, not a proven perfect match.
+
 ***
 End of help
 ***

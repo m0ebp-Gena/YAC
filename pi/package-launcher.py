@@ -55,5 +55,7 @@ with zipfile.ZipFile(ROOT / 'yac-source.zip') as archive:
     for name in ('install-yac.sh', 'install_yac.py', 'modules/lang_sel.py', 'modules/access_control.py', 'lang/en/labels/l301'):
         assert archive.read(prefix + name) == (ROOT / name).read_bytes()
     assert {n[len(prefix):].split('/')[1] for n in archive.namelist() if n.startswith(prefix + 'lang/')} == {'en', 'de', 'pl', 'es'}
-    assert not any(n.startswith(prefix + 'pi/') or n.endswith('/install.sh') for n in archive.namelist())
+    assert not any(n.startswith(prefix + 'pi/') for n in archive.namelist())
+    if prefix + 'install.sh' in archive.namelist():
+        assert archive.read(prefix + 'install.sh') == (ROOT / 'install-yac.sh').read_bytes().replace(b'install-yac.sh', b'install.sh')
 print(f'Created and checked {TARGET}: {len(entries)} files, {TARGET.stat().st_size} bytes')

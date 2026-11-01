@@ -1,0 +1,9 @@
+Help For Lock
+
+k opens the control and reads the current lock without changing it. Repeat k or press full stop for the next state; comma selects the previous state. Radios with one lock cycle Lock Off, Lock On. Where both types are supported, the order is Lock Off, Dial Lock, Panel Lock. Each change is applied immediately and announced after radio readback. Dial Lock prevents accidental tuning with the physical dial. Panel Lock covers more controls; the exceptions depend on the radio. This controls the radio lock; YAC commands remain available. h gives help. q finishes with Done and keeps the selected state.
+
+See the notes for your radio for lock coverage and exceptions.
+
+***
+End of help
+***

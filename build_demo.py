@@ -18,6 +18,7 @@ parser.add_argument("--dist-dir", default="builds/.work/demo-dist", help="Stagin
 parser.add_argument('--stage-only', action='store_true', help='Build and verify without publishing release artifacts')
 parser.add_argument('--revision', type=int, default=0, help='Same-day release revision')
 parser.add_argument('--tag', help='GitHub release tag to record in the package')
+parser.add_argument('--isolated-env', action='store_true', help='Use this interpreter environment without the shared build dependencies')
 args = parser.parse_args()
 if args.revision < 0:
     parser.error('revision must be nonnegative')
@@ -27,7 +28,11 @@ staging = (root / args.dist_dir).resolve()
 if not staging.is_relative_to((root / 'builds/.work').resolve()):
     raise ValueError('Stage the demo within builds/.work')
 env = os.environ.copy()
-env["PYTHONPATH"] = str(root / ".build-deps")
+if args.isolated_env:
+    env.pop('PYTHONPATH', None)
+    env['PYTHONNOUSERSITE'] = '1'
+else:
+    env["PYTHONPATH"] = str(root / ".build-deps")
 ssl_data = []
 # This Python runtime's ssl module loads this companion file when creating
 # any SSLContext. Preserve it beside the frozen ssl module as well.

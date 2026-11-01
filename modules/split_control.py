@@ -18,6 +18,12 @@ class RadioReadError(Unavailable):
     """The radio did not return usable data."""
 
 
+class ClarifierActive(Unavailable):
+    def __init__(self, kind, side):
+        self.kind, self.side = kind, side
+        super().__init__(f'{kind.upper()} active on side {side}')
+
+
 class CommandFileError(Exception):
     """An installed split definition is unreadable or malformed."""
 
@@ -168,6 +174,17 @@ class Radio:
             self.on = self.on or self.shift != '0'
         return self
 
+    def shift_blocks_transmission(self, side):
+        """FTX-1 OS is an FM setting, retained even while operating USB/CW."""
+        if self.spec.get('main_sub'):
+            mode = self.read('rxmode' if side == self.side else 'txmode')
+            if mode in {'1', '2', '3', '5', '6', '7', '8', '9', 'C', 'D', 'E'}:
+                return False
+            if mode not in {'4', 'A', 'B', 'F', 'H', 'I'}:
+                raise Unavailable
+        command = f'OS{side};'
+        return self.cat(command, rf'OS{side}([0-3]);') != '0'
+
     def check_context(self):
         if self.yaesu:
             if self.cat('VS;', r'VS([01]);') != str(self.side):
@@ -179,8 +196,12 @@ class Radio:
                 digits = 5 if self.spec.get('main_sub') else 3
                 response = self.yac._cat_exchange(self.radio, prefix + ';').strip()
                 match = re.fullmatch(prefix + rf'.{{{digits}}}\d{{9}}[+-]\d{{4}}([01])([01])[0-9A-FHI]([0-5])[0-5]\d{{2}}[0-3];', response)
-                if not match or match.groups() != ('0', '0', '0'):
+                if not match or match[3] != '0':
                     raise Unavailable
+                if match[1] == '1':
+                    raise ClarifierActive('rit', side)
+                if match[2] == '1':
+                    raise ClarifierActive('xit', side)
         else:
             # Access to the unselected VFO rejects restricted memory/DR and
             # IC-9700 satellite contexts, including during repeater setup.

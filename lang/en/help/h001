@@ -11,6 +11,7 @@ f: Filters. See the filter keys below.
 g: Get SWR. Connect an antenna; g again measures and restores settings. h helps; q returns.
 h: Help. Use h inside a control for its detailed help.
 i: Tone/code input. Repeat i for CTCSS, DCS normal or DCS inverted where supported. Enter a value, then follow the prompts.
+k: Lock. Entry reads; repeat k cycles lock states. h helps; q keeps the selected state.
 l: Split/repeater setup. Repeat l to turn it off. h then Enter at the input gives help.
 m: Mode. Full stop next; comma previous.
 o: Offset. Repeat o for Receive, Transmit, Clear. Full stop adds 10 hertz; comma subtracts. Either movement key clears in Clear.

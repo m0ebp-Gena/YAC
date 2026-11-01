@@ -123,6 +123,21 @@ def main():
                 assert (root / 'lang' / language / 'help' / help_id).is_file()
             assert (root / 'lang' / language / 'hints/m000').is_file()
         assert (root / 'doc/swr-controls.txt').is_file()
+        from modules import lock_control
+        import io
+        from contextlib import redirect_stdout
+        from types import SimpleNamespace
+        keys = iter(['k', 'q'])
+        output = io.StringIO()
+        with redirect_stdout(output):
+            lock_control.control(yac, root, radio, 'en', lambda: next(keys), SimpleNamespace(lost=False))
+        assert 'Lock Off' in output.getvalue() and 'Lock On' in output.getvalue()
+        assert radio.serial.lock == '1'
+        for language in yac.lang_sel.LANGUAGE_CODES:
+            assert (root / 'lang' / language / 'help/h038').is_file()
+            for token in ('l404', 'l405', 'l406', 'l407'):
+                assert yac._read_label(root, language, token, '')
+        print('Lock control, retained selection and translated resources checked.')
         print('Radio information, region tables and new help resources checked.')
         print("YAC package check passed. Python and pyserial are bundled.")
         print("Bundled update certificates loaded; hostname and certificate verification enabled.")

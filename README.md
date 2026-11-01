@@ -62,7 +62,7 @@ packaged Windows demo; the commands above apply to this source repository.
 From the downloaded or cloned repository, run:
 
 ```sh
-sh install-yac.sh
+sh install.sh
 ```
 
 The installer asks before creating or updating `~/yac`, preserves existing

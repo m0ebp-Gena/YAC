@@ -1,0 +1,9 @@
+Ayuda del bloqueo
+
+k abre el control y lee el bloqueo actual sin cambiarlo. Repita k o pulse punto para el siguiente estado; coma selecciona el anterior. Con un solo bloqueo, alterna Bloqueo No y Bloqueo Sí. Si admite ambos tipos, el orden es Bloqueo No, Bloqueo dial, Bloqueo panel. Cada cambio se aplica de inmediato y se anuncia tras leerlo de la radio. El bloqueo del dial evita cambios accidentales de frecuencia con el mando. El bloqueo del panel incluye más controles; las excepciones dependen de la radio. Este control bloquea la radio; los comandos de YAC siguen disponibles. h muestra ayuda. q termina con Hecho y conserva el estado elegido.
+
+Consulte las notas de su radio para conocer los controles bloqueados y las excepciones.
+
+***
+Fin de la ayuda
+***

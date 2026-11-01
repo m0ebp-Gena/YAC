@@ -89,3 +89,7 @@ Use the marked SSB ALC zone/limit in the radio manual. YAC prepares the ALC mete
 GET SWR - DEVELOPMENT
 Get SWR currently reports Not supported. Kenwood documents meter dots 0-10, while Hamlib calibrates 0-20. Numerical SWR is disabled until that discrepancy is resolved.
 See doc/swr-controls.txt for the sequence, recovery and limitations.
+
+LOCK CONTROL - DEVELOPMENT
+k: Lock Off / Lock On after verified TS-480 identity. LK00 clears frequency and tuning-control locks; LK10 selects frequency lock. Either pre-existing lock is reported as Lock On.
+Entry reads without changing the radio. Further k cycles; q keeps the selection. YAC does not change the speech/lock button assignment. Hardware verification pending.

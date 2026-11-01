@@ -11,6 +11,7 @@ f: Filtros. Consulta las teclas de filtros más abajo.
 g: Medir SWR. Conecte una antena; otra g mide y restaura los ajustes. h ayuda; q vuelve.
 h: Ayuda. h dentro de un control lee su ayuda detallada.
 i: Introducir tono/código. Repite i para CTCSS, DCS normal o invertido, donde se admita. Introduce un valor y sigue las indicaciones.
+k: Bloqueo. Al entrar lee; repita k para cambiar el estado. h ayuda; q conserva la selección.
 l: Configurar split/repetidor. Repite l para desactivar. h y Enter en el campo dan ayuda.
 m: Modo. Punto siguiente; coma anterior.
 o: Desplazamiento. o recorre Recepción, Transmisión, Borrar. Punto suma 10 hercios; coma resta. En Borrar, cualquiera de las dos teclas borra.

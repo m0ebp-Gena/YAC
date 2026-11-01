@@ -1,0 +1,9 @@
+Pomoc blokady
+
+k otwiera sterowanie i odczytuje stan blokady bez zmian. Kolejne k lub kropka wybiera następny stan; przecinek poprzedni. Przy jednym typie blokady cykl to Blokada Wył., Blokada Wł. Przy dwóch typach kolejność to Blokada Wył., Blok. strojenia, Blokada panelu. Każda zmiana działa natychmiast i jest ogłaszana po odczycie z radia. Blokada strojenia zapobiega przypadkowej zmianie częstotliwości pokrętłem. Blokada panelu obejmuje więcej elementów; wyjątki zależą od radia. Blokada dotyczy radia; polecenia YAC pozostają dostępne. h wyświetla pomoc. q kończy komunikatem Gotowe i zachowuje wybrany stan.
+
+Zakres blokady i wyjątki opisano w notatkach dotyczących Twojego radia.
+
+***
+Koniec pomocy
+***

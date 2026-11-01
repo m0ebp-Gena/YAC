@@ -1,0 +1,5 @@
+Decoder radio notes
+
+TS-590SG CW: select CW mode first. Native decoder tracks speed automatically. Plus and minus adjust its threshold, 1 to 30. YAC preserves decoder enable and Auto Information settings and restores them on stop.
+
+IC-705 RTTY: select RTTY mode first. YAC uses the uniquely identified companion USB port B, preserving its function. It refuses DV/Weather use or port-B SEND/keying assignments. If identification is ambiguous, set rtty_port to the verified companion port; it must belong to this radio. Other RTTY models currently report Not supported.

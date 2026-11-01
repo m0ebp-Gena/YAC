@@ -6,12 +6,13 @@ Commands depend on the connected radio's supported features.
 TOP LEVEL
 a          AF Gain
 b          Band selection
-d          Decoders: c CW, r RTTY, h help, q Back; e inside stops/restarts capture
+d          Decoders: c CW, r RTTY, h help, q Back; s inside stops/restarts capture
 e          New frequency in MHz; type a value such as 7.103, then Enter
 f          Open Filters
 g          Get SWR: g measures once, then returns to top level; h help; q cancels. Connect an antenna first.
 h          Help
 i          Tone/code input (CTCSS/DCS where supported); h gives help
+k: Lock. Entry reads; repeat k cycles lock states. h helps; q keeps the selected state.
 l          Split/repeater setup; l again turns it off. h then Enter inside for help
 m          Mode selection
 o          Offset control: Receive, Transmit, Clear
@@ -100,7 +101,7 @@ s then e   Speech Processor: read-only entry; e toggles; full stop/comma adjust 
 
 In FM, w also reads active CTCSS/DCS on radios supported by i: tone/code, TX or Both, and DCS polarity. Off adds nothing. Unreadable signalling reports Tone/code unknown. FTX-1 follows Main/Sub. No settings are changed.
 
-d then a: Receive audio setup. Full stop/comma browse inputs; c channel; v one-second level check; e save; q Back. Decoders: e stop/restart, v latest text, comma/full stop review, n clear; q leaves capture running. Native CW: TS-590SG. Native RTTY: IC-705. Audio CW is experimental; see doc/decoder-controls.md.
+d then a: Receive audio setup. Full stop/comma browse inputs; c channel; v one-second level check; Enter save; q Back. Decoders: s stop/restart, v latest text, comma/full stop review, n clear; q leaves capture running. Native CW: TS-590SG. Native RTTY: IC-705. Audio CW is experimental; see doc/decoder-controls.md.
 
 s b: h Help; b Speech and braille; r Braille only; s Speech only; q Back. Each choice applies and saves immediately for future boots. r mutes Speakup while keeping braille input and output working. b or s restores speech. An attached braille display remains available in every mode. q returns and keeps the selected mode.
 s o: h Help; . increase; , decrease; q Back. r Rate; v Volume; p Pitch; u Punctuation; t Test; d Defaults. Changes apply and save immediately.
@@ -111,3 +112,5 @@ s u: Update YAC. Shows help, then Looking. No Internet or No Update returns to S
 s w: Wi-Fi setup is available only on the Raspberry Pi image. Use your operating system Wi-Fi settings here. Wi-Fi setup. Country, network name and password. Ctrl+C cancels entry; punctuation and command letters are literal.
 
 s i: Radio info. Reads identity and connection details, one value per line. i reads again; h help; q returns to Settings. No settings change.
+
+CW decoder: z requests Zero In where supported, matches decoder pitch to the radio, and announces frequency/pitch. Retuning is kept; signal lock is not confirmed.

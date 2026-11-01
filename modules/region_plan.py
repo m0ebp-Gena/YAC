@@ -44,10 +44,10 @@ def transmit_frequency(yac, root, radio):
         rig.fm = False  # Check both VFOs even when receive happens to be FM.
         rig.check_context()  # Reject memory/satellite contexts and active offsets.
         if rig.yaesu:
-            if rig.read('shift') != '0':
-                return None
             side = rig.read('txside')
             if side not in {'0', '1'}:
+                return None
+            if rig.shift_blocks_transmission(int(side)):
                 return None
             return rig.frequency('rx' if int(side) == rig.side else 'tx')
         # CI-V split readback also encodes FM repeater shift. Do not treat

@@ -2,6 +2,10 @@ Ayuda: Medir SWR
 
 Conecte una antena adecuada para esta frecuencia y compruebe que esté libre. g transmite brevemente para medir SWR. YAC deja de transmitir y restaura sus ajustes antes de informar. Inválido indica una frecuencia o un estado de radio inadecuados. Tras una medición y la restauración, YAC informa del resultado y vuelve automáticamente al nivel principal. Para medir otra vez, abra g de nuevo. h lee la ayuda; q cancela y vuelve sin medir.
 
+SWR alta indica una lectura aproximada de 2,5 o más. Un acoplador interno tiene un margen de adaptación limitado. Ajusta la adaptación que ve el transmisor, pero no elimina las pérdidas del sistema de antena. Una SWR mayor puede seguir siendo utilizable, según la línea de alimentación y el equipo. La SWR por sí sola no mide la eficiencia de la antena.
+
+Cerca de 1 a 1 con Buena adaptación sustituye un resultado redondeado a 1,0. Indica una lectura cercana a la unidad, no una adaptación perfecta demostrada.
+
 ***
 Fin de la ayuda
 ***

@@ -95,3 +95,10 @@ to enable Internal. YAC does not require ATAS to report Off before
 changing the tuner selection. Selection changes do not start tuning.
 At top level, t starts the selected tuner. SWR g then g measures with
 the existing tuner state and does not select or start a tuner.
+
+CW ZERO IN - DEVELOPMENT
+Inside audio CW decoding, z reads KP and matches the decoder pitch without changing the radio pitch, then requests ZI0 for the selected VFO. It reads the frequency after a one-second delay. No completion-status command exists; a frequency readback is not evidence of signal lock. Frequency changes are kept; decoder pitch is session-only. Physical verification pending.
+
+LOCK CONTROL - DEVELOPMENT
+k: Lock Off / Lock On. Controls LK, the main tuning-dial lock.
+Entry reads without changing the radio. Further k cycles; q keeps the selection. YAC does not change the speech/lock button assignment. Hardware verification pending.

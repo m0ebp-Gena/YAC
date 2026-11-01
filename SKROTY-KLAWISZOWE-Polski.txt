@@ -11,6 +11,7 @@ f          Otwórz Filtry
 g          SWR: g mierzy raz i wraca do poziomu głównego; h pomoc; q anuluje. Najpierw podłącz antenę.
 h          Pomoc
 i          Wprowadzanie tonu/kodu (CTCSS/DCS, jeśli obsługiwane); h: pomoc
+k: Blokada. Wejście odczytuje; kolejne k zmienia stan. h pomoc; q zachowuje wybór.
 m          Wybór emisji
 o          Przesunięcie częstotliwości: Odbiór, Nadawanie, Kasowanie
 p          Przełączaj stopnie przedwzmacniacza i wyłączenie
@@ -93,7 +94,7 @@ s potem a  Odczytaj AGC bez zmiany; powtarzaj a dla następnego ustawienia. Odcz
 
 s potem e  Procesor: otwiera bez zmian; e przełącza; kropka/przecinek gdy włączony. Kenwood i/o Wejście/Wyjście. n anuluje i przywraca; q zachowuje; h pomaga.
 
-Nowe funkcje: l split/przemiennik; kolejne w pokazuje RX/TX i ton; x anteny (x główna, r odbiorcza, h pomoc, q Wstecz); t strojenie wybranym tunerem. d dekodery: c CW, r RTTY, a audio odbioru, h pomoc, q Wstecz. W dekoderze: e start/stop, v tekst, przecinek/kropka historia, n usuń; q pozostawia odbiór. Audio: kropka/przecinek urządzenia, c kanał, v poziom, e zapisz, q Wstecz. CW z audio jest eksperymentalne; przeczytaj pomoc.
+Nowe funkcje: l split/przemiennik; kolejne w pokazuje RX/TX i ton; x anteny (x główna, r odbiorcza, h pomoc, q Wstecz); t strojenie wybranym tunerem. d dekodery: c CW, r RTTY, a audio odbioru, h pomoc, q Wstecz. W dekoderze: s start/stop, v tekst, przecinek/kropka historia, n usuń; q pozostawia odbiór. Audio: kropka/przecinek urządzenia, c kanał, v poziom, Enter zapisz, q Wstecz. CW z audio jest eksperymentalne; przeczytaj pomoc.
 
 s b: h Pomoc; b Mowa i brajl; r Tylko brajl; s Tylko mowa; q Wstecz. Każdy wybór działa od razu i zapisuje się na kolejne uruchomienia. r wycisza Speakup, zachowując brajl na wejściu i wyjściu. b lub s przywraca mowę. Podłączona linijka brajlowska pozostaje dostępna w każdym trybie. q wraca, zachowując wybór.
 s o: h Pomoc; . zwiększa; , zmniejsza; q Wstecz. r Tempo; v Głośność; p Wysokość; u Interpunkcja; t Test; d Domyślne. Zmiany działają i zapisują się natychmiast.
@@ -104,3 +105,5 @@ s u: Aktualizacja YAC. Wyświetla pomoc i Szukam. Brak internetu lub Brak zmian 
 s w: Konfiguracja Wi-Fi jest dostępna tylko w obrazie Raspberry Pi. Tutaj użyj ustawień Wi-Fi systemu. Konfiguracja Wi-Fi: kraj, nazwa sieci i hasło. Ctrl+C anuluje wpisywanie; interpunkcja i litery poleceń są zwykłymi znakami.
 
 s i: Informacje o radiu. Identyfikacja i połączenie, jedna wartość w wierszu. i ponowny odczyt; h pomoc; q powrót do Ustawień. Bez zmian ustawień.
+
+Dekoder CW: z żąda dostrojenia, jeśli obsługiwane, dopasowuje ton dekodera do radia i podaje częstotliwość/ton. Częstotliwość pozostaje; dostrojenie do sygnału nie jest potwierdzane.

@@ -7,6 +7,7 @@ from modules.find_rad import RadioConnection
 class DummySerial:
     def __init__(self):
         self.frequency = 7_159_000
+        self.lock = "0"
         self.mode = "1"
         self.split_settings = {'VS': '0', 'ST': '0', 'FT': '0',
                                'FB': '007159000', 'MD1': '1', 'OS0': '0',
@@ -68,6 +69,11 @@ class DummySerial:
                 frequency = self.split_settings['FB'] if other else f'{self.frequency:09d}'
                 mode = self.split_settings['MD1'] if other else self.mode
                 reply = command + '000' + frequency + '+000000' + mode + '00000'
+            elif command == 'LK':
+                reply = 'LK' + self.lock
+            elif command in ('LK0', 'LK1'):
+                self.lock = command[-1]
+                reply = command
             elif command in self.split_settings:
                 reply = command + self.split_settings[command]
             elif any(command.startswith(key) for key in self.split_settings):

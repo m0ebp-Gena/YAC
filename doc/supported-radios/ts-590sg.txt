@@ -83,3 +83,7 @@ Use the marked SSB ALC zone/limit in the radio manual. YAC prepares the ALC mete
 GET SWR - DEVELOPMENT
 g then g uses CW at 5 W for one second. Physical CW testing is pending. The manufacturer VOICE3 SWR-dot announcement bins are used; this differs from Hamlib interpolation. Mode-specific power slots, original mode, frequency, native power and applicable DATA flag are restored. Microphone gain and VOX are untouched.
 See doc/swr-controls.txt for the sequence, recovery and limitations.
+
+LOCK CONTROL - DEVELOPMENT
+k: Lock Off / Lock On. LK00 disables and LK10 enables the native lock.
+Entry reads without changing the radio. Further k cycles; q keeps the selection. YAC does not change the speech/lock button assignment. Hardware verification pending.

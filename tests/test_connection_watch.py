@@ -118,3 +118,34 @@ class ConnectionWatchTests(unittest.TestCase):
         self.assertEqual(probe.call_args.args[1], [port])
         self.assertEqual(probe.call_args.args[0][0]['model_id'], 'ID0670')
         self.assertEqual(radio.port, 'new')
+
+
+class CommandRecoveryTests(unittest.TestCase):
+    def test_serial_failure_reconnects_and_accepts_next_command(self):
+        from serial import SerialException, SerialTimeoutException
+        for failure in (SerialException('Disconnected'), SerialTimeoutException('Write timeout')):
+            with self.subTest(failure=type(failure).__name__):
+                now = [0]
+                radio = Mock(is_dummy=False, port='original')
+                announce = Mock()
+                watch = ConnectionWatch(radio, lambda: '7.159', announce,
+                                        reconnect=Mock(return_value=True), clock=lambda: now[0])
+                with self.assertLogs('yac', level='ERROR'), watch.command():
+                    raise failure
+                self.assertTrue(watch.lost)
+                announce.assert_called_once_with('lost')
+                now[0] = 5
+                watch.tick()
+                self.assertFalse(watch.lost)
+                self.assertEqual(announce.call_args.args, ('restored',))
+                command = Mock()
+                with watch.command():
+                    command()
+                command.assert_called_once()
+
+    def test_unrelated_os_error_is_not_treated_as_radio_disconnect(self):
+        radio = Mock(is_dummy=False)
+        watch = ConnectionWatch(radio, Mock(), Mock())
+        with self.assertRaises(PermissionError), watch.command():
+            raise PermissionError('Unrelated file')
+        self.assertFalse(watch.lost)

@@ -11,6 +11,7 @@ f: Filter. Siehe Filtertasten unten.
 g: SWR messen. Antenne anschließen; erneutes g misst und stellt Einstellungen wieder her. h hilft; q zurück.
 h: Hilfe. h innerhalb einer Funktion liest deren ausführliche Hilfe.
 i: Ton/Code eingeben. i wechselt zwischen CTCSS, DCS normal und DCS invertiert, soweit unterstützt. Wert eingeben und den Ansagen folgen.
+k: Sperre. Einstieg liest; erneutes k wechselt die Sperre. h hilft; q behält die Auswahl.
 l: Split/Relais einrichten. Erneutes l schaltet aus. h und Enter im Eingabefeld geben Hilfe.
 m: Betriebsart. Punkt weiter; Komma zurück.
 o: Offset. o wechselt Empfang, Senden, Löschen. Punkt addiert 10 Hertz; Komma subtrahiert. Bei Löschen löscht jede Bewegungstaste.

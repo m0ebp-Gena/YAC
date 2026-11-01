@@ -1,0 +1,8 @@
+{
+  "protocol": "CAT",
+  "read": "LK;",
+  "pattern": "LK([01][01]);",
+  "off": "LK00;",
+  "on": "LK10;",
+  "identity_required": true
+}

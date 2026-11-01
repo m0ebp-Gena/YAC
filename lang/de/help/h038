@@ -1,0 +1,9 @@
+Hilfe zur Sperre
+
+k öffnet die Steuerung und liest die aktuelle Sperre ohne Änderung. Erneutes k oder Punkt wählt den nächsten Zustand; Komma den vorherigen. Bei einer Sperre wechselt die Auswahl zwischen Sperre Aus und Sperre Ein. Bei zwei Sperrtypen lautet die Reihenfolge Sperre Aus, Abstimmsperre, Panelsperre. Jede Änderung gilt sofort und wird nach Rücklesen vom Funkgerät angesagt. Die Abstimmsperre verhindert versehentliche Frequenzänderungen am Abstimmknopf. Die Panelsperre sperrt weitere Bedienelemente; Ausnahmen hängen vom Funkgerät ab. Die Sperre betrifft das Funkgerät; YAC-Befehle bleiben verfügbar. h erklärt die Steuerung. q beendet mit Fertig und behält den gewählten Zustand.
+
+Welche Bedienelemente gesperrt werden und welche Ausnahmen gelten, steht in den Hinweisen zu Ihrem Funkgerät.
+
+***
+Ende der Hilfe
+***

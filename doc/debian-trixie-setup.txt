@@ -42,7 +42,7 @@ and extracted folder name in place of the dated examples:
     cd ~
     unzip YAC-source-2026-10-11.zip
     cd YAC-source-2026-10-11
-    sh install-yac.sh
+    sh install.sh
 
 Run the installer as your normal user. Answer y when it asks to create
 ~/yac. It installs pyserial from the internet in a private Python environment.

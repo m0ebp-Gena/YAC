@@ -58,7 +58,7 @@ class AudioSetupTests(unittest.TestCase):
              patch.object(yac,'_read_settings',return_value={}), \
              patch.object(yac,'_set_yac_value') as save, \
              patch('modules.chat_int.show_response'),patch('modules.chat_int.show_back'):
-            audio_setup.control(yac,ROOT,'en',iter(['c','e','q']).__next__)
+            audio_setup.control(yac,ROOT,'en',iter(['c','\r','q']).__next__)
         self.assertEqual(save.call_args_list[0].args[1:],('cw_audio_channel','2'))
         identity=save.call_args_list[1].args[2]
         self.assertEqual(json.loads(identity),{'name':'Radio','host':'WASAPI'})
@@ -73,6 +73,24 @@ class AudioSetupTests(unittest.TestCase):
              patch.object(yac,'_set_yac_value') as save, \
              patch('modules.chat_int.show_response'),patch('modules.chat_int.show_back'), \
              patch('modules.audio_setup.LOG.exception'):
-            audio_setup.control(yac,ROOT,'en',iter(['e','q']).__next__)
+            audio_setup.control(yac,ROOT,'en',iter(['\n','q']).__next__)
         save.assert_not_called()
         sd.RawInputStream.assert_not_called()
+
+    def test_entry_announces_confirmation_and_echo_does_not_save(self):
+        sd=self.backend()
+        with patch.dict('sys.modules',{'sounddevice':sd}), \
+             patch.object(yac,'_read_settings',return_value={}), \
+             patch.object(yac,'_set_yac_value') as save, \
+             patch('modules.chat_int.show_response') as say:
+            audio_setup.control(yac,ROOT,'en',iter(['e','q']).__next__)
+        save.assert_not_called()
+        texts=[call.args[0] for call in say.call_args_list]
+        self.assertIn('Enter: Save',texts)
+        self.assertIn('q: Cancel',texts)
+        sd.RawInputStream.assert_not_called()
+        for lang in ('en','de','es','pl'):
+            for token in ('l398','l399'):
+                label=yac._read_label(ROOT,lang,token,'')
+                self.assertTrue(label)
+                self.assertLessEqual(len(label),15)

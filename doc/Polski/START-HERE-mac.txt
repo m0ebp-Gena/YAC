@@ -12,7 +12,7 @@ Otwórz Terminal. Potrzebny jest Python 3.10 lub nowszy. Na Macu w razie potrzeb
 
 Wpisz cd, spację i pełną ścieżkę rozpakowanego folderu YAC, w cudzysłowie, jeśli zawiera spacje. Naciśnij Enter. Następnie uruchom:
 
-    sh install-yac.sh
+    sh install.sh
 
 Uruchamiaj jako zwykły użytkownik, bez sudo. Enter oznacza Tak przy Install YAC? i opcjonalnych pytaniach o programy uruchamiające. Inne środowiska Pythona pozostają bez zmian. Instalacja zależności wymaga internetu. Jeżeli launcher wymaga uprawnień administratora, podaj zwykłe hasło logowania na żądanie; znaki hasła nie są wyświetlane.
 

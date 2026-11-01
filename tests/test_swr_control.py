@@ -130,6 +130,55 @@ class CarrierKenwood(TS480):
 
 
 class SWRTests(unittest.TestCase):
+    def test_near_unity_uses_label_and_good_match_hint(self):
+        for model, raw in [('0840', '000'), ('0840', '001'), ('0840', '012'), ('0761', '000')]:
+            rig = CarrierCat(model)
+            rig.raw = raw
+            self.assertEqual(self.measure_cat(rig), 'Near 1 to 1. Good match')
+        rig = CarrierCat('0840')
+        rig.raw = '020'
+        self.assertEqual(self.measure_cat(rig), 'SWR about 1.1')
+        for language in ('en', 'de', 'es', 'pl'):
+            text = yac._read_label(ROOT, language, 'l397', '')
+            self.assertTrue(text)
+            self.assertLessEqual(len(text), 15)
+            self.assertTrue(swr.hints.get_hint(ROOT, language, 'm003'))
+
+    def test_high_swr_hint_matches_announced_threshold_and_restores(self):
+        for raw, high in [('104', False), ('107', True), ('108', True), ('126', True), ('255', True)]:
+            rig = CarrierCat()
+            rig.raw = raw
+            before = dict(rig.state)
+            result = self.measure_cat(rig)
+            self.assertEqual('High SWR' in result, high, result)
+            self.assertEqual(rig.state, before)
+            self.assertEqual(rig.state['TX'], '0')
+        for language in ('en', 'de', 'es', 'pl'):
+            hint = swr.hints.get_hint(ROOT, language, 'm002')
+            self.assertTrue(hint)
+            self.assertLessEqual(len(hint), 50)
+            self.assertIn(hint, (ROOT / 'lang' / language / 'help/h035').read_text(encoding='utf-8'))
+
+    def test_ftx_usb_retained_ars_measures_and_restores_without_shift_writes(self):
+        for hz in ('028020000', '014213000'):
+            rig = CarrierCat('0840')
+            rig.state.update({'FA': hz, 'OS0': '3', 'PC': '2005'})
+            before = dict(rig.state)
+            self.assertEqual(self.measure_cat(rig), 'SWR about 1.5')
+            self.assertTrue(rig.tx_seen)
+            self.assertIn('RM6;', rig.commands)
+            self.assertEqual(rig.state, before)
+            self.assertFalse(any(c.startswith('OS') for c in rig.commands))
+
+    def test_ftx_fm_shift_blocks_swr_before_transmission(self):
+        for shift in ('1', '2', '3'):
+            rig = CarrierCat('0840')
+            rig.state.update({'MD0': '4', 'OS0': shift})
+            before = dict(rig.state)
+            self.assertEqual(self.measure_cat(rig), 'Invalid')
+            self.assertFalse(rig.tx_seen)
+            self.assertEqual(rig.state, before)
+
     def setUp(self):
         config = patch.object(yac, '_read_settings', return_value={'region': '1'})
         config.start(); self.addCleanup(config.stop)
@@ -148,7 +197,7 @@ class SWRTests(unittest.TestCase):
                 rig = CarrierCat(model)
                 rig.state['MD0'] = mode
                 before = dict(rig.state)
-                self.assertEqual(self.measure_cat(rig), 'SWR approx 1.5')
+                self.assertEqual(self.measure_cat(rig), 'SWR about 1.5')
                 self.assertEqual(rig.state, before)
                 self.assertIsNone(rig.radio._swr_pending)
                 commands = rig.commands
@@ -176,7 +225,7 @@ class SWRTests(unittest.TestCase):
                     return answer
                 with patch.object(yac, '_cat_exchange', side_effect=exchange), redirect_stdout(io.StringIO()):
                     result = swr.measure(yac, ROOT, rig.radio, 'en', clock=clock.time, sleep=clock.sleep)
-                self.assertEqual(result, 'SWR approx 1.5' if yaesu else 'SWR approx 2.0')
+                self.assertEqual(result, 'SWR about 1.5' if yaesu else 'SWR about 2.0')
                 expected = ['TX1;TX;', 'TX0;TX;'] if yaesu else ['TX0;IF;', 'RX;IF;']
                 self.assertEqual([edge[0] for edge in edges], expected)
                 self.assertAlmostEqual(edges[1][1] - edges[0][1], 1.0)
@@ -188,10 +237,39 @@ class SWRTests(unittest.TestCase):
         rig.state['PC'] = '1006'
         before = dict(rig.state)
         with patch.object(yac, '_yaesu_vfo_side', 1):
-            self.assertEqual(self.measure_cat(rig), 'SWR approx 1.5')
+            self.assertEqual(self.measure_cat(rig), 'SWR about 1.5')
         self.assertEqual(rig.state, before)
         self.assertIn('PC1001;', rig.commands)
         self.assertNotIn('MD05;', rig.commands)
+
+    def test_receive_transition_waits_before_restoring_and_reports_swr(self):
+        rig = CarrierCat()
+        before = dict(rig.state)
+        clock = Clock()
+        stopped = None
+        checks = []
+
+        def exchange(radio, command):
+            nonlocal stopped
+            answer = rig.exchange(radio, command)
+            if command == 'TX0;TX;':
+                stopped = clock.time()
+                return 'TX2;'
+            if command == 'TX;' and stopped is not None:
+                checks.append(clock.time() - stopped)
+                return 'TX2;' if clock.time() - stopped < 0.4 else answer
+            if stopped is not None and command.startswith(('PC0', 'MD0')) and command not in ('PC;', 'MD0;'):
+                self.assertGreaterEqual(clock.time() - stopped, 0.4)
+            return answer
+
+        with patch.object(yac, '_cat_exchange', side_effect=exchange), \
+             patch.object(swr_radio.time, 'sleep', side_effect=clock.sleep), redirect_stdout(io.StringIO()):
+            result = swr.measure(yac, ROOT, rig.radio, 'en', clock=clock.time, sleep=clock.sleep)
+        self.assertEqual(result, 'SWR about 1.5')
+        self.assertAlmostEqual(checks[0], 0.15)
+        self.assertEqual(rig.commands.count('TX0;'), 1)
+        self.assertEqual(rig.state, before)
+        self.assertIsNone(rig.radio._swr_pending)
 
     def test_icom_models_use_rtty_and_restore_full_mode_data_filter(self):
         for model, watts in [('IC-7300', 35), ('IC-7300MK2', 35), ('IC-7600', 35),
@@ -202,7 +280,7 @@ class SWRTests(unittest.TestCase):
             with patch.object(yac, '_civ_exchange', side_effect=rig.exchange), \
                  patch.object(yac, '_civ_send', side_effect=rig.send), redirect_stdout(io.StringIO()):
                 self.assertEqual(swr.measure(yac, ROOT, rig.radio, 'en', clock=clock.time, sleep=clock.sleep),
-                                 'SWR approx 1.5')
+                                 'SWR about 1.5')
             self.assertEqual(rig.state, before)
             self.assertEqual(rig.tx_history, [b'\x01', b'\x00'])
             self.assertIn((0x26, b'\x00\x04\x00\x02'), rig.sent)
@@ -237,7 +315,7 @@ class SWRTests(unittest.TestCase):
     def test_590_preserves_both_mode_power_and_mic_slots(self):
         rig = CarrierKenwood()
         before = dict(rig.values)
-        self.assertEqual(self.measure_cat(rig), 'SWR approx 2.0')
+        self.assertEqual(self.measure_cat(rig), 'SWR about 2.0')
         self.assertEqual(rig.values, before)
         self.assertEqual(rig.powers['3'], '015')
         self.assertEqual(rig.powers['5'], '025')
@@ -382,11 +460,11 @@ class SWRTests(unittest.TestCase):
         with patch.object(yac, 'connect_radio', return_value=radio), \
              patch.object(yac, '_read_settings', return_value={'call': 'Test', 'lang': 'en'}), \
              patch.object(lang_sel, 'read_key', side_effect=lambda: next(keys)), \
-             patch.object(swr, 'measure', return_value='SWR approx 1.1') as measure, \
+             patch.object(swr, 'measure', return_value='SWR about 1.1') as measure, \
              redirect_stdout(io.StringIO()) as out:
             self.assertEqual(yac.main([]), 0)
         measure.assert_called_once()
-        self.assertIn('SWR approx 1.1', out.getvalue())
+        self.assertIn('SWR about 1.1', out.getvalue())
         self.assertIn('Top Level', out.getvalue())
         self.assertIn('Settings', out.getvalue())
 

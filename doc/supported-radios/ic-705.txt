@@ -94,3 +94,7 @@ SSB manuals recommend speech peaks around 30-50 percent of the ALC scale; YAC ra
 GET SWR - DEVELOPMENT
 g then g uses RTTY at a requested 6 W, following the manual requirement of more than 5 W. External DC and sufficient RF meter readback are required; battery-only operation is refused. Original mode/data/filter, native power, frequency and VOX are restored.
 See doc/swr-controls.txt for the sequence, recovery and limitations.
+
+LOCK CONTROL - DEVELOPMENT
+k cycles Lock Off / Dial Lock / Panel Lock. CI-V 16 50 enables lock; 1A 05 00 63 selects MAIN DIAL or PANEL.
+Entry reads without changing the radio. Further k cycles; q keeps the selection. YAC does not change the speech/lock button assignment. Hardware verification pending.

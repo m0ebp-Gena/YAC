@@ -98,3 +98,10 @@ TUNER TIMING - 30 OCTOBER 2026
 Tuning start includes an immediate CAT status query, using the model
 specific AC103 or ATAS AC123 command. Subsequent polling remains every
 half second. Automated checks pass; physical timing testing is pending.
+
+CW ZERO IN - DEVELOPMENT
+Inside audio CW decoding, z reads KP and matches the decoder pitch without changing the radio pitch, then requests ZI0 for MAIN and ZI1 for SUB. It reads the frequency after a one-second delay. No completion-status command exists; a frequency readback is not evidence of signal lock. Frequency changes are kept; decoder pitch is session-only. Physical verification pending.
+
+LOCK CONTROL - DEVELOPMENT
+k: Lock Off / Lock On. LK controls the native dial lock; the radio lock configuration determines dial coverage.
+Entry reads without changing the radio. Further k cycles; q keeps the selection. YAC does not change the speech/lock button assignment. Hardware verification pending.

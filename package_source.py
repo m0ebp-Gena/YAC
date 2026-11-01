@@ -51,6 +51,12 @@ with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as package:
         entry.external_attr = mode << 16
         entry.compress_type = zipfile.ZIP_DEFLATED
         package.writestr(entry, path.read_bytes())
+    # The repository's install.sh is the complete Pi installer. The general
+    # Mac/Linux package exposes the short command without shipping Pi setup.
+    entry = zipfile.ZipInfo(folder + '/install.sh')
+    entry.external_attr = 0o100755 << 16
+    entry.compress_type = zipfile.ZIP_DEFLATED
+    package.writestr(entry, (root / 'install-yac.sh').read_bytes().replace(b'install-yac.sh', b'install.sh'))
     for relative, source in sorted(documents(root, 'mac-linux').items()):
         entry = zipfile.ZipInfo(folder + '/' + relative.as_posix())
         entry.external_attr = (0o100444 if source.name.endswith('-template.txt') else 0o100644) << 16
@@ -59,6 +65,8 @@ with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as package:
 with zipfile.ZipFile(archive) as package:
     assert package.testzip() is None
     assert b"\r" not in package.read(folder + "/install-yac.sh")
+    assert package.read(folder + '/install.sh') == (root / 'install-yac.sh').read_bytes().replace(b'install-yac.sh', b'install.sh')
+    assert 'install_yac.py --pi' not in package.read(folder + '/install.sh').decode()
     assert package.read(folder + "/yac.py") == (root / "yac.py").read_bytes()
     for guide in (root / 'doc/supported-radios').glob('*.txt'):
         assert package.read(folder + '/doc/supported-radios/' + guide.name) == guide.read_bytes()

@@ -1,0 +1,5 @@
+Notas de radio para decodificadores
+
+TS-590SG: seleccione CW primero. Seguimiento automático de velocidad. Más/menos ajustan el umbral de 1 a 30. Se restauran el estado del decodificador y Auto Information al detenerlo.
+
+IC-705 RTTY: seleccione RTTY primero. Usa el puerto USB B asociado de forma inequívoca y restaura su función. Rechaza DV/Weather y asignaciones SEND/manipulación en B. Si hay ambigüedad, configure rtty_port con el puerto B verificado de esa radio. Otros modelos RTTY aún no están disponibles.

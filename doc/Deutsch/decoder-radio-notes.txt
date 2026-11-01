@@ -1,0 +1,5 @@
+Decoder: Funkgerätehinweise
+
+TS-590SG: zuerst CW wählen. Der interne Decoder folgt der Geschwindigkeit automatisch. Plus/Minus ändern die Schwelle 1 bis 30. Decoderstatus und Auto Information werden beim Stopp wiederhergestellt.
+
+IC-705 RTTY: zuerst RTTY wählen. Verwendet den eindeutig zugeordneten USB-Port B. DV/Weather oder SEND/Tastung auf B verhindern das Öffnen. Bei Mehrdeutigkeit rtty_port auf den geprüften Begleitport setzen. Andere RTTY-Modelle sind noch nicht unterstützt.

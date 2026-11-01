@@ -11,6 +11,7 @@ f: Filtry. Klawisze filtrów poniżej.
 g: Pomiar SWR. Podłącz antenę; kolejne g mierzy i przywraca ustawienia. h pomaga; q wraca.
 h: Pomoc. h wewnątrz funkcji czyta szczegółową pomoc.
 i: Ton/kod. i przełącza CTCSS, DCS normalny i odwrócony, jeśli obsługiwane. Wpisz wartość i wykonuj polecenia.
+k: Blokada. Wejście odczytuje; kolejne k zmienia stan. h pomoc; q zachowuje wybór.
 l: Split/przemiennik. Ponowne l wyłącza. h i Enter w polu wpisywania dają pomoc.
 m: Emisja. Kropka następna; przecinek poprzednia.
 o: Odstrojenie. o przełącza Odbiór, Nadawanie, Kasowanie. Kropka dodaje 10 herców; przecinek odejmuje. Przy Kasowaniu oba klawisze kasują.

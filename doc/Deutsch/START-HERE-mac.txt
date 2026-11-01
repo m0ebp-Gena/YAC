@@ -12,7 +12,7 @@ Terminal öffnen: Befehl+Leertaste, Terminal eingeben, Return.
 
 Geben Sie cd, ein Leerzeichen und den vollständigen Pfad zum entpackten YAC-Ordner ein; Pfade mit Leerzeichen in Anführungszeichen setzen. Drücken Sie Enter. Dann:
 
-    sh install-yac.sh
+    sh install.sh
 
 Als normaler Benutzer ausführen, ohne sudo. Enter bestätigt Ja bei Install YAC? und den optionalen Launcher-Fragen. Andere Python-Umgebungen bleiben unverändert. Für Abhängigkeiten wird Internet benötigt. Falls ein Launcher Administratorrechte erfordert, geben Sie auf Nachfrage Ihr normales Anmeldepasswort ein; Zeichen werden nicht angezeigt.
 

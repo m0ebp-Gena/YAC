@@ -14,6 +14,25 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class RegionTests(unittest.TestCase):
+    def test_ftx_retained_ars_uses_actual_transmit_mode(self):
+        cat = Cat('0840')
+        cat.state.update({'OS0': '3', 'OS1': '3'})
+        with patch.object(yac, '_cat_exchange', side_effect=cat.exchange), \
+             patch.object(yac, '_yaesu_vfo_side', 0), \
+             patch.object(yac, '_read_settings', return_value={'region': '1'}):
+            for hz in ('028020000', '014213000'):
+                cat.state['FA'] = hz
+                self.assertTrue(region_plan.permits_transmission(yac, ROOT, cat.radio))
+            cat.state.update({'ST': '1', 'FT': '1', 'MD1': '4'})
+            self.assertFalse(region_plan.permits_transmission(yac, ROOT, cat.radio))
+            cat.state['MD1'] = '2'
+            self.assertTrue(region_plan.permits_transmission(yac, ROOT, cat.radio))
+            cat.state.update({'ST': '0', 'FT': '0', 'MD0': '4'})
+            for shift in ('1', '2', '3'):
+                cat.state['OS0'] = shift
+                self.assertFalse(region_plan.permits_transmission(yac, ROOT, cat.radio))
+        self.assertFalse(any(c.startswith('OS') and len(c) > 4 for c in cat.commands))
+
     def test_default_and_strict_ini_validation(self):
         self.assertEqual(region_plan.selected({}), 1)
         with tempfile.TemporaryDirectory() as directory:
@@ -87,6 +106,8 @@ class RegionTests(unittest.TestCase):
                 with patch.object(yac, '_read_settings', return_value={'region': '2'}):
                     self.assertTrue(region_plan.permits_transmission(yac, ROOT, cat.radio))
                 cat.state['OS0'] = '2'
+                cat.state['MD1'] = '4'
+                cat.state['OS1'] = '2'
                 self.assertFalse(region_plan.permits_transmission(yac, ROOT, cat.radio))
             self.assertTrue(all(c[:-1] in cat.state or c in {'IF;', 'OI;'} for c in cat.commands))
 

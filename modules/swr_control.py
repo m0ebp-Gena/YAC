@@ -164,7 +164,12 @@ def measure(yac, root, radio, language, *, clock=time.monotonic, sleep=time.slee
             value = statistics.median(item[0] for item in samples)
             over = sum(item[1] for item in samples) >= 2
             if max(item[0] for item in samples) - min(item[0] for item in samples) <= max(0.2, value * 0.1):
-                result = label('l376' if over else 'l375', value=f'{value:.1f}')
+                displayed = f'{value:.1f}'
+                result = label('l376' if over else 'l375', value=displayed)
+                if displayed == '1.0' and not over:
+                    result = label('l397') + '. ' + hints.get_hint(root, language, 'm003')
+                elif float(displayed) >= 2.5 or over:
+                    result += '. ' + hints.get_hint(root, language, 'm002')
         if samples and b.spec.get('transmit_seconds'):
             sleep(max(0, b.spec['transmit_seconds'] - (clock() - start)))
         LOG.debug('SWR model=%s frequency=%s native_power=%s samples=%s',

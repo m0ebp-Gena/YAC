@@ -72,3 +72,7 @@ AGC adjustment is not implemented for this model. Unknown readings prevent AGC c
 GET SWR - DEVELOPMENT
 Get SWR currently reports Not supported. SW returns a ratio directly, but PC reads measured watts rather than setting them. A verified reversible carrier/power sequence is not yet available; TS-480 transmit commands are not used.
 See doc/swr-controls.txt for the sequence, recovery and limitations.
+
+LOCK CONTROL - DEVELOPMENT
+k reports Not supported. No dial-lock CAT command is listed in the QMX CAT manual.
+Entry reads without changing the radio. Further k cycles; q keeps the selection. YAC does not change the speech/lock button assignment. Hardware verification pending.

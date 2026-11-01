@@ -46,3 +46,21 @@ class RadioRecoveryTests(unittest.TestCase):
                     self.assertEqual(output.getvalue().splitlines().count(yac._read_label(ROOT,language,token,'')),1)
                 self.assertFalse(radio.serial.is_open)
                 self.assertFalse(hasattr(radio,'_yac_connection_watch'))
+
+    def test_serial_timeout_during_tuning_recovers_and_accepts_quit(self):
+        from serial import SerialTimeoutException
+        radio = create_dummy_radio()
+        radio.is_dummy = False
+        keys = iter(('.', 'q', 'y'))
+        def read_key(idle_callback=None):
+            return next(keys)
+        with patch.object(yac, 'connect_radio', return_value=radio), \
+             patch.object(yac, '_read_settings', return_value={'lang': 'en', 'call': 'test'}), \
+             patch.object(lang_sel, 'read_key', side_effect=read_key), \
+             patch.object(radio.serial, 'write', side_effect=SerialTimeoutException('Write timeout')), \
+             patch.object(yac.time, 'sleep'), self.assertLogs('yac', level='ERROR'), \
+             redirect_stdout(io.StringIO()) as output:
+            self.assertEqual(yac.main([]), 0)
+        for token in ('l050', 'l109'):
+            self.assertEqual(output.getvalue().splitlines().count(yac._read_label(ROOT, 'en', token, '')), 1)
+        self.assertFalse(radio.serial.is_open)

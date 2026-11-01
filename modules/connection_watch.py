@@ -1,5 +1,6 @@
 """Read-only connection checks, called solely from the terminal input loop."""
 import logging
+from contextlib import contextmanager
 import time
 
 LOG = logging.getLogger('yac')
@@ -51,6 +52,18 @@ class ConnectionWatch:
         self.recovery_deadline = None
         self.read_recovery_state = read_recovery_state or read_frequency
         self.expired = False
+
+    @contextmanager
+    def command(self):
+        """Unwind a failed control and let the input loop handle reconnection."""
+        try:
+            yield
+        except OSError as error:
+            from serial import SerialException
+            if not isinstance(error, SerialException):
+                raise
+            LOG.exception('Radio command failed port=%s', self.radio.port)
+            self.report_error()
 
     def report_error(self):
         if self.radio.is_dummy:

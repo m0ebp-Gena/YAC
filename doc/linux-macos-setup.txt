@@ -22,7 +22,7 @@ INSTALLING
 2. Open a terminal and change to the extracted source directory.
 3. Run:
 
-       sh install-yac.sh
+       sh install.sh
 
    You do not need to mark the script executable when running it this way.
    Run it as your normal user, without sudo.

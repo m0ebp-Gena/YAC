@@ -1,0 +1,32 @@
+YAC test build - 31 October 2026 r6
+
+FTX-1 Tune and SWR accept retained ARS in USB/CW.
+SWR near unity: Near 1 to 1. Good match.
+Other numerical estimates use about; 2.5 and above adds High SWR.
+Help explains tuner limits and SWR versus antenna efficiency.
+
+Windows uses verified PSF Python 3.14.7 and an isolated dependency set,
+including CFFI 2.1.0 for Python 3.14. Earlier shared dependencies are
+not used. This does not establish the cause of the Defender alert.
+Optima Tune and SWR observed working on Windows at 14.214 and
+28.021 MHz in r1. Mac hardware verification remains outstanding.
+
+Windows updates retry temporary access-denied renames within a bounded
+window, and report the path, Windows error and attempt count on failure.
+Local installer checks passed; published GitHub update not tested.
+
+Mac/Linux installation now starts with sh install.sh. The older
+install-yac.sh command remains available. Complete Pi setup is unchanged.
+
+Receive audio: Enter saves; q leaves without saving. Missing input now
+produces a specific hint. Decoder help gives audio setup near the start;
+model-specific details are in separate translated radio notes.
+
+CW decoder z requests supported native Zero In and matches decoder pitch
+to the radio without changing the radio pitch. It announces frequency
+readback and pitch; it does not confirm signal lock. FTX-1 MAIN/SUB,
+FTDX10 and FT-710 profiles are included. Hardware verification pending.
+
+CW and RTTY decoding now use s for Start/Stop; e no longer toggles.
+Zero In reports RIT active or XIT active instead of a generic error.
+Offsets remain unchanged and must be turned off before retrying z.

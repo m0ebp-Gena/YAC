@@ -1,0 +1,7 @@
+{
+  "protocol": "CAT",
+  "read": "LK;",
+  "pattern": "LK([01]0);",
+  "off": "LK00;",
+  "on": "LK10;"
+}

@@ -12,7 +12,7 @@ Abra Terminal. Necesita Python 3.10 o posterior. En Mac puede obtenerlo de pytho
 
 Escriba cd, un espacio y la ruta completa de la carpeta YAC extraída, entre comillas si contiene espacios. Pulse Intro. Después ejecute:
 
-    sh install-yac.sh
+    sh install.sh
 
 Use su usuario normal, sin sudo. Intro acepta Sí en Install YAC? y en las preguntas opcionales sobre lanzadores. Los demás entornos de Python no cambian. Se necesita internet para instalar dependencias. Si un lanzador necesita permisos de administrador, escriba su contraseña habitual cuando se solicite; los caracteres no se muestran.
 

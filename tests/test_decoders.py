@@ -17,6 +17,52 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class DecoderTests(unittest.TestCase):
+    def test_s_toggles_cw_and_rtty_while_e_does_not(self):
+        for kind in ('c', 'r'):
+            manager=DecoderManager(yac,ROOT,SimpleNamespace(),'en')
+            session=SimpleNamespace(close=lambda:None,error=None)
+            manager.session=session;manager.kind=kind
+            with patch.object(session,'close') as close, \
+                 patch.object(manager,'start',return_value=manager.label('l276')) as start, \
+                 patch('modules.chat_int.show_response') as say:
+                manager.decoder_view(kind,iter(['e','s','s','q']).__next__)
+            close.assert_called_once()
+            start.assert_called_once_with(kind)
+            self.assertIn(manager.label('l129'),[c.args[0] for c in say.call_args_list])
+
+    def test_missing_audio_input_has_specific_hint_without_opening_capture(self):
+        radio = SimpleNamespace(protocol='CAT', model_id='0840')
+        for language in ('en', 'de', 'es', 'pl'):
+            manager = DecoderManager(yac, ROOT, radio, language)
+            with patch.object(yac, '_read_settings', return_value={}), \
+                 patch.object(yac, '_current_mode_code', return_value='3'), \
+                 patch('modules.mic_gain.profile', return_value={}), \
+                 patch('modules.cw_audio.AudioCW') as audio:
+                result = manager.start('c')
+            hint = (ROOT / 'lang' / language / 'hints/m004').read_text(encoding='utf-8').strip()
+            self.assertIn(hint, result)
+            self.assertLessEqual(len(hint), 50)
+            audio.assert_not_called()
+            self.assertIsNone(manager.session)
+            help_text = (ROOT / 'lang' / language / 'help/h013').read_text(encoding='utf-8')
+            self.assertIn(hint, help_text)
+            self.assertNotIn('cw_audio_device', help_text)
+
+    def test_configured_audio_starts_and_other_failures_keep_generic_response(self):
+        radio = SimpleNamespace(protocol='CAT', model_id='0840')
+        for settings in ({'cw_audio_identity': 'saved identity'}, {'cw_audio_device': '0'}):
+            for fails in (False, True):
+                manager = DecoderManager(yac, ROOT, radio, 'en')
+                with patch.object(yac, '_read_settings', return_value=settings), \
+                     patch.object(yac, '_current_mode_code', return_value='3'), \
+                     patch('modules.mic_gain.profile', return_value={}), \
+                     patch('modules.cw_audio.AudioCW') as audio:
+                    if fails:
+                        audio.return_value.start.side_effect = ValueError('Other audio error')
+                    result = manager.start('c')
+                    audio.return_value.start.assert_called_once()
+                    self.assertEqual(result, manager.label('l279' if fails else 'l276'))
+
     def test_fragmented_unsolicited_cw_survives_cat_queries(self):
         text = TextBuffer()
         class Serial:
@@ -205,7 +251,7 @@ class DecoderTests(unittest.TestCase):
             manager.decoder_view('c',iter(['q']).__next__)
         self.assertIs(manager.session,session)
         with patch.object(session,'close') as close, patch('modules.chat_int.show_response'), patch('modules.chat_int.show_back'):
-            manager.decoder_view('c',iter(['e','q']).__next__)
+            manager.decoder_view('c',iter(['s','q']).__next__)
             close.assert_called_once()
         self.assertIsNone(manager.session)
 

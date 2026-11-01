@@ -1,17 +1,20 @@
 Hilfe: Decoder
 
 Decoder: c öffnet CW, r RTTY. Die Erfassung startet beim Öffnen, sofern die Einrichtung dies erlaubt. Nur ein Decoder läuft gleichzeitig.
-Im Decoder: e stoppt oder startet ausdrücklich. q meldet Hauptebene; die Erfassung läuft weiter. Nochmals q führt zu den Hauptfunktionen. Ein anderer Decoder beendet die bisherige Erfassung. Beim Beenden stellt YAC die ursprünglichen Radio-Decoder-Einstellungen wieder her.
+Vor der Audio-CW-Dekodierung im Decoder-Menü a drücken, um Empfangsaudio einzurichten. Punkt wählt den nächsten Eingang, Komma den vorherigen; c wechselt den Kanal; v prüft den Pegel. Enter speichert; q kehrt zum Decoder-Menü zurück. Danach startet c CW. Aus der CW-Ansicht führt q zum Decoder-Menü; dort a drücken. Ohne Auswahl erscheint Audioeingang nicht festgelegt.
+Im Decoder: s stoppt oder startet ausdrücklich. q meldet Hauptebene; die Erfassung läuft weiter. Nochmals q führt zu den Hauptfunktionen. Ein anderer Decoder beendet die bisherige Erfassung. Beim Beenden stellt YAC die ursprünglichen Radio-Decoder-Einstellungen wieder her.
 v liest den neuesten Text; Komma früheren Text; Punkt späteren Text. Abschnitte haben 60 Zeichen. n löscht Text. Neuer Text erscheint automatisch nur in der Decoder-Ansicht; sonst wird still erfasst. Sprachausgabe und Braille erfolgen durch die vorhandene Terminal-Zugangstechnik. h gibt Hilfe.
-TS-590SG: zuerst CW wählen. Der interne Decoder folgt der Geschwindigkeit automatisch. Plus/Minus ändern die Schwelle 1 bis 30. Decoderstatus und Auto Information werden beim Stopp wiederhergestellt.
-Andere unterstützte Radios: experimentelle Audio-CW-Dekodierung mit fester Tonhöhe und automatischer Zeitmessung. Optionale Abhängigkeiten aus requirements-decoders.txt installieren. cw_audio_device in yac.ini ausdrücklich setzen, cw_audio_pitch_hz an den Empfangston und cw_audio_channel an Main/Sub anpassen. Kein Standardmikrofon wird gewählt. Bei erkanntem Senden oder unbekanntem Sendestatus pausiert die Dekodierung; die Abfrage ist nicht sofortig. Empfangsfehler sind möglich.
-IC-705 RTTY: zuerst RTTY wählen. Verwendet den eindeutig zugeordneten USB-Port B. DV/Weather oder SEND/Tastung auf B verhindern das Öffnen. Bei Mehrdeutigkeit rtty_port auf den geprüften Begleitport setzen. Andere RTTY-Modelle sind noch nicht unterstützt.
+Audio-CW beginnt mit geschätzten 20 WPM und passt sich dann an. cw_audio_wpm in yac.ini legt den Startwert von 5 bis 60 fest. cw_audio_pitch_hz ist standardmäßig 600 und muss zum Empfangston passen. Ein starkes Funksignal bestätigt kein brauchbares Audio am gewählten Eingangskanal.
+Andere unterstützte Radios: experimentelle Audio-CW-Dekodierung mit fester Tonhöhe und automatischer Zeitmessung. cw_audio_pitch_hz in yac.ini an den Empfangston anpassen. Kein Standardmikrofon wird gewählt. Bei erkanntem Senden oder unbekanntem Sendestatus pausiert die Dekodierung; die Abfrage ist nicht sofortig. Empfangsfehler sind möglich.
 Startfehler: Modus, Audio-Einrichtung, USB-Zuordnung oder CAT prüfen. Einzelheiten stehen im Debug-Protokoll. Keine Sendebefehle; Frequenz, Modus und Leistung bleiben unverändert.
 
-d dann a: Empfangsaudio einrichten; h erklärt Auswahl und Pegelprüfung.
 
 Decoder konnte nicht starten. Modus und Einrichtung prüfen; h für Hilfe.
 Decoder-Eingang verloren; Erfassung gestoppt. Funkgerät prüfen.
+
+z fordert automatisches CW Zero In an, sofern unterstützt. Dabei wird der Empfänger nachgestimmt und der Audio-Decoder an die gelesene CW-Tonhöhe des Radios angepasst, ohne diese zu ändern. Frequenz und Decoder-Tonhöhe werden angesagt. Das Rücklesen bestätigt keine Signalerfassung; Empfang und Text prüfen. Frequenzänderungen bleiben erhalten. Die Decoder-Tonhöhe gilt nur für diese YAC-Sitzung; gespeicherte Audioeinstellungen bleiben unverändert. Nicht unterstützte Geräte melden Nicht unterstützt. Audio-CW muss laufen und das Radio in CW empfangen.
+
+RIT aktiv oder XIT aktiv bedeutet, dass Zero In wegen eines eingeschalteten Clarifiers nicht gesendet wurde. Den betreffenden Versatz vor einem erneuten z ausschalten. YAC löscht oder deaktiviert keine Offsets. Wird dies vor dem Abstimmen erkannt, läuft die Audio-Erfassung weiter.
 
 ***
 Ende der Hilfe

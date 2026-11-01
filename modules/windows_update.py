@@ -135,19 +135,28 @@ public static class YacReparseTag {
         throw ('Refusing to replace a linked application file: ' + $Path)
     }
 }
+function Rename-ApplicationFile($From, $To) {
+    if ([IO.Directory]::Exists($From)) { [IO.Directory]::Move($From, $To) }
+    else { [IO.File]::Move($From, $To) }
+}
 function Move-ApplicationFile($From, $To) {
     # Move-Item can recursively move cloud directories and leave a partial
     # backup when a scanner holds one child. Use a single rename instead.
     for ($Attempt = 0; $Attempt -lt 12; $Attempt++) {
         try {
-            if ([IO.Directory]::Exists($From)) { [IO.Directory]::Move($From, $To) }
-            else { [IO.File]::Move($From, $To) }
+            Rename-ApplicationFile $From $To
             return
         } catch {
             $Cause = $_.Exception
             while ($Cause.InnerException) { $Cause = $Cause.InnerException }
             $Code = $Cause.HResult -band 65535
-            if ($Code -notin @(32, 33) -or $Attempt -eq 11) { throw }
+            # Cloud-file filters can temporarily return access denied too.
+            # Keep the same bounded retry window; permanent denial still fails.
+            if ($Code -notin @(5, 32, 33) -or $Attempt -eq 11) {
+                throw ('Rename failed: ' + $From + ' -> ' + $To +
+                       '; Windows error ' + $Code + '; attempts ' + ($Attempt + 1) +
+                       '; ' + $Cause.Message)
+            }
             Start-Sleep -Milliseconds 500
         }
     }

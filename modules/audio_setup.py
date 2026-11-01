@@ -65,6 +65,8 @@ def control(yac, root, language, read_key):
                                     name=device['name'], host=device['host'], channel=channel,
                                     channels=device['channels']))
     chat_int.show_response(label('l286'))
+    chat_int.show_response(label('l398'))
+    chat_int.show_response(label('l399'))
     describe()
     while True:
         key = read_key().casefold()
@@ -80,7 +82,7 @@ def control(yac, root, language, read_key):
         elif key == 'c':
             channel = channel % devices[position]['channels'] + 1
             describe()
-        elif key in ('v', 'e'):
+        elif key in ('v', '\r', '\n'):
             device = devices[position]
             try:
                 # Re-enumerate, so a hotplug/reordered index cannot select a microphone.

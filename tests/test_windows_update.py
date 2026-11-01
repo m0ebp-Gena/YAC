@@ -36,6 +36,48 @@ def release():
 
 class WindowsUpdateTests(unittest.TestCase):
     @unittest.skipUnless(POWERSHELL.is_file(), 'Windows PowerShell required')
+    def test_access_denied_rename_retries_then_succeeds_or_stops(self):
+        for failures in (2, 99):
+            with self.subTest(failures=failures), tempfile.TemporaryDirectory() as folder:
+                base = Path(folder).resolve()
+                source, target = base / 'original', base / 'renamed'
+                source.mkdir()
+                (source / 'keep.txt').write_text('original contents')
+                script = windows_update.installer_script(base, base, base, 'YAC.exe', 'YAC.exe', 2147483000)
+                definitions = script.split("try {\n    Write-Host 'Waiting", 1)[0]
+                hooks = r'''
+$script:Attempts = 0
+$script:Sleeps = 0
+function Start-Sleep { param($Milliseconds) $script:Sleeps++ }
+function Rename-ApplicationFile($From, $To) {
+    $script:Attempts++
+    if ($script:Attempts -le FAILURES) {
+        throw [IO.IOException]::new('Injected access denial', -2147024891)
+    }
+    [IO.Directory]::Move($From, $To)
+}
+'''.replace('FAILURES', str(failures))
+                script = definitions + hooks + '\ntry { Move-ApplicationFile ' + windows_update.literal(source) + ' ' + windows_update.literal(target) + r'''
+    Write-Output 'Renamed'
+} catch { Write-Output $_.Exception.Message }
+Write-Output ('Attempts=' + $script:Attempts + ';Sleeps=' + $script:Sleeps)
+'''
+                result = subprocess.run([str(POWERSHELL), '-NoProfile', '-EncodedCommand',
+                    base64.b64encode(script.encode('utf-16le')).decode()], capture_output=True, text=True, timeout=30)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                if failures == 2:
+                    self.assertIn('Attempts=3;Sleeps=2', result.stdout)
+                    self.assertEqual((target / 'keep.txt').read_text(), 'original contents')
+                    self.assertFalse(source.exists())
+                else:
+                    self.assertIn('Windows error 5; attempts 12', result.stdout)
+                    self.assertIn(str(source), result.stdout)
+                    self.assertIn(str(target), result.stdout)
+                    self.assertIn('Attempts=12;Sleeps=11', result.stdout)
+                    self.assertEqual((source / 'keep.txt').read_text(), 'original contents')
+                    self.assertFalse(target.exists())
+
+    @unittest.skipUnless(POWERSHELL.is_file(), 'Windows PowerShell required')
     def test_real_dropbox_cloud_file_is_accepted_without_modification(self):
         cloud = Path(__file__).resolve().parents[1] / 'COPYING'
         before = cloud.read_bytes()

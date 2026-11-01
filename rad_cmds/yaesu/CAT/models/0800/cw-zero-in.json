@@ -1,0 +1,16 @@
+{
+  "family": "yaesu",
+  "pitch_read": "KP;",
+  "pitch_pattern": "KP(\\d{2});",
+  "pitch_min": 0,
+  "pitch_max": 75,
+  "pitch_base_hz": 300,
+  "pitch_step_hz": 10,
+  "start": "ZI{side};",
+  "side": 0,
+  "readback_delay_seconds": 1.0,
+  "sources": [
+    "https://www.yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/FT-710_CAT_OM_ENG_2306-C.pdf"
+  ],
+  "notes": "ZI has no completion response. Frequency readback does not prove signal lock. Hardware verification pending."
+}

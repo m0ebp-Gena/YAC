@@ -87,3 +87,10 @@ TUNER TIMING - 30 OCTOBER 2026
 Tuning start is followed immediately by CAT status in the same exchange,
 as tested on DX10. Subsequent polling remains every half second.
 FT-710 timing change has automated checks; physical testing is pending.
+
+CW ZERO IN - DEVELOPMENT
+Inside audio CW decoding, z reads KP and matches the decoder pitch without changing the radio pitch, then requests ZI0 for the selected VFO. It reads the frequency after a one-second delay. No completion-status command exists; a frequency readback is not evidence of signal lock. Frequency changes are kept; decoder pitch is session-only. Physical verification pending.
+
+LOCK CONTROL - DEVELOPMENT
+k: Lock Off / Lock On. LK locks the main dial and STEP/MCH frequency/channel changes.
+Entry reads without changing the radio. Further k cycles; q keeps the selection. YAC does not change the speech/lock button assignment. Hardware verification pending.

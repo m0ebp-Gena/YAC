@@ -17,6 +17,7 @@ def documents(root, platform):
             path = base / ('START-HERE-' + system + '.txt')
             result[path] = root / path
         result[base / CHARTS[language]] = root / CHARTS[language]
+        result[base / 'decoder-radio-notes.txt'] = root / base / 'decoder-radio-notes.txt'
     for name in ('linux-macos-setup.txt', 'debian-trixie-setup.txt'):
         if platform != 'win':
             result[Path('doc/English') / name] = root / 'doc' / name

@@ -2,7 +2,7 @@
 import logging
 import time
 from modules.decoder_text import TextBuffer, RestoreError
-from modules import chat_int, help_int
+from modules import chat_int, help_int, hints
 
 LOG = logging.getLogger('yac')
 
@@ -17,6 +17,7 @@ class DecoderManager:
         self.pending = ''
         self.last_output = time.monotonic()
         self.last_audio_check = 0
+        self.audio_pitch = None
 
     def label(self, token, **values):
         return self.yac._read_label(self.root, self.language, token, '').format(**values)
@@ -26,7 +27,7 @@ class DecoderManager:
         if session:
             session.close()
 
-    def start(self, kind):
+    def start(self, kind, *, clear=True):
         if self.session and self.kind == kind:
             return self.label('l276')
         try:
@@ -47,14 +48,19 @@ class DecoderManager:
                 mode = self.yac._current_mode_code(self.radio)
                 if mode not in ('3', '7', 3, 7):
                     return self.label('l285')
+                if not any(settings.get(name, '').strip() for name in ('cw_audio_identity', 'cw_audio_device')):
+                    return self.label('l279') + '. ' + hints.get_hint(self.root, self.language, 'm004')
+                if self.audio_pitch is not None:
+                    settings = dict(settings, cw_audio_pitch_hz=str(self.audio_pitch))
                 session = AudioCW(self.buffer, settings)
         else:
             if self.radio.model_id.casefold() != 'ic-705':
                 return self.label('l129')
             from modules.rtty_decode import IcomRTTY
             session = IcomRTTY(self.yac, self.radio, self.buffer, settings)
-        self.buffer.clear()
-        self.pending = ''
+        if clear:
+            self.buffer.clear()
+            self.pending = ''
         try:
             session.start()
         except RestoreError:
@@ -66,6 +72,37 @@ class DecoderManager:
             return self.label('l279')
         self.session, self.kind = session, kind
         return self.label('l276')
+
+    def zero_in(self):
+        from modules import cw_zero_in, split_control
+        if not self.session or self.kind != 'c' or not hasattr(self.session, 'paused'):
+            return self.label('l129')
+        try:
+            prepared = cw_zero_in.prepare(self.yac, self.root, self.radio)
+        except cw_zero_in.Unsupported:
+            return self.label('l129')
+        except split_control.ClarifierActive as error:
+            LOG.info('CW Zero In blocked: %s', error)
+            return self.label('l402' if error.kind == 'rit' else 'l403')
+        except (OSError, ValueError, KeyError, split_control.Unavailable, split_control.CommandFileError):
+            LOG.exception('CW Zero In preflight failed')
+            return self.label('l003')
+        try:
+            self.stop()  # Discard old queued audio and partial Morse timing.
+            frequency = cw_zero_in.apply(self.yac, self.radio, prepared)
+            self.audio_pitch = prepared[2]
+        except split_control.ClarifierActive as error:
+            LOG.info('CW Zero In blocked: %s', error)
+            self.start('c', clear=False)
+            return self.label('l402' if error.kind == 'rit' else 'l403')
+        except (OSError, RuntimeError, ValueError, KeyError, split_control.Unavailable):
+            LOG.exception('CW Zero In failed; frequency may have changed')
+            self.start('c', clear=False)
+            return self.label('l003')
+        started = self.start('c', clear=False)
+        from modules.split_control import mhz
+        response = f"{self.label('l400')} {mhz(frequency)} MHz, {self.label('l401', value=self.audio_pitch)}"
+        return response if self.session else response + '. ' + started
 
     def tick(self):
         now = time.monotonic()
@@ -144,7 +181,7 @@ class DecoderManager:
                     return
                 if key == 'h':
                     chat_int.show_response(help_int.get_help(self.root, self.language, 'h013'))
-                elif key == 'e':
+                elif key == 's':
                     try:
                         if self.session and self.kind == kind:
                             self.stop()
@@ -155,6 +192,8 @@ class DecoderManager:
                         LOG.exception('Decoder stop failed')
                         response = self.label('l003')
                     chat_int.show_response(response)
+                elif key == 'z' and kind == 'c':
+                    chat_int.show_response(self.zero_in())
                 elif key in ('v', '.', ','):
                     if key == 'v':
                         position = -1

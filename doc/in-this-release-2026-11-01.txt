@@ -1,0 +1,5 @@
+YAC local test build - 1 November 2026 r1
+
+Top-level k reads the current radio lock without changing it. Further k cycles the supported lock states. q leaves the selection applied. The supported Icom dial/panel models cycle Off, Dial, Panel. Other supported models cycle Off, On. QMX/QMX+ report Not supported. Radio readback confirms changes; unknown or rejected states report Radio Error.
+
+Help and labels are aligned in English, German, Spanish and Polish. This local test package includes the lock-control implementation. Live-radio verification, GitHub publication and an end-to-end update from a published release remain outstanding.

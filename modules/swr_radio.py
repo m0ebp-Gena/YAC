@@ -1,6 +1,7 @@
 """Native SWR transport and model data, separate from the measurement control."""
 import json
 import re
+import time
 
 from modules import mic_gain, power_control, split_control, ts480_control
 from modules import verify_settings as settings
@@ -120,7 +121,7 @@ class Radio:
             if rig.on:
                 raise Invalid('Split/repeater operation')
             if rig.yaesu:
-                if rig.read('txside') != str(rig.side) or rig.read('shift') != '0':
+                if rig.read('txside') != str(rig.side) or rig.shift_blocks_transmission(rig.side):
                     raise Invalid('TX selection or shift')
                 side = rig.side
                 if self.side is not None and self.side != side:
@@ -165,6 +166,16 @@ class Radio:
                 # Setters are silent. Send the state query in the same write,
                 # so the serial reply wait is spent on an actual response.
                 answer = self.yac._cat_exchange(self.radio, command + 'TX;').strip()
+                if not on:
+                    # The first reply can still describe the transition out of
+                    # CW transmission. Give the radio time before querying
+                    # again; do not repeatedly send the receive setter.
+                    for _ in range(8):
+                        if answer == 'TX0;':
+                            time.sleep(0.15)
+                            return
+                        time.sleep(0.15)
+                        answer = self.yac._cat_exchange(self.radio, 'TX;').strip()
                 if answer != ('TX1;' if on else 'TX0;'):
                     raise Unavailable('TX/RX not confirmed')
                 return

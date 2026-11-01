@@ -6,7 +6,7 @@ The private chart is deliberately unstarred for the user to assess.
 
 Press d, then c for CW or r for RTTY. This starts capture if the selected
 mode and input are usable. Only one capture runs. q leaves each menu with
-Back and preserves capture; e inside explicitly stops or restarts it.
+Back and preserves capture; e insids explicitly stops or restarts it.
 YAC exit stops capture and restores native decoder/Auto Information settings.
 Native TS-590SG and IC-705 receiver settings are checked on readback.
 A restoration failure is reported, rather than silently claimed successful.

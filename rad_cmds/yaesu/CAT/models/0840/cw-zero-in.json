@@ -1,0 +1,16 @@
+{
+  "family": "yaesu",
+  "pitch_read": "KP;",
+  "pitch_pattern": "KP(\\d{2});",
+  "pitch_min": 0,
+  "pitch_max": 75,
+  "pitch_base_hz": 300,
+  "pitch_step_hz": 10,
+  "start": "ZI{side};",
+  "side": "selected",
+  "readback_delay_seconds": 1.0,
+  "sources": [
+    "https://connect.yaesu.com/indivisual/wp-content/uploads/2025/11/FTX-1_CAT_OM_JPN_2512-D.pdf"
+  ],
+  "notes": "ZI has no completion response. Frequency readback does not prove signal lock. Hardware verification pending."
+}
