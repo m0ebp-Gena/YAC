@@ -233,5 +233,47 @@ function Copy-Item {
             self.assertTrue(stage.exists())
 
 
+    def test_stage_is_inside_installation_even_with_other_default_temp(self):
+        data=archive()
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder).resolve()/'portable';root.mkdir()
+            other=Path(folder).resolve()/'system-temp';other.mkdir()
+            selected=release()
+            expected=hashlib.sha256(data).hexdigest().encode()+b'  '+selected['assets'][0]['name'].encode()
+            mkdtemp=tempfile.mkdtemp
+            with patch.object(windows_update.sys,'platform','win32'), \
+                 patch.object(windows_update.sys,'frozen',True,create=True), \
+                 patch.object(windows_update.sys,'executable',str(root/'YAC-old.exe')), \
+                 patch.object(windows_update.sys.stdin,'isatty',return_value=True), \
+                 patch.object(updater,'fetch',side_effect=[data,expected]), \
+                 patch.object(tempfile,'tempdir',str(other)), \
+                 patch.object(tempfile,'mkdtemp',wraps=mkdtemp) as create, \
+                 patch.object(windows_update.subprocess,'Popen',side_effect=OSError('launch failed')):
+                with self.assertRaisesRegex(OSError,'launch failed'):
+                    windows_update.run(root,selected_release=selected)
+            self.assertEqual(Path(create.call_args.kwargs['dir']),root)
+            self.assertEqual(list(root.iterdir()),[root/'.update.lock'])
+            self.assertEqual(list(other.iterdir()),[])
+
+    @unittest.skipUnless(POWERSHELL.is_file(),'Windows PowerShell required')
+    def test_nested_same_volume_stage_installs_and_is_removed(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root=Path(folder).resolve()/'portable';root.mkdir()
+            (root/'yac.ini').write_text('preserve settings')
+            (root/'YAC-old.exe').write_text('old program')
+            (root/'_internal').mkdir();(root/'_internal/old.dll').write_text('old library')
+            stage=Path(tempfile.mkdtemp(prefix='.yac-windows-update-',dir=root))
+            source,program=windows_update.extract(archive(),stage)
+            script='function Read-Host { return "" }; function Start-Process { };\n'+windows_update.installer_script(root,source,stage,program,'YAC-old.exe',2147483000)
+            result=subprocess.run([str(POWERSHELL),'-NoProfile','-EncodedCommand',base64.b64encode(script.encode('utf-16le')).decode()],capture_output=True,text=True,timeout=30)
+            self.assertEqual(result.returncode,0,result.stdout+result.stderr)
+            self.assertIn('YAC update installed',result.stdout)
+            self.assertFalse(stage.exists())
+            self.assertEqual((root/'yac.ini').read_text(),'preserve settings')
+            self.assertEqual((root/'_internal/runtime.dll').read_text(),'new')
+            self.assertFalse((root/'_internal/old.dll').exists())
+            self.assertFalse((root/'YAC-old.exe').exists())
+
+
 if __name__ == '__main__':
     unittest.main()

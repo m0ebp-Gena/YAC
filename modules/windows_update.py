@@ -247,7 +247,10 @@ def run(destination, *, selected_release=None):
                 not re.fullmatch('[a-fA-F0-9]{64}', expected[0]) or
                 hashlib.sha256(data).hexdigest() != expected[0].lower()):
             raise ValueError('Download checksum failed; YAC was not changed.')
-        stage = Path(tempfile.mkdtemp(prefix='yac-windows-update-')).resolve()
+        # Backups are renamed atomically: keep the stage on the installation's
+        # volume even when Windows TEMP points to another drive. A private child
+        # also works when the installation itself is a mounted-volume directory.
+        stage = Path(tempfile.mkdtemp(prefix='.yac-windows-update-', dir=destination)).resolve()
         handed_over = False
         try:
             source, program = extract(data, stage)
@@ -260,6 +263,6 @@ def run(destination, *, selected_release=None):
                              creationflags=subprocess.CREATE_NEW_CONSOLE)
             handed_over = True
         finally:
-            if not handed_over and stage.parent == Path(tempfile.gettempdir()).resolve():
+            if not handed_over and stage.parent == destination.resolve():
                 shutil.rmtree(stage)
     return REQUEST

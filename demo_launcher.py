@@ -8,6 +8,26 @@ import yac
 def main():
     root = Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else Path(__file__).resolve().parent
     yac.project_root = lambda: root
+    if '--check-fresh-demo-session' in sys.argv:
+        # Match Windows console UTF-8 when diagnostics are captured to a pipe.
+        for stream in (sys.stdout, sys.stderr):
+            if hasattr(stream, 'reconfigure'):
+                stream.reconfigure(encoding='utf-8')
+        from unittest.mock import patch
+        from modules import name_call_sel
+        settings = yac._read_settings(root / 'yac.ini')
+        assert not settings.get('lang') and not settings.get('call'), 'Use a fresh disposable package'
+        keys = iter(['1', 'y', 'y', 'k', 'k', 'q', 'q', 'y'])
+        with patch.object(yac, 'find_radios', return_value=[]), \
+             patch.object(name_call_sel, '_edit_line', return_value='TEST'), \
+             patch.object(yac.lang_sel, 'read_key', side_effect=lambda **kwargs: next(keys)), \
+             patch.object(yac.time, 'sleep'), patch.object(name_call_sel.os, 'system', return_value=0):
+            result = yac.main([])
+        assert result == 0
+        settings = yac._read_settings(root / 'yac.ini')
+        assert settings['lang'] == 'en' and settings['call'] == 'TEST'
+        print('Fresh first-run language, name, demo, lock and exit checks passed. No radio ports were opened.')
+        return result
     if '--check-demo-session' in sys.argv:
         from unittest.mock import patch
         from modules.dummy_radio import create_dummy_radio
