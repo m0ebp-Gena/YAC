@@ -14,5 +14,8 @@ class PackageLayoutTests(unittest.TestCase):
             self.assertFalse(any('checklist' in path.name or path.name.endswith('-template.txt')
                                  for path in files))
             self.assertTrue(any(path.name.startswith('START-HERE') for path in files))
+            notes = [source for path, source in files.items() if path.name == 'cw-radio-notes.txt']
+            self.assertEqual(len(notes), 4)
+            self.assertTrue(all(path.is_file() for path in notes))
         self.assertTrue((root / 'doc/checklists/checklist-core-template.txt').is_file())
         self.assertTrue((root / 'doc/checklists/checklist-radio-template.txt').is_file())

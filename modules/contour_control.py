@@ -30,6 +30,8 @@ def operate(yac, root, radio, language, *, toggle=False, parameter='frequency', 
     if raw is None:
         return yac._radio_error(root, radio, language)
     value = int(raw)
+    if not spec['minimum'] <= value <= spec['maximum']:
+        return yac._radio_error(root, radio, language)
     target = max(spec['minimum'], min(spec['maximum'], value + direction * spec['step']))
     if target != value:
         payload = f'{target:+03d}' if parameter == 'level' else f'{target:0{spec["digits"]}d}'
@@ -41,4 +43,5 @@ def operate(yac, root, radio, language, *, toggle=False, parameter='frequency', 
         value = int(actual)
     if parameter == 'level':
         return label('l194' if value < 0 else 'l195' if value > 0 else 'l196', value=abs(value))
-    return label('l192' if parameter == 'frequency' else 'l193', value=value)
+    response = label('l192' if parameter == 'frequency' else 'l193', value=value)
+    return label('l190') + ', ' + response if not direction and parameter == 'frequency' else response

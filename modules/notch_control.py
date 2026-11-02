@@ -114,5 +114,6 @@ def operate(yac, root, radio, language, key, *, toggle=False, direction=0, width
         if actual is None or int(actual) != target:
             return yac._radio_error(root, radio, language)
         value = int(actual)
-    return label('l175' if position_spec.get('hertz_multiplier') else 'l176',
-                 value=value * position_spec.get('hertz_multiplier', 1))
+    response = label('l175' if position_spec.get('hertz_multiplier') else 'l176',
+                     value=value * position_spec.get('hertz_multiplier', 1))
+    return description(current) + ', ' + response if not direction else response

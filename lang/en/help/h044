@@ -1,0 +1,8 @@
+Internal Keyer Help
+
+Opening announces Int Key On or Off without changing it. The internal keyer generates timed dots and dashes from a paddle. Turning it Off disables that automatic generation; it does not select Break-in or change sending speed.
+i toggles On/Off; full stop or comma also selects the other state. Each change is applied and announced immediately. h reads this help. q keeps your selection, announces Done and returns to CW. A failed read or change reports an error; no setting is invented.
+
+***
+End of help
+***

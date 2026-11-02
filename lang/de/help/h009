@@ -1,12 +1,14 @@
 Hilfe: Einstellungsmenü
 
+Vorverstärker p, Abschwächer u und VFO/Empfänger s v: Öffnen liest den aktuellen Wert ohne Änderung. Punkt wählt die nächste, Komma die vorherige Option; der wiederholte Befehlsbuchstabe wählt ebenfalls weiter. q behält die Auswahl und kehrt eine Ebene zurück; h erklärt. Ist der aktuelle VFO nicht lesbar, wird Unbekannt gemeldet, ohne einen VFO auszuwählen.
+
 Einstellungen: a AGC; m Mikrofonverstärkung; p Leistung; r Region; s Schrittweite; t Tuner; v VFO/Empfänger; e Sprachprozessor. q kehrt zurück und meldet Hauptebene, nach AGC-Auswahl Fertig. h liest diese Hilfe.
 
 Wählen Sie mit s r die Region des Funkgerätestandorts. Vorgabe: Region 1. Erneutes r wechselt 1, 2, 3 und speichert sofort. h hilft; q meldet Fertig und kehrt zu Einstellungen zurück.
 
 s a liest die aktuelle AGC-Einstellung, ohne sie zu ändern. Erneutes a wählt die nächste Einstellung und bestätigt sie. q beendet und meldet Fertig. Schnell erholt sich früher nach einem starken Signal, Langsam hält die Verstärkungsreduzierung länger. Nach Gehör wählen. Aus erlaubt größere Lautstärkeschwankungen. Kein Senden nötig.
 
-m öffnet die geführte Mikrofoneinstellung. Vorbereitungshinweise befolgen; h darin erklärt Tasten, Test und ALC-Rückmeldung. PTT bedienen Sie selbst.
+m öffnet die Mikrofonverstärkung für die aktuelle Betriebsart. Punkt/Komma ändern sofort; h erklärt das passende Verfahren. Leertaste bietet optionale ALC-Messung, falls unterstützt. PTT bedienen Sie selbst.
 
 p meldet aktuelle Leistung und Eingabebereich. Ganze Watt eingeben und Enter drücken; leeres Enter bricht ab. Bestätigung nennt den eingegebenen Wert und Gesetzt. Das ist eine Einstellung, keine gemessene Sendeleistung. h und Enter geben Leistungshilfe. Leeres Enter oder q und Enter brechen ab und kehren zu Einstellungen zurück.
 

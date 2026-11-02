@@ -64,5 +64,7 @@ def operate(yac, root, radio, language, *, toggle=False, direction=0):
         if combined:
             memory[memory_key] = f'{value:03d}'
     if level_spec.get('percent'):
-        return label('l159', value=round(value * 100 / level_spec['maximum']))
-    return label('l155', value=value)
+        response = label('l159', value=round(value * 100 / level_spec['maximum']))
+    else:
+        response = label('l155', value=value)
+    return label('l153') + ', ' + response if not direction else response

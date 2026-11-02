@@ -1,0 +1,8 @@
+Pomoc tempa klucza
+
+Otwarcie ogłasza bieżące tempo bez zmiany. Wpisz jedną lub dwie cyfry i naciśnij Enter, aby zastosować tempo w zakresie radia. Przed Enter nie ma zmiany. Klucz wewnętrzny ustala czas kropek i kresek z manipulatora, nie tempo ręcznego klucza sztorcowego.
+h otwiera pomoc natychmiast, bez Enter. Wpisane cyfry są zachowane. q natychmiast odrzuca wpis, ogłasza Gotowe i wraca do CW. Backspace usuwa ostatnią cyfrę. Puste Enter zgłasza przerwanie; błędny lub zbyt długi wpis zgłasza błąd i wraca do CW bez zmiany. Poprawny wpis ogłasza odczytane tempo i wraca do CW.
+
+***
+Koniec pomocy
+***

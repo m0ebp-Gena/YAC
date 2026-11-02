@@ -26,7 +26,7 @@ class FilterVerifyTests(unittest.TestCase):
             expected='Filters On: NB On, NR On, Auto Notch On, Manual Notch On, Contour On'
             self.assertEqual(filter_verify.verify(yac,ROOT,radio,'en'),expected)
             self.assertNotIn('Filters',verify_settings.verify(yac,ROOT,radio,'en'))
-        self.assertTrue(set(commands)<= {'MD0;','NB0;','NR0;','BC0;','BP00;','CO00;','PA0;','RA0;','PC;','AC;','EX030105;'},commands)
+        self.assertTrue(set(commands)<= {'MD0;','NB0;','NR0;','BC0;','BP00;','CO00;','PA0;','RA0;','PC;','AC;','EX030105;','LK;'},commands)
     def test_partial_unknown_never_claims_all_off(self):
         radio=create_dummy_radio()
         replies={'MD0;':'MD01;','NB0;':'NB01;','NR0;':'?;','BC0;':'BC00;','BP00;':'BP00000;','CO00;':'CO000000;'}
@@ -75,7 +75,7 @@ class FilterVerifyTests(unittest.TestCase):
             self.assertEqual(exchange.call_count,1)
     def test_verify_keeps_adjustment_and_nested_q(self):
         radio=create_dummy_radio()
-        keys=iter(['f','c','l','v','.','q','v','q','v','q', 'y'])
+        keys=iter(['f','c','c','l','v','.','q','v','q','v','q', 'y'])
         output=io.StringIO()
         with patch.object(yac,'connect_radio',return_value=radio),patch.object(yac,'_read_settings',return_value={'call':'test','lang':'en'}),patch.object(lang_sel,'read_key',side_effect=lambda:next(keys)),redirect_stdout(output):
             self.assertEqual(yac.main([]),0)

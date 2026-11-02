@@ -1,0 +1,15 @@
+CW Help
+
+b: Break-in. Select automatic transmit/receive switching for Morse sending.
+d: Break-in Delay. Full stop increases; comma decreases; d reads again; q keeps the setting.
+h: Read this help.
+i: Internal Keyer. Enable or disable automatic dot and dash generation from a paddle.
+k: Keyer Speed. Enter up to two digits; Enter applies. h helps immediately; q cancels.
+p: CW Pitch. Full stop raises; comma lowers; p reads again.
+q: Leave CW and announce Top Level.
+v: Sidetone Volume. Full stop increases; comma decreases; v reads again. Automatically selects CW when needed; q keeps that mode.
+Open a setting to hear its current state without changing it. Navigation changes apply immediately; edit fields apply on Enter. Applied settings are kept when you leave. Unavailable controls report Not Supported.
+
+***
+End of help
+***

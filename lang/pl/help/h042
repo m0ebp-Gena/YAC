@@ -1,0 +1,15 @@
+Pomoc CW
+
+b: Break-in. Automatyczne przełączanie nadawania i odbioru podczas nadawania Morse’em.
+d: Zwłoka Break-in. Kropka zwiększa; przecinek zmniejsza; d odczytuje ponownie; q zachowuje ustawienie.
+h: Odczytaj tę pomoc.
+i: Klucz wewnętrzny. Włącz lub wyłącz automatyczne kropki i kreski z manipulatora.
+k: Tempo klucza. Do dwóch cyfr; Enter stosuje. h pomaga natychmiast; q anuluje.
+p: Ton CW. Kropka podnosi; przecinek obniża; p odczytuje ponownie.
+q: Opuść CW; zostanie ogłoszony poziom główny.
+v: Głośność odsłuchu. Kropka zwiększa; przecinek zmniejsza; v odczytuje ponownie. Wybiera CW automatycznie w razie potrzeby; q zachowuje tryb.
+Otwarcie ustawienia odczytuje stan bez zmiany. Zmiany nawigacją są stosowane od razu; pola edycji wymagają Enter. Zastosowane ustawienia są zachowywane po wyjściu. Niedostępne funkcje zgłaszają brak obsługi.
+
+***
+Koniec pomocy
+***

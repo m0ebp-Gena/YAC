@@ -1,0 +1,11 @@
+AM Microphone Gain
+
+Check transmitted speech with another station or a supported monitor. Where supported, Space opens optional ALC preparation: y starts monitoring; n or q cancels preparation. Release physical PTT after speaking to hear sampled peak ALC; Space then clears it. Raw readings are not an audio-quality verdict. Otherwise Space repeats this help. Follow the separate radio notes for the appropriate procedure.
+
+With PTT released, full stop increases gain; comma decreases it. Values stop at the ends. h reads this help; q returns to Settings with Done, keeping gain; v reads gain. Opening changes nothing. A mode change ends adjustment; reopen the control. YAC never starts transmission.
+
+Before transmitting, connect a suitable antenna or dummy load and set suitable power yourself. Lower power does not make an unsuitable load safe. Use physical PTT and speak normally.
+
+***
+End of help
+***

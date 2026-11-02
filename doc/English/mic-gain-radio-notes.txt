@@ -1,0 +1,30 @@
+Microphone gain - radio notes
+
+s m reads the current mode and gain. Full stop/comma adjust immediately
+while receiving; v reads, h gives help for that mode, q keeps the setting.
+No Space is required for gain adjustment on any supported radio.
+
+Yaesu FT-DX10, FT-710 and FTX-1 use MG, 0-100, in supported SSB, AM and
+FM modes (including narrow AM/FM). FTX-1 also offers the same command path
+in C4FM-DN/VW. Confirm audible effect and any shared settings on hardware.
+SSB and AM offer optional sampled ALC feedback using Space, preparation,
+and y. The FTX-1 transmit monitor does not operate in FM/FM-N or AM/AM-N;
+use another station or suitable external monitoring for those modes.
+
+Icom IC-705, IC-7300, IC-7300MK2, IC-7600 and IC-9700 use CI-V 14 0B,
+raw 0-255, shown as rounded percentages. Steps are 3 raw units. SSB, AM
+and FM are supported; IC-705 and IC-9700 also support DV. SSB offers
+optional ALC feedback. For AM, FM and DV, check speech clarity using a
+supported monitor or another station; no ALC judgement is made.
+
+Kenwood TS-590SG and positively identified TS-480 use MG 0-100 for SSB
+and AM. FM instead uses a separate three-level setting: Normal, Medium,
+High. TS-590SG menu 53 uses EX0530000; TS-480 menu 44 uses EX0440000.
+CAT values 0, 1, 2 correspond to those three displayed choices. Full stop
+and comma select adjacent levels without wrapping. SSB offers optional
+ALC feedback; AM/FM use speech-quality checks. Meter selection is only
+prepared after explicitly starting ALC feedback. QMX is not enabled by
+its shared ID020 identification.
+
+These are command-path and automated checks, not physical validation of
+modulation quality, deviation, shared gain storage or digital speech.

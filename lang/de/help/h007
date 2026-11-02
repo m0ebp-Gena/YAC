@@ -1,9 +1,11 @@
 Hilfe: Filtermenü
 
+Beim Öffnen eines Filters wird der aktuelle Zustand ohne Änderung vorgelesen. Bei Aus wird nur Aus gemeldet; bei Ein auch der aktive Einstellwert, soweit vorhanden. Erst ein weiterer Befehl ändert die Einstellung.
+
 Filter: f drücken, dann eine Taste unten. Verfügbare Funktionen hängen vom Radio und der Betriebsart ab.
 
 a: Auto Notch. Erneutes a schaltet Ein oder Aus.
-b: Noise Blanker. Erneutes b schaltet Ein oder Aus. Punkt/Komma ändern den Pegel bei Ein.
+b: Noise Blanker. Beim Öffnen werden Ein/Aus und bei Ein der Pegel ohne Änderung vorgelesen. Erneutes b schaltet Ein oder Aus. Punkt/Komma ändern den Pegel bei Ein.
 c: Contour. Erneutes c schaltet Ein oder Aus. Punkt/Komma ändern die Frequenz bei Ein. l wählt Pegel; w Breite; c kehrt zur Frequenz zurück. Bei gewählter Frequenz schaltet c Ein oder Aus.
 h: Diese Hilfe lesen.
 l: Untere Grenzfrequenz. Punkt erhöht; Komma verringert die untere Grenze.

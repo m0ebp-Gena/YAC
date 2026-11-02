@@ -1,0 +1,8 @@
+Keyer Speed Help
+
+Opening announces the current sending speed without changing it. Type one or two digits, then press Enter to apply a speed within the radio’s supported range. No change is sent before Enter. The internal keyer sets the timing of paddle-generated dots and dashes; it does not set manual straight-key speed.
+h opens this help immediately, without Enter. Your typed digits are kept when help returns. q cancels immediately, discards the entry, says Done and returns to CW. Backspace removes the last digit. Blank Enter reports Aborted; an invalid or overlong entry reports Invalid and returns to CW without a change. A successful entry announces the readback speed and returns to CW.
+
+***
+End of help
+***

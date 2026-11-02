@@ -1,0 +1,7 @@
+Ayuda del selector de ajustes
+
+Al abrir se lee el ajuste actual sin cambiarlo. Punto selecciona la opción siguiente; coma la anterior. Repetir la letra del control también selecciona la siguiente. Cada cambio se aplica y anuncia de inmediato. h lee esta ayuda. q conserva el ajuste, anuncia Terminado y vuelve un nivel. Desconocido indica que no se puede leer la selección actual; al abrir nunca se selecciona una opción para averiguarla.
+
+***
+Fin de la ayuda
+***

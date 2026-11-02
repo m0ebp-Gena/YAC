@@ -1,0 +1,7 @@
+Hilfe zur Einstellungsauswahl
+
+Beim Öffnen wird die aktuelle Einstellung ohne Änderung vorgelesen. Punkt wählt die nächste, Komma die vorherige Option. Der wiederholte Befehlsbuchstabe wählt ebenfalls die nächste Option. Änderungen werden sofort übernommen und vorgelesen. h liest diese Hilfe. q behält die Einstellung, meldet Fertig und kehrt eine Ebene zurück. Unbekannt bedeutet, dass die aktuelle Auswahl nicht lesbar ist; beim Öffnen wird deshalb nichts ausgewählt.
+
+***
+Ende der Hilfe
+***

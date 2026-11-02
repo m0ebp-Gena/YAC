@@ -1,9 +1,11 @@
 Help For The Filters Menu
 
+Opening a filter reads its current state without changing it. Off reports only Off. On reports its active adjustment value where applicable. Only a subsequent command changes the setting.
+
 Filters: press f, then a key below. Available controls depend on the radio and mode.
 
 a: Auto Notch. Press a again to switch On or Off.
-b: Noise Blanker. Press b again to switch On or Off. Full stop/comma adjust level while On.
+b: Noise Blanker. Opening reads On/Off and the level when On without changing either. Press b again to switch On or Off. Full stop/comma adjust level while On.
 c: Contour. Press c again to switch On or Off. Full stop/comma adjust frequency while On. l selects level; w selects width; c returns to frequency. While frequency is selected, c toggles On or Off.
 h: Read this help.
 l: Low Cut. Full stop increases; comma decreases the lower edge.

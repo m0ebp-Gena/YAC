@@ -1,0 +1,51 @@
+CW Break-in and Internal Keyer implementation
+
+Implemented locally in D:\YAC on 2 November 2026. No build or publication.
+
+c opens CW. b opens Break-in and announces its live setting without writes.
+Further b or full stop selects the next choice; comma selects the previous.
+Choices are Off, Semi and Full on the implemented model profiles.
+
+c i announces Int Key On or Int Key Off without changing the radio.
+Further i toggles; full stop/comma also select the other state. Each explicit
+change requires matching radio readback before success is announced.
+
+h inside either adjustment describes the control without named radios.
+q keeps the current radio selection, announces Done and returns to CW.
+Another q announces Top Level. No selection is changed on entry or exit.
+This does not promise retention across radio power cycles.
+
+Coverage:
+Break-in: FT-DX10, FT-710, FTX-1; IC-705, IC-7300, IC-7300MK2,
+IC-7600 and IC-9700. Internal Keyer On/Off: the three listed Yaesu models.
+Other combinations report Not Supported without sending setting commands.
+Icom Key Type is not mapped to an independent internal-keyer switch.
+Kenwood and QMX are not implemented for these new controls.
+Four-language generic help, labels, key references and separate radio notes
+are included. The private chart has a uniquely named pre-change backup.
+
+Verification:
+45 focused CW, control-entry, demo and connection-watch checks passed.
+Then 562 tests ran in the full suite: 557 passed, five failed. These were
+the same four earlier Verify fixture/expectation failures and the Windows
+junction-creation permission failure; there were no new CW failures.
+Log: local_storage/testing/results/cw-full-validation-20261102-123524.txt
+
+The four earlier Verify tests were subsequently corrected as authorised:
+allow the read-only LK query, expect Lock Unknown on unreadable state, and
+model the CI-V lock and lock-type readbacks in the test fixture.
+All 44 CW and Verify tests then passed, including all affected tests.
+Log: local_storage/testing/results/cw-and-verify-checks-20261102-123745.txt
+The entire suite has not been rerun after these test-only corrections.
+
+Remaining validation limitation:
+test_real_directory_junction_is_still_rejected cannot create its temporary
+junction: Windows New-Item returns Access denied. D: reports NTFS. The
+assertion under test is not reached; this does not establish an updater
+defect or a pass. No skipping or weakening of this check was applied.
+Its temporary folder D:\YAC\tmp\tmp1k6je2qj no longer exists.
+The full run reported no separate temporary-directory cleanup failure.
+Physical-radio, speech and braille testing remain outstanding.
+
+See the language-specific doc/*/cw-radio-notes.txt files and
+doc/cw-command-references-2026-11-02.txt for model differences and sources.

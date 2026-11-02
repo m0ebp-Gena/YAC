@@ -68,9 +68,12 @@ def operate(yac, root, radio, language, *, toggle=False, direction=0):
         if combined:
             memory[memory_key] = f'{value:0{digits}d}'
     if level_spec.get('following_time'):
-        return label('l170', value=(value + 1) * 2)
-    if value == level_spec.get('auto'):
-        return label('l169')
-    if level_spec.get('percent'):
-        return label('l166', value=round(value * 100 / level_spec['maximum']))
-    return label('l162', value=value)
+        response = label('l170', value=(value + 1) * 2)
+    elif value == level_spec.get('auto'):
+        response = label('l169')
+    elif level_spec.get('percent'):
+        response = label('l166', value=round(value * 100 / level_spec['maximum']))
+    else:
+        response = label('l162', value=value)
+    on_label = feature.get('on_labels', {}).get(state, 'l160')
+    return label(on_label) + ', ' + response if not direction else response

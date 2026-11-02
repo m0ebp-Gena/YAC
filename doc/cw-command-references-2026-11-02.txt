@@ -1,0 +1,99 @@
+CW command implementation references
+
+Yaesu FT-DX10:
+local_storage/manuals/pdfs/FTDX10_CAT_OM_ENG_2308-F.pdf
+Extract reviewed: tmp/FTDX10_CAT_OM_ENG_2308-F.pdf.txt
+BI: Break-in On/Off. KR: internal keyer On/Off.
+EX020113: CW BK-IN TYPE, 0 Semi, 1 Full.
+
+Yaesu FTX-1:
+local_storage/manuals/pdfs/FTX-1_CAT_OM_ENG_2508-C.pdf
+Extract reviewed: tmp/FTX-1_CAT_OM_ENG_2508-C.pdf.txt
+BI: Break-in On/Off. KR: internal keyer On/Off.
+EX020115: CW BK-IN TYPE, 0 Semi, 1 Full.
+
+Yaesu FT-710, CAT Operation Reference Manual 2306-C:
+https://www.yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/FT-710_CAT_OM_ENG_2306-C.pdf
+BI and KR: independent On/Off commands.
+EX020116: CW BK-IN TYPE, 0 Semi, 1 Full.
+
+Icom IC-705:
+Extract reviewed: tmp/IC-705_ENG_CI-V_1_20200721.pdf.txt
+Icom IC-7300MK2:
+local_storage/manuals/pdfs/IC-7300MK2_ENG_CI-V_0.pdf
+Extract reviewed: tmp/IC-7300MK2_ENG_CI-V_0.pdf.txt
+Icom IC-7300, manufacturer full manual:
+https://boutique.icomfrance.com/wp-content/uploads/products/IC-7300/not-IC-7300_ENG_FM_12-en.pdf
+Icom IC-7600, manufacturer manual, command table page 168 of PDF:
+https://www.icomeurope.com/wp-content/uploads/2020/11/IC-7600_IM_D_upgrade_20151103.pdf
+Icom IC-9700, manufacturer CI-V reference, page 5 of PDF:
+https://www.icomfrance.com/uploads/files/produit/not-IC-9700_ENG_CI-V_3a-en.pdf
+These models expose Break-in through CI-V 16 47:
+00 Off, 01 Semi, 02 Full. Setters require positive acknowledgement and
+matching live readback. Key Type is not substituted for a keyer On/Off switch.
+
+Kenwood TS-590SG:
+local_storage/manuals/pdfs/ts_590_g_pc_command_e.pdf
+Extract reviewed: tmp/ts_590_g_pc_command_e.pdf.txt
+VX is mode-dependent, controlling VOX outside CW and Break-in in CW.
+SD contains delay, with 0000 indicating Full Break-in. This model has not
+been added to the new CW controls. No VX or delay commands are sent by them.
+
+Current implementation coverage and limitations are in each language's
+cw-radio-notes.txt. No physical radio was used for these automated checks.
+
+Delay implementation references (c d):
+Yaesu SD table in the three model references above: 00=30, 01=50,
+02=100, 03=150, 04=200, 05=250, 06=300 through 33=3000 milliseconds.
+FT-710 table: PDF page 19. No wrapping or Break-in mode writes.
+
+IC-705 and IC-7300MK2 extracts: 14 0F, BCD 0000..0255, 2.0..13.0 dots.
+IC-9700 CI-V reference above: PDF page 4 gives the same endpoints.
+Icom raw-to-dot interpolation was rejected and removed on 2 November 2026.
+Icom time conversion remains omitted. All five models now offer relative
+Delay Level 1..16 using the documented raw 14 0F position, with presets
+0,17,34,...,255. No raw-to-dot mapping or timing conversion is needed.
+
+Hamlib references reviewed:
+https://github.com/Hamlib/Hamlib/blob/master/include/hamlib/rig.h
+BKINDL is tenths of dots; BKIN_DLYMS is integer milliseconds.
+https://github.com/Hamlib/Hamlib/blob/master/src/misc.c
+morse_code_dot_to_millis: one dot is 1200 / WPM milliseconds.
+dot10ths_to_millis rounds up to an integer millisecond.
+https://github.com/Hamlib/Hamlib/blob/master/rigs/yaesu/ftx1/ftx1_cw.c
+The SD code-to-ms table matches YAC's three checked Yaesu models.
+These references do not verify a specific Icom raw-code-to-dot conversion.
+
+Keyer Speed (c k): the checked Yaesu references specify KS 004..060 WPM.
+The local TS-590SG command reference specifies KS 004..060 in steps of 1.
+Icom 14 0C values use Hamlib's published cw_lookup table and threshold-based
+read conversion rather than linear interpolation:
+https://github.com/Hamlib/Hamlib/blob/master/rigs/icom/icom.c
+Reviewed cw_lookup, icom_set_level KEYSPD and icom_get_level KEYSPD.
+The YAC table extends the top 48-WPM bin through documented raw 255.
+No Hamlib runtime dependency was introduced.
+
+Pitch and Sidetone Volume references:
+Yaesu KP and ML command tables in the three previously listed CAT manuals.
+Yaesu operating manuals identify MONI LEVEL as the CW sidetone adjustment:
+https://www.yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/FTX-1_OM_ENG_EH084M201_2506E-DS.pdf
+https://yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/FTDX10_OM_ENG_EH076H202_2307A-LS-1.pdf
+https://www.yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/FT-710_OM_ENG_EH080H201_2307N-GS.pdf
+
+Icom pitch: 14 09, 300..900 Hz, documented 5-Hz steps in the model references.
+Hamlib icom.c CWPITCH uses linear endpoint interpolation; YAC rounds to the
+nearest documented 5-Hz setting and uses a canonical nearest raw setter code.
+
+Icom dedicated volume selectors under 1A 05:
+IC-705 0249: local CI-V extract. IC-9700 0221: primary CI-V PDF page 9.
+IC-7300 0158: local_storage/manuals/pdfs/IC-7300_ENG_FM_12b.pdf,
+PDF page 164, printed 19-6; extracted directly with bundled pypdf.
+IC-7600 0024: primary manufacturer manual, PDF page 168.
+IC-7300MK2 0218: local CI-V extract. Upper range is printed inconsistently
+as 0225 while its endpoint description says 0255=100%; current code accepts
+the described 0..255 endpoint and records this discrepancy in the notes.
+The 0..100 volume level is a normalised control setting, not measured loudness.
+
+The flrig IC7300.cxx source was also checked, but its sidetone selector 0024
+does not match the IC-7300 manufacturer table. YAC uses manufacturer 0158.
+No code from that implementation was copied.

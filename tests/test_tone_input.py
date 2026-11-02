@@ -67,7 +67,7 @@ class ToneInput(unittest.TestCase):
 
     def control(self, edits, keys, setter=None, model="IC-705"):
         output = io.StringIO()
-        with patch.object(yac, "_edit_tone", side_effect=edits) as edit, patch.object(lang_sel, "read_key", side_effect=keys), patch.object(yac, "_set_tone", side_effect=setter) as setting, redirect_stdout(output):
+        with patch("modules.tone_status.report", return_value=""), patch.object(yac, "_edit_tone", side_effect=edits) as edit, patch.object(lang_sel, "read_key", side_effect=keys), patch.object(yac, "_set_tone", side_effect=setter) as setting, redirect_stdout(output):
             yac._tone_control(ROOT, radio(model), "en", "Test")
         return output.getvalue(), edit, setting
 

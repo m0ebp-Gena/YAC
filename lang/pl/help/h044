@@ -1,0 +1,8 @@
+Pomoc klucza wewnętrznego
+
+Otwarcie ogłasza Klucz wew Włączony lub Wyłączony bez zmiany. Klucz wewnętrzny generuje kropki i kreski o ustalonym czasie z manipulatora. Wyłączenie zatrzymuje tę funkcję; nie zmienia Break-in ani tempa.
+i przełącza stan; kropka lub przecinek również wybiera drugi stan. Zmiany są stosowane i odczytywane od razu. h czyta pomoc. q zachowuje wybór, ogłasza Gotowe i wraca do CW. Błąd odczytu lub zmiany jest zgłaszany; stan nie jest zgadywany.
+
+***
+Koniec pomocy
+***

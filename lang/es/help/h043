@@ -1,0 +1,8 @@
+Ayuda de Break-in
+
+Al abrir se lee el ajuste actual sin cambiarlo. Desactivado: la manipulación no activa la transmisión automáticamente. Semi: vuelve a recepción tras una espera al dejar de enviar. Completo, o QSK: permite recibir entre elementos Morse. Las opciones dependen del equipo.
+b o punto selecciona la opción siguiente; coma la anterior. Cada cambio se aplica y anuncia inmediatamente. h lee esta ayuda. q conserva la selección, anuncia Hecho y vuelve a CW.
+
+***
+Fin de la ayuda
+***

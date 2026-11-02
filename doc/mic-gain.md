@@ -1,3 +1,7 @@
+Superseded on 2 November 2026: see English/mic-gain-radio-notes.txt for the current mode-dependent flow.
+
+Historical implementation follows.
+
 Mic Gain adjustment
 ===================
 

@@ -163,18 +163,6 @@ def control(yac, root, radio, language, read_key, watch):
         say('l217')
         return
     pending = getattr(radio, '_processor_pending', None)
-    if not pending and spec['family'] == 'yaesu' and original == (False, (0,)):
-        try:
-            revealed = reveal_level(yac, root, radio, spec, original, entry_context)
-        except (RuntimeError, OSError):
-            revealed = None
-        if revealed is None:
-            if getattr(radio, '_processor_pending', None):
-                say('l003')
-            else:
-                chat_int.show_response(yac._radio_error(root, radio, language))
-            return
-        original = revealed
     if pending:
         if pending['context'] != entry_context:
             say('l003')
@@ -189,6 +177,8 @@ def control(yac, root, radio, language, read_key, watch):
     def describe(state):
         enabled, levels = state
         say('l232' if enabled else 'l233')
+        if not enabled:
+            return
         value = round(levels[selected] * 10 / 255, 1) if spec['family'] == 'icom' else levels[selected]
         say(('l235' if selected else 'l234') if spec['family'] == 'kenwood' else 'l236', value=value)
     def context_error(actual):
@@ -298,6 +288,14 @@ def control(yac, root, radio, language, read_key, watch):
                 if target == state:
                     describe(state)
                     continue
+                if key == 'e' and not state[0] and spec['family'] == 'yaesu' and state[1] == (0,):
+                    # Only an explicit On request permits discovering a hidden level.
+                    revealed = reveal_level(yac, root, radio, spec, state, entry_context)
+                    if revealed is None:
+                        say('l003')
+                        continue
+                    original = revealed
+                    target = (True, revealed[1])
                 radio._processor_pending = {'original': original, 'context': entry_context}
                 LOG.debug('Processor original=%s context=%s target=%s', original, entry_context, target)
                 ok = set_status(yac, radio, spec, target[0]) if key == 'e' else set_levels(yac, radio, spec, target[1])

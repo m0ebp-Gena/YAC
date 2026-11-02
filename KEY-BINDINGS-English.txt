@@ -1,5 +1,20 @@
 YAC — Key bindings
 
+c p: CW Pitch. Full stop raises; comma lowers; p reads again.
+c v: Sidetone Volume. Full stop increases; comma decreases; v reads again. Automatically selects CW when needed; q keeps that mode.
+
+c k: Keyer Speed. Enter up to two digits; Enter applies. h helps immediately; q cancels.
+
+c d: Break-in Delay. Full stop increases; comma decreases; d reads again; q keeps the setting.
+
+c: CW. b Break-in; i Internal Keyer; h help; q returns to top level. Opening reads the current state; repeat b or i changes it. Full stop/comma select next/previous. q inside a control keeps the setting and returns to CW.
+
+Main v also reports Lock On, Dial Lock or Panel Lock when active. Lock Off is omitted. An unreadable supported lock reports Lock Unknown. Verify changes nothing.
+
+Opening a filter reads its current state without changing it. Off reports only Off. On reports its active adjustment value where applicable. Only a subsequent command changes the setting.
+
+Preamp p, Attenuator u and VFO/receiver s v: opening reports the current setting without changing it. Full stop selects next; comma previous; repeating the control letter also advances. q keeps the choice and returns one level; h explains. If the current VFO cannot be read, Unknown is reported without selecting a VFO.
+
 Press one key at a time. Most commands do not need Enter.
 Commands depend on the connected radio's supported features.
 
@@ -15,13 +30,13 @@ i          Tone/code input (CTCSS/DCS where supported); h gives help
 k: Lock. Entry reads; repeat k cycles lock states. h helps; q keeps the selected state.
 l          Split/repeater setup; l again turns it off. h then Enter inside for help
 m          Mode selection
-o          Offset control: Receive, Transmit, Clear
-p          Cycle preamp stages and off
+o          Offset: o alternates Receive and Transmit. c clears both; v verifies both; h helps; q keeps settings and returns.
+p          Preamp selector: reads current state; . next, , previous; q finishes.
 q          Quit YAC
 r          RF Gain; Squelch in FM
 s          Open Settings
 t          Start tuning with the configured tuner
-u          Cycle attenuator levels and off
+u          Attenuator selector: reads current state; . next, , previous; q finishes.
 v          Verify attenuator, preamp, power and supported tuner status
 w          Where am I? Signal strength, frequency, mode and active FM tone/code
 x          Antennas: entry reads routing; repeat x cycles main antenna, r receive path, h help, q Back
@@ -50,12 +65,13 @@ stops at each end; Yaesu follows the radio's band behavior.
 At an upper band limit, use comma to go down, or e to enter a frequency.
 
 INSIDE OFFSET CONTROL
-o          Cycle Receive, Transmit, Clear
+o          Offset: o alternates Receive and Transmit. c clears both; v verifies both; h helps; q keeps settings and returns.
 Full stop  Add 10 hertz
 Comma      Subtract 10 hertz
-In Clear, either movement key clears offsets.
+Opening selects Receive and gives the hint without changing the radio. Full stop adds 10 hertz; comma subtracts. Only c clears both offsets. v reads both effective values; an inactive side reports 0. q preserves current settings.
+
 q          Return to the top level
-Opening Offset starts in Receive at zero hertz. Another command key exits.
+
 
 NOTES
 Settings q returns; top-level q quits. Changes take effect immediately.
@@ -79,21 +95,21 @@ Comma      Decrease the selected value
 h          Filter help
 q          Leave adjustment; q again returns to the top level
 
-Noise Blanker: f then b toggles the current state and reports On or Off. Inside the control, b toggles again. Full stop increases level; comma decreases it. When off, navigation reports Off and leaves the level unchanged. q returns to Filters; q again returns to the top level. h gives help. Levels use the radio scale, or percent where defined. Unknown status prevents a toggle. FTX-1 remembers the last on level observed by YAC, separately for Main/Sub; when none is known, On uses level 1. TS-590SG remembers the last observed NB1/NB2 selection; when none is known, On selects NB1. Unsupported radios or modes report Not supported.
+Noise Blanker: f then b reads the current On/Off state and, when On, its level without changing either. Inside the control, b toggles On/Off. Full stop increases level; comma decreases it. When off, navigation reports Off and leaves the level unchanged. q returns to Filters; q again returns to the top level. h gives help. Levels use the radio scale, or percent where defined. Unknown status prevents a toggle. FTX-1 remembers the last on level observed by YAC, separately for Main/Sub; when none is known, On uses level 1. TS-590SG remembers the last observed NB1/NB2 selection; when none is known, On selects NB1. Unsupported radios or modes report Not supported.
 
-Noise Reduction: f then r toggles the current state; r inside toggles again. Full stop increases the setting; comma decreases it; endpoints do not loop. While Off, navigation leaves the setting unchanged and reports Off. q returns to Filters; q again returns to the top level. h gives help. FTDX10/FT-710 levels are 1-15; FTX-1 levels 1-10, remembered separately per Main/Sub, with level 1 used if no previous on level is known. Icom levels are reported as percentages. Kenwood retains the last observed NR1/NR2 type; if unknown, On selects NR1. TS-590SG NR1 levels are 1-10. TS-480 NR1 offers Auto then 1-9; comma from 1 selects Auto. NR2 following time is 2-20 milliseconds. Nav follows the radio current NR type; it does not select the other type. Choose a different type on the radio if needed. Unsupported radios or modes report Not supported; unknown state prevents a toggle.
+Noise Reduction: f then r reads the current state without changing it; r inside toggles. Full stop increases the setting; comma decreases it; endpoints do not loop. While Off, navigation leaves the setting unchanged and reports Off. q returns to Filters; q again returns to the top level. h gives help. FTDX10/FT-710 levels are 1-15; FTX-1 levels 1-10, remembered separately per Main/Sub, with level 1 used if no previous on level is known. Icom levels are reported as percentages. Kenwood retains the last observed NR1/NR2 type; if unknown, On selects NR1. TS-590SG NR1 levels are 1-10. TS-480 NR1 offers Auto then 1-9; comma from 1 selects Auto. NR2 following time is 2-20 milliseconds. Nav follows the radio current NR type; it does not select the other type. Choose a different type on the radio if needed. Unsupported radios or modes report Not supported; unknown state prevents a toggle.
 
 In Kenwood FM mode, switching On selects NR1.
 
-Notch: f then a toggles Auto Notch; a inside toggles again. TS-480 uses Beat Cancel instead, retaining the last observed BC1/BC2 type, defaulting to BC1. f then n toggles Manual Notch; n inside toggles again. Full stop/comma raise/lower its frequency or position while On, stopping at endpoints. w inside Manual Notch cycles width. While Off, movement and w keep settings unchanged. q returns to Filters; q again returns to the top level; h gives help. Yaesu reports 10-3200 hertz; Icom reports position 0-255; TS-590SG reports position 0-127. Width choices follow manufacturer names. Where Auto/Manual are mutually exclusive, switching one On switches the other Off. TS-590SG restores the last manual width observed by YAC; if none is known, first On uses and announces Normal. Select BC1/BC2 on the TS-480 radio if a different type is needed. Unsupported functions/modes report Not supported; unknown status prevents toggling. QMX has no documented notch control.
+Notch: f then a reads Auto Notch without changing it; a inside toggles. TS-480 uses Beat Cancel instead, retaining the last observed BC1/BC2 type, defaulting to BC1. f then n reads Manual Notch without changing it; n inside toggles. Full stop/comma raise/lower its frequency or position while On, stopping at endpoints. w inside Manual Notch cycles width. While Off, movement and w keep settings unchanged. q returns to Filters; q again returns to the top level; h gives help. Yaesu reports 10-3200 hertz; Icom reports position 0-255; TS-590SG reports position 0-127. Width choices follow manufacturer names. Where Auto/Manual are mutually exclusive, switching one On switches the other Off. TS-590SG restores the last manual width observed by YAC; if none is known, first On uses and announces Normal. Select BC1/BC2 on the TS-480 radio if a different type is needed. Unsupported functions/modes report Not supported; unknown status prevents toggling. QMX has no documented notch control.
 
-Contour: f c toggles On/Off. Navigation adjusts current frequency (10-3200 hertz). Inside Contour, l selects Contour level (-40 to +20, spoken as Dip/Neutral/Peak); w selects Contour width (1-11); c returns to frequency. When already on frequency, c toggles On/Off. Full stop increases and comma decreases the selected setting, stopping at endpoints. Off leaves settings unchanged. q returns to Filters, where l means Low Cut; q again returns to top level. Current settings are preserved on switching. FT-DX10, FT-710 and FTX-1 only; FTX-1 frequency/state follow selected Main/Sub, level/width are shared menu settings. APF is separate and is not altered.
+Contour: f c reads current state without changing it; when On, reads frequency. Inside, c toggles On/Off. Navigation adjusts current frequency (10-3200 hertz). Inside Contour, l selects Contour level (-40 to +20, spoken as Dip/Neutral/Peak); w selects Contour width (1-11); c returns to frequency. When already on frequency, c toggles On/Off. Full stop increases and comma decreases the selected setting, stopping at endpoints. Off leaves settings unchanged. q returns to Filters, where l means Low Cut; q again returns to top level. Current settings are preserved on switching. FT-DX10, FT-710 and FTX-1 only; FTX-1 frequency/state follow selected Main/Sub, level/width are shared menu settings. APF is separate and is not altered.
 
 Filter Verify: f v lists switchable filters currently On for the current mode/receiver, using live readback. v inside any filter adjustment gives the same report without leaving the control. Off and unsupported filters are omitted; unreadable states are announced as unknown. If every applicable state is known and Off, says No switchable filters On. Bandwidth/low/upper cuts have no switchable On/Off state and are not included. FTX-1 reports Main or Sub. Verify changes no settings.
 
 Repeated v review: first v gives the filters-On summary. Further consecutive v presses show one applicable filter at a time, including Off or unknown, then return to the summary. Each status is read live. Any other command restarts the next v at the summary; a receive-mode or receiver change also restarts review. q leaves Filters when at the submenu; inside an adjustment, q first returns to Filters. Main v is unchanged.
 
-s then m   Mic Gain: guided preparation, manual PTT, full stop/comma adjust gain; h gives help. YAC changes only mic gain.
+s then m   Mic Gain for current mode: full stop/comma adjust; v reads; h mode-specific help; Space optional ALC preparation where supported; q keeps gain. Manual PTT.
 
 s then a   Read current AGC without changing it; repeat a to cycle choices. Readback is verified. q finishes with Done. s h gives Settings help.
 

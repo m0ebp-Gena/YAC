@@ -1,5 +1,21 @@
 YAC — Teclas de control
 
+c p: Tono CW. Punto sube; coma baja; p lee de nuevo.
+c v: Volumen del tono local. Punto aumenta; coma reduce; v lee de nuevo. Selecciona CW automáticamente si hace falta; q conserva ese modo.
+
+c k: Velocidad. Hasta dos cifras; Enter aplica. h ayuda inmediatamente; q cancela.
+
+c d: Retardo de Break-in. Punto aumenta; coma reduce; d lee de nuevo; q conserva el ajuste.
+
+c: CW. b Break-in; i manipulador interno; h ayuda; q vuelve al nivel superior. Abrir lee el estado; otra b o i lo cambia. Punto/coma selecciona siguiente/anterior. q dentro del control conserva el ajuste y vuelve a CW.
+
+La v principal también informa del bloqueo activado, del dial o del panel si está activo. Omite el bloqueo desactivado. Si no puede leer un bloqueo compatible, indica desconocido. Verificar no cambia nada.
+
+Abrir un filtro lee su estado actual sin cambiarlo. Si está desactivado, solo indica desactivado; si está activado, también el valor activo cuando corresponda. Solo un comando posterior cambia el ajuste.
+
+Preamplificador p, atenuador u y VFO/receptor s v: al abrir se anuncia el ajuste sin cambiarlo. Punto selecciona siguiente; coma anterior; repetir la letra también avanza. q conserva la selección y vuelve un nivel; h explica. Si no se puede leer el VFO actual, indica Desconocido sin seleccionar otro.
+k: Bloqueo. Al entrar lee; repita k para cambiar el estado. h ayuda; q conserva la selección.
+
 Pulsa una tecla cada vez. La mayoría de los comandos no necesitan Intro.
 Los comandos dependen de las funciones compatibles de la radio conectada.
 
@@ -11,14 +27,13 @@ f          Abrir Filtros
 g          SWR: g mide una vez y vuelve al nivel principal; h ayuda; q cancela. Conecte antes una antena.
 h          Ayuda
 i          Entrada de tono/código (CTCSS/DCS si es compatible); h: ayuda
-k: Bloqueo. Al entrar lee; repita k para cambiar el estado. h ayuda; q conserva la selección.
 m          Selección de modo
-o          Desplazamiento: Recepción, Transmisión, Borrar
-p          Alternar etapas del preamplificador y apagado
+o          Offset: o alterna Recepción y Transmisión. c borra ambos; v verifica ambos; h ayuda; q conserva ajustes y vuelve.
+p          Preamplificador: lee el estado; punto siguiente, coma anterior; q termina.
 q          Salir de YAC
 r          Ganancia RF; silenciador en FM
 s          Abrir Ajustes
-u          Alternar niveles del atenuador y apagado
+u          Atenuador: lee el estado; punto siguiente, coma anterior; q termina.
 v          Verificar atenuador, preamplificador, potencia y sintonizador
 w          ¿Dónde estoy? Señal, frecuencia y modo
 z          Redondear la frecuencia al kilohercio más cercano
@@ -45,12 +60,13 @@ en ambos extremos; Yaesu sigue el comportamiento de la radio.
 En el límite superior, usa coma para bajar o e para introducir una frecuencia.
 
 DENTRO DEL CONTROL DE DESPLAZAMIENTO
-o          Alternar Recepción, Transmisión, Borrar
+o          Offset: o alterna Recepción y Transmisión. c borra ambos; v verifica ambos; h ayuda; q conserva ajustes y vuelve.
 Punto      Añadir 10 hercios
 Coma       Restar 10 hercios
-En Borrar, cualquiera de las teclas de movimiento borra los desplazamientos.
+Abrir selecciona Recepción y da el aviso sin cambiar la radio. Punto suma 10 hercios; coma resta. Solo c borra ambos offsets. v lee ambos valores efectivos; un lado inactivo indica 0. q conserva los ajustes actuales.
+
 q          Volver al nivel principal
-Desplazamiento empieza en Recepción a cero hercios. Otra tecla de comando sale.
+
 
 NOTAS
 q sale de Ajustes; en el nivel principal sale de YAC. Los cambios son inmediatos.
@@ -74,21 +90,21 @@ Coma       Disminuir el valor
 h          Ayuda de filtros
 q          Salir del ajuste; otro q vuelve al nivel principal
 
-Supresor de ruido: f luego b cambia el estado actual e indica activado o desactivado. Dentro del control, b lo cambia de nuevo. Punto aumenta el nivel; coma lo reduce. Si está desactivado, la navegación lo indica y conserva el nivel. q vuelve a Filtros; otro q al nivel principal. h muestra ayuda. Los niveles usan la escala de la radio o porcentajes definidos. Un estado desconocido impide el cambio. FTX-1 recuerda el último nivel observado por YAC para Main/Sub; si no se conoce, usa 1. TS-590SG recuerda NB1/NB2; si no se conoce, usa NB1. Se indican radios o modos no compatibles.
+Supresor de ruido: f luego b lee el estado actual y, si está activado, el nivel sin cambiar nada. Dentro del control, b activa o desactiva. Punto aumenta el nivel; coma lo reduce. Si está desactivado, la navegación lo indica y conserva el nivel. q vuelve a Filtros; otro q al nivel principal. h muestra ayuda. Los niveles usan la escala de la radio o porcentajes definidos. Un estado desconocido impide el cambio. FTX-1 recuerda el último nivel observado por YAC para Main/Sub; si no se conoce, usa 1. TS-590SG recuerda NB1/NB2; si no se conoce, usa NB1. Se indican radios o modos no compatibles.
 
-Reducción de ruido: f luego r cambia el estado actual; r dentro lo cambia de nuevo. Punto aumenta; coma disminuye; sin vueltas en los extremos. Si está desactivada, conserva el valor. q vuelve a Filtros; otro q al nivel principal. h muestra ayuda. FTDX10/FT-710: niveles 1-15; FTX-1: 1-10, recordados por Main/Sub, usando 1 si no se conoce el anterior. Icom usa porcentajes. Kenwood conserva el último tipo NR1/NR2 observado; si no se conoce, usa NR1. TS-590SG NR1: 1-10. TS-480 NR1: Auto y luego 1-9; coma desde 1 selecciona Auto. NR2: tiempo de seguimiento 2-20 milisegundos. La navegación sigue el tipo actual; cambie el tipo en la radio si es necesario. Se indican controles no compatibles; un estado desconocido impide el cambio.
+Reducción de ruido: f luego r lee el estado sin cambiarlo; r dentro lo cambia. Punto aumenta; coma disminuye; sin vueltas en los extremos. Si está desactivada, conserva el valor. q vuelve a Filtros; otro q al nivel principal. h muestra ayuda. FTDX10/FT-710: niveles 1-15; FTX-1: 1-10, recordados por Main/Sub, usando 1 si no se conoce el anterior. Icom usa porcentajes. Kenwood conserva el último tipo NR1/NR2 observado; si no se conoce, usa NR1. TS-590SG NR1: 1-10. TS-480 NR1: Auto y luego 1-9; coma desde 1 selecciona Auto. NR2: tiempo de seguimiento 2-20 milisegundos. La navegación sigue el tipo actual; cambie el tipo en la radio si es necesario. Se indican controles no compatibles; un estado desconocido impide el cambio.
 
 En modo FM de Kenwood, al activar se selecciona NR1.
 
-Notch: f luego a cambia Auto Notch; a dentro lo cambia de nuevo. TS-480 usa cancelación de batidos, recordando BC1/BC2 o usando BC1 si no se conoce. f luego n cambia Manual Notch; n dentro lo cambia de nuevo. Punto/coma suben/bajan frecuencia o posición mientras está activado, sin vueltas. w dentro cambia el ancho. Si está desactivado, conserva los ajustes. q vuelve a Filtros; otro q al nivel principal; h muestra ayuda. Yaesu: 10-3200 hercios; Icom: posición 0-255; TS-590SG: posición 0-127. Se usan nombres de ancho del fabricante. Si Auto/Manual son excluyentes, activar uno desactiva el otro. TS-590SG restaura el último ancho observado; si se desconoce, el primer encendido usa y anuncia Normal. Seleccione BC1/BC2 en la radio TS-480 si necesita otro tipo. Se indican funciones no compatibles; un estado desconocido impide el cambio. QMX no tiene control notch documentado.
+Notch: f luego a lee Auto Notch sin cambiarlo; a dentro lo cambia. TS-480 usa cancelación de batidos, recordando BC1/BC2 o usando BC1 si no se conoce. f luego n lee Manual Notch sin cambiarlo; n dentro lo cambia. Punto/coma suben/bajan frecuencia o posición mientras está activado, sin vueltas. w dentro cambia el ancho. Si está desactivado, conserva los ajustes. q vuelve a Filtros; otro q al nivel principal; h muestra ayuda. Yaesu: 10-3200 hercios; Icom: posición 0-255; TS-590SG: posición 0-127. Se usan nombres de ancho del fabricante. Si Auto/Manual son excluyentes, activar uno desactiva el otro. TS-590SG restaura el último ancho observado; si se desconoce, el primer encendido usa y anuncia Normal. Seleccione BC1/BC2 en la radio TS-480 si necesita otro tipo. Se indican funciones no compatibles; un estado desconocido impide el cambio. QMX no tiene control notch documentado.
 
-Contour: f c toggles On/Off. Navigation adjusts current frequency (10-3200 hertz). Inside Contour, l selects Contour level (-40 to +20, spoken as Dip/Neutral/Peak); w selects Contour width (1-11); c returns to frequency. When already on frequency, c toggles On/Off. Full stop increases and comma decreases the selected setting, stopping at endpoints. Off leaves settings unchanged. q returns to Filters, where l means Low Cut; q again returns to top level. Current settings are preserved on switching. FT-DX10, FT-710 and FTX-1 only; FTX-1 frequency/state follow selected Main/Sub, level/width are shared menu settings. APF is separate and is not altered.
+Contour: f c reads current state without changing it; when On, reads frequency. Inside, c toggles On/Off. Navigation adjusts current frequency (10-3200 hertz). Inside Contour, l selects Contour level (-40 to +20, spoken as Dip/Neutral/Peak); w selects Contour width (1-11); c returns to frequency. When already on frequency, c toggles On/Off. Full stop increases and comma decreases the selected setting, stopping at endpoints. Off leaves settings unchanged. q returns to Filters, where l means Low Cut; q again returns to top level. Current settings are preserved on switching. FT-DX10, FT-710 and FTX-1 only; FTX-1 frequency/state follow selected Main/Sub, level/width are shared menu settings. APF is separate and is not altered.
 
 Verificar filtros: f v enumera los filtros conmutables activados en el modo y receptor actuales, leyendo la radio. v dentro de un ajuste informa sin salir del control. Se omiten los filtros desactivados o no compatibles; se anuncian los estados desconocidos. El ancho de banda y los cortes inferior/superior no se cuentan como filtros conmutables. FTX-1 identifica el receptor principal o secundario. No cambia ajustes.
 
 Revisión con v repetida: la primera v da el resumen de filtros activados. Las siguientes v consecutivas muestran un filtro compatible cada vez, incluido desactivado o desconocido, y vuelven al resumen. Se lee el estado actual. Otro comando o un cambio de modo/receptor reinicia el resumen. q sale de Filtros; dentro de un ajuste, q vuelve primero a Filtros. La v principal no cambia.
 
-s luego m  Ganancia de micrófono: preparación, PTT manual, punto/coma ajustan; h ayuda. YAC solo cambia la ganancia.
+s luego m  Ganancia de micrófono del modo actual: punto/coma ajustan; v lee; h ayuda del modo; Espacio preparación ALC opcional si se admite; q conserva el valor. PTT manual.
 
 s luego a  Lee AGC actual sin cambiarlo; repite a para la opción siguiente. Lectura verificada. q anuncia Listo. s h da ayuda.
 

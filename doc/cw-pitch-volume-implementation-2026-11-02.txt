@@ -1,0 +1,62 @@
+MODE BEHAVIOUR UPDATED: c v now selects CW automatically when required.
+See cw-volume-auto-cw-2026-11-02.txt; the previous mode-entry restriction
+described below is superseded by the explicit user request.
+
+CW Pitch and Sidetone Volume - implementation record
+
+Implemented locally in D:\YAC on 2 November 2026 after user agreement.
+No build or publication.
+
+c p opens Pitch and reads hertz without changing the radio.
+c v opens Sidetone Volume and reads the current positive relative level.
+Full stop increases and comma decreases through supported settings.
+Changes apply immediately and require matching native readback.
+At either limit the current value is repeated without a write or wraparound.
+Repeating p or v reads the corresponding setting without changing it.
+h is context sensitive: h047 for Pitch, h048 for Sidetone Volume.
+Help returns to the same control and never changes settings.
+q keeps the selection, says Done and returns to CW; another q says Top Level.
+Literal Plus/Minus keys and signed dB values are not used.
+
+The controls do not generate test tones, send Morse, key the transmitter,
+enable the internal keyer, change speed or change Break-in mode.
+
+Model coverage:
+FT-DX10, FT-710 and FTX-1: pitch 300..1050 Hz in 10-Hz steps via KP.
+Sidetone level 0..100 via ML1. Since MONI LEVEL is a shared control,
+live CW-U/CW-L is required and checked again before a setter. Opening does
+not select CW, enable MONI or adjust its On/Off setting.
+
+IC-705, IC-7300, IC-7300MK2, IC-7600 and IC-9700: pitch 300..900 Hz in
+5-Hz steps via 14 09, using Hamlib's published endpoint interpolation
+rounded to the documented pitch steps. Native setting readback is verified;
+comparison with the actual radio display remains outstanding.
+Dedicated sidetone menus under 1A 05 are respectively 0249, 0158, 0218,
+0024 and 0221. Raw 0..255 is normalised to a relative level 0..100,
+not measured acoustic loudness or decibels. Side Tone Level Limit and
+ordinary AF gain are left alone. Their effects are explained in radio notes.
+The MK2 manual's inconsistent 0225/0255 upper range is recorded there;
+the described 0255=100% endpoint is used, pending physical confirmation.
+Kenwood/QMX pitch and sidetone volume are not enabled in this implementation.
+
+The local IC-7300 full manual was read directly to confirm sidetone selector
+0158, printed page 19-6/PDF page 164. A conflicting selector in flrig was
+not used. Source references are in cw-command-references-2026-11-02.txt.
+
+English, German, Spanish and Polish labels, separate contextual help topics,
+public key references and radio notes are aligned. The private key chart
+was updated after preserving a uniquely named pre-change backup.
+
+Verification:
+All 45 focused Pitch/Volume, Speed, Delay, CW and package-layout tests passed.
+Log: local_storage/testing/results/cw-pitch-volume-focused-20261102-141249.txt
+Coverage includes both complete Yaesu ranges, Icom pitch/volume steps,
+all 256 Icom readback codes, exact model-specific menu selectors, malformed
+responses, readback mismatches, non-CW mode guards, disconnects and keyboard
+integration. All four languages exercise read-only entry/repeat/help/exit.
+Full suite: 595 tests, 594 passed, one known sandbox-blocked junction check.
+No failures or errors and no separate cleanup failure reported.
+Log: local_storage/testing/results/cw-pitch-volume-full-20261102-141426.txt
+The real junction check passed in the user's earlier ordinary PowerShell run
+of all 17 Windows updater checks. Its evidence remains saved separately.
+Physical-radio, speech and braille validation remain outstanding.

@@ -102,12 +102,54 @@ Write-Output ('Attempts=' + $script:Attempts + ';Sleeps=' + $script:Sleeps)
             junction = base / 'linked'
             script = windows_update.installer_script(base, base, base, 'YAC.exe', 'YAC.exe', 2147483000)
             definitions = script.split("try {\n    Write-Host 'Waiting", 1)[0]
-            check = definitions + '\nNew-Item -ItemType Junction -Path ' + windows_update.literal(junction) + ' -Target ' + windows_update.literal(outside) + " | Out-Null\ntry { Assert-ApplicationFile " + windows_update.literal(junction) + " } finally { [IO.Directory]::Delete(" + windows_update.literal(junction) + ') }'
+            check = definitions + "\n$ErrorActionPreference = 'Stop'\ntry {\n    try {\n        New-Item -ItemType Junction -Path " + windows_update.literal(junction) + ' -Target ' + windows_update.literal(outside) + r''' | Out-Null
+    } catch {
+        if (($_.Exception -is [ComponentModel.Win32Exception] -and $_.Exception.NativeErrorCode -eq 5) -or
+            $_.Exception -is [UnauthorizedAccessException]) {
+            Write-Output 'ENVIRONMENT BLOCKED: Windows denied creation of the test junction; YAC protection was not tested.'
+            exit 77
+        }
+        throw
+    }
+    Assert-ApplicationFile ''' + windows_update.literal(junction) + r'''
+} finally {
+    if (Test-Path -LiteralPath ''' + windows_update.literal(junction) + r''') {
+        [IO.Directory]::Delete(''' + windows_update.literal(junction) + r''')
+    }
+}
+'''
             result = subprocess.run([str(POWERSHELL), '-NoProfile', '-EncodedCommand',
                 base64.b64encode(check.encode('utf-16le')).decode()], capture_output=True, text=True, timeout=30)
+            self.assertEqual((outside / 'keep.txt').read_text(), 'untouched')
+            self.assertFalse(os.path.lexists(junction), 'Test junction cleanup failed: ' + str(junction))
+            if result.returncode == 77 and 'ENVIRONMENT BLOCKED:' in result.stdout:
+                self.skipTest(result.stdout.strip())
             self.assertNotEqual(result.returncode, 0)
             self.assertIn('Refusing to replace a linked application file', result.stderr)
-            self.assertEqual((outside / 'keep.txt').read_text(), 'untouched')
+
+    def test_junction_environment_block_is_not_a_yac_failure_or_pass(self):
+        result = unittest.TestResult()
+        with patch.object(subprocess, 'run', return_value=subprocess.CompletedProcess(
+                [], 77, 'ENVIRONMENT BLOCKED: Windows denied creation of the test junction.', '')):
+            self.__class__('test_real_directory_junction_is_still_rejected').run(result)
+        self.assertEqual(len(result.skipped), 1)
+        self.assertEqual(result.failures, [])
+        self.assertEqual(result.errors, [])
+
+    def test_junction_unexpected_setup_error_is_not_hidden_as_environment_block(self):
+        result = unittest.TestResult()
+        with patch.object(subprocess, 'run', return_value=subprocess.CompletedProcess(
+                [], 1, '', 'Unexpected setup error')):
+            self.__class__('test_real_directory_junction_is_still_rejected').run(result)
+        self.assertEqual(result.skipped, [])
+        self.assertEqual(len(result.failures), 1)
+
+    def test_junction_accepted_by_updater_is_still_a_failure(self):
+        result = unittest.TestResult()
+        with patch.object(subprocess, 'run', return_value=subprocess.CompletedProcess([], 0, '', '')):
+            self.__class__('test_real_directory_junction_is_still_rejected').run(result)
+        self.assertEqual(result.skipped, [])
+        self.assertEqual(len(result.failures), 1)
 
     def test_flat_archive_extracts_without_an_extra_user_folder(self):
         stream = io.BytesIO()

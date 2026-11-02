@@ -1,0 +1,38 @@
+CW-Funkgeräthinweise
+
+FT-DX10, FT-710 und FTX-1: c b kombiniert BI Ein/Aus mit der getrennten Semi/Voll-Menüeinstellung. Aus lässt den Typ unverändert. Beim Einschalten wird zuerst der gewünschte Typ gesetzt. Menübefehle: EX020113, EX020116 bzw. EX020115. c i verwendet KR für die unabhängige interne Taste; Typ, Tempo, Tonhöhe und Lautstärke bleiben unverändert.
+
+IC-705, IC-7300, IC-7300MK2, IC-7600 und IC-9700: c b verwendet CI-V 16 47: 00 Aus, 01 Semi, 02 Voll. c i wird derzeit nicht unterstützt. Die Auswahl von Handtaste, Bug oder Paddle wird nicht als unabhängiger Ein/Aus-Schalter behandelt. YAC erfindet keinen Paddle-Typ.
+
+Kenwood und QMX: Break-in und interne Taste werden derzeit nicht unterstützt. Das Tasttempo ist unten gesondert beschrieben. TS-590SG verwendet VX außerhalb von CW für VOX. YAC sendet keine allgemeinen BI/KR-Befehle an diese Geräte. Dies beschreibt eine YAC-Grenze, keine fehlende CW-Funktion des Funkgeräts.
+
+Änderungen werden zurückgelesen und bleiben bei q im Funkgerät erhalten. Speicherung über einen Neustart wird nicht versprochen. Simulationen ersetzen keine Prüfung am Funkgerät.
+
+Verzögerung (c d): FT-DX10, FT-710 und FTX-1 verwenden die dokumentierte SD-Tabelle: 30, 50, 100, 150, 200, 250, danach 300 bis 3000 Millisekunden in 100-Millisekunden-Schritten. Kein Umlauf an Grenzen. BI, Semi/Voll und Tasttempo bleiben unverändert.
+
+Icom-Verzögerung (c d): IC-705, IC-7300, IC-7300MK2, IC-7600 und IC-9700 verwenden CI-V 14 0F mit Rohwerten 0..255. YAC bietet Verz Stufe 1..16 mit Rohwerten 0, 17, 34, 51, 68, 85, 102, 119, 136, 153, 170, 187, 204, 221, 238, 255 als vier BCD-Ziffern. Das sind relative Stufen, keine Zeit- oder Punktlängenmessung. Keine Rohwert-zu-Punkt- oder Tempoumrechnung.
+
+Öffnen und d lesen ohne Rundung des Funkgeräts. Zwischenwerte werden als nächste Stufe angesagt. Punkt wählt den streng höheren Rohwert, Komma den streng niedrigeren. Dabei kann sich der Rohwert ändern, während die angesagte nächste Stufe gleich bleibt. Änderungen benötigen Bestätigung und passenden Rohwert beim Zurücklesen. Kein Umlauf; q behält den Rohwert. Break-in und Tempo bleiben unverändert.
+
+Bei Punktlängen kann eine Tempoänderung die tatsächliche Zeit ändern. YAC behauptet keine Millisekunden aus diesen Stufen. Simulationen sind geprüft; Funkgerätprüfung steht aus.
+
+
+Tasttempo (c k): FT-DX10, FT-710, FTX-1 und TS-590SG verwenden KS mit drei Befehlsziffern für 4..60 WPM. YAC akzeptiert eine oder zwei Eingabeziffern und weist Werte außerhalb des Bereichs zurück.
+
+IC-705, IC-7300, IC-7300MK2, IC-7600 und IC-9700 verwenden CI-V 14 0C mit BCD. YAC nutzt Hamlibs veröffentlichte cw_lookup-Tabelle für 6..48 WPM und deren Schwellen für das Lesen. Rohwerte 250..255 gelten als 48 WPM. Schreiben nutzt den Tabellenwert mit Bestätigung und genauem Zurücklesen. Keine angenommene lineare Umrechnung. Prüfung am Funkgerät steht aus.
+
+Die Eingabe schaltet die interne Taste nicht ein, ändert Break-in nicht und sendet keine Morsezeichen. Andere Modelle ohne Tempoprofil melden nicht unterstützt.
+
+
+Tonhöhe und Mithörtonlautstärke (c p / c v)
+
+FT-DX10, FT-710 und FTX-1: KP bietet 300..1050 Hz in 10-Hz-Schritten. ML1 bietet Pegel 0..100. Die Bedienungsanleitungen nennen MONI LEVEL als CW-Mithörtonregler. Da der Regler gemeinsam genutzt wird, wählt und bestätigt c v bei Bedarf CW-U vor dem Lesen. Bestehendes CW-U/CW-L bleibt erhalten. Der Wechsel wird angesagt und bei q beibehalten. MONI wird nicht eingeschaltet.
+
+IC-705, IC-7300, IC-7300MK2, IC-7600 und IC-9700: 14 09 liefert die Tonhöhe von 300..900 Hz. YAC bildet Rohwerte 0..255 nach Hamlibs Endpunktinterpolation auf den nächsten dokumentierten 5-Hz-Schritt ab und verwendet den passenden BCD-Code. Empfangs- und Mithörton können gekoppelt sein. Änderungen werden zurückgelesen. Der Abgleich mit dem Gerätedisplay steht aus.
+
+Eigene Icom-Mithörtonmenüs: IC-705 1A 05 02 49; IC-7300 1A 05 01 58; IC-7300MK2 1A 05 02 18; IC-7600 1A 05 00 24; IC-9700 1A 05 02 21. Rohwerte 0..255 werden als relative Pegel 0..100 angezeigt, nicht Dezibel oder gemessene Lautheit. Side Tone Level Limit bleibt unverändert; es und AF können die Lautstärke beeinflussen. Die MK2-Tabelle druckt widersprüchlich 0225 als Maximum, nennt aber 0255 für 100%; YAC nutzt diesen Endpunkt, Prüfung am Gerät ausstehend.
+
+Öffnen, Hilfe, p/v und q ändern nichts. Punkt/Komma gelten sofort und stoppen ohne Umlauf. Keine Morseausgabe, Testtöne, Sendung, Keyer-Aktivierung oder Break-in-Änderung. Kenwood/QMX-Tonhöhe und -Lautstärke sind hier nicht implementiert. Simulationen sind geprüft; Funkgerät-, Sprach- und Brailletests stehen aus.
+
+
+Bei diesen Yaesu-Modellen wählt und bestätigt c v jetzt bei Bedarf CW-U vor dem Pegellesen. Vorhandenes CW-U oder CW-L bleibt erhalten. Der Wechsel wird angesagt; q behält CW. Bei fehlgeschlagenem Lesen oder Wechsel erfolgt kein Lautstärkebefehl. Ein externer Wechsel aus CW während der Regelung verhindert weiterhin eine Pegeländerung.

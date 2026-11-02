@@ -115,3 +115,17 @@ def control(yac, root, radio, language, read_key, watch):
                 error()
         elif key:
             return key
+
+
+def active_status(yac, root, radio, language):
+    """Omit Off/unsupported; report an active native lock without changing it."""
+    try:
+        backend = Locks(yac, root, radio)
+        if backend.spec is None:
+            return ''
+        state = backend.read()
+        token = {'on': 'l405', 'dial': 'l406', 'panel': 'l407'}.get(state)
+        return yac._read_label(root, language, token, '') if token else ''
+    except (OSError, ValueError, KeyError, TypeError, RuntimeError):
+        LOG.debug('Lock status unavailable', exc_info=True)
+        return yac._read_label(root, language, 'l411', '')

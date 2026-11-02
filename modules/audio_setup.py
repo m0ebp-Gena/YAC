@@ -38,7 +38,7 @@ def level(sd, device, channel):
     return round(100*rms, 1), any(abs(v) >= 0.99 for v in values)
 
 
-def control(yac, root, language, read_key):
+def control(yac, root, language, read_key, *, prepare_input=None):
     def label(token, **values):
         return yac._read_label(root, language, token, '').format(**values)
     try:
@@ -53,10 +53,12 @@ def control(yac, root, language, read_key):
         return
     settings = yac._read_settings(root/'yac.ini')
     position, channel = 0, 1
+    saved_available = False
     try:
         saved = resolve(sd, settings['cw_audio_identity'])
         position = next(i for i,d in enumerate(devices) if d == saved)
         channel = min(saved['channels'], max(1, int(settings.get('cw_audio_channel', '1'))))
+        saved_available = True
     except (KeyError, ValueError, TypeError):
         pass
     def describe():
@@ -64,10 +66,13 @@ def control(yac, root, language, read_key):
         chat_int.show_response(label('l287', number=position+1, total=len(devices),
                                     name=device['name'], host=device['host'], channel=channel,
                                     channels=device['channels']))
-    chat_int.show_response(label('l286'))
+    if saved_available:
+        describe()
+    else:
+        chat_int.show_response(label('l292' if settings.get('cw_audio_identity') or settings.get('cw_audio_device') else 'l410'))
     chat_int.show_response(label('l398'))
     chat_int.show_response(label('l399'))
-    describe()
+    described = saved_available
     while True:
         key = read_key().casefold()
         if key == 'q':
@@ -76,18 +81,26 @@ def control(yac, root, language, read_key):
         if key == 'h':
             chat_int.show_response(help_int.get_help(root, language, 'h014'))
         elif key in ('.', ','):
-            position = min(len(devices)-1, max(0, position+(1 if key == '.' else -1)))
+            if described:
+                position = min(len(devices)-1, max(0, position+(1 if key == '.' else -1)))
             channel = 1
             describe()
+            described = True
         elif key == 'c':
             channel = channel % devices[position]['channels'] + 1
             describe()
+            described = True
         elif key in ('v', '\r', '\n'):
+            if not described:
+                chat_int.show_response(label('l410'))
+                continue
             device = devices[position]
             try:
                 # Re-enumerate, so a hotplug/reordered index cannot select a microphone.
                 identity = json.dumps({'name':device['name'], 'host':device['host']})
                 live = resolve(sd, identity)
+                if prepare_input is not None:
+                    prepare_input()
                 if key == 'v':
                     chat_int.show_response(label('l288'))
                     value, clipped = level(sd, live['index'], channel)

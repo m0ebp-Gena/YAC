@@ -1,0 +1,52 @@
+CW submenu plan recovered from earlier chat
+
+Source: Codex chat "Update local key chart version".
+Recovered 2 November 2026. This is a planning record, not an implementation
+or hardware-validation claim.
+
+Initial proposed support before the next build:
+c b  Break-in: radio-supported Off, Semi and Full choices.
+c d  Break-in Delay: Semi return-to-receive delay.
+c i  Internal Keyer On/Off (replaces the earlier c e proposal).
+c k  Keyer Speed: words per minute.
+c p  CW Pitch: received CW/sidetone pitch where linked by the radio.
+c v  Sidetone Volume: own-sending monitor volume.
+c h  Help.
+c q  Return to top level.
+
+Proposed later expansion:
+c m  CW Messages: stored messages and sending.
+c r  Paddle Reverse: swap dot and dash sides.
+c t  Keyer Type: supported paddle/keyer behaviour.
+c w  Dot/Dash Ratio.
+Keep c s unassigned pending a clear use.
+
+Decision status:
+The earlier assistant proposed the initial and later groups above.
+The user discussed and selected c b for Break-in, and reconfirmed that
+binding in the current chat. Do not describe every proposed binding as a
+separately approved implementation decision.
+
+Interaction follows current general.rules:
+Opening reads and announces the current setting without changing it.
+Full stop selects next/increases; comma selects previous/decreases.
+Further b presses may cycle Break-in forward through supported choices.
+h explains choices and operation. q keeps the setting, says Done and
+returns to CW. Leaving the submenu follows the current submenu rules.
+Preserve model-specific choice order and report failed reads honestly.
+Keep labels and help aligned in English, German, Spanish and Polish.
+
+Model command availability and reliable readback must be checked during
+implementation. The earlier proposal is not evidence of CAT/CI-V support
+on every radio.
+
+Implementation update: c b and c i implemented locally on 2 November 2026.
+See the language-specific cw-radio-notes.txt files for current model coverage.
+The remaining initial settings are still planned; no build has been made.
+
+Current implementation status: c d Delay and c k Keyer Speed are now
+implemented locally, in addition to c b and c i. Remaining initial controls
+were c p CW Pitch and c v Sidetone Volume. Both are now implemented locally
+for the model coverage in cw-pitch-volume-implementation-2026-11-02.txt.
+The initial CW control set is implemented; hardware validation and the build
+remain outstanding. No build has been made.

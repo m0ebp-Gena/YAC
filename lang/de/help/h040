@@ -1,0 +1,13 @@
+Hilfe für Empfangs- und Sendeablagen
+
+o öffnet die Ablage bei Empfang ohne Änderung. Der Hinweis nennt v Prüfen, c Ablage löschen und h Hilfe. Weitere o wechseln zwischen Senden und Empfang, ohne etwas einzuschalten oder zu ändern.
+
+Punkt addiert 10 Hertz, Komma zieht 10 Hertz von der gespeicherten Radioablage ab und aktiviert die gewählte Seite. Änderungen wirken sofort und werden rückgelesen. Öffnen setzt den gespeicherten Wert nicht zurück. Bei gemeinsamer Ablage gilt derselbe Wert für beide eingeschalteten Seiten.
+
+v liest die wirksame Empfangs- und Sendeablage in Hertz. Eine ausgeschaltete Seite meldet 0. Vorzeichen werden als Plus und Minus gesprochen. Prüfen ändert nichts. c löscht ausdrücklich die Ablage und schaltet Empfangs- und Sendeablage aus; Rücklesen bestätigt dies. Die gewählte Seite bleibt gewählt.
+
+h liest die Hilfe. q meldet Fertig und kehrt zur Hauptebene zurück; alle aktuellen Einstellungen bleiben erhalten. Weder Öffnen noch q löscht etwas. Nicht lesbare oder nicht unterstützte Einstellungen werden gemeldet.
+
+***
+Ende der Hilfe
+***

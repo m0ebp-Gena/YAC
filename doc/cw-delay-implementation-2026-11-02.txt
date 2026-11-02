@@ -1,0 +1,45 @@
+SUPERSEDED: the approximate Icom mapping described below was removed.
+Current behaviour: see cw-delay-milliseconds-correction-2026-11-02.txt.
+
+CW Break-in Delay implementation - 2 November 2026
+
+Implemented locally in D:\YAC. No build or publication.
+
+Agreed operation:
+c d reads and announces the current delay without changing it.
+Full stop increases to the next value; comma decreases to the previous.
+Changes apply immediately and require matching native readback.
+At minimum and maximum, further presses repeat that value without a write.
+There is no wraparound. d reads again without changing the value.
+h gives generic help. q keeps the choice, says Done and returns to CW.
+Another q announces Top Level. No defaults or Break-in mode changes.
+
+Coverage and units:
+FT-DX10, FT-710, FTX-1: documented SD step table, 30..3000 milliseconds.
+IC-705, IC-7300, IC-7300MK2, IC-9700: CI-V 14 0F, BCD 0000..0255.
+Converted 2.0..13.0-dot values use linear interpolation, rounded to tenths.
+Because intermediate conversion is not fully specified in the references,
+these values are explicitly announced as approximate (about in English).
+Physical comparison with the radio display remains outstanding.
+IC-7600: no verified unit conversion in the checked reference, so Delay
+reports Not Supported. Kenwood and QMX Delay are not implemented.
+
+English, German, Spanish and Polish help, labels and key references are
+aligned. Separate radio notes explain differences. Both platform packaging
+maps now include all four CW radio-note files. No packages were built.
+The private key chart was updated with a preserved pre-change backup.
+
+Verification:
+24 focused CW, delay and package-layout checks passed before full validation.
+Full suite: 574 tests, 573 passed, one environment-blocked junction check.
+No failures or errors; no separate cleanup failure reported.
+Log: local_storage/testing/results/cw-delay-full-validation-20261102-132048.txt
+The known junction restriction applies to this sandbox. The user's earlier
+ordinary PowerShell run passed all 17 Windows updater checks, including the
+real junction refusal and cleanup:
+local_storage/testing/results/windows-validation-20261102-130943-712632.txt
+The final approximate-value wording and package-note assertion were checked
+again in a subsequent focused CW/delay/package-layout run (cw-delay-final log).
+
+This verifies simulated native commands and control flow. Physical-radio,
+speech and braille checks remain outstanding.

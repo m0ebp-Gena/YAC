@@ -1,5 +1,11 @@
 YAC changes
 
+2 November 2026 revision 1
+- Read-only control entry, explicit Offset actions and active-lock Verify.
+- CW break-in, delay, internal keyer, speed, pitch and sidetone controls.
+- Mode-dependent microphone gain and help, including FM and digital voice.
+- Four-language help and radio notes; hardware validation remains pending.
+
 30 October 2026
 - Version 001 identity corrected for Windows and Mac/Linux.
 - SWR returns automatically; clearer antenna reminder.

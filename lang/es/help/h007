@@ -1,9 +1,11 @@
 Ayuda: Menú de filtros
 
+Abrir un filtro lee su estado actual sin cambiarlo. Si está desactivado, solo indica desactivado; si está activado, también el valor activo cuando corresponda. Solo un comando posterior cambia el ajuste.
+
 Filtros: pulsa f y después una tecla de abajo. Los controles disponibles dependen de la radio y del modo.
 
 a: Notch automático. Otra a activa o desactiva.
-b: Noise Blanker. Otra b activa o desactiva. Punto/coma ajustan el nivel estando activado.
+b: Noise Blanker. Al abrir, anuncia activado/desactivado y el nivel si está activado, sin cambiar nada. Otra b activa o desactiva. Punto/coma ajustan el nivel estando activado.
 c: Contour. Otra c activa o desactiva. Punto/coma ajustan la frecuencia estando activado. l selecciona nivel; w anchura; c vuelve a frecuencia. Con frecuencia seleccionada, c activa o desactiva.
 h: Leer esta ayuda.
 l: Corte inferior. Punto aumenta; coma disminuye el límite inferior.

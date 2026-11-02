@@ -1,0 +1,26 @@
+Digital controls planning - 2 November 2026
+
+User suggestion
+The existing Decode submenu may be able to accommodate the additional
+D-Star and C4FM controls. Consider this location when designing digital
+operation and repeater programming. This is a possible location, not an
+agreed menu layout or authorization to implement controls.
+
+Current Decode submenu letters
+a Audio setup
+c CW decoding
+h Help
+q Return to top level
+r RTTY decoding
+
+Inside decoder views, s, v, n and z also have functions. Preserve these
+existing controls when considering additions.
+
+Digital scope to investigate
+IC-705: DV mode, separate DR function, station and routing callsigns,
+digital squelch, and repeater frequency/duplex/offset settings.
+FTX-1: C4FM-DN/VW, AMS, transmit/receive DG-ID, station identity,
+repeater settings and optional WIRES-X operation.
+Confirm CAT/CI-V read and write support before proposing controls.
+
+No runtime changes made for this suggestion.

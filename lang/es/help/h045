@@ -1,0 +1,8 @@
+Ayuda del retardo de Break-in
+
+Al abrir se lee el ajuste actual sin cambiarlo. Los milisegundos indican la espera tras enviar antes de volver a recepción en Semi Break-in. Nivel retardo 1 a 16 es una escala relativa, no milisegundos ni puntos; mayor significa más retardo. Un valor intermedio se anuncia como el nivel más cercano sin modificarlo.
+Punto selecciona el siguiente ajuste superior; coma el inferior. Cada cambio se aplica y verifica por lectura. En los límites se repite el valor sin saltar al otro extremo. d lee de nuevo; h lee ayuda. q conserva el ajuste, anuncia Hecho y vuelve a CW. YAC no impone valores predeterminados ni cambia velocidad o modo Break-in.
+
+***
+Fin de la ayuda
+***

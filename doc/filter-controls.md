@@ -6,15 +6,15 @@ the current radio setting on entry and before adjustments, stops at its endpoint
 and verifies changes by reading back. Opening a control never writes a setting.
 `q` keeps the setting and returns to Filters; another `q` returns to the top level.
 `h` gives filter help. Other command keys leave the adjustment for the top level.
-`f b` toggles Noise Blanker and opens its level control. Inside it, `b` toggles
-again. Full stop/comma adjust level only while On; while Off they report Off
+`f b` opens Noise Blanker without changing it, announcing its current On/Off
+state and, when On, its level. Inside it, `b` toggles On/Off. Full stop/comma adjust level only while On; while Off they report Off
 without altering the level. Unknown status prevents toggling; changes require
 readback. `q` returns to Filters, then another `q` to the top level.
-Contour is not implemented.
 
-`f a` toggles Auto Notch; repeated `a` inside toggles again. On TS-480 it instead
+
+`f a` opens Auto Notch without changing it; repeated `a` inside toggles again. On TS-480 it instead
 toggles Beat Cancel and announces BC1 or BC2, retaining the last observed type
-and using BC1 if none is known. `f n` toggles Manual Notch; repeated `n` inside
+and using BC1 if none is known. `f n` opens Manual Notch without changing it; repeated `n` inside
 toggles again. Full stop/comma adjust its current frequency or native position
 while On, stopping at endpoints. `w` inside Manual Notch cycles supported widths.
 While Off, navigation and width commands leave settings unchanged. `q` returns
@@ -40,7 +40,7 @@ currently exposes Auto in SSB/AM, Manual in SSB/CW/RTTY/PSK/DATA. Unimplemented
 modes report Not supported without sending a setter. No notch settings are
 imposed at startup.
 
-`f r` toggles Noise Reduction; repeated `r` inside toggles again. Full stop/comma
+`f r` opens Noise Reduction without changing it; repeated `r` inside toggles again. Full stop/comma
 adjust the current setting only while On. Off navigation reports Off and leaves
 the setting unchanged. Unknown state prevents toggling; every change requires
 readback. `q` returns to Filters, and another `q` to the top level.
@@ -114,7 +114,7 @@ references:
 - [TS-480 PC commands](https://www.kenwood.com/i/products/info/amateur/ts_480/pdf/ts_480_pc.pdf)
 - [QMX operating manual 1_04_004](https://www.qrp-labs.com/images/qmx/manuals/operation_1_04_004.pdf)
 
-Contour: f c toggles On/Off. Navigation adjusts current frequency (10-3200 hertz). Inside Contour, l selects Contour level (-40 to +20, spoken as Dip/Neutral/Peak); w selects Contour width (1-11); c returns to frequency. When already on frequency, c toggles On/Off. Full stop increases and comma decreases the selected setting, stopping at endpoints. Off leaves settings unchanged. q returns to Filters, where l means Low Cut; q again returns to top level. Current settings are preserved on switching. FT-DX10, FT-710 and FTX-1 only; FTX-1 frequency/state follow selected Main/Sub, level/width are shared menu settings. APF is separate and is not altered.
+Contour: f c reads current state without changing it; when On, reads frequency. Inside, c toggles On/Off. Navigation adjusts current frequency (10-3200 hertz). Inside Contour, l selects Contour level (-40 to +20, spoken as Dip/Neutral/Peak); w selects Contour width (1-11); c returns to frequency. When already on frequency, c toggles On/Off. Full stop increases and comma decreases the selected setting, stopping at endpoints. Off leaves settings unchanged. q returns to Filters, where l means Low Cut; q again returns to top level. Current settings are preserved on switching. FT-DX10, FT-710 and FTX-1 only; FTX-1 frequency/state follow selected Main/Sub, level/width are shared menu settings. APF is separate and is not altered.
 
 Filter Verify: f v lists switchable filters currently On for the current mode/receiver, using live readback. v inside any filter adjustment gives the same report without leaving the control. Off and unsupported filters are omitted; unreadable states are announced as unknown. If every applicable state is known and Off, says No switchable filters On. Bandwidth/low/upper cuts have no switchable On/Off state and are not included. FTX-1 reports Main or Sub. Verify changes no settings.
 

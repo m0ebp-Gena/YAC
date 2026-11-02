@@ -1,15 +1,10 @@
-Ayuda: Ganancia del micrófono
+Ganancia de micrófono SSB
 
-Ganancia de micrófono: lee el procedimiento antes de continuar. En Continue Y/N?, y continúa; n o q cancela y vuelve a Ajustes. h muestra esta ayuda.
+Espacio abre la preparación de ALC. Desactive el procesador de voz para el ajuste básico. En Continue Y/N?, y inicia la medición; n o q cancela la preparación. Suelte PTT tras hablar para oír el pico ALC muestreado. Pueden perderse picos breves; los valores brutos no son porcentajes calibrados ni un juicio de calidad. Espacio borra después el pico. Si se cambia el medidor, se restaura al salir en recepción; se notifican los fallos. Restaure sus propios ajustes de preparación.
 
-Conecta una antena adaptada o carga artificial adecuada. YAC no comprueba la carga. Menor potencia no hace segura una carga inadecuada. Ajusta tú la potencia y desactiva el procesador de voz. YAC solo cambia ganancia de micrófono; no cambia potencia, frecuencia ni modo, ni inicia transmisión.
+Con PTT suelto, punto aumenta la ganancia; coma la reduce. Se detiene en los límites. h ayuda; q vuelve a Ajustes con Listo y conserva la ganancia; v lee el valor. Abrir no cambia nada. Un cambio de modo termina el ajuste; vuelva a abrirlo. YAC nunca inicia una transmisión.
 
-Empieza en recepción. YAC anuncia ganancia actual. Mantén PTT, habla normalmente y suéltalo. YAC anuncia el pico ALC muestreado, o desconocido si falla la lectura. Puede omitir picos breves. Son unidades brutas, no vatios ni porcentajes calibrados; no hay valoración automática.
-
-Con PTT suelto, punto aumenta ganancia y coma disminuye. Cada cambio confirmado anuncia ganancia y borra el pico. Se detiene en los extremos. v lee ganancia; Espacio borra el pico; h lee ayuda. Suelta PTT y pulsa q para volver a Ajustes con Nivel principal, conservando ganancia. Restaura tú los ajustes previos que cambiaste.
-
-Modos, escalas, medidor y zonas ALC de cada modelo están en el archivo de tu radio en doc/supported-radios.
-Cuando es necesario, YAC selecciona el medidor de control automático de nivel y confirma su lectura. Al salir en recepción restaura la selección anterior conocida. Si falla, conserva la restauración pendiente para la próxima entrada.
+Antes de transmitir, conecte una antena o carga artificial adecuada y ajuste usted la potencia apropiada. Una potencia baja no hace segura una carga inadecuada. Use el PTT físico y hable normalmente.
 
 ***
 Fin de la ayuda

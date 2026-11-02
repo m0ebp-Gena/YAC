@@ -1,0 +1,8 @@
+Pomoc głośności odsłuchu
+
+Gdy wymagany jest CW, YAC przełącza radio na CW przed odczytem poziomu odsłuchu. Jeśli radio jest już w CW, istniejący wybór CW pozostaje bez zmiany. Wyjście przez q zachowuje CW. Sam poziom odsłuchu nie zmienia się przy otwarciu. Odsłuch to dźwięk własnego nadawania Morse’a. Poziom jest dodatnią skalą względną, nie decybelami ani pomiarem głośności dźwięku.
+Kropka zwiększa poziom; przecinek zmniejsza. Zmiany są stosowane od razu i potwierdzane odczytem. Granice nie przeskakują. v odczytuje ponownie. h czyta tę pomoc głośności i wraca bez zmiany. q zachowuje ustawienie, ogłasza Gotowe i wraca do CW. YAC nie generuje dźwięku ani nie kluczuje nadajnika. Monitor nie jest włączany.
+
+***
+Koniec pomocy
+***

@@ -191,9 +191,14 @@ def describe(yac, root, radio, language, name, spec):
 
 
 def verify(yac, root, radio, language):
+    from modules import lock_control
     features = catalog(root, radio, yac)
-    return ', '.join(describe(yac, root, radio, language, name, features[name])
-                     for name in ('attenuator', 'preamp', 'power', 'tuner') if name in features) or _label(yac, root, language, 'l129')
+    responses = [describe(yac, root, radio, language, name, features[name])
+                 for name in ('attenuator', 'preamp', 'power', 'tuner') if name in features]
+    lock = lock_control.active_status(yac, root, radio, language)
+    if lock:
+        responses.append(lock)
+    return ', '.join(responses) or _label(yac, root, language, 'l129')
 
 
 def cycle(yac, root, radio, language, name, *, direction=1):

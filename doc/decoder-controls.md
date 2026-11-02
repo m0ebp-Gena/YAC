@@ -105,7 +105,8 @@ input devices, c selects a physical channel, v measures one second of audio,
 e validates 48 kHz float32 support and saves the choice, q returns without
 saving the current browsing choice. h gives translated help. No playback
 stream is opened, no system defaults are changed, no audio is played or saved.
-Setup stops existing audio CW capture so the level check can open that input;
+Opening setup preserves existing audio CW capture. An explicit level check or
+save stops audio CW capture before using that input;
 restart capture explicitly. Native CAT CW/RTTY capture is not stopped.
 The device list is enumerated without opening each candidate. Only v opens
 an input, explicitly on request; it reports RMS level and clipping. It does

@@ -1,0 +1,8 @@
+Hilfe zur CW-Tonhöhe
+
+Beim Öffnen wird die aktuelle Tonhöhe in Hertz ohne Änderung vorgelesen. Sie bestimmt die Höhe des CW-Mithörtons und gegebenenfalls auch des empfangenen CW-Tons.
+Punkt erhöht die Tonhöhe um den nächsten unterstützten Schritt; Komma verringert sie. Änderungen gelten sofort und werden zurückgelesen. An Grenzen wird der Wert ohne Umlauf wiederholt. p liest die Tonhöhe erneut. h liest diese Tonhöhenhilfe und kehrt ohne Änderung hierher zurück. q behält die Einstellung, meldet Fertig und kehrt zu CW zurück. YAC erzeugt keinen Testton und startet keine Sendung.
+
+***
+Ende der Hilfe
+***

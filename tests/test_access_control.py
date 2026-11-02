@@ -39,7 +39,7 @@ class AccessTests(unittest.TestCase):
     def test_adjustment_applies_and_saves_without_e_before_quit(self):
         requests, output = self.menu(['r', '.', 'q'])
         self.assertEqual(requests, [{'action': 'status'}, {'action':'apply', 'changes':{'speech-rate':'3'}}])
-        self.assertEqual([line for line in output.splitlines() if line][:3], ['Rate', 'Rate', '3'])
+        self.assertEqual([line for line in output.splitlines() if line][:5], ['Rate', '2', 'Rate', '2', '3'])
 
     def test_each_adjustment_is_immediate(self):
         requests, output = self.menu(['r', '.', '.', 'p', ',', 't', 'q'])
@@ -73,8 +73,8 @@ class AccessTests(unittest.TestCase):
 
     def test_selection_names_and_adjustment_values_without_navigation_prompts(self):
         requests, output = self.menu(['o', '.', 'o', ',', 'o', '.', 'q'])
-        self.assertEqual([line for line in output.splitlines() if line][:7],
-                         ['Rate', 'Volume', '6', 'Pitch', '4', 'Punctuation', 'Most'])
+        self.assertEqual([line for line in output.splitlines() if line][:11],
+                         ['Rate', '2', 'Volume', '5', '6', 'Pitch', '5', '4', 'Punctuation', 'Some', 'Most'])
         self.assertNotIn('Help', output)
         self.assertNotIn('increase', output)
 

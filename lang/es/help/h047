@@ -1,0 +1,8 @@
+Ayuda del tono CW
+
+Al abrir se lee el tono actual en hercios sin cambiarlo. El tono determina lo agudo o grave del sonido CW y puede controlar también el tono CW recibido.
+Punto sube al siguiente paso compatible; coma baja. Cada cambio se aplica y confirma por lectura. En los límites se repite el valor sin saltar al extremo opuesto. p lee el tono de nuevo. h lee esta ayuda del tono y vuelve aquí sin cambios. q conserva el ajuste, anuncia Hecho y vuelve a CW. YAC no genera tonos de prueba ni inicia transmisión.
+
+***
+Fin de la ayuda
+***

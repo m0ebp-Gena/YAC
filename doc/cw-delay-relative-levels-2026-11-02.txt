@@ -1,0 +1,34 @@
+CW Delay - relative Icom levels
+
+Applied in D:\YAC on 2 November 2026 after explicit user approval.
+
+Icom IC-705, IC-7300, IC-7300MK2, IC-7600 and IC-9700 now offer c d.
+The command is CI-V 14 0F, with raw levels 0..255 encoded as packed BCD.
+YAC announces Delay Level 1..16. Presets are:
+1=0, 2=17, 3=34, 4=51, 5=68, 6=85, 7=102, 8=119,
+9=136, 10=153, 11=170, 12=187, 13=204, 14=221, 15=238, 16=255.
+These are relative adjustment levels, not milliseconds or dot lengths.
+The speculative raw-to-dot and time conversions remain removed.
+
+Opening reads the raw setting without writing or applying a default.
+An intermediate raw value is announced as the nearest preset level.
+Full stop selects the next strictly higher raw preset; comma the next
+strictly lower. For example, raw 10 opens as Level 2, remains raw 10 on q,
+and moves to raw 17 with full stop or raw 0 with comma.
+The nearest announced level can therefore repeat after an intermediate
+raw value moves to a preset. Both limits clamp without wraparound or writes.
+Successful changes require positive acknowledgement and exact raw readback.
+d reads again, h explains, q keeps the actual setting and returns to CW.
+Keyer speed and Break-in mode are never changed.
+
+Yaesu Delay remains in documented milliseconds with its existing step table.
+Four-language labels, generic help and separate radio notes are aligned.
+Physical-radio verification remains outstanding. No build or publication.
+
+Verification: 24 focused CW, Delay and package-layout tests passed.
+Checks include all 256 raw values, both adjustment directions, every preset,
+both limits, all five Icom profiles and all four languages. Invalid BCD,
+negative acknowledgements and mismatched readback cannot announce success.
+Entry, repeat d, help and q preserve an intermediate raw value exactly.
+Existing Yaesu/CW tests pass. Full suite not rerun for this change.
+Logs are saved under local_storage/testing/results/cw-delay-levels-*.txt.

@@ -1,5 +1,18 @@
 Hilfe: YAC-Befehle
 
+c p: CW-Tonhöhe. Punkt erhöht; Komma verringert; p liest erneut.
+c v: Mithörtonlautstärke. Punkt erhöht; Komma verringert; v liest erneut. Wählt bei Bedarf automatisch CW; q behält diesen Modus.
+
+c k: Tasttempo. Bis zu zwei Ziffern; Enter übernimmt. h hilft sofort; q bricht ab.
+
+c d: Break-in-Verzögerung. Punkt erhöht; Komma verringert; d liest erneut; q behält die Einstellung.
+
+c: CW. b Break-in; i interne Taste; h Hilfe; q zur Hauptebene. Öffnen liest den Zustand; weiteres b oder i ändert ihn. Punkt/Komma wählt weiter/zurück. q im Regler behält die Einstellung und kehrt zu CW zurück.
+
+Das Haupt-v meldet bei aktiver Sperre auch Ein, Drehknopf- oder Bedienfeldsperre. Aus wird weggelassen. Eine nicht lesbare unterstützte Sperre wird als unbekannt gemeldet. Prüfen ändert nichts.
+
+Vorverstärker p, Abschwächer u und VFO/Empfänger s v: Öffnen liest den aktuellen Wert ohne Änderung. Punkt wählt die nächste, Komma die vorherige Option; der wiederholte Befehlsbuchstabe wählt ebenfalls weiter. q behält die Auswahl und kehrt eine Ebene zurück; h erklärt. Ist der aktuelle VFO nicht lesbar, wird Unbekannt gemeldet, ohne einen VFO auszuwählen.
+
 YAC-Befehle in Tastenreihenfolge. Tasten einzeln drücken.
 Befehle hängen vom Radio und der Betriebsart ab.
 
@@ -14,13 +27,13 @@ i: Ton/Code eingeben. i wechselt zwischen CTCSS, DCS normal und DCS invertiert, 
 k: Sperre. Einstieg liest; erneutes k wechselt die Sperre. h hilft; q behält die Auswahl.
 l: Split/Relais einrichten. Erneutes l schaltet aus. h und Enter im Eingabefeld geben Hilfe.
 m: Betriebsart. Punkt weiter; Komma zurück.
-o: Offset. o wechselt Empfang, Senden, Löschen. Punkt addiert 10 Hertz; Komma subtrahiert. Bei Löschen löscht jede Bewegungstaste.
-p: Vorverstärkerstufen und Aus durchschalten.
+o: Ablage: o wechselt Empfang und Senden. c löscht beide; v prüft beide; h hilft; q behält Einstellungen und kehrt zurück.
+p: Vorverstärker: liest den Zustand; Punkt weiter, Komma zurück; q beendet.
 q: YAC beenden. y bestätigt; n oder q bricht ab. Innerhalb einer Funktion oder eines Menüs kehrt q zurück und behält Änderungen, sofern die Hilfe nichts anderes sagt.
 r: RF Gain, bei FM Rauschsperre. Punkt erhöht; Komma verringert.
 s: Einstellungen. Siehe Einstellungstasten unten.
 t: Konfigurierten Tuner starten, soweit unterstützt. Zuerst mit s t auswählen oder aktivieren.
-u: Abschwächerstufen und Aus durchschalten.
+u: Abschwächer: liest den Zustand; Punkt weiter, Komma zurück; q beendet.
 v: Abschwächer, Vorverstärker, Leistung und unterstützten Tunerstatus lesen. Leistung ist der eingestellte Wert, keine gemessene HF-Leistung.
 w: Signalstärke, Frequenz, Betriebsart und aktiven FM-Ton/Code lesen. w wiederholen für Split/Relaisdetails.
 x: Antennen. Einstieg liest Zuordnung; x wechselt Hauptantenne; r Empfangseingang.
@@ -47,7 +60,7 @@ a: Aktuelle AGC lesen. Erneutes a wählt die nächste Stufe; q beendet.
 b: Pi-Sprache/Braille. Punkt weiter; Komma zurück; q wendet an und speichert.
 e: Sprachprozessor. Einstieg liest Einstellungen; e schaltet um; Punkt/Komma ändern bei Ein. Kenwood i/o wählen Eingang/Ausgang. n stellt Anfangswerte wieder her; q behält Änderungen.
 h: Einstellungshilfe.
-m: Geführte Mikrofonverstärkung. Vorbereitungshinweisen folgen; Punkt/Komma ändern. PTT bedienen Sie selbst.
+m: Betriebsartabhängige Mikrofonverstärkung. Punkt/Komma ändern; h erklärt die aktuelle Betriebsart. Leertaste bietet optionale ALC-Vorbereitung, falls unterstützt. PTT bedienen Sie selbst.
 o: Pi-Spracheinstellungen. r Tempo; v Lautstärke; p Tonhöhe; u Satzzeichen; Punkt/Komma ändern; t Test; d Standardwerte. Änderungen werden sofort gespeichert.
 p: Ausgangsleistung. Ganze Watt und Enter eingeben. Leeres Enter oder q und Enter brechen ab. Erfolg nennt den eingegebenen Wert. Icom verwendet eine geschätzte Umrechnung; v meldet den relativen Prozentwert.
 q: Hauptebene zum Hauptmenü; nach AGC-Auswahl wird Fertig angesagt.

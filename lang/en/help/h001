@@ -1,5 +1,18 @@
 Help For The YAC Commands
 
+c p: CW Pitch. Full stop raises; comma lowers; p reads again.
+c v: Sidetone Volume. Full stop increases; comma decreases; v reads again. Automatically selects CW when needed; q keeps that mode.
+
+c k: Keyer Speed. Enter up to two digits; Enter applies. h helps immediately; q cancels.
+
+c d: Break-in Delay. Full stop increases; comma decreases; d reads again; q keeps the setting.
+
+c: CW. b Break-in; i Internal Keyer; h help; q returns to top level. Opening reads the current state; repeat b or i changes it. Full stop/comma select next/previous. q inside a control keeps the setting and returns to CW.
+
+Main v also reports Lock On, Dial Lock or Panel Lock when active. Lock Off is omitted. An unreadable supported lock reports Lock Unknown. Verify changes nothing.
+
+Preamp p, Attenuator u and VFO/receiver s v: opening reports the current setting without changing it. Full stop selects next; comma previous; repeating the control letter also advances. q keeps the choice and returns one level; h explains. If the current VFO cannot be read, Unknown is reported without selecting a VFO.
+
 YAC commands, in key order. Press keys separately.
 Commands depend on the radio and current mode.
 
@@ -14,13 +27,13 @@ i: Tone/code input. Repeat i for CTCSS, DCS normal or DCS inverted where support
 k: Lock. Entry reads; repeat k cycles lock states. h helps; q keeps the selected state.
 l: Split/repeater setup. Repeat l to turn it off. h then Enter at the input gives help.
 m: Mode. Full stop next; comma previous.
-o: Offset. Repeat o for Receive, Transmit, Clear. Full stop adds 10 hertz; comma subtracts. Either movement key clears in Clear.
-p: Cycle preamp stages and off.
+o: Offset: o alternates Receive and Transmit. c clears both; v verifies both; h helps; q keeps settings and returns.
+p: Preamp selector: reads current state; . next, , previous; q finishes.
 q: Quit YAC. y confirms; n or q cancels. Inside a control or menu, q returns and keeps changes unless its help says otherwise.
 r: RF Gain, or Squelch in FM. Full stop increases; comma decreases.
 s: Settings. See the settings keys below.
 t: Start the configured tuner. Available only with a supported tuner. Select or enable it with s t first.
-u: Cycle attenuator levels and off.
+u: Attenuator selector: reads current state; . next, , previous; q finishes.
 v: Read attenuator, preamp, power and supported tuner status. Power is the configured setting, not measured RF output.
 w: Read signal strength, frequency, mode and active FM tone/code. Repeat w for split/repeater details.
 x: Antennas. Entry reads routing; repeat x changes main antenna; r changes receive input.
@@ -47,7 +60,7 @@ a: Read current AGC. Repeat a to select the next preset; q finishes.
 b: Pi speech/braille mode. Full stop next; comma previous; q applies and saves.
 e: Speech Processor. Entry reads settings; e toggles; full stop/comma adjust while On. Kenwood i/o select Input/Output. n restores entry settings; q keeps changes.
 h: Settings help.
-m: Guided Mic Gain. Follow preparation prompts; full stop/comma adjust. PTT remains under your control.
+m: Mode-dependent Mic Gain. Full stop/comma adjust; h explains the current mode. Space offers optional ALC preparation where supported. PTT remains under your control.
 o: Pi speech settings. r rate; v volume; p pitch; u punctuation; full stop/comma adjust; t tests; d defaults. Changes save immediately.
 p: Output power. Enter whole watts, then Enter. Blank Enter or q then Enter cancels. Successful changes announce the entered value. Icom uses an estimated conversion to relative power; v reports its percentage.
 q: Return to the main menu; after AGC selection, announces Done.

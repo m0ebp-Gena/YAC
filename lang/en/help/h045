@@ -1,0 +1,8 @@
+Break-in Delay Help
+
+Opening reads the current setting without changing it. Milliseconds give the waiting time after sending before Semi Break-in returns to receive. Delay Level 1 to 16 is a relative scale, not milliseconds or dot lengths; higher means longer delay. A reading between levels is announced as the nearest level, without moving the setting.
+Full stop selects the next higher setting; comma the next lower. Changes apply immediately and are confirmed by readback. At either limit the value repeats without wrapping. d reads again; h reads this help. q keeps the setting, announces Done and returns to CW. YAC sets no default and changes neither keyer speed nor Break-in mode.
+
+***
+End of help
+***

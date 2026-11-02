@@ -1,15 +1,10 @@
-Hilfe: Mikrofonverstärkung
+SSB-Mikrofonverstärkung
 
-Mikrofonverstärkung: Ablauf vor dem Fortfahren lesen. Bei Continue Y/N? fährt y fort; n oder q bricht ab und kehrt zu Einstellungen zurück. h zeigt diese Hilfe.
+Leertaste öffnet die ALC-Vorbereitung. Sprachprozessor für die Grundeinstellung ausschalten. Bei Continue Y/N? startet y die Messung; n oder q bricht die Vorbereitung ab. Nach dem Sprechen PTT loslassen: YAC meldet den abgetasteten ALC-Spitzenwert. Kurze Spitzen können fehlen; Rohwerte sind weder kalibrierte Prozentwerte noch ein Qualitätsurteil. Leertaste löscht danach den Spitzenwert. Eine nötige Messgeräteauswahl wird beim Verlassen im Empfang wiederhergestellt; Fehler werden gemeldet. Eigene Vorbereitungseinstellungen selbst zurücksetzen.
 
-Passende Antenne oder geeignete künstliche Last anschließen. YAC kann die Last nicht prüfen. Kleine Leistung macht eine ungeeignete Last nicht sicher. Geeignete Leistung selbst einstellen und Sprachprozessor ausschalten. YAC ändert nur Mikrofonverstärkung; weder Leistung, Frequenz noch Betriebsart. YAC startet kein Senden.
+Bei losgelassener PTT erhöht Punkt die Verstärkung; Komma verringert sie. Die Endwerte werden nicht überschritten. h Hilfe; q beendet mit Fertig und behält den Wert; v liest ihn. Öffnen ändert nichts. Ein Betriebsartwechsel beendet die Einstellung; erneut öffnen. YAC startet keine Sendung.
 
-Im Empfang beginnen. YAC meldet aktuelle Verstärkung. PTT halten, normal sprechen, dann loslassen. YAC meldet den erfassten ALC-Spitzenwert oder unbekannt bei Lesefehlern. Kurze Spitzen können fehlen. Rohwerte sind weder Watt noch kalibrierte Prozentwerte; keine automatische Bewertung.
-
-Bei losgelassener PTT erhöht Punkt die Verstärkung, Komma senkt sie. Bestätigte Änderungen melden den Wert und löschen die Spitze. Endwerte stoppen. v liest Verstärkung; Leertaste löscht Spitze; h liest Hilfe. PTT loslassen und q für Hauptebene zu Einstellungen; Verstärkung bleibt. Selbst geänderte Vorbereitungseinstellungen selbst zurücksetzen.
-
-Modellspezifische Betriebsarten, Skalen, Meter und ALC-Zonen stehen in der Radiodatei unter doc/supported-radios.
-Falls nötig, wählt YAC die Anzeige der automatischen Pegelregelung und bestätigt den Messwert. Beim Verlassen im Empfang wird die bekannte vorherige Anzeige wiederhergestellt. Bei Fehlern bleibt die Wiederherstellung für den nächsten Aufruf vorgemerkt.
+Vor dem Senden geeignete Antenne oder Abschlusslast anschließen und passende Leistung selbst einstellen. Kleine Leistung macht eine ungeeignete Last nicht sicher. Physische PTT benutzen und normal sprechen.
 
 ***
 Ende der Hilfe

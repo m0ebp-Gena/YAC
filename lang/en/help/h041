@@ -1,0 +1,7 @@
+Setting Selector Help
+
+Opening reads the current setting without changing it. Full stop selects the next choice; comma selects the previous choice. Repeating the control letter selects the next choice too. Each change is applied and announced immediately. h reads this help. q keeps the setting, announces Done and returns one level. Unknown means the current selection cannot be read; opening never selects an option to discover it.
+
+***
+End of help
+***

@@ -349,11 +349,26 @@ def report(yac, root, radio, language):
         return label('l129')
 
 
-def control(yac, root, radio, language):
+def control(yac, root, radio, language, read_key=None):
     label = lambda token, **values: yac._read_label(root, language, token, '').format(**values)
     def show(token, **values):
         chat_int.show_response(label(token, **values))
     try:
+        backend = Radio(yac, root, radio).prepare()
+        chat_int.show_response(report(yac, root, radio, language) if backend.on else label('l408'))
+        if read_key is None:
+            from modules import lang_sel
+            read_key = lang_sel.read_key
+        while True:
+            key = read_key().casefold()
+            if key == 'q':
+                chat_int.show_done(root, language)
+                return
+            if key == 'h':
+                chat_int.show_response(help_int.get_help(root, language, 'h011'))
+            elif key == 'l':
+                break
+        # Re-read after the user's explicit request, including physical changes.
         backend = Radio(yac, root, radio).prepare()
         if backend.on:
             if backend.off():

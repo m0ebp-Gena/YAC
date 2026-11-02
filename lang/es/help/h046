@@ -1,0 +1,8 @@
+Ayuda de velocidad del manipulador
+
+Al abrir anuncia la velocidad actual sin cambiarla. Escriba una o dos cifras y pulse Enter para aplicar una velocidad dentro del rango del equipo. No se cambia nada antes de Enter. El manipulador interno temporiza puntos y rayas de la paleta; no determina la velocidad manual de una llave recta.
+h abre ayuda inmediatamente, sin Enter, conservando las cifras escritas. q cancela inmediatamente, descarta la entrada, anuncia Hecho y vuelve a CW. Retroceso borra la última cifra. Enter vacío indica Cancelado; una entrada inválida o demasiado larga indica Inválido y vuelve a CW sin cambios. Una entrada correcta anuncia la velocidad leída y vuelve a CW.
+
+***
+Fin de la ayuda
+***

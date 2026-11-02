@@ -1,3 +1,10 @@
+CURRENT MICROPHONE GAIN UPDATE - 2 November 2026
+The microphone-gain sections below describe the earlier ALC-only flow.
+For the current mode-dependent s m control, see
+../English/mic-gain-radio-notes.txt. Gain adjustment needs no Space;
+Space offers optional ALC preparation where supported. h explains
+the current mode. FM and digital voice do not use ALC feedback.
+
 Icom IC-7600
 ============
 

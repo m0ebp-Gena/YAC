@@ -1,0 +1,20 @@
+{
+  "modes": {
+    "LSB": {
+      "group": "SSB",
+      "alc": true
+    },
+    "USB": {
+      "group": "SSB",
+      "alc": true
+    },
+    "AM": {
+      "group": "AM",
+      "alc": false
+    },
+    "FM": {
+      "group": "FM",
+      "alc": false
+    }
+  }
+}

@@ -8,6 +8,11 @@ class DummySerial:
     def __init__(self):
         self.frequency = 7_159_000
         self.lock = "0"
+        self.cw = {'BI': '0', 'KR': '0', 'EX020113': '0'}
+        self.cw_delay = '00'
+        self.keyer_speed = '020'
+        self.cw_pitch = '30'
+        self.sidetone_volume = '050'
         self.mode = "1"
         self.split_settings = {'VS': '0', 'ST': '0', 'FT': '0',
                                'FB': '007159000', 'MD1': '1', 'OS0': '0',
@@ -69,6 +74,32 @@ class DummySerial:
                 frequency = self.split_settings['FB'] if other else f'{self.frequency:09d}'
                 mode = self.split_settings['MD1'] if other else self.mode
                 reply = command + '000' + frequency + '+000000' + mode + '00000'
+            elif command == 'SD':
+                reply = 'SD' + self.cw_delay
+            elif command == 'KS':
+                reply = 'KS' + self.keyer_speed
+            elif command == 'KP':
+                reply = 'KP' + self.cw_pitch
+            elif re.fullmatch(r'KP(?:[0-6][0-9]|7[0-5])', command):
+                self.cw_pitch = command[2:]
+                reply = command
+            elif command == 'ML1':
+                reply = 'ML1' + self.sidetone_volume
+            elif re.fullmatch(r'ML1(?:0[0-9]{2}|100)', command):
+                self.sidetone_volume = command[3:]
+                reply = command
+            elif re.fullmatch(r'KS(?:00[4-9]|0[1-5][0-9]|060)', command):
+                self.keyer_speed = command[2:]
+                reply = command
+            elif re.fullmatch(r'SD(?:[0-2][0-9]|3[0-3])', command):
+                self.cw_delay = command[2:]
+                reply = command
+            elif command in self.cw:
+                reply = command + self.cw[command]
+            elif any(command in (prefix + '0', prefix + '1') for prefix in self.cw):
+                prefix = next(prefix for prefix in self.cw if command in (prefix + '0', prefix + '1'))
+                self.cw[prefix] = command[-1]
+                reply = command
             elif command == 'LK':
                 reply = 'LK' + self.lock
             elif command in ('LK0', 'LK1'):

@@ -1,0 +1,8 @@
+CW Pitch Help
+
+Opening reads the current pitch in hertz without changing it. Pitch sets how high or low the CW tone sounds and may also set the received CW audio pitch.
+Full stop raises the pitch by the next supported step; comma lowers it. Each change applies immediately and is confirmed by readback. At either limit, the value repeats without wrapping. p reads the current pitch again. h reads this Pitch help and returns here without a change. q keeps the setting, announces Done and returns to CW. YAC does not generate a test tone or start transmission.
+
+***
+End of help
+***

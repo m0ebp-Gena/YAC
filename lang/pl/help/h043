@@ -1,0 +1,8 @@
+Pomoc Break-in
+
+Otwarcie odczytuje ustawienie bez zmiany. Wyłączony: kluczowanie nie uruchamia automatycznie nadawania. Pół: po zakończeniu nadawania następuje krótka zwłoka przed odbiorem. Pełny, czyli QSK: odbiór jest możliwy między elementami znaków Morse’a. Dostępne opcje zależą od radia.
+b lub kropka wybiera następną opcję; przecinek poprzednią. Zmiany są stosowane i odczytywane od razu. h czyta pomoc. q zachowuje wybór, ogłasza Gotowe i wraca do CW.
+
+***
+Koniec pomocy
+***

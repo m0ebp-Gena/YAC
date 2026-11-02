@@ -1,0 +1,42 @@
+CW radio notes
+
+FT-DX10, FT-710 and FTX-1: c b combines BI Break-in enable with the separate Semi/Full menu setting. Off leaves that menu setting intact. Enabling Semi or Full explicitly selects that type before enabling Break-in. The menu commands are EX020113, EX020116 and EX020115 respectively. c i uses KR for the independent internal-keyer On/Off switch; it does not change keyer type, speed, pitch or volume.
+
+IC-705, IC-7300, IC-7300MK2, IC-7600 and IC-9700: c b uses CI-V 16 47, with 00 Off, 01 Semi and 02 Full. c i currently reports Not Supported. A Key Type selection such as Straight, Bug or Paddle is not treated as an independent internal-keyer On/Off switch; YAC does not guess a paddle type when enabling.
+
+Kenwood and QMX models: Break-in and Internal Keyer currently report Not Supported. See the Keyer Speed notes below for its separate coverage. In particular the TS-590SG VX command is shared with VOX outside CW mode. No generic BI/KR command is sent to these radios. This is a current YAC implementation limit, not a claim that the radio lacks CW facilities.
+
+Changes are verified by radio readback and left in the radio on q. YAC does not promise retention across radio power cycles. Automated simulations are not physical-radio validation.
+
+Delay (c d): FT-DX10, FT-710 and FTX-1 use the documented SD table: 30, 50, 100, 150, 200, 250, then 300 through 3000 milliseconds in 100-millisecond steps. Navigation stops at both limits; there is no wraparound. No BI, Semi/Full or keyer-speed writes are sent.
+
+Icom Delay (c d): IC-705, IC-7300, IC-7300MK2, IC-7600 and IC-9700 expose the raw CI-V 14 0F level 0..255. YAC presents Delay Level 1..16 using raw presets 0, 17, 34, 51, 68, 85, 102, 119, 136, 153, 170, 187, 204, 221, 238, 255, encoded as four packed BCD digits. These are relative adjustment levels, not time or dot-length measurements. No raw-to-dot interpolation or keyer-speed conversion is used.
+
+Opening and d read the actual raw setting without quantising it. An intermediate raw value is announced as the nearest level. Full stop moves to the next strictly higher raw preset; comma moves to the next strictly lower preset. Thus an intermediate setting may move while the nearest announced level remains the same. Changes require positive acknowledgement and matching raw readback. Neither endpoint wraps. q keeps the actual raw setting; Break-in mode and keyer speed are unchanged.
+
+For dot-based delays, changing keyer speed can change the actual delay duration. YAC does not claim milliseconds from these relative levels. Native command simulations pass; physical-radio confirmation remains outstanding.
+
+
+Keyer Speed (c k): FT-DX10, FT-710, FTX-1 and TS-590SG use KS with three native digits for 4..60 WPM. YAC accepts one or two typed digits and rejects out-of-range entries instead of relying on radio clamping.
+
+IC-705, IC-7300, IC-7300MK2, IC-7600 and IC-9700 use CI-V 14 0C with packed BCD. YAC uses the published Hamlib cw_lookup raw-code/WPM table for 6..48 WPM, including its threshold-based read conversion. Raw 250..255 is treated as 48 WPM to cover the documented maximum endpoint. Writes use that table’s canonical code and require acknowledgement and matching raw readback. The mapping is sourced from Hamlib, not a guessed linear scale. Physical-radio confirmation remains outstanding.
+
+Speed entry does not turn on the internal keyer, change Break-in or transmit Morse. Other model profiles without a speed capability report Not Supported.
+
+
+Pitch and Sidetone Volume (c p / c v)
+
+FT-DX10, FT-710 and FTX-1: KP gives pitch 300..1050 Hz in 10-Hz steps. ML1 gives sidetone/monitor level 0..100. The operating manuals identify MONI LEVEL as the CW sidetone adjustment. Because this is a shared control, c v selects and verifies CW-U if required before reading ML1, preserving existing CW-U/CW-L. It announces the change and keeps CW on q. It does not enable MONI. Mode is checked again immediately before a setter, so a front-panel mode change cannot redirect the adjustment to voice monitor volume.
+
+IC-705, IC-7300, IC-7300MK2, IC-7600 and IC-9700: 14 09 gives CW pitch on the documented 300..900-Hz scale. YAC maps the raw 0..255 position to the nearest documented 5-Hz setting and uses the corresponding nearest packed BCD code for a setter, following the published Hamlib endpoint interpolation. The received CW pitch and sidetone pitch may be linked. Changes require matching native readback. Physical display comparison remains outstanding.
+
+Icom sidetone volume uses each model's dedicated menu, not the transmit voice monitor command:
+IC-705: 1A 05 02 49; IC-7300: 1A 05 01 58;
+IC-7300MK2: 1A 05 02 18; IC-7600: 1A 05 00 24;
+IC-9700: 1A 05 02 21.
+Raw 0..255 is presented as level 0..100. This is a relative setting scale, not decibels or measured acoustic loudness. The nearby Side Tone Level Limit setting is left untouched; it and the radio AF control may affect what you hear. The MK2 command table has an inconsistent upper range printed as 0225 but describes 0255 as 100%; YAC uses that documented endpoint, pending physical confirmation.
+
+Both controls preserve settings on entry, help, repeat p/v and q. Full stop/comma change immediately and stop at the limits without wrapping. They do not send Morse, generate a test tone, start transmission, enable keying or alter Break-in. Kenwood/QMX pitch and volume are not enabled in this implementation. All new model paths have simulated command checks; physical-radio, speech and braille testing remain outstanding.
+
+
+On these Yaesu models, c v now selects and verifies CW-U when required before reading the level. Existing CW-U or CW-L is preserved. The mode change is announced; q keeps CW selected. If mode readback or the change fails, no volume command is sent. Changing modes externally while the control is open still prevents a volume change in a non-CW mode.

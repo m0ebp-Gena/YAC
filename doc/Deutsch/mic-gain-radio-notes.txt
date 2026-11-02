@@ -1,0 +1,27 @@
+Mikrofonverstärkung - Funkgeräthinweise
+
+s m liest Betriebsart und Verstärkung. Punkt/Komma ändern sofort im
+Empfang; v liest, h erklärt die Betriebsart, q behält den Wert.
+Kein unterstütztes Funkgerät benötigt Leertaste zum Ändern des Werts.
+
+Yaesu FT-DX10, FT-710 und FTX-1: MG 0-100 für SSB, AM und FM, auch
+schmale AM/FM. FTX-1 zusätzlich C4FM-DN/VW. Hörbare Wirkung und gemeinsam
+gespeicherte Werte am Gerät prüfen. SSB/AM: optionale ALC-Messung über
+Leertaste, Vorbereitung und y. FTX-1 hat keinen Sendemonitor in FM/FM-N
+oder AM/AM-N; Gegenstation oder geeignete externe Überwachung nutzen.
+
+Icom IC-705, IC-7300, IC-7300MK2, IC-7600 und IC-9700: CI-V 14 0B,
+Rohwerte 0-255 als gerundete Prozentwerte, Schritte von 3 Rohwerten.
+SSB/AM/FM unterstützt; IC-705 und IC-9700 zusätzlich DV. Optionale ALC
+nur in SSB. AM/FM/DV: Sprachqualität mit unterstütztem Monitor oder
+Gegenstation prüfen, keine ALC-Bewertung.
+
+Kenwood TS-590SG und sicher identifizierter TS-480: MG 0-100 für SSB/AM.
+FM hat getrennte Stufen Normal, Mittel, Hoch. TS-590SG Menü 53:
+EX0530000; TS-480 Menü 44: EX0440000. CAT 0/1/2 entsprechen diesen
+Stufen. Punkt/Komma ändern ohne Umlauf. Optionale ALC nur in SSB;
+AM/FM benötigen Sprachprüfung. Messgeräteauswahl erst nach Start der
+ALC-Messung. QMX bleibt trotz gemeinsamer Kennung ID020 ausgeschlossen.
+
+Automatische Prüfungen bestätigen Befehlswege, nicht Modulationsqualität,
+Hub, gemeinsame Speicherung oder digitale Sprache am physischen Gerät.

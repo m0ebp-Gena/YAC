@@ -1,0 +1,8 @@
+Pomoc tonu CW
+
+Otwarcie odczytuje bieżący ton w hercach bez zmiany. Ton określa wysokość dźwięku CW i może również ustawiać wysokość odbieranego tonu CW.
+Kropka podnosi ton o następny obsługiwany krok; przecinek go obniża. Zmiany są stosowane od razu i potwierdzane odczytem. Na granicach wartość jest powtarzana bez przeskoku. p ponownie odczytuje ton. h czyta tę pomoc tonu i wraca tutaj bez zmiany. q zachowuje ustawienie, ogłasza Gotowe i wraca do CW. YAC nie generuje tonu próbnego ani nie rozpoczyna nadawania.
+
+***
+Koniec pomocy
+***

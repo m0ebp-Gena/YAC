@@ -175,7 +175,7 @@ class SplitTests(unittest.TestCase):
             output=io.StringIO()
             with patch.object(yac,'_civ_exchange',side_effect=civ.exchange), patch.object(yac,'_civ_send',side_effect=civ.send), \
                  patch('builtins.input',return_value=entered), redirect_stdout(output):
-                split.control(yac,ROOT,civ.radio,'en')
+                split.control(yac,ROOT,civ.radio,'en',iter(['l']).__next__)
             self.assertIn('Done',output.getvalue())
             self.assertEqual(civ.sent,[])
         civ=Civ(fm=True)
@@ -183,8 +183,8 @@ class SplitTests(unittest.TestCase):
         with patch.object(yac,'_civ_exchange',side_effect=civ.exchange), patch.object(yac,'_civ_send',side_effect=civ.send), \
              patch.object(yac,'_read_settings',return_value={'repeater_offset_2m_hz':'-600000'}), \
              patch('builtins.input',side_effect=AssertionError('Default must not prompt')), redirect_stdout(output):
-            split.control(yac,ROOT,civ.radio,'en')
-            split.control(yac,ROOT,civ.radio,'en')
+            split.control(yac,ROOT,civ.radio,'en',iter(['l']).__next__)
+            split.control(yac,ROOT,civ.radio,'en',iter(['l']).__next__)
         self.assertIn('Repeater On, RX 145.6 MHz, TX 145 MHz',output.getvalue())
         self.assertIn('Simplex',output.getvalue())
 
@@ -227,7 +227,7 @@ class SplitTests(unittest.TestCase):
         radio=create_dummy_radio()
         output=io.StringIO()
         with patch('builtins.input',side_effect=['h','7.164']),redirect_stdout(output):
-            split.control(yac,ROOT,radio,'en')
+            split.control(yac,ROOT,radio,'en',iter(['l']).__next__)
         self.assertIn('Split On, RX 7.159 MHz, TX 7.164 MHz',output.getvalue())
         self.assertEqual(radio.serial.frequency,7159000)
         self.assertEqual(radio.serial.split_settings['ST'],'1')
@@ -241,7 +241,7 @@ class SplitTests(unittest.TestCase):
         output=io.StringIO()
         with patch.object(yac,'_cat_exchange',side_effect=exchange),patch.object(yac,'_yaesu_vfo_side',0), \
              patch('builtins.input',return_value='14.2'),redirect_stdout(output):
-            split.control(yac,ROOT,cat.radio,'en')
+            split.control(yac,ROOT,cat.radio,'en',iter(['l']).__next__)
         self.assertIn('Restore Failed',output.getvalue())
         self.assertEqual(cat.state['ST'],'0')
 

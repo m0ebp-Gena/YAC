@@ -1,0 +1,8 @@
+Hilfe zur internen Taste
+
+Beim Öffnen wird Int Taste Ein oder Aus ohne Änderung angesagt. Die interne Taste erzeugt zeitlich abgestimmte Punkte und Striche mit einem Paddle. Aus deaktiviert diese Erzeugung; Break-in und Tempo bleiben unverändert.
+i schaltet Ein/Aus um; Punkt oder Komma wählt ebenfalls den anderen Zustand. Änderungen werden sofort übernommen und angesagt. h liest diese Hilfe. q behält die Auswahl, meldet Fertig und kehrt zu CW zurück. Fehlgeschlagene Abfragen oder Änderungen melden einen Fehler.
+
+***
+Ende der Hilfe
+***

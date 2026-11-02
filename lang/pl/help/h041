@@ -1,0 +1,7 @@
+Pomoc wyboru ustawienia
+
+Otwarcie odczytuje bieżące ustawienie bez zmiany. Kropka wybiera następną opcję, przecinek poprzednią. Powtórzenie litery polecenia także wybiera następną opcję. Zmiany są stosowane i odczytywane natychmiast. h odczytuje pomoc. q zachowuje ustawienie, ogłasza Gotowe i wraca o poziom. Nieznane oznacza, że bieżącego wyboru nie można odczytać; otwarcie nie wybiera opcji w celu jego ustalenia.
+
+***
+Koniec pomocy
+***

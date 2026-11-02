@@ -1,0 +1,49 @@
+YAC 001 - 2 November 2026 revision 1
+
+CONTROL ENTRY AND VERIFICATION
+Selectors and filters read their current setting on entry without changing
+it. Off functions report Off without an inactive adjustment value. Changed
+values are applied by explicit subsequent keys. Verify reports active locks;
+Lock Off is omitted, and an unreadable supported lock reports Unknown.
+Offset separates Receive/Transmit selection, explicit Clear and Verify.
+
+CW
+c opens CW: b Break-in; d Delay; i Internal Keyer; k Speed; p Pitch;
+v Sidetone Volume. h gives contextual help; q keeps applied settings.
+Break-in combines Off, Semi and Full where supported. Internal Keyer entry
+reads state; another i toggles it. Delay uses milliseconds for supported
+Yaesu radios and relative levels 1-16 for supported Icom radios, with no
+unverified conversion to time. Speed accepts at most two digits; h and q
+work immediately without Enter. Pitch and volume use full stop/comma.
+FTX-1/FT-DX10/FT-710 sidetone volume selects CW-U only when needed and
+keeps CW on exit; an existing CW-U/CW-L selection is preserved.
+Separate language-specific radio notes explain model coverage and limits.
+
+MICROPHONE GAIN
+s m selects the control and help for the current voice mode. Full stop and
+comma adjust while receiving; v reads; h explains; q keeps the gain.
+Opening never changes mode or gain. Space is not needed for adjustment.
+Space offers optional ALC preparation in SSB and supported Yaesu AM.
+FM and digital voice use speech-quality guidance without ALC assessment.
+Kenwood FM uses its separate Normal/Medium/High menu, not the SSB gain.
+Mode changes end adjustment. YAC never keys transmission for this control.
+English, German, Spanish and Polish help and notes are included.
+
+DECODER AND PROCESSOR
+Includes current decoder/audio-setup, filter, speech-processor and control
+entry corrections. Optional audio CW decoding remains experimental.
+
+WINDOWS UPDATES
+Retains same-volume staging/rollback so an installation on D: can update
+when Windows Temp is on C:. Old updaters may require a fresh full package
+or the documented one-time same-drive Temp workaround to receive that fix.
+Both current and legacy-compatible download assets are supplied.
+
+VALIDATION AND LIMITS
+604 automated tests: 603 passed; one Windows junction-creation check was
+blocked by the sandbox in the latest full run. A separate release check
+then ran all 17 Windows updater tests outside the sandbox successfully,
+including junction protection. These are separate results. New CW/FM/digital microphone behaviour still needs physical-radio
+validation. Mac hardware validation remains outstanding. No Pi image is
+published by this release. D-Star DR, DG-ID, AMS and network-room controls
+are planning work and have not been added.

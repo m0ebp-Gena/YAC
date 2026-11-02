@@ -18,7 +18,7 @@ from modules.find_rad import RadioConnection, find_radios
 from modules.signal_report import format_s_meter
 from modules.icom_profile import SUPPORTED_MODELS, load_profile
 from modules import verify_settings, gain_control, power_control, filter_control, ts480_control, mic_gain, agc_control
-from modules import speech_processor, split_control, antenna_control, access_control, update_control, wifi_control
+from modules import speech_processor, split_control, antenna_control, access_control, update_control, wifi_control, setting_selector, offset_control
 
 
 DEBUG_LOG = logging.getLogger("yac")
@@ -712,6 +712,9 @@ def _tone_control(root: Path, radio: RadioConnection, language: str, call: str) 
     if kind is None:
         chat_int.show_response(_read_label(root, language, "l129", "Not Supported"))
         return
+    from modules import tone_status
+    current = tone_status.report(sys.modules[__name__], root, radio, language, mode="FM")
+    chat_int.show_response(current or _read_label(root, language, "l408", "Off"))
     selections = ("CTCSS", "DCS N", "DCS I") if kind in {"ftx1", "ic705", "ic9700"} else ("CTCSS",)
     labels = {"CTCSS": "l096", "DCS N": "l099", "DCS I": "l100"}
     index = 0
@@ -1879,6 +1882,7 @@ def _main(argv: list[str] | None = None) -> int:
                     else:
                         frequency = None
                         while True:
+                            chat_int.show_response(original_frequency + " MHz")
                             chat_int.show_frequency_prompt(root, language)
                             try:
                                 frequency = input().strip()
@@ -1991,6 +1995,11 @@ def _main(argv: list[str] | None = None) -> int:
                             pending_key = band_key
                             break
                     response = None
+                elif key == "c":
+                    from modules import cw_control
+                    pending_key = cw_control.control(
+                        sys.modules[__name__], root, radio, language, read_radio_key, watch)
+                    response = None
                 elif key == "f":
                     pending_key = filter_control.control(
                         sys.modules[__name__], root, radio, language,
@@ -2001,11 +2010,20 @@ def _main(argv: list[str] | None = None) -> int:
                         sys.modules[__name__], root, radio, language, key,
                         call, read_radio_key, watch)
                     response = None
-                elif key in {"p", "u", "v"}:
-                    response = (verify_settings.verify(sys.modules[__name__], root, radio, language)
-                                if key == "v" else verify_settings.cycle(
-                                    sys.modules[__name__], root, radio, language,
-                                    "preamp" if key == "p" else "attenuator"))
+                elif key == "v":
+                    response = verify_settings.verify(sys.modules[__name__], root, radio, language)
+                elif key in {"p", "u"}:
+                    name = "preamp" if key == "p" else "attenuator"
+                    spec = verify_settings.catalog(root, radio, sys.modules[__name__]).get(name)
+                    if spec is None:
+                        response = _read_label(root, language, "l129", "Not Supported")
+                    else:
+                        setting_selector.control(
+                            root, language,
+                            lambda: verify_settings.describe(sys.modules[__name__], root, radio, language, name, spec),
+                            lambda direction: verify_settings.cycle(sys.modules[__name__], root, radio, language, name, direction=direction),
+                            read_radio_key, watch, key)
+                        response = None
                 elif key == "s":
                     response = _read_label(root, language, "l068", "Settings")
                     chat_int.show_response(response)
@@ -2115,30 +2133,7 @@ def _main(argv: list[str] | None = None) -> int:
                                                   read_radio_key, watch)
                             continue
                         if settings_key == "v":
-                            global _yaesu_vfo_side
-                            if radio.protocol == "CAT" and radio.model_id == "020":
-                                chat_int.show_response(ts480_control.select_vfo(
-                                    sys.modules[__name__], root, radio, language))
-                                continue
-                            if _icom_supported(radio):
-                                chat_int.show_request(call, settings_key)
-                                chat_int.show_response(_icom_select_vfo(root, radio, language))
-                                continue
-                            if not _ftx1(radio):
-                                response = _read_label(root, language, "l072", "NOT Understood.")
-                                break
-                            _yaesu_vfo_side = 1 - _yaesu_vfo_side
-                            side_name = "Sub" if _yaesu_vfo_side else "Main"
-                            frequency = _current_frequency(root, radio)
-                            mode = _current_mode(radio)
-                            chat_int.show_request(call, settings_key)
-                            response = (
-                                f"{side_name} {frequency} {mode}"
-                                if frequency and mode
-                                else _radio_error(root, radio, language)
-                            )
-                            chat_int.show_response(response)
-                            response = None
+                            setting_selector.vfo(sys.modules[__name__], root, radio, language, read_radio_key, watch)
                             continue
                         if settings_key == "q":
                             if agc_selected:
@@ -2170,7 +2165,7 @@ def _main(argv: list[str] | None = None) -> int:
                         sys.modules[__name__], root, radio, language, read_radio_key, watch)
                     response = None
                 elif key == "l":
-                    split_control.control(sys.modules[__name__], root, radio, language)
+                    split_control.control(sys.modules[__name__], root, radio, language, read_radio_key)
                     response = None
                 elif key == "i":
                     response = None
@@ -2181,60 +2176,9 @@ def _main(argv: list[str] | None = None) -> int:
                     except (EOFError, KeyboardInterrupt):
                         print()
                 elif key == "o":
-                    offset_selection = 0  # Receive; cycles Receive, Transmit, Clear.
-                    if not _zero_offsets(radio):
-                        chat_int.show_response(
-                            _radio_error(root, radio, language)
-                        )
-                        response = None
-                        continue
-                    response = _offset_label(root, language, offset_selection)
-                    chat_int.show_response(response)
+                    pending_key = offset_control.control(sys.modules[__name__], root, radio, language,
+                                                         call, read_radio_key, watch)
                     response = None
-                    while True:
-                        try:
-                            offset_key = read_radio_key()
-                        except (RuntimeError, OSError) as error:
-                            print(f"\n{error}", file=sys.stderr)
-                            break
-                        if watch.lost:
-                            pending_key = offset_key or "w"
-                            break
-                        if not offset_key:
-                            continue
-                        offset_key = offset_key.casefold()
-                        if offset_key == "o":
-                            offset_selection = (offset_selection + 1) % 3
-                            chat_int.show_request(call, offset_key)
-                            chat_int.show_response(
-                                _offset_label(root, language, offset_selection)
-                            )
-                            continue
-                        if offset_key in {UP_KEY, DOWN_KEY}:
-                            chat_int.show_request(call, offset_key)
-                            try:
-                                offset_response = _offset_action(
-                                    root, radio, language, offset_selection,
-                                    1 if offset_key == UP_KEY else -1,
-                                )
-                            except Exception:
-                                DEBUG_LOG.exception(
-                                    "Offset command failed model=%s side=%s selection=%s",
-                                    radio.model_id, _yaesu_vfo_side, offset_selection,
-                                )
-                                offset_response = _radio_error(root, radio, language)
-                            chat_int.show_response(offset_response)
-                            continue
-                        if offset_key == "q":
-                            chat_int.show_done(root, language)
-                            chat_int.show_request(call, offset_key)
-                            break
-                        DEBUG_LOG.debug(
-                            "Leaving offset control and queueing command key=%r",
-                            offset_key,
-                        )
-                        pending_key = offset_key
-                        break
                 elif key in {UP_KEY, DOWN_KEY}:
                     response = _step_frequency(
                         root, radio, language, settings,

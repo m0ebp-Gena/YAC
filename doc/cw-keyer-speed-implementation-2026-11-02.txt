@@ -1,0 +1,45 @@
+CW Keyer Speed implementation - 2 November 2026
+
+Implemented locally in D:\YAC with the user's approved interaction.
+No build or publication.
+
+c k reads and announces the current speed without changing it, then opens
+a blank field accepting one or two ASCII digits. Enter submits the speed.
+No setting is sent before Enter. Radio limits are checked before writing.
+A successful setting requires native readback and returns to CW.
+
+h opens generic help immediately without Enter and preserves typed digits.
+q cancels immediately, discards the entry, announces Done and returns to CW.
+Backspace removes the last digit. Blank Enter reports Aborted. Out-of-range,
+non-numeric or overlong input reports Invalid and ends without a write.
+A third digit is rejected as Invalid; it is not silently truncated into an
+unintended two-digit setting. The buffer never accepts more than two digits.
+Uppercase H and Q are accepted. Disconnect and interrupted entry do not set
+a speed. Opening never enables the keyer, changes Break-in or sends Morse.
+
+Model coverage:
+FT-DX10, FT-710, FTX-1 and TS-590SG: KS, 4..60 WPM in steps of one.
+IC-705, IC-7300, IC-7300MK2, IC-7600 and IC-9700: CI-V 14 0C,
+6..48 WPM using Hamlib's published cw_lookup table and its threshold-based
+read conversion. Raw 250..255 reads as 48 WPM to cover the documented upper
+endpoint. Writes use the canonical raw table entry with positive ACK and
+exact raw readback. No guessed linear conversion or Hamlib runtime dependency.
+Other model profiles without a speed capability report Not Supported.
+References are recorded in cw-command-references-2026-11-02.txt.
+
+English, German, Spanish and Polish labels/help and public key references
+are aligned. Radio-specific command/range notes remain separate from h help.
+The private key chart is updated with its pre-change version preserved.
+
+Verification:
+35 focused CW Speed, Delay, other CW and package-layout tests passed.
+Log: local_storage/testing/results/cw-speed-focused-20261102-134838.txt
+Full suite: 585 tests, 584 passed, one sandbox-blocked junction check.
+No failures or errors, and no separate cleanup failure reported.
+Log: local_storage/testing/results/cw-speed-full-validation-20261102-134851.txt
+The same Windows junction check passed in the user's ordinary PowerShell
+run of all 17 Windows updater tests; that evidence is retained separately.
+These are automated/simulated checks. Physical-radio, speech and braille
+confirmation remain outstanding.
+
+Remaining agreed initial CW controls: c p CW Pitch; c v Sidetone Volume.

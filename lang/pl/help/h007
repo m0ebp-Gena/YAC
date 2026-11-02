@@ -1,9 +1,11 @@
 Pomoc: Menu filtrów
 
+Otwarcie filtra odczytuje bieżący stan bez zmiany. Gdy jest wyłączony, podaje tylko wyłączenie; gdy włączony, także aktywną wartość, jeśli dotyczy. Dopiero kolejne polecenie zmienia ustawienie.
+
 Filtry: naciśnij f, potem klawisz poniżej. Dostępne funkcje zależą od radia i emisji.
 
 a: Automatyczny notch. Kolejne a włącza lub wyłącza.
-b: Noise Blanker. Kolejne b włącza lub wyłącza. Kropka/przecinek zmieniają poziom po włączeniu.
+b: Noise Blanker. Otwarcie odczytuje stan oraz poziom, gdy jest włączony, bez zmiany ustawień. Kolejne b włącza lub wyłącza. Kropka/przecinek zmieniają poziom po włączeniu.
 c: Contour. Kolejne c włącza lub wyłącza. Kropka/przecinek zmieniają częstotliwość po włączeniu. l wybiera poziom; w szerokość; c wraca do częstotliwości. Przy wybranej częstotliwości c włącza lub wyłącza.
 h: Czytaj tę pomoc.
 l: Dolne odcięcie. Kropka zwiększa; przecinek zmniejsza dolną granicę.

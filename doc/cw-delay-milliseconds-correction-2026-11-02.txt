@@ -1,0 +1,41 @@
+SUPERSEDED FOR ICOM: user approved relative Delay Level 1..16.
+See cw-delay-relative-levels-2026-11-02.txt for current behaviour.
+
+CW Delay correction - milliseconds only
+
+Applied in D:\YAC on 2 November 2026 with user approval.
+This supersedes the earlier approximate Icom implementation.
+
+The speculative Icom raw-code-to-dot tables and the approximation
+announcement have been removed, including their unused language labels.
+Delay is exposed only on models with a documented milliseconds mapping:
+FT-DX10, FT-710 and FTX-1. Their existing controls keep the same sequence:
+c d reads current milliseconds; full stop/comma adjust; d rereads;
+h explains; q keeps the value and returns to CW. No wrapping, defaults,
+keyer-speed changes or Break-in mode changes.
+
+IC-705, IC-7300, IC-7300MK2, IC-7600 and IC-9700 Delay now report
+Not Supported without sending CAT/CI-V commands. Their existing Break-in
+support is unchanged. A future implementation requires a reliable model
+raw-code-to-dot mapping, a live keyer-speed reading, conversion to integer
+milliseconds and verified native readback. If speed changes, the equivalent
+milliseconds for a dot-based delay may change.
+
+Hamlib defines BKINDL in tenths of dots and BKIN_DLYMS in integer
+milliseconds. Its PARIS timing conversion uses 1200/WPM milliseconds per
+dot. This time conversion does not establish an Icom raw-code mapping.
+See cw-command-references-2026-11-02.txt for source URLs reviewed.
+
+English, German, Spanish and Polish generic help and separate radio notes
+are aligned. No package built or published.
+
+Verification: all 23 targeted CW, Delay and package-layout tests passed.
+Coverage includes every Yaesu SD value, both non-wrapping limits, read-only
+entry/repeat/help/exit, failed setters and unchanged Break-in state.
+All five Icom models were checked in all four languages for Not Supported
+with no native read or write commands. Existing CW tests still pass.
+Log: local_storage/testing/results/cw-delay-ms-20261102-132851.txt
+The full suite was not rerun after this correction. Earlier full validation
+was 573 passed and one sandbox-blocked junction check; the user's external
+Windows updater run passed all 17 checks including that junction test.
+Physical-radio validation remains outstanding.

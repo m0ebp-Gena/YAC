@@ -1,0 +1,8 @@
+Hilfe zum Tasttempo
+
+Beim Öffnen wird das aktuelle Tempo ohne Änderung angesagt. Eine oder zwei Ziffern eingeben; Enter übernimmt ein Tempo im unterstützten Bereich. Vor Enter wird nichts geändert. Die interne Taste bestimmt die Dauer von Punkten und Strichen am Paddle, nicht das manuelle Handtastentempo.
+h öffnet sofort Hilfe ohne Enter. Bereits eingegebene Ziffern bleiben erhalten. q verwirft sofort die Eingabe, meldet Fertig und kehrt zu CW zurück. Rücktaste löscht die letzte Ziffer. Leeres Enter meldet Abgebrochen; ungültige oder zu lange Eingaben melden Ungültig und kehren ohne Änderung zu CW zurück. Erfolg meldet das zurückgelesene Tempo und kehrt zu CW zurück.
+
+***
+Ende der Hilfe
+***

@@ -161,18 +161,21 @@ def control(yac, root, radio, language, call, read_key, watch):
         elif key == 'v':
             chat_int.show_response(filter_review.next(yac, root, radio, language))
         elif key == 'b' and adjusting in {None, 'b'}:
+            toggle = adjusting == 'b'
             adjusting = 'b'
-            chat_int.show_response(noise_blanker.operate(yac, root, radio, language, toggle=True))
+            chat_int.show_response(noise_blanker.operate(yac, root, radio, language, toggle=toggle))
         elif key == 'r' and adjusting in {None, 'r'}:
+            toggle = adjusting == 'r'
             adjusting = 'r'
-            chat_int.show_response(noise_reduction.operate(yac, root, radio, language, toggle=True))
+            chat_int.show_response(noise_reduction.operate(yac, root, radio, language, toggle=toggle))
         elif key in {'a', 'n'} and adjusting in {None, key}:
+            toggle = adjusting == key
             adjusting = key
-            chat_int.show_response(notch_control.operate(yac, root, radio, language, key, toggle=True))
+            chat_int.show_response(notch_control.operate(yac, root, radio, language, key, toggle=toggle))
         elif key == 'c' and not adjusting:
             adjusting = 'c'
             contour_parameter = 'frequency'
-            chat_int.show_response(contour_control.operate(yac, root, radio, language, toggle=True))
+            chat_int.show_response(contour_control.operate(yac, root, radio, language))
         elif adjusting == 'c' and key in {'c', 'l', 'w'}:
             toggle = key == 'c' and contour_parameter == 'frequency'
             contour_parameter = {'c': 'frequency', 'l': 'level', 'w': 'width'}[key]

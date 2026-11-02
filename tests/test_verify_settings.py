@@ -20,12 +20,14 @@ class SettingsSerial(IcomSerial):
     def __init__(self, address):
         super().__init__(address)
         self.settings = {b'\x11': b'\x00', b'\x16\x02': b'\x00',
-                         b'\x14\x0a': b'\x00\x51', b'\x1c\x01': b'\x00'}
+                         b'\x14\x0a': b'\x00\x51', b'\x1c\x01': b'\x00',
+                         b'\x16\x50': b'\x00', b'\x1a\x05\x00\x59': b'\x00',
+                         b'\x1a\x05\x00\x45': b'\x00'}
         self.reject_setting = False
 
     def write(self, packet):
-        key = packet[4:5] if packet[4] == 0x11 else packet[4:6]
-        if key not in self.settings:
+        key = next((key for key in self.settings if packet[4:-1].startswith(key)), None)
+        if key is None:
             return super().write(packet)
         self.writes.append(packet)
         self.buffer.extend(packet)  # Ignore echoed commands when decoding.
@@ -60,7 +62,7 @@ class VerifySettingsTests(unittest.TestCase):
 
     def test_keyboard_routes_top_level_and_settings_keys(self):
         radio = create_dummy_radio()
-        keys = iter(['v','p','p','u','s','t','.','.','q','q','v','q', 'y'])
+        keys = iter(['v','p','p','p','q','u','u','q','s','t','.','.','q','q','v','q', 'y'])
         output = io.StringIO()
         with patch.object(yac, 'connect_radio', return_value=radio), \
              patch.object(yac, '_read_settings', return_value={'call':'test','lang':'en'}), \
@@ -112,7 +114,7 @@ class VerifySettingsTests(unittest.TestCase):
             self.assertEqual(controls.cycle(yac, ROOT, radio, 'en', 'preamp'), 'preamp unknown')
             self.assertTrue(all(call.args[1] == 'PA0;' for call in exchange.call_args_list))
             report = controls.verify(yac, ROOT, radio, 'en')
-            self.assertEqual(report, 'Radio Error, preamp unknown, power unknown, tuner unknown')
+            self.assertEqual(report, 'Radio Error, preamp unknown, power unknown, tuner unknown, Lock Unknown')
 
     def test_cat_readback_mismatch_is_failure(self):
         radio = create_dummy_radio()

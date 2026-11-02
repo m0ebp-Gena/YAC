@@ -18,6 +18,8 @@ def documents(root, platform):
             result[path] = root / path
         result[base / CHARTS[language]] = root / CHARTS[language]
         result[base / 'decoder-radio-notes.txt'] = root / base / 'decoder-radio-notes.txt'
+        result[base / 'cw-radio-notes.txt'] = root / base / 'cw-radio-notes.txt'
+        result[base / 'mic-gain-radio-notes.txt'] = root / base / 'mic-gain-radio-notes.txt'
     for name in ('linux-macos-setup.txt', 'debian-trixie-setup.txt'):
         if platform != 'win':
             result[Path('doc/English') / name] = root / 'doc' / name

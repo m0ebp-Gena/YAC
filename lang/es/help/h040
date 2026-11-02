@@ -1,0 +1,13 @@
+Ayuda de offsets de recepción y transmisión
+
+o abre Offset en Recepción sin cambiar ajustes. El aviso indica v Verificar, c Borrar offset y h Ayuda. Otras o alternan Transmisión y Recepción sin activar ni cambiar el lado elegido.
+
+Punto suma 10 hercios y coma resta 10 hercios al valor retenido de la radio, activando el lado elegido. Los cambios se aplican de inmediato y se verifican por lectura. Abrir nunca reinicia el valor. Si la radio comparte un valor de offset, ambos lados usan ese valor cuando están activados.
+
+v lee los offsets efectivos de Recepción y Transmisión en hercios. Un lado inactivo indica 0. Los signos se anuncian como Más y Menos. Verificar no cambia nada. c borra explícitamente el valor y desactiva ambos offsets, comprobándolo por lectura. El lado elegido se conserva.
+
+h lee esta ayuda. q anuncia Terminado y vuelve al nivel principal conservando los ajustes actuales. Ni abrir ni q borra valores. Los estados ilegibles o no admitidos se indican sin adivinarlos.
+
+***
+Fin de la ayuda
+***

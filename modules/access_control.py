@@ -81,7 +81,6 @@ def control(root, language, read_key, watch, *, modes=False):
         label = next(label for name, label in FIELDS.values() if name == field)
         if not value_only:
             say(label)
-            return
         value = current[field]
         if field == 'speech-punctuation':
             value = chat_int.label(root, language, PUNCT_LABELS[value])

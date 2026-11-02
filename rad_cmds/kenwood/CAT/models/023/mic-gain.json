@@ -1,0 +1,28 @@
+{
+  "modes": {
+    "LSB": {
+      "group": "SSB",
+      "alc": true
+    },
+    "USB": {
+      "group": "SSB",
+      "alc": true
+    },
+    "AM": {
+      "group": "AM",
+      "alc": false
+    },
+    "FM": {
+      "group": "FM",
+      "alc": false,
+      "protocol": "cat",
+      "read": "EX0530000;",
+      "set": "EX0530000{value};",
+      "pattern": "EX0530000([012]);",
+      "minimum": 0,
+      "maximum": 2,
+      "step": 1,
+      "level": true
+    }
+  }
+}

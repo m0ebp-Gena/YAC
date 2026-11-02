@@ -16,20 +16,101 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class MicGainTests(unittest.TestCase):
+    def test_voice_modes_adjust_without_alc_or_entry_writes(self):
+        for mode, model, group in [('FM', '0761', 'FM'), ('FMN', '0840', 'FM'),
+                                   ('C4FMDN', '0840', 'DV'), ('C4FMVW', '0840', 'DV'),
+                                   ('AM', '0761', 'AM')]:
+            with self.subTest(mode=mode):
+                radio = create_dummy_radio()
+                radio.model_id = model
+                with patch.object(yac, '_current_mode', return_value=mode), \
+                     patch.object(mic, 'alc') as alc, \
+                     patch.object(mic, 'prepare_meter') as meter:
+                    _, output = self.run_control(['.', 'v', 'q'], radio)
+                self.assertIn(f'{group} Mic Gain 51%', output)
+                alc.assert_not_called()
+                meter.assert_not_called()
+
+    def test_mode_help_selects_correct_document_in_every_language(self):
+        for mode, token in [('USB', 'h008'), ('FM', 'h049'),
+                            ('C4FMDN', 'h050'), ('AM', 'h051')]:
+            for language in ['en', 'de', 'es', 'pl']:
+                radio = create_dummy_radio()
+                radio.model_id = '0840'
+                keys = iter(['h', 'q'])
+                with patch.object(yac, '_current_mode', return_value=mode), \
+                     patch.object(mic.help_int, 'show_paged') as show, \
+                     redirect_stdout(io.StringIO()):
+                    mic.control(yac, ROOT, radio, language,
+                                lambda **kw: next(keys), SimpleNamespace(lost=False))
+                self.assertEqual(show.call_args.args[2],
+                                 mic.help_int.get_help(ROOT, language, token))
+                self.assertEqual(radio.serial.mic_gain, 50)
+
+    def test_icom_fm_and_dv_use_gain_without_alc(self):
+        for mode in ['FM', 'DV']:
+            serial = SettingsSerial(0xa4)
+            serial.settings[b'\x14\x0b'] = bytes.fromhex('01 28')
+            radio = RadioConnection(serial, 'test', 115200, 'CI-V', 'IC-705', 'IC-705', civ_address=0xa4)
+            with patch.object(yac, '_current_mode', return_value=mode), \
+                 patch.object(mic, 'tx_state', return_value=False), \
+                 patch.object(mic, 'alc') as alc:
+                self.run_control(['.', 'q'], radio)
+            self.assertEqual(serial.settings[b'\x14\x0b'], bytes.fromhex('01 31'))
+            alc.assert_not_called()
+
+    def test_kenwood_fm_uses_menu_and_clamps_three_levels(self):
+        for model, menu in [('020', '044'), ('023', '053')]:
+            radio = RadioConnection(None, 'test', 9600, 'CAT', model, 'Kenwood')
+            prefix = f'EX{menu}0000'
+            raw = [0]
+            commands = []
+            def exchange(radio, command):
+                commands.append(command)
+                if command != prefix + ';':
+                    raw[0] = int(command[-2])
+                return prefix + str(raw[0]) + ';'
+            with patch.object(mic.ts480_control, 'variant', return_value='1'), \
+                 patch.object(yac, '_current_mode', return_value='FM'), \
+                 patch.object(yac, '_cat_exchange', side_effect=exchange), \
+                 patch.object(mic, 'tx_state', return_value=False), \
+                 patch.object(mic, 'alc') as alc:
+                _, output = self.run_control(['.', '.', '.', 'v', 'q'], radio)
+            self.assertEqual(raw[0], 2)
+            self.assertIn('FM Mic Level High', output)
+            self.assertTrue(all(c.startswith(prefix) for c in commands))
+            self.assertEqual(sum(c == prefix + '2;' for c in commands), 1)
+            alc.assert_not_called()
+
+    def test_unsupported_and_unreadable_modes_do_not_read_or_write_gain(self):
+        for mode in ['CW', 'DATAFM', 'WFM', None]:
+            with patch.object(yac, '_current_mode', return_value=mode), \
+                 patch.object(mic.settings, 'read') as read, \
+                 patch.object(mic, 'adjust') as adjust:
+                self.run_control([])
+            read.assert_not_called()
+            adjust.assert_not_called()
+
+    def test_cancel_optional_preparation_keeps_adjustment_available(self):
+        with patch.object(mic, 'prepare_meter') as meter:
+            radio, _ = self.run_control([' ', 'n', '.', 'q'])
+        self.assertEqual(radio.serial.mic_gain, 51)
+        meter.assert_not_called()
+
     def run_control(self, keys, radio=None):
         radio = radio or create_dummy_radio()
         sequence = iter(keys)
         output = io.StringIO()
-        with redirect_stdout(output):
+        with redirect_stdout(output), patch.object(mic.help_int, 'show_paged', side_effect=lambda root, language, text, read_key: print(text)):
             mic.control(yac, ROOT, radio, 'en',
                         lambda **kwargs: next(sequence), SimpleNamespace(lost=False))
         return radio, output.getvalue()
 
-    def test_cancel_at_either_preparation_prompt_writes_nothing(self):
+    def test_open_and_quit_writes_nothing(self):
         for keys in [['q']]:
-            with patch.object(yac, '_cat_exchange') as exchange:
+            with patch.object(yac, '_cat_exchange', wraps=yac._cat_exchange) as exchange:
                 _, output = self.run_control(keys)
-                exchange.assert_not_called()
+                self.assertTrue(all(call.args[1] in {'MG;', 'MD0;'} for call in exchange.call_args_list))
             self.assertIn('Done', output)
 
     def test_kenwood_meter_selection_restoration_and_failure(self):
@@ -58,10 +139,10 @@ class MicGainTests(unittest.TestCase):
                 self.assertIsNone(mic.prepare_meter(yac, radio, spec))
                 command.assert_called_once_with(radio, 'RM;')
 
-    def test_preparation_help_does_not_acknowledge_readiness(self):
-        with patch.object(yac, '_cat_exchange') as exchange:
+    def test_help_does_not_enable_monitoring(self):
+        with patch.object(yac, '_cat_exchange', wraps=yac._cat_exchange) as exchange:
             _, output = self.run_control(['h', 'q'])
-            exchange.assert_not_called()
+            self.assertTrue(all(call.args[1] in {'MG;', 'MD0;'} for call in exchange.call_args_list))
         self.assertIn('Lower power does not make an unsuitable load safe', output)
 
     def test_demo_changes_only_mic_gain_and_keeps_value_on_exit(self):
@@ -72,7 +153,7 @@ class MicGainTests(unittest.TestCase):
             commands.append(command)
             return original(radio, command)
         with patch.object(yac, '_cat_exchange', side_effect=exchange):
-            _, output = self.run_control(['y', '.', 'v', 'q'], radio)
+            _, output = self.run_control(['.', 'v', 'q'], radio)
         self.assertEqual(radio.serial.mic_gain, 51)
         self.assertEqual(radio.serial.power, '020')
         self.assertEqual(radio.serial.frequency, 7159000)
@@ -131,19 +212,19 @@ class MicGainTests(unittest.TestCase):
 
     def test_initial_tx_blocks_adjustment(self):
         with patch.object(mic, 'tx_state', return_value=True), patch.object(mic, 'adjust') as adjust:
-            _, output = self.run_control(['y'])
+            _, output = self.run_control(['.', 'q'])
             adjust.assert_not_called()
         self.assertIn('Release PTT', output)
 
     def test_mode_change_blocks_writes(self):
         with patch.object(yac, '_current_mode', side_effect=['LSB', 'CW']), patch.object(mic, 'adjust') as adjust:
-            _, output = self.run_control(['y', '.'])
+            _, output = self.run_control(['.'])
             adjust.assert_not_called()
         self.assertIn('Mode Changed', output)
 
     def test_settings_route_returns_to_settings(self):
         radio = create_dummy_radio()
-        keys = iter(['s', 'm', 'y', '.', 'q', 'q', 'q', 'y'])
+        keys = iter(['s', 'm', '.', 'q', 'q', 'q', 'y'])
         with patch.object(yac, 'connect_radio', return_value=radio), patch.object(yac, '_read_settings', return_value={'call':'test','lang':'en'}), patch.object(lang_sel, 'read_key', side_effect=lambda **kwargs: next(keys)), redirect_stdout(io.StringIO()) as output:
             self.assertEqual(yac.main([]), 0)
         self.assertEqual(output.getvalue().count('Done'), 1)
@@ -152,14 +233,14 @@ class MicGainTests(unittest.TestCase):
 
     def test_idle_polling_reports_peak_after_ptt_release(self):
         radio = create_dummy_radio()
-        keys = iter(['y', 'q', 'y'])
+        keys = iter([' ', 'y', 'q'])
         def read_key(idle_callback=None):
             if idle_callback:
                 idle_callback()
                 idle_callback()
                 idle_callback()
             return next(keys)
-        with patch.object(mic, 'tx_state', side_effect=[False, False, True, True, False]), patch.object(mic, 'alc', side_effect=[42, 77]), patch.object(mic, 'monotonic', side_effect=range(100)), redirect_stdout(io.StringIO()) as output:
+        with patch.object(mic, 'tx_state', side_effect=[False, False, True, True, False]), patch.object(mic, 'alc', side_effect=[42, 77]), patch.object(mic, 'monotonic', side_effect=range(100)), redirect_stdout(io.StringIO()) as output, patch.object(mic.help_int, 'show_paged', side_effect=lambda root, language, text, read_key: print(text)):
             mic.control(yac, ROOT, radio, 'en', read_key, SimpleNamespace(lost=False))
         self.assertIn('Peak ALC 77 raw', output.getvalue())
 

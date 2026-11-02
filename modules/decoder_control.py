@@ -153,16 +153,14 @@ class DecoderManager:
             if key == 'h':
                 chat_int.show_response(help_int.get_help(self.root, self.language, 'h013'))
             elif key == 'a':
-                # Release an existing audio input before the explicit level check.
-                if self.session and hasattr(self.session, 'paused'):
-                    try:
+                def prepare_input():
+                    # Browsing is read-only; release audio only for an explicit check/save.
+                    if self.session and hasattr(self.session, 'paused'):
                         self.stop()
                         chat_int.show_response(self.label('l277'))
-                    except Exception:
-                        chat_int.show_response(self.label('l003'))
-                        continue
                 from modules import audio_setup
-                audio_setup.control(self.yac, self.root, self.language, read_key)
+                audio_setup.control(self.yac, self.root, self.language, read_key,
+                                    prepare_input=prepare_input)
             elif key in ('c', 'r'):
                 chat_int.show_response(self.start(key))
                 self.decoder_view(key, read_key)

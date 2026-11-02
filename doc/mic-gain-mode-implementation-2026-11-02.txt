@@ -1,0 +1,40 @@
+Microphone gain - current implementation, 2 November 2026
+
+s m opens directly, reading mode and current gain without a setting write.
+Full stop/comma adjust in receive, v reads, h gives mode-dependent help,
+q finishes with Done and keeps the value. A mode change or unreadable mode
+ends the control before further adjustments. YAC never keys transmission.
+
+SSB offers optional ALC preparation on Space, with y to start or n/q to
+cancel preparation and retain direct adjustment. Space resets the peak once
+monitoring is active. Yaesu AM also offers optional ALC. Other AM, FM and
+DV use speech-quality guidance and do not sample ALC. Space repeats help.
+ALC is sampled, raw and uncalibrated; it cannot judge modulation quality.
+Kenwood meter selection is prepared only on explicit ALC monitoring start
+and retains existing checked restoration and pending-restoration handling.
+
+Model/mode command paths are in each model's mic-gain.json; language
+labels and h008/h049/h050/h051 supply mode-specific presentation. See
+English/mic-gain-radio-notes.txt and its German, Spanish and Polish peers
+for model coverage, including Kenwood's separate FM three-level menus.
+These files are included in the package document mapping.
+
+Manufacturer references checked:
+https://www.icomfrance.com/uploads/files/produit/not-IC-705_ENG_Basic-en.pdf
+https://www.yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/FTX-1_CAT_OM_ENG_2508-C.pdf
+https://www.yaesu.com/Files/4CB893D7-1018-01AF-FA97E9E9AD48B50C/FTX-1_OM_ENG_EH084M201_2506E-DS.pdf
+https://www.kenwood.com/i/products/info/amateur/pdf/ts590_g_pc_command_en_rev3.pdf
+https://www.kenwood.com/i/products/info/amateur/ts_480/pdf/ts_480_pc.pdf
+Kenwood FM menu values are zero-based CAT indexes, displayed as the named
+Normal/Medium/High selections; they are not microphone-gain percentages.
+
+Automated verification and physical radio validation are distinct.
+Physical checks of FM deviation, gain effect/shared settings and digital
+speech remain pending. No build or publication performed.
+
+Validation completed:
+55 focused checks passed. Full suite: 604 tests, 603 passed, 1 skipped.
+The skipped check is the known Windows junction-creation sandbox block;
+it did not test YAC junction protection in this run. No other failures.
+Full log: local_storage/testing/results/mic-gain-full-20261102-152306-925.txt
+Focused log: local_storage/testing/results/mic-gain-focused-20261102-152133-845.txt

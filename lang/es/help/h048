@@ -1,0 +1,8 @@
+Ayuda del volumen del tono local
+
+Cuando se requiere CW, YAC cambia el equipo a CW antes de leer el nivel del tono local. Si ya está en CW, conserva la selección CW existente. Al salir con q, CW queda seleccionado. El nivel del tono local no cambia al abrir. El tono local es el sonido de su propio envío Morse. Su nivel es una escala relativa positiva, no decibelios ni una medida de sonoridad.
+Punto aumenta el nivel; coma lo reduce. Los cambios se aplican y confirman por lectura. Los límites no saltan al extremo opuesto. v lee el nivel de nuevo. h lee esta ayuda del volumen y vuelve aquí sin cambios. q conserva el ajuste, anuncia Hecho y vuelve a CW. YAC no genera tonos ni manipula el transmisor. No activa el monitor.
+
+***
+Fin de la ayuda
+***

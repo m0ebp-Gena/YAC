@@ -1,0 +1,26 @@
+Wzmocnienie mikrofonu - uwagi do radia
+
+s m odczytuje emisję i wzmocnienie. Kropka/przecinek regulują od razu
+podczas odbioru; v odczyt, h pomoc emisji, q zachowuje wartość.
+Żadne obsługiwane radio nie wymaga Spacji do regulacji wzmocnienia.
+
+Yaesu FT-DX10, FT-710 i FTX-1: MG 0-100 dla SSB, AM i FM, także
+wąskich AM/FM. FTX-1 również C4FM-DN/VW. Sprawdzić efekt słuchowy i
+wspólne zapisywanie wartości na sprzęcie. Opcjonalny ALC dla SSB/AM:
+Spacja, przygotowanie, y. FTX-1 nie ma monitora nadawania w FM/FM-N
+ani AM/AM-N; użyj innej stacji lub odpowiedniego zewnętrznego odsłuchu.
+
+Icom IC-705, IC-7300, IC-7300MK2, IC-7600 i IC-9700: CI-V 14 0B,
+surowe 0-255 jako zaokrąglone procenty, krok 3 jednostki. SSB/AM/FM;
+IC-705 i IC-9700 także DV. Opcjonalny ALC tylko w SSB. AM/FM/DV:
+sprawdzanie zrozumiałości z monitorem lub inną stacją, bez oceny ALC.
+
+Kenwood TS-590SG i poprawnie rozpoznany TS-480: MG 0-100 dla SSB/AM.
+FM ma oddzielne stopnie Normalny, Średni, Wysoki. TS-590SG menu 53:
+EX0530000; TS-480 menu 44: EX0440000. CAT 0/1/2 odpowiadają tym
+stopniom. Kropka/przecinek nie zawijają wartości. Opcjonalny ALC w SSB;
+AM/FM wymagają sprawdzenia mowy. Miernik przygotowuje się dopiero po
+uruchomieniu ALC. QMX pozostaje wykluczony mimo wspólnego ID020.
+
+Testy automatyczne sprawdzają polecenia, nie jakość modulacji, dewiację,
+wspólne zapisywanie ani mowę cyfrową na rzeczywistym sprzęcie.

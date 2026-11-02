@@ -1,10 +1,10 @@
 Ayuda: Procesador de voz
 
+Al abrir, si el procesador está desactivado solo se anuncia desactivado. No se anuncia el nivel inactivo ni se activa al entrar. Si está activado se anuncia también el nivel actual. Un nivel retenido oculto solo se descubre tras una petición explícita e para activar; cancelar puede entonces restaurar ese valor.
+
 Procesador: s e lee estado y nivel sin cambios. e activa/desactiva; punto/coma ajustan estando activo. Kenwood i selecciona Entrada, o Salida; se conserva el otro nivel. v lee; h ayuda. q termina conservando cambios. n significa Sin cambios: restaura estado y niveles nativos originales y verifica lectura; si no hubo edición no escribe. Ambos vuelven con Nivel principal.
 
 Suelta PTT antes de cambiar o restaurar. YAC solo modifica procesador, nunca potencia, frecuencia, modo, micrófono, ecualizador ni AMC; no inicia transmisión. Restaurar requiere frecuencia, modo y receptor originales. Si falla se conserva la instantánea durante esta ejecución; valores en log diagnóstico si está activo. Vuelve al contexto original, suelta PTT, abre s e y reintenta n. q acepta valores actuales. Un fallo del programa no garantiza restauración.
-
-Yaesu: un nivel 0/1-100, paso 1. Si Apagado oculta el nivel guardado, YAC activa brevemente en recepción, lee el nivel y vuelve a apagar antes del ajuste. Al cancelar verifica el nivel guardado antes de apagar. Icom: 0-10, nativo 0-255, paso 26; restaura valores exactos. Kenwood: Entrada/Salida 0-100, paso 1; TS-480 debe identificarse. QMX no admitido. Yaesu/Icom LSB/USB; Kenwood también AM/FM. Lee el manual; esta ayuda lo complementa.
 
 Espacio abre preparación opcional del medidor. Antena adaptada a la frecuencia o carga ficticia adecuada; carga inadecuada puede dañar transmisor y YAC no la verifica. Ajusta potencia tú; potencia baja no hace segura mala carga. Ajusta antes micrófono con procesador apagado. y confirma; n o q vuelve al control. Mantén PTT y habla normalmente; suelta para oír pico COMP muestreado. No grites. Puede perder picos breves; datos brutos no son dB ni nivel. Lecturas ausentes son desconocidas, no cero. Kenwood selecciona COMP tú; Salida requiere guía ALC.
 

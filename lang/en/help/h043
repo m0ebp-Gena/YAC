@@ -1,0 +1,8 @@
+Break-in Help
+
+Opening reads the current setting without changing it. Off means keying does not automatically switch to transmit. Semi switches to transmit while sending, then waits before returning to receive. Full, also called QSK, allows reception between Morse elements. Available choices depend on the radio.
+b or full stop selects the next choice; comma selects the previous choice. Each change is applied and announced immediately. h reads this help. q keeps your selection, announces Done and returns to CW.
+
+***
+End of help
+***

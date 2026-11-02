@@ -1,11 +1,12 @@
 import io
 import unittest
+from types import SimpleNamespace
 from contextlib import redirect_stdout
 from pathlib import Path
 from unittest.mock import patch
 
 import yac
-from modules import lang_sel, noise_blanker as nb
+from modules import filter_control, lang_sel, noise_blanker as nb
 from modules.dummy_radio import create_dummy_radio
 from modules.find_rad import RadioConnection
 from tests.test_verify_settings import SettingsSerial
@@ -123,14 +124,40 @@ class NoiseBlankerTests(unittest.TestCase):
 
     def test_keyboard_repeat_f_b_and_b_navigation_and_q(self):
         radio=create_dummy_radio()
-        keys=iter(['f','b','.','f','b','.','b',',','q','q','q', 'y'])
+        keys=iter(['f','b','.','b','.','q','b',',','b',',','q','q','q', 'y'])
         output=io.StringIO()
         with patch.object(yac,'connect_radio',return_value=radio),patch.object(yac,'_read_settings',return_value={'call':'test','lang':'en'}),patch.object(lang_sel,'read_key',side_effect=lambda:next(keys)),redirect_stdout(output):
             self.assertEqual(yac.main([]),0)
         self.assertEqual(radio.serial.nb_level,'005')
-        self.assertEqual(radio.serial.noise_blanker,'1')
+        self.assertEqual(radio.serial.noise_blanker,'0')
         self.assertIn('NB Off',output.getvalue())
         self.assertIn('NB 6',output.getvalue())
+        self.assertIn('NB On, NB 6',output.getvalue())
+
+    def test_open_and_reopen_only_read_state_and_level(self):
+        for language in ('en', 'de', 'es', 'pl'):
+            for state in ('0', '1'):
+                with self.subTest(language=language, state=state):
+                    radio=create_dummy_radio()
+                    radio.serial.noise_blanker=state
+                    radio.serial.nb_level='007'
+                    keys=iter(['b','q','b','q','q'])
+                    with patch.object(yac,'_cat_exchange',wraps=yac._cat_exchange) as exchange, \
+                         patch.object(filter_control.chat_int,'show_response') as say, \
+                         patch.object(filter_control.chat_int,'show_done'), \
+                         patch.object(filter_control.chat_int,'show_back'):
+                        filter_control.control(yac,ROOT,radio,language,'test',
+                                               lambda:next(keys),SimpleNamespace(lost=False))
+                    self.assertEqual(radio.serial.noise_blanker,state)
+                    self.assertEqual(radio.serial.nb_level,'007')
+                    commands=[call.args[1] for call in exchange.call_args_list]
+                    self.assertTrue(commands)
+                    self.assertTrue(all(command in {'MD0;','NB0;','NL0;'} for command in commands),commands)
+                    label=lambda token: yac._read_label(ROOT,language,token,'')
+                    expected=(label('l154') if state=='0' else
+                              label('l153')+', '+label('l155').format(value=7))
+                    self.assertEqual([call.args[0] for call in say.call_args_list][1:],
+                                     [expected,expected])
 
 
 if __name__=='__main__': unittest.main()

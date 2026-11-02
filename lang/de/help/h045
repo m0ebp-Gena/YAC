@@ -1,0 +1,8 @@
+Hilfe zur Break-in-Verzögerung
+
+Beim Öffnen wird die aktuelle Einstellung ohne Änderung vorgelesen. Millisekunden geben die Wartezeit nach dem Senden bis zum Empfang bei Semi-Break-in an. Verz Stufe 1 bis 16 ist eine relative Skala, keine Zeit oder Punktlänge; höher bedeutet länger. Zwischenwerte werden als nächste Stufe angesagt, ohne sie zu ändern.
+Punkt wählt den nächsten höheren Wert, Komma den nächsten niedrigeren. Änderungen gelten sofort und werden zurückgelesen. An Grenzen wird der Wert ohne Umlauf wiederholt. d liest erneut; h liest Hilfe. q behält die Einstellung, meldet Fertig und kehrt zu CW zurück. YAC setzt keinen Standardwert und ändert weder Tempo noch Break-in-Modus.
+
+***
+Ende der Hilfe
+***

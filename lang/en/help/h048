@@ -1,0 +1,8 @@
+Sidetone Volume Help
+
+Where CW mode is required, YAC changes the radio to CW before reading the sidetone level. If the radio is already in CW, its current CW choice is left unchanged. Leaving with q keeps CW selected. The sidetone level itself is unchanged on opening. Sidetone is the sound of your own Morse sending. Its level is a positive relative scale, not decibels or a measurement of loudness.
+Full stop increases the level; comma decreases it. Changes apply immediately and are confirmed by readback. Limits do not wrap. v reads the current level again. h reads this Volume help and returns here without a change. q keeps the setting, announces Done and returns to CW. YAC does not generate a tone or key the transmitter. Opening does not turn a monitor on.
+
+***
+End of help
+***

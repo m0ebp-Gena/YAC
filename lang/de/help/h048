@@ -1,0 +1,8 @@
+Hilfe zur Mithörtonlautstärke
+
+Wenn CW erforderlich ist, schaltet YAC das Funkgerät vor dem Lesen des Mithörtonpegels auf CW. Ist bereits CW gewählt, bleibt diese CW-Auswahl unverändert. q behält CW bei. Der Mithörtonpegel selbst bleibt beim Öffnen unverändert. Der Mithörton ist der Klang des eigenen Morsens. Sein Pegel ist eine positive relative Skala, keine Dezibel- oder Lautheitsmessung.
+Punkt erhöht, Komma verringert den Pegel. Änderungen gelten sofort und werden zurückgelesen. Kein Umlauf an Grenzen. v liest den Pegel erneut. h liest diese Lautstärkehilfe und kehrt ohne Änderung hierher zurück. q behält die Einstellung, meldet Fertig und kehrt zu CW zurück. YAC erzeugt keinen Ton und tastet den Sender nicht. Der Monitor wird nicht eingeschaltet.
+
+***
+Ende der Hilfe
+***

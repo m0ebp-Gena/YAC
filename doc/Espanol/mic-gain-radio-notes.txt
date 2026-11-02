@@ -1,0 +1,27 @@
+Ganancia de micrófono - notas de radios
+
+s m lee modo y ganancia. Punto/coma ajustan directamente en recepción;
+v lee, h explica el modo, q conserva el valor. Ninguna radio compatible
+requiere Espacio para ajustar la ganancia.
+
+Yaesu FT-DX10, FT-710 y FTX-1: MG 0-100 en SSB, AM y FM, incluidas
+AM/FM estrechas. FTX-1 también C4FM-DN/VW. Comprobar efecto audible y
+valores compartidos en equipos reales. SSB/AM ofrecen ALC opcional con
+Espacio, preparación e y. FTX-1 no tiene monitor de transmisión en
+FM/FM-N ni AM/AM-N; usar otra estación o monitorización externa adecuada.
+
+Icom IC-705, IC-7300, IC-7300MK2, IC-7600 e IC-9700: CI-V 14 0B,
+0-255 bruto mostrado como porcentaje redondeado; pasos de 3 unidades.
+SSB/AM/FM; IC-705 e IC-9700 también DV. ALC opcional solo en SSB.
+En AM/FM/DV comprobar claridad mediante un monitor compatible u otra
+estación, sin evaluación ALC.
+
+Kenwood TS-590SG y TS-480 identificado: MG 0-100 en SSB/AM. FM usa
+niveles independientes Normal, Media, Alta. TS-590SG menú 53:
+EX0530000; TS-480 menú 44: EX0440000. CAT 0/1/2 corresponden a esos
+niveles. Punto/coma no dan la vuelta en los límites. ALC opcional en
+SSB; AM/FM requieren comprobación de voz. El medidor solo se prepara
+al iniciar ALC. QMX sigue excluido pese a compartir ID020.
+
+Las pruebas automáticas comprueban comandos, no calidad de modulación,
+desviación, almacenamiento compartido ni voz digital en equipos reales.

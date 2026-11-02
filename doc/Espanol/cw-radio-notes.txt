@@ -1,0 +1,38 @@
+Notas de radio CW
+
+FT-DX10, FT-710 y FTX-1: c b combina BI Activado/Desactivado con el ajuste separado Semi/Completo. Desactivado conserva ese tipo. Al activar se selecciona primero el tipo solicitado. Comandos de menú: EX020113, EX020116 y EX020115, respectivamente. c i usa KR para el manipulador interno independiente; no cambia tipo, velocidad, tono ni volumen.
+
+IC-705, IC-7300, IC-7300MK2, IC-7600 e IC-9700: c b usa CI-V 16 47: 00 Desactivado, 01 Semi, 02 Completo. c i indica actualmente No compatible. Seleccionar llave recta, Bug o paleta no equivale a un interruptor independiente del manipulador. YAC no supone un tipo de paleta.
+
+Kenwood y QMX: Break-in y manipulador interno no están implementados actualmente. La velocidad se describe por separado más abajo. En TS-590SG, VX controla VOX fuera de CW. No se envían comandos BI/KR genéricos a estos equipos. Es una limitación actual de YAC, no ausencia de funciones CW del equipo.
+
+Los cambios se verifican por lectura y se conservan en el equipo al salir con q. No se promete retención al apagarlo. Las simulaciones no sustituyen pruebas con equipos físicos.
+
+Retardo (c d): FT-DX10, FT-710 y FTX-1 usan la tabla SD documentada: 30, 50, 100, 150, 200, 250 y después 300 a 3000 milisegundos en pasos de 100. Se detiene en ambos límites. No cambia BI, Semi/Completo ni velocidad.
+
+Retardo Icom (c d): IC-705, IC-7300, IC-7300MK2, IC-7600 e IC-9700 usan CI-V 14 0F, código 0..255. YAC presenta Nivel retardo 1..16 con códigos 0, 17, 34, 51, 68, 85, 102, 119, 136, 153, 170, 187, 204, 221, 238, 255 en cuatro dígitos BCD. Son niveles relativos, no tiempo ni puntos. No se aplica conversión a puntos o velocidad.
+
+Abrir y d leen sin redondear el ajuste del equipo. Los intermedios se anuncian como el nivel más cercano. Punto elige el código estrictamente superior y coma el inferior. Puede cambiar el código aunque se repita el nivel anunciado. Se exige confirmación positiva y lectura del mismo código. No hay salto entre extremos; q conserva el código. No cambia Break-in ni velocidad.
+
+Para retardos basados en puntos, cambiar la velocidad puede cambiar el tiempo real. YAC no afirma milisegundos para estos niveles. Simulaciones comprobadas; pruebas con equipo físico pendientes.
+
+
+Velocidad (c k): FT-DX10, FT-710, FTX-1 y TS-590SG usan KS con tres cifras nativas para 4..60 PPM. YAC acepta una o dos cifras y rechaza valores fuera de rango.
+
+IC-705, IC-7300, IC-7300MK2, IC-7600 e IC-9700 usan CI-V 14 0C con BCD. YAC usa la tabla publicada cw_lookup de Hamlib para 6..48 PPM y sus umbrales de lectura. Códigos 250..255 se consideran 48 PPM. Las escrituras usan el código de tabla y exigen confirmación y lectura exacta. No es una conversión lineal supuesta. Falta confirmación con equipo físico.
+
+La entrada no activa el manipulador, no cambia Break-in ni transmite Morse. Otros perfiles sin velocidad indican No compatible.
+
+
+Tono y volumen del tono local (c p / c v)
+
+FT-DX10, FT-710 y FTX-1: KP ofrece 300..1050 Hz en pasos de 10 Hz. ML1 ofrece nivel 0..100. Los manuales identifican MONI LEVEL como ajuste de tono local CW. Al ser compartido, c v selecciona y verifica CW-U si hace falta antes de leer. Conserva CW-U/CW-L existente. Anuncia el cambio y conserva CW al salir con q. No activa MONI.
+
+IC-705, IC-7300, IC-7300MK2, IC-7600 e IC-9700: 14 09 ofrece 300..900 Hz. YAC convierte 0..255 al paso documentado de 5 Hz más cercano mediante la interpolación de extremos publicada por Hamlib y usa su código BCD correspondiente. Los tonos recibido y local pueden estar vinculados. Se exige lectura de confirmación; falta comparar con la pantalla del equipo.
+
+Menús dedicados del tono local Icom: IC-705 1A 05 02 49; IC-7300 1A 05 01 58; IC-7300MK2 1A 05 02 18; IC-7600 1A 05 00 24; IC-9700 1A 05 02 21. Se presenta 0..255 como nivel relativo 0..100, no decibelios ni sonoridad medida. No se cambia Side Tone Level Limit; este y AF pueden afectar el sonido. La tabla MK2 imprime un máximo contradictorio 0225 pero describe 0255 como 100%; YAC usa ese extremo, pendiente de comprobación física.
+
+Abrir, ayuda, p/v y q conservan el ajuste. Punto/coma aplican inmediatamente y paran en los límites sin salto. No hay Morse, tonos de prueba, transmisión, activación del manipulador ni cambios de Break-in. Tono y volumen Kenwood/QMX no están implementados aquí. Simulaciones comprobadas; faltan pruebas físicas, de voz y braille.
+
+
+En estos modelos Yaesu, c v ahora selecciona y verifica CW-U si hace falta antes de leer el nivel. Conserva CW-U o CW-L existente. Anuncia el cambio; q conserva CW. Si falla la lectura o el cambio de modo no se envía ningún comando de volumen. Un cambio externo fuera de CW durante el control sigue impidiendo cambiar el nivel.

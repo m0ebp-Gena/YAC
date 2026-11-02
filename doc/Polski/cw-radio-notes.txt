@@ -1,0 +1,38 @@
+Uwagi radiowe CW
+
+FT-DX10, FT-710 i FTX-1: c b łączy BI Włączony/Wyłączony z oddzielnym ustawieniem Pół/Pełny. Wyłączenie zachowuje typ. Włączenie najpierw ustawia żądany typ. Polecenia menu: odpowiednio EX020113, EX020116 i EX020115. c i używa KR do niezależnego klucza wewnętrznego; nie zmienia typu, tempa, tonu ani głośności.
+
+IC-705, IC-7300, IC-7300MK2, IC-7600 i IC-9700: c b używa CI-V 16 47: 00 Wyłączony, 01 Pół, 02 Pełny. c i obecnie zgłasza brak obsługi. Wybór klucza sztorcowego, Bug lub manipulatora nie jest niezależnym przełącznikiem klucza wewnętrznego. YAC nie zgaduje typu manipulatora.
+
+Kenwood i QMX: Break-in i klucz wewnętrzny obecnie nie są obsługiwane. Tempo opisano oddzielnie poniżej. W TS-590SG polecenie VX poza CW steruje VOX. YAC nie wysyła ogólnych poleceń BI/KR do tych urządzeń. Jest to ograniczenie YAC, a nie brak funkcji CW w radiu.
+
+Zmiany są sprawdzane przez odczyt i pozostają w radiu po q. Zachowanie po wyłączeniu zasilania nie jest gwarantowane. Symulacje nie zastępują testów z radiem.
+
+Zwłoka (c d): FT-DX10, FT-710 i FTX-1 używają udokumentowanej tabeli SD: 30, 50, 100, 150, 200, 250, potem 300 do 3000 milisekund co 100. Regulacja zatrzymuje się na obu granicach. BI, Pół/Pełny i tempo pozostają bez zmian.
+
+Zwłoka Icom (c d): IC-705, IC-7300, IC-7300MK2, IC-7600 i IC-9700 używają CI-V 14 0F, kod 0..255. YAC przedstawia Poziom zwłoki 1..16 z kodami 0, 17, 34, 51, 68, 85, 102, 119, 136, 153, 170, 187, 204, 221, 238, 255 jako cztery cyfry BCD. Są to poziomy względne, nie pomiar czasu ani kropek. Nie ma przeliczenia kodu na kropki ani według tempa.
+
+Otwarcie i d odczytują bez zaokrąglania ustawienia radia. Wartości pośrednie są ogłaszane jako najbliższy poziom. Kropka wybiera kod ściśle większy, przecinek mniejszy. Kod może się zmienić przy tej samej nazwie najbliższego poziomu. Wymagane są potwierdzenie i zgodny odczyt kodu. Bez przeskoku na granicach; q zachowuje kod. Break-in i tempo pozostają bez zmian.
+
+Zmiana tempa może zmienić rzeczywisty czas dla zwłoki w kropkach. YAC nie podaje dla tych poziomów milisekund. Symulacje sprawdzone; test z radiem pozostaje do wykonania.
+
+
+Tempo (c k): FT-DX10, FT-710, FTX-1 i TS-590SG używają KS z trzema cyframi polecenia dla 4..60 WPM. YAC przyjmuje jedną lub dwie cyfry i odrzuca wartości poza zakresem.
+
+IC-705, IC-7300, IC-7300MK2, IC-7600 i IC-9700 używają CI-V 14 0C z BCD. YAC stosuje opublikowaną tabelę cw_lookup Hamlib dla 6..48 WPM i jej progi odczytu. Kody 250..255 oznaczają 48 WPM. Zapis używa kodu tabeli i wymaga potwierdzenia oraz dokładnego odczytu. Nie jest to założone przeliczenie liniowe. Test z radiem pozostaje do wykonania.
+
+Wpis nie włącza klucza, nie zmienia Break-in i nie nadaje Morse’a. Inne profile bez tempa zgłaszają brak obsługi.
+
+
+Ton i głośność odsłuchu (c p / c v)
+
+FT-DX10, FT-710 i FTX-1: KP daje 300..1050 Hz co 10 Hz. ML1 daje poziom 0..100. Instrukcje wskazują MONI LEVEL jako regulator odsłuchu CW. Jest współdzielony, więc c v wybiera i potwierdza CW-U w razie potrzeby przed odczytem. Zachowuje istniejący CW-U/CW-L. Ogłasza zmianę i zachowuje CW po q. Nie włącza MONI.
+
+IC-705, IC-7300, IC-7300MK2, IC-7600 i IC-9700: 14 09 daje 300..900 Hz. YAC przelicza 0..255 na najbliższy udokumentowany krok 5 Hz według interpolacji końców skali opublikowanej przez Hamlib i używa odpowiedniego kodu BCD. Ton odbioru i odsłuchu mogą być powiązane. Wymagany jest zgodny odczyt; porównanie z wyświetlaczem radia pozostaje do wykonania.
+
+Oddzielne menu odsłuchu Icom: IC-705 1A 05 02 49; IC-7300 1A 05 01 58; IC-7300MK2 1A 05 02 18; IC-7600 1A 05 00 24; IC-9700 1A 05 02 21. Zakres 0..255 jest przedstawiany jako względny poziom 0..100, nie decybele ani zmierzona głośność. Side Tone Level Limit pozostaje bez zmian; on i AF mogą wpływać na dźwięk. Tabela MK2 podaje sprzecznie maksimum 0225, lecz opisuje 0255 jako 100%; YAC używa tego końca skali, test z radiem pozostaje do wykonania.
+
+Otwarcie, pomoc, p/v i q zachowują ustawienie. Kropka/przecinek stosują zmiany od razu i zatrzymują się bez przeskoku. Bez Morse’a, tonu próbnego, nadawania, włączania klucza i zmian Break-in. Ton i głośność Kenwood/QMX nie są tu zaimplementowane. Symulacje sprawdzone; testy z radiem, mową i brajlem pozostają do wykonania.
+
+
+W tych modelach Yaesu c v teraz wybiera i sprawdza CW-U w razie potrzeby przed odczytem poziomu. Zachowuje istniejący CW-U lub CW-L. Zmiana jest ogłaszana; q zachowuje CW. Nieudany odczyt lub zmiana trybu zatrzymuje polecenia głośności. Zewnętrzna zmiana poza CW podczas regulacji nadal blokuje zmianę poziomu.

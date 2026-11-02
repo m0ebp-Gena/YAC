@@ -1,0 +1,8 @@
+Ayuda del manipulador interno
+
+Al abrir anuncia Manip Int Activado o Desactivado sin cambiarlo. El manipulador interno genera puntos y rayas temporizados con una paleta. Desactivarlo detiene esa generación automática; no cambia Break-in ni la velocidad.
+i alterna Activado/Desactivado; punto o coma también elige el otro estado. Cada cambio se aplica y anuncia inmediatamente. h lee esta ayuda. q conserva la selección, anuncia Hecho y vuelve a CW. Si falla una lectura o un cambio, se informa del error.
+
+***
+Fin de la ayuda
+***

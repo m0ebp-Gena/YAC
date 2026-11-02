@@ -1,5 +1,18 @@
 Ayuda: Comandos de YAC
 
+c p: Tono CW. Punto sube; coma baja; p lee de nuevo.
+c v: Volumen del tono local. Punto aumenta; coma reduce; v lee de nuevo. Selecciona CW automáticamente si hace falta; q conserva ese modo.
+
+c k: Velocidad. Hasta dos cifras; Enter aplica. h ayuda inmediatamente; q cancela.
+
+c d: Retardo de Break-in. Punto aumenta; coma reduce; d lee de nuevo; q conserva el ajuste.
+
+c: CW. b Break-in; i manipulador interno; h ayuda; q vuelve al nivel superior. Abrir lee el estado; otra b o i lo cambia. Punto/coma selecciona siguiente/anterior. q dentro del control conserva el ajuste y vuelve a CW.
+
+La v principal también informa del bloqueo activado, del dial o del panel si está activo. Omite el bloqueo desactivado. Si no puede leer un bloqueo compatible, indica desconocido. Verificar no cambia nada.
+
+Preamplificador p, atenuador u y VFO/receptor s v: al abrir se anuncia el ajuste sin cambiarlo. Punto selecciona siguiente; coma anterior; repetir la letra también avanza. q conserva la selección y vuelve un nivel; h explica. Si no se puede leer el VFO actual, indica Desconocido sin seleccionar otro.
+
 Comandos YAC en orden de tecla. Pulsa las teclas por separado.
 Los comandos dependen de la radio y del modo actual.
 
@@ -14,13 +27,13 @@ i: Introducir tono/código. Repite i para CTCSS, DCS normal o invertido, donde s
 k: Bloqueo. Al entrar lee; repita k para cambiar el estado. h ayuda; q conserva la selección.
 l: Configurar split/repetidor. Repite l para desactivar. h y Enter en el campo dan ayuda.
 m: Modo. Punto siguiente; coma anterior.
-o: Desplazamiento. o recorre Recepción, Transmisión, Borrar. Punto suma 10 hercios; coma resta. En Borrar, cualquiera de las dos teclas borra.
-p: Recorrer etapas de preamplificador y desactivado.
+o: Offset: o alterna Recepción y Transmisión. c borra ambos; v verifica ambos; h ayuda; q conserva ajustes y vuelve.
+p: Preamplificador: lee el estado; punto siguiente, coma anterior; q termina.
 q: Salir de YAC. y confirma; n o q cancela. Dentro de un control o menú, q vuelve y conserva cambios salvo que su ayuda indique otra cosa.
 r: Ganancia RF, o silenciador en FM. Punto aumenta; coma disminuye.
 s: Ajustes. Consulta las teclas de ajustes más abajo.
 t: Iniciar el sintonizador configurado, si se admite. Primero selecciona o activa con s t.
-u: Recorrer niveles de atenuación y desactivado.
+u: Atenuador: lee el estado; punto siguiente, coma anterior; q termina.
 v: Leer atenuador, preamplificador, potencia y estado del sintonizador admitido. La potencia es el ajuste, no una medición de RF.
 w: Leer señal, frecuencia, modo y tono/código FM activo. Repite w para detalles de split/repetidor.
 x: Antenas. Al entrar lee la ruta; x cambia antena principal; r entrada de recepción.
@@ -47,7 +60,7 @@ a: Leer AGC actual. Repite a para seleccionar la opción siguiente; q termina.
 b: Voz/braille del Pi. Punto siguiente; coma anterior; q aplica y guarda.
 e: Procesador de voz. Al entrar lee ajustes; e conmuta; punto/coma ajustan estando activado. Kenwood i/o seleccionan Entrada/Salida. n restaura ajustes iniciales; q conserva cambios.
 h: Ayuda de ajustes.
-m: Ganancia de micrófono guiada. Sigue las indicaciones previas; punto/coma ajustan. Tú accionas el PTT.
+m: Ganancia de micrófono según el modo. Punto/coma ajustan; h explica el modo actual. Espacio ofrece preparación ALC opcional si se admite. Tú accionas el PTT.
 o: Voz del Pi. r velocidad; v volumen; p tono; u puntuación; punto/coma ajustan; t prueba; d valores predeterminados. Los cambios se guardan inmediatamente.
 p: Potencia. Introduce vatios enteros y Enter. Enter vacío o q y Enter cancelan. El éxito anuncia el valor introducido. Icom utiliza una conversión estimada; v informa su porcentaje relativo.
 q: Volver al menú principal; tras seleccionar AGC anuncia Listo.

@@ -1,0 +1,8 @@
+Pomoc zwłoki Break-in
+
+Otwarcie odczytuje ustawienie bez zmiany. Milisekundy oznaczają czas po nadawaniu do powrotu na odbiór w Pół Break-in. Poziom zwłoki 1 do 16 jest skalą względną, nie czasem ani długością kropki; wyżej oznacza dłuższą zwłokę. Wartość pośrednia jest ogłaszana jako najbliższy poziom bez zmiany ustawienia.
+Kropka wybiera następne wyższe ustawienie, przecinek niższe. Zmiany są stosowane od razu i potwierdzane odczytem. Na granicach wartość jest powtarzana bez przeskoku. d odczytuje ponownie; h czyta pomoc. q zachowuje ustawienie, ogłasza Gotowe i wraca do CW. YAC nie ustawia wartości domyślnej i nie zmienia tempa ani trybu Break-in.
+
+***
+Koniec pomocy
+***

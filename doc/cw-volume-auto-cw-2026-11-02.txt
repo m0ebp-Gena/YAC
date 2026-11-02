@@ -1,0 +1,32 @@
+Sidetone Volume automatic CW entry - 2 November 2026
+
+Explicit user request: let c v change mode instead of requiring the user
+to select CW separately. This is a scoped exception to general.rules 4a,
+recorded as rule 4f. No build or publication.
+
+On FT-DX10, FT-710 and FTX-1, c v now reads the selected receiver's mode.
+If already CW-U or CW-L, it preserves that choice. Otherwise it selects
+CW-U through the existing mode setter and requires confirmed mode readback.
+The mode change is announced before the current sidetone level is read.
+It does not change sidetone level or enable MONI on entry.
+q keeps CW selected and retains the current volume selection.
+
+If the mode cannot be read, or a requested mode change is unconfirmed,
+no sidetone read or volume setter is sent. Native mode guards remain in
+place before volume writes if the user subsequently changes the radio mode.
+On the FTX-1 the existing receiver-selection logic is used, preserving the
+other receiver's mode. Icom uses its dedicated sidetone menu without needing
+this mode switch; those paths remain unchanged.
+
+Context-sensitive h help, all four language resources, radio notes and
+key references explain the new behaviour. A backup of the private chart
+was preserved before its update.
+
+Verification: all 48 focused Pitch/Volume, Speed, Delay, CW and package-layout
+checks passed. Coverage includes SSB-to-CW entry, unchanged sidetone level,
+preservation of existing CW-U/CW-L in all languages, failed/unknown mode,
+retaining CW on q, and FTX-1 selected-receiver mode changes.
+Log: local_storage/testing/results/cw-volume-mode-20261102-142529.txt
+Full suite not rerun for this scoped correction; the previous full run
+was 594 passed with one known sandbox-blocked junction check. Physical-radio
+and speech/braille confirmation of this change remain outstanding.
