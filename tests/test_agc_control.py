@@ -94,7 +94,7 @@ class AgcTests(unittest.TestCase):
         self.assertIn('AGC Off', output.getvalue())
         self.assertIn('AGC Auto Slow', output.getvalue())
         self.assertNotIn('AGC Fast', output.getvalue().splitlines())
-        self.assertIn('a selects the next AGC setting', output.getvalue())
+        self.assertIn('a) Automatic Gain Control', output.getvalue())
         self.assertIn('Done', output.getvalue())
         self.assertNotIn('Top Level', output.getvalue().splitlines())
         self.assertIn('Bye test', output.getvalue())

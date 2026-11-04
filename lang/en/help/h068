@@ -1,0 +1,15 @@
+VFO Selection help
+
+Available choices depend on your radio, such as VFO A/B or Main/Sub. Opening reads the current selection where available, without changing it.
+
+Some radios allow VFO selection but cannot report the current choice. YAC announces Unknown in that case. Opening this control does not change the selection.
+
+Full stop) Select the next choice.
+Comma) Select the previous choice.
+v) Select the next choice.
+h) Read this help.
+q) Quit and save.
+
+***
+End of help
+***

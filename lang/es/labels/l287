@@ -1,1 +1,1 @@
-In {number}/{total}: {name}, {host}, c {channel}/{channels}
+Ent {number}/{total}: {name}, c {channel}/{channels}

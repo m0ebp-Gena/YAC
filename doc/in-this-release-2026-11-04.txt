@@ -1,0 +1,40 @@
+YAC 001 - 4 November 2026 revision 1
+
+CW DECODING AND AUDIO
+CW audio decoding follows the radio's CW pitch automatically. Comma lowers
+the receive WPM estimate and full stop raises it without repeating text.
+v reads signal, frequency and selected WPM. Live text flows continuously.
+CW Review retains text across capture restarts and uses a separate history
+from RTTY. Receive-audio selection validates and saves with Enter; q leaves
+without saving a browsing change. Context help explains the decoder controls.
+
+CONTROL NAVIGATION
+Top Level k changes and verifies the next supported lock state immediately;
+no q is needed. Leaving an individual filter with q stays in Filters.
+Filter controls have their own help. Settings help has been reviewed in
+English, German, Spanish and Polish, including Region, Tuning Step, Tuner,
+Update YAC and VFO Selection. Tuning Step accepts h then Enter for help and
+q then Enter to cancel without changes.
+
+QMX AND WHERE AM I
+Discovery checks VN; to positively identify a QMX sharing CAT ID020 with
+the TS-480. A confirmed QMX is named in the connection announcement.
+Its signal report uses SM; and displays the returned dB value without an
+unverified S-unit conversion. Where no detailed split/repeater report is
+implemented, every w repeats the normal signal, frequency and mode report.
+
+CONTACT
+The contact address in notices, documentation and help is
+m0ebp.gena@gmail.com.
+
+PACKAGES AND UPDATES
+Complete Windows and Mac/Linux installer packages include all four language
+resources. Windows extracts directly to the executable and supporting files.
+Legacy release assets are retained for older installed updaters.
+Saved personal settings are kept by the updater. This release has no Pi image.
+
+VALIDATION LIMITS
+Automated tests and package checks do not establish physical radio behaviour,
+CW reception accuracy, or speech and braille usability. QMX identification
+and SM; readback require physical-radio confirmation. macOS and Linux native
+audio and accessibility checks remain dependent on testing on those systems.

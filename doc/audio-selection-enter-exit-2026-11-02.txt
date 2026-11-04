@@ -1,0 +1,8 @@
+Audio input selection - Enter exit correction, 2 November 2026
+
+User requested source-only correction; do not rebuild until more work is done.
+Successful Enter validates and saves the selected input and channel, announces
+that it was saved, then returns immediately to the decoder submenu. Failed
+validation or saving keeps selection open with the existing error response.
+v still checks level without leaving. q cancels browsing changes and returns.
+Help updated in English, German, Spanish and Polish. No build or publication.

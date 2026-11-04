@@ -1,5 +1,7 @@
 """Decoder text integrity, timing, serial interleaving and lifecycle checks."""
 import math
+import io
+from contextlib import redirect_stdout
 from pathlib import Path
 from types import SimpleNamespace
 import unittest
@@ -17,6 +19,61 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class DecoderTests(unittest.TestCase):
+    def test_sparse_cw_and_word_batches_append_without_newlines(self):
+        from modules import chat_int
+        manager = DecoderManager(yac, ROOT, SimpleNamespace(), 'en')
+        manager.kind = 'c'
+        manager.view = True
+        manager.last_output = 0
+        output = io.StringIO()
+        with patch.object(chat_int, '_response_open', False), \
+             patch.object(chat_int, '_stream_open', False), redirect_stdout(output), \
+             patch('modules.decoder_control.time.monotonic', side_effect=[3, 6, 9, 12, 15]):
+            for batch in ['T', 'E', 'S', ' CQ ', 'TEST ']:
+                manager.buffer.append(batch)
+                manager.tick()
+        self.assertEqual(output.getvalue(), 'TES CQ TEST ')
+        self.assertEqual(manager.buffer.snapshot(), 'TES CQ TEST ')
+
+    def test_cw_controls_stay_separate_from_live_text(self):
+        from modules import chat_int
+        manager = DecoderManager(yac, ROOT, SimpleNamespace(), 'en')
+        manager.kind = 'c'
+        manager.view = True
+        manager.last_output = 0
+        output = io.StringIO()
+        with patch.object(chat_int, '_response_open', False), \
+             patch.object(chat_int, '_stream_open', False), redirect_stdout(output), \
+             patch('modules.decoder_control.time.monotonic', side_effect=[3, 6]):
+            chat_int.show_response('CW')
+            manager.buffer.append('CQ ')
+            manager.tick()
+            chat_int.show_response('Help')
+            manager.buffer.append('TEST ')
+            manager.tick()
+            chat_int.show_done(ROOT, 'en')
+        self.assertEqual(output.getvalue(), 'CW\nCQ \nHelp\nTEST \nDone')
+
+    def test_rtty_keeps_existing_line_output_and_background_cw_is_quiet(self):
+        from modules import chat_int
+        manager = DecoderManager(yac, ROOT, SimpleNamespace(), 'en')
+        manager.kind = 'r'
+        manager.view = True
+        manager.last_output = 0
+        output = io.StringIO()
+        with patch.object(chat_int, '_response_open', False), \
+             patch.object(chat_int, '_stream_open', False), redirect_stdout(output), \
+             patch('modules.decoder_control.time.monotonic', side_effect=[3, 6, 9]):
+            for batch in ['CQ ', 'TEST ']:
+                manager.buffer.append(batch)
+                manager.tick()
+            manager.kind = 'c'
+            manager.view = False
+            manager.buffer.append('QUIET ')
+            manager.tick()
+        self.assertEqual(output.getvalue(), 'CQ \nTEST ')
+        self.assertEqual(manager.pending, 'QUIET ')
+
     def test_s_toggles_cw_and_rtty_while_e_does_not(self):
         for kind in ('c', 'r'):
             manager=DecoderManager(yac,ROOT,SimpleNamespace(),'en')
@@ -37,7 +94,8 @@ class DecoderTests(unittest.TestCase):
             with patch.object(yac, '_read_settings', return_value={}), \
                  patch.object(yac, '_current_mode_code', return_value='3'), \
                  patch('modules.mic_gain.profile', return_value={}), \
-                 patch('modules.cw_audio.AudioCW') as audio:
+                 patch.object(DecoderManager, 'radio_pitch', return_value=600), \
+             patch('modules.cw_audio.AudioCW') as audio:
                 result = manager.start('c')
             hint = (ROOT / 'lang' / language / 'hints/m004').read_text(encoding='utf-8').strip()
             self.assertIn(hint, result)
@@ -56,7 +114,8 @@ class DecoderTests(unittest.TestCase):
                 with patch.object(yac, '_read_settings', return_value=settings), \
                      patch.object(yac, '_current_mode_code', return_value='3'), \
                      patch('modules.mic_gain.profile', return_value={}), \
-                     patch('modules.cw_audio.AudioCW') as audio:
+                     patch.object(DecoderManager, 'radio_pitch', return_value=600), \
+             patch('modules.cw_audio.AudioCW') as audio:
                     if fails:
                         audio.return_value.start.side_effect = ValueError('Other audio error')
                     result = manager.start('c')
@@ -243,17 +302,17 @@ class DecoderTests(unittest.TestCase):
                 manager.tick()
                 self.assertTrue(manager.session.paused)
 
-    def test_back_keeps_capture_explicit_stop_closes(self):
+    def test_leaving_cw_stops_capture_and_retains_history(self):
         session=SimpleNamespace(close=lambda: None,error=None)
         manager=DecoderManager(yac,ROOT,SimpleNamespace(),'en')
         manager.session=session;manager.kind='c'
-        with patch('modules.chat_int.show_response'), patch('modules.chat_int.show_back'):
-            manager.decoder_view('c',iter(['q']).__next__)
-        self.assertIs(manager.session,session)
-        with patch.object(session,'close') as close, patch('modules.chat_int.show_response'), patch('modules.chat_int.show_back'):
-            manager.decoder_view('c',iter(['s','q']).__next__)
+        manager.buffer.append('CQ TEST')
+        with patch.object(session, 'close') as close, patch('modules.chat_int.show_response'):
+            manager.decoder_view('c', iter(['q']).__next__)
             close.assert_called_once()
         self.assertIsNone(manager.session)
+        self.assertEqual(manager.buffer.snapshot(), 'CQ TEST')
+
 
 
 if __name__ == '__main__':

@@ -57,6 +57,8 @@ class RadioRecoveryTests(unittest.TestCase):
         with patch.object(yac, 'connect_radio', return_value=radio), \
              patch.object(yac, '_read_settings', return_value={'lang': 'en', 'call': 'test'}), \
              patch.object(lang_sel, 'read_key', side_effect=read_key), \
+             patch.object(yac, '_radio_status', return_value='S 9 7.159 LSB'), \
+             patch('modules.tone_status.report', return_value=''), \
              patch.object(radio.serial, 'write', side_effect=SerialTimeoutException('Write timeout')), \
              patch.object(yac.time, 'sleep'), self.assertLogs('yac', level='ERROR'), \
              redirect_stdout(io.StringIO()) as output:

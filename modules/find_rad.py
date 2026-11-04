@@ -721,6 +721,21 @@ def _address_order(saved_address: str, explicit_address: int | None) -> list[int
     return list(dict.fromkeys(addresses + list(CIV_ADDRESSES)))
 
 
+def _identify_id020(radio):
+    """Refine a shared CAT ID only with a positive QMX firmware reply."""
+    if radio.protocol != 'CAT' or radio.model_id != '020':
+        return
+    try:
+        answer = _exchange(radio.serial, b'VN;', b';').decode('ascii').strip()
+    except (OSError, UnicodeError):
+        return
+    match = re.fullmatch(r'VN([0-9]+_[0-9]+_[0-9]+QMX\+?);', answer)
+    if match:
+        radio.qmx_firmware = match.group(1)
+        radio.model_name = 'QRP Labs QMX Plus' if match.group(1).endswith('+') else 'QRP Labs QMX'
+        DEBUG_LOG.info('Confirmed %s firmware=%s', radio.model_name, radio.qmx_firmware)
+
+
 def find_radios(
     ini_path: Path | None = None,
     *,
@@ -766,6 +781,7 @@ def find_radios(
     saved_radios = _probe_saved_profiles(profiles, ports, serial)
     if saved_radios:
         for radio in saved_radios:
+            _identify_id020(radio)
             _save_connection(ini_path, radio, None)
         return saved_radios
 
@@ -862,6 +878,8 @@ def find_radios(
             connection.close()
         except Exception:
             pass
+    for found in found_radios:
+        _identify_id020(found)
     if save_to_ini:
         for found in found_radios:
             _save_connection(ini_path, found, None)

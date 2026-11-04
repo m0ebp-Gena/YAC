@@ -1,0 +1,5 @@
+Top Level lock command
+
+k now applies the next supported lock state with one press, announces the verified result and stays at Top Level. No q is needed. The supported state order is unchanged. Main v reports the current lock without changing it. Help and keyboard references are aligned in English, German, Spanish and Polish.
+
+Software checks cover native commands, readback failure, unsupported radios, connection loss and return to Top Level. Hardware verification is pending.

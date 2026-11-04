@@ -146,7 +146,7 @@ class PowerTests(unittest.TestCase):
         output=io.StringIO()
         with patch('builtins.input',side_effect=['h','999']) as entered,redirect_stdout(output):
             power.edit(yac,ROOT,radio,'en')
-        self.assertIn('estimate, not measured output',output.getvalue())
+        self.assertIn('Output Power help',output.getvalue())
         self.assertEqual(output.getvalue().count('Power 5 to 100 W?'),2)
         self.assertTrue(output.getvalue().endswith('Invalid'))
         self.assertEqual(entered.call_count,2)

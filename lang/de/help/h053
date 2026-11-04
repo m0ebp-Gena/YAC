@@ -1,0 +1,14 @@
+Hilfe zur RTTY-Dekodierung
+
+h Zeigt diese Hilfe.
+Komma liest früheren, Punkt späteren Text, in Abschnitten mit 60 Zeichen.
+n Löscht den empfangenen Text.
+q Kehrt zum Decoder-Menü zurück; Empfang läuft weiter.
+s Startet oder stoppt den Empfang.
+v Liest den neuesten Text.
+
+YAC-Ende stoppt den Empfang und stellt die Decoder-Einstellungen wieder her.
+
+***
+Ende der Hilfe
+***

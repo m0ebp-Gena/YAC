@@ -1,0 +1,23 @@
+Pomoc dekodowania CW
+
+h Wyświetla tę pomoc, także klawisze przeglądu.
+Plus / minus zwiększa / zmniejsza próg wykrywania, jeśli obsługiwany.
+Przecinek zmniejsza WPM o 1; kropka zwiększa, bez komunikatu. Zakres: 5–60.
+q Zatrzymuje odbiór i wraca do menu dekoderów; zachowuje tekst.
+r Otwiera przegląd najnowszego tekstu; odbiór trwa po cichu.
+s Rozpoczyna lub zatrzymuje odbiór w tym widoku.
+v Odczytuje siłę sygnału, częstotliwość i wybrane oszacowanie WPM.
+z Wykonuje Zero In: dostraja odbiornik i ton dekodera; zmiany pozostają.
+
+W przeglądzie:
+c Czyści odebrany tekst; odbiór trwa dalej.
+h Wyświetla tę samą pomoc CW.
+Przecinek / kropka cofa / przesuwa dalej o fragmenty 60 znaków.
+q Wraca do dekodowania CW.
+Ton automatycznie odpowiada ustawieniu tonu CW radia.
+WPM: oszacowanie odbioru; dopasowuje się; brak w dekoderze radia.
+Tekst pozostaje do wyczyszczenia lub zamknięcia YAC; ostatnie 10 000 znaków.
+Nie powstaje plik tekstowy. Wybrane WPM obowiązuje w tej sesji YAC.
+***
+Koniec pomocy
+***

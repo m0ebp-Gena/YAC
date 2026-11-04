@@ -44,7 +44,7 @@ the separate source setup.
 
 This is a limited beta. Please report your Windows version, radio model and
 steps to reproduce a problem. Contact Gena via the Active Elements or Blind
-Hams email lists, or at gena@m0ebp.uk.
+Hams email lists, or at m0ebp.gena@gmail.com.
 
 Diagnostic logging is enabled in this beta. The program creates
 `logs/yac-debug.log` automatically. Sharing that log is optional: it can

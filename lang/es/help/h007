@@ -1,27 +1,21 @@
-Ayuda: Menú de filtros
+Ayuda de filtros
 
-Abrir un filtro lee su estado actual sin cambiarlo. Si está desactivado, solo indica desactivado; si está activado, también el valor activo cuando corresponda. Solo un comando posterior cambia el ajuste.
+h) Este documento de ayuda.
+Para obtener ayuda sobre un filtro, ábralo y pulse h.
 
-Filtros: pulsa f y después una tecla de abajo. Los controles disponibles dependen de la radio y del modo.
+q) Terminar el ajuste y permanecer en Filtros. Desde Filtros, pulse q para volver al nivel principal. Los cambios se conservan.
 
-a: Notch automático. Otra a activa o desactiva.
-b: Noise Blanker. Al abrir, anuncia activado/desactivado y el nivel si está activado, sin cambiar nada. Otra b activa o desactiva. Punto/coma ajustan el nivel estando activado.
-c: Contour. Otra c activa o desactiva. Punto/coma ajustan la frecuencia estando activado. l selecciona nivel; w anchura; c vuelve a frecuencia. Con frecuencia seleccionada, c activa o desactiva.
-h: Leer esta ayuda.
-l: Corte inferior. Punto aumenta; coma disminuye el límite inferior.
-n: Notch manual. Otra n activa o desactiva. Punto/coma ajustan la posición estando activado; w cambia anchura.
-p: Ancho de banda. Punto aumenta; coma disminuye. Si requiere límites separados, usa l y u.
-q: Terminar el ajuste y conservarlo; anuncia Listo. Otra q sale de Filtros; anuncia Nivel principal.
-r: Noise Reduction. Otra r activa o desactiva. Punto/coma ajustan el nivel estando activado.
-u: Corte superior. Punto aumenta; coma disminuye el límite superior.
-v: Leer filtros activados. Repite v para estados individuales, incluidos desactivado o desconocido. Otro comando reinicia la revisión. Leer el estado no cambia nada.
+La compatibilidad depende de la radio y del modo. Pulse la tecla de un filtro para leer su ajuste actual sin cambiarlo.
 
-Los ajustes se detienen en sus límites. Con un filtro desactivado, las teclas de ajuste conservan sus valores. Los cambios se verifican leyendo la radio. Se anuncian controles no admitidos y ajustes ilegibles.
-Los detalles específicos están en las notas de tu radio en doc/supported-radios.
-Si el ancho de banda es Predeterminado, entrar en el control no lo cambia. Punto selecciona el ancho numérico compatible más estrecho; coma, el más ancho. Las siguientes pulsaciones recorren los anchos numéricos. YAC confirma cada cambio leyendo la radio.
-Pulsa p para el ancho de banda. Con bordes separados, p selecciona primero el corte inferior y después alterna entre superior e inferior. Cada selección lee el valor sin cambiarlo. Coma y punto aplican cada ajuste inmediatamente para oír su efecto; YAC lee y anuncia el resultado.
-El tiempo de seguimiento de la reducción de ruido determina con qué rapidez sigue los cambios de la señal recibida, cuando es compatible. Se mide en milisegundos. Con este ajuste seleccionado, punto aumenta el tiempo y coma lo reduce. Cada cambio se aplica inmediatamente y se confirma por lectura.
-En los informes de filtros, No compatible significa que no hay filtros conmutables compatibles para la radio y el modo actuales.
+a) Notch automático
+b) Supresor de impulsos
+c) Contour
+l) Corte inferior
+n) Notch manual
+p) Anchura de la banda pasante
+r) Reducción de ruido
+u) Corte superior
+v) Verificar filtros activos
 
 ***
 Fin de la ayuda

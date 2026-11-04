@@ -1,42 +1,22 @@
-Ayuda: Menú de ajustes
+Ayuda de ajustes
 
-Preamplificador p, atenuador u y VFO/receptor s v: al abrir se anuncia el ajuste sin cambiarlo. Punto selecciona siguiente; coma anterior; repetir la letra también avanza. q conserva la selección y vuelve un nivel; h explica. Si no se puede leer el VFO actual, indica Desconocido sin seleccionar otro.
+h) Este documento de ayuda.
+Para obtener ayuda sobre un ajuste, ábralo y solicite ayuda.
 
-Ajustes: a AGC; m ganancia de micrófono; p potencia; r Región; s paso; t sintonizador; v VFO/receptor; e procesador de voz. q vuelve y anuncia Nivel principal, o Listo tras seleccionar AGC. h lee esta ayuda.
+q) Volver al nivel principal.
 
-Elija con s r la región donde está la radio. Predeterminada: Región 1. Otra r recorre 1, 2, 3 y guarda inmediatamente. h da ayuda; q anuncia Listo y vuelve a Ajustes.
+a) Control automático de ganancia
+e) Procesador de voz
+i) Información de la radio
+m) Ganancia del micrófono
+p) Potencia de salida
+r) Región
+s) Paso de sintonía
+t) Selección de sintonizador
+u) Actualizar YAC
+v) VFO/Receptor
 
-s a lee el ajuste AGC actual sin cambiarlo. Otra a selecciona el ajuste siguiente y confirma la opción. q termina y anuncia Listo. Rápido recupera antes tras una señal fuerte; Lento mantiene la reducción más tiempo. Elige escuchando. Desactivado permite mayores cambios de volumen. No requiere transmitir.
-
-m abre la ganancia de micrófono del modo actual. Punto/coma ajustan directamente; h explica el procedimiento adecuado. Espacio ofrece ALC opcional si se admite. Tú accionas el PTT.
-
-p anuncia la potencia actual y el intervalo de entrada. Introduce vatios enteros y pulsa Enter; Enter vacío cancela. La confirmación indica el valor introducido y Establecido. Es un ajuste, no potencia transmitida medida. h y Enter dan ayuda de potencia. Enter vacío o q y Enter cancelan y vuelven a Ajustes.
-
-s abre el paso para el modo actual. t abre la selección y lee el estado sin cambiarlo. Dentro, punto avanza, coma retrocede; q conserva cambios y vuelve a Ajustes. Seleccionar no inicia la sintonización. Sal de Ajustes y pulsa t para iniciarla. v selecciona el VFO o receptor admitido y anuncia la selección.
-
-e abre el procesador y lee ajustes. e dentro conmuta; punto aumenta y coma disminuye. n restaura los ajustes iniciales del procesador; q conserva cambios. h dentro explica controles y respuestas.
-
-Las opciones, límites y excepciones de cada modelo están en doc/supported-radios, en el archivo de texto con el nombre de tu radio. READ-ME.txt explica estas notas. Las respuestas habladas también aparecen como texto para la línea braille. Se anuncian funciones no admitidas y lecturas desconocidas o fallidas.
-
-
-s b: punto o b selecciona el modo siguiente; coma el anterior. q aplica, guarda y vuelve. h lee ayuda. Solo braille silencia Speakup; el braille conectado sigue disponible en todos los modos.
-
-s o: r velocidad; v volumen; p tono; u puntuación; punto aumenta; coma disminuye; t prueba; d valores predeterminados; h ayuda; q vuelve. Los cambios se aplican y guardan inmediatamente.
-
-s u: Actualizar YAC. Empieza con Buscando. h muestra la ayuda de actualización. Sin internet o Sin novedades vuelve a Ajustes. Nueva versión pregunta Notas Y/N? y después Update Y/N?. y acepta; n omite notas o rechaza instalación; q vuelve. En notas largas, Espacio avanza y q sale de las notas.
-
-s w: La configuración Wi-Fi solo está disponible en la imagen Raspberry Pi. Aquí use los ajustes Wi-Fi del sistema. Configuración Wi-Fi: país, nombre de red y contraseña. Ctrl+C cancela; puntuación y letras de comandos son caracteres normales.
-
-Ciclo de sintonización terminado
-Sintonización fallida o sintonizador desactivado
-Resultado de sintonización sin confirmar
-Tiempo agotado; parada solicitada
-No se pudo confirmar la parada
-
-
-s i: Información de radio. Identidad y conexión, un valor por línea. i vuelve a leer; h ayuda; q vuelve a Ajustes. No cambia ajustes.
-
-s t: Al entrar se lee el sintonizador actual sin cambiarlo. punto selecciona la opción siguiente; coma la anterior. Cada selección se aplica inmediatamente y se comprueba. Seleccionar no inicia la sintonización. h lee la ayuda. q anuncia Listo y vuelve a Ajustes, conservando los cambios. Otra q vuelve al nivel principal, donde t inicia la sintonización.
+La disponibilidad depende de su radio.
 
 ***
 Fin de la ayuda

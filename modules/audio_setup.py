@@ -3,6 +3,7 @@ import json
 import logging
 import math
 import struct
+import sys
 from modules import chat_int, help_int
 
 LOG = logging.getLogger('yac')
@@ -13,6 +14,30 @@ def inputs(sd):
     return [dict(index=i, name=d['name'], host=hosts[d['hostapi']]['name'],
                  channels=int(d['max_input_channels']))
             for i, d in enumerate(sd.query_devices()) if d['max_input_channels'] > 0]
+
+
+def normal_inputs(devices, saved=None):
+    """One plain list; prefer full Windows endpoint names, retaining saved input."""
+    if sys.platform == 'win32':
+        choices = []
+        for host in ('Windows WASAPI', 'WASAPI', 'Windows DirectSound', 'MME'):
+            choices = [d for d in devices if d['host'] == host and d['name'] not in {
+                'Microsoft Sound Mapper - Input', 'Primary Sound Capture Driver'}]
+            if choices:
+                break
+        if not choices:
+            choices = [d for d in devices if d['host'] == devices[0]['host']] if devices else []
+    else:
+        choices = list(devices)
+    if saved is not None and saved not in choices:
+        # Retain the actual saved interface, rather than silently migrating
+        # capture. A unique identical full name needs no second list entry.
+        same_name = [i for i, d in enumerate(choices) if d['name'] == saved['name']]
+        if len(same_name) == 1:
+            choices[same_name[0]] = saved
+        else:
+            choices.append(saved)
+    return choices
 
 
 def resolve(sd, identity):
@@ -43,19 +68,21 @@ def control(yac, root, language, read_key, *, prepare_input=None):
         return yac._read_label(root, language, token, '').format(**values)
     try:
         import sounddevice as sd
-        devices = inputs(sd)
+        all_devices = inputs(sd)
     except Exception:
         LOG.exception('Audio input enumeration failed')
         chat_int.show_response(label('l292'))
         return
-    if not devices:
+    if not all_devices:
         chat_int.show_response(label('l293'))
         return
+    devices = normal_inputs(all_devices)
     settings = yac._read_settings(root/'yac.ini')
     position, channel = 0, 1
     saved_available = False
     try:
         saved = resolve(sd, settings['cw_audio_identity'])
+        devices = normal_inputs(all_devices, saved)
         position = next(i for i,d in enumerate(devices) if d == saved)
         channel = min(saved['channels'], max(1, int(settings.get('cw_audio_channel', '1'))))
         saved_available = True
@@ -79,7 +106,7 @@ def control(yac, root, language, read_key, *, prepare_input=None):
             chat_int.show_done(root, language)
             return
         if key == 'h':
-            chat_int.show_response(help_int.get_help(root, language, 'h014'))
+            help_int.show_paged(root, language, help_int.get_help(root, language, 'h014'), read_key)
         elif key in ('.', ','):
             if described:
                 position = min(len(devices)-1, max(0, position+(1 if key == '.' else -1)))
@@ -114,6 +141,7 @@ def control(yac, root, language, read_key, *, prepare_input=None):
                     yac._set_yac_value(root/'yac.ini', 'cw_audio_channel', str(channel))
                     yac._set_yac_value(root/'yac.ini', 'cw_audio_identity', identity)
                     chat_int.show_response(label('l290'))
+                    return
             except Exception:
                 LOG.exception('Audio selection/check failed')
                 chat_int.show_response(label('l291'))

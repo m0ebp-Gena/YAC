@@ -93,4 +93,4 @@ See doc/swr-controls.txt for the sequence, recovery and limitations.
 
 LOCK CONTROL - DEVELOPMENT
 k: Lock Off / Lock On. LK00 disables and LK10 enables the native lock.
-Entry reads without changing the radio. Further k cycles; q keeps the selection. YAC does not change the speech/lock button assignment. Hardware verification pending.
+Each k reads the current state, applies the next state and announces the verified result at Top Level. No q is needed. YAC does not change the speech/lock button assignment. Hardware verification pending.

@@ -2,7 +2,7 @@
 import json
 import logging
 import re
-from modules import chat_int, help_int, ts480_control
+from modules import chat_int, ts480_control
 
 LOG = logging.getLogger('yac')
 
@@ -78,43 +78,23 @@ class Locks:
 
 
 def control(yac, root, radio, language, read_key, watch):
+    """Apply one explicit top-level k action, then return without reading keys."""
     label = lambda token: yac._read_label(root, language, token, '')
     tokens = {'off': 'l404', 'on': 'l405', 'dial': 'l406', 'panel': 'l407'}
-    def error():
-        LOG.exception('Lock state or change unconfirmed')
-        chat_int.show_response(yac._radio_error(root, radio, language))
+    if watch.lost:
+        return 'w'
     try:
         backend = Locks(yac, root, radio)
         if backend.spec is None:
             chat_int.show_response(label('l129'))
             return None
-        chat_int.show_response(label(tokens[backend.read()]))
+        state = backend.change(backend.read(), 1)
+        chat_int.show_response(label(tokens[state]))
     except (OSError, ValueError, KeyError, TypeError, RuntimeError):
-        error()
-        return None
-    while True:
-        try:
-            key = read_key().casefold()
-        except (EOFError, KeyboardInterrupt):
-            chat_int.show_done(root, language)
-            return None
-        except (RuntimeError, OSError):
-            return None
-        if watch.lost:
-            return key or 'w'
-        if key == 'q':
-            chat_int.show_done(root, language)
-            return None
-        if key == 'h':
-            chat_int.show_response(help_int.get_help(root, language, 'h038'))
-        elif key in ('k', '.', ','):
-            try:
-                state = backend.change(backend.read(), -1 if key == ',' else 1)
-                chat_int.show_response(label(tokens[state]))
-            except (OSError, ValueError, KeyError, TypeError, RuntimeError):
-                error()
-        elif key:
-            return key
+        LOG.exception('Lock state or change unconfirmed')
+        chat_int.show_response(yac._radio_error(root, radio, language))
+    return None
+
 
 
 def active_status(yac, root, radio, language):

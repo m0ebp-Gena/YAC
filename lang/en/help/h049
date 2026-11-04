@@ -1,10 +1,8 @@
-FM Microphone Gain
+FM microphone gain help
 
-Check transmitted speech with another station or a supported transmit monitor. ALC is not used to assess FM gain. Some radios offer discrete levels instead of percentages; these use the same keys. Space repeats this help.
-
-With PTT released, full stop increases gain; comma decreases it. Values stop at the ends. h reads this help; q returns to Settings with Done, keeping gain; v reads gain. Opening changes nothing. A mode change ends adjustment; reopen the control. YAC never starts transmission.
-
-Before transmitting, connect a suitable antenna or dummy load and set suitable power yourself. Lower power does not make an unsuitable load safe. Use physical PTT and speak normally.
+With PTT released, comma decreases gain; full stop increases it.
+v) Read the current gain.
+q) Finish and return to Settings. Changes are kept.
 
 ***
 End of help

@@ -36,6 +36,6 @@ EINSTELLUNGEN UND HILFE
 yac.ini neben dem Programm speichert Einstellungen und Verbindungen.
 _internal, lang und rad_cmds unverändert zusammenlassen.
 Hilfe und Rückmeldungen: Gena über Active Elements oder Blind Hams,
-oder gena@m0ebp.uk. YAC-Version, Betriebssystem, Modell und Problem nennen.
+oder m0ebp.gena@gmail.com. YAC-Version, Betriebssystem, Modell und Problem nennen.
 Die Demo schreibt logs/yac-debug.log. Vor freiwilliger Weitergabe auf
 persönliche Angaben und Frequenzen prüfen.

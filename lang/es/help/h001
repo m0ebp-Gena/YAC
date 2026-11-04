@@ -24,7 +24,7 @@ f: Filtros. Consulta las teclas de filtros más abajo.
 g: Medir SWR. Conecte una antena; otra g mide y restaura los ajustes. h ayuda; q vuelve.
 h: Ayuda. h dentro de un control lee su ayuda detallada.
 i: Introducir tono/código. Repite i para CTCSS, DCS normal o invertido, donde se admita. Introduce un valor y sigue las indicaciones.
-k: Bloqueo. Al entrar lee; repita k para cambiar el estado. h ayuda; q conserva la selección.
+k: Bloqueo. Cambia al siguiente estado y permanece en el nivel principal. No necesita q.
 l: Configurar split/repetidor. Repite l para desactivar. h y Enter en el campo dan ayuda.
 m: Modo. Punto siguiente; coma anterior.
 o: Offset: o alterna Recepción y Transmisión. c borra ambos; v verifica ambos; h ayuda; q conserva ajustes y vuelve.
@@ -49,7 +49,7 @@ c: Contour. c conmuta; punto/coma ajustan frecuencia estando activado. l selecci
 h: Ayuda de filtros.
 l: Corte inferior. Punto/coma ajustan.
 n: Notch manual. n conmuta; punto/coma ajustan posición estando activado; w cambia anchura.
-p: Ancho de banda. Punto/coma ajustan.
+p: Anchura de la banda pasante. Punto/coma ajustan.
 q: Volver al menú principal. Desde un ajuste, q vuelve primero a Filtros.
 r: Noise Reduction. r conmuta; punto/coma ajustan nivel estando activado.
 u: Corte superior. Punto/coma ajustan.

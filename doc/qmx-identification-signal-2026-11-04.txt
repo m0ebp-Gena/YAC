@@ -1,0 +1,24 @@
+QMX identification and signal readback
+
+Implemented 4 November 2026.
+
+CAT ID020 alone does not identify a QMX or a TS-480. After discovery,
+including saved-port discovery, YAC queries VN; without changing settings.
+A valid firmware reply containing QMX confirms QRP Labs QMX; QMX+ confirms
+QRP Labs QMX Plus. The identity is retained for that connection and displayed
+as the connected radio. Rejected or unrecognised replies retain the existing
+connection description and meter handling.
+
+For a confirmed QMX, the normal w report queries SM; rather than SM0;.
+It displays the returned dB value without an unverified conversion to S units.
+Signed values use the selected language's Plus or Minus label.
+An unreadable meter still reports S ?.
+
+Evidence: the user's log in Latest/yac-win-test-2026-11-03-t1/logs/
+yac-debug.log repeatedly shows SM0; rejected with ?; on COM6 on 4 November.
+Manufacturer command reference:
+https://www.qrp-labs.com/images/qmx/manuals/cat_1_04_004.pdf
+
+Verification: mocked positive QMX/QMX+ identification, rejected and malformed
+identification replies, QMX signal parsing and failed reads, and unchanged
+TS-480 signal query. Physical QMX SM; readback remains to be tested.

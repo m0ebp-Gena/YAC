@@ -1,6 +1,13 @@
 Hilfe zur Tunerauswahl
 
-Beim Öffnen wird der aktuelle Tuner gelesen, ohne ihn zu ändern. Punkt wählt die nächste Option; Komma die vorherige. Jede Auswahl wird sofort angewendet und geprüft. Die Auswahl startet keine Abstimmung. h liest die Hilfe. q meldet Fertig und kehrt zu Einstellungen zurück; Änderungen bleiben erhalten. Ein weiteres q führt zur Hauptebene, wo t die Abstimmung startet.
+Beim Öffnen wird die aktuelle Tunereinstellung angesagt, ohne sie zu ändern. Die verfügbaren Optionen hängen vom Funkgerät ab.
+
+Punkt) Nächste Option wählen.
+Komma) Vorherige Option wählen.
+Jede Auswahl wird sofort angewendet und geprüft. Die Auswahl eines Tuners startet keine Abstimmung.
+
+h) Diese Hilfe lesen.
+q) Beenden und speichern.
 
 ***
 Ende der Hilfe

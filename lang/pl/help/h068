@@ -1,0 +1,15 @@
+Pomoc: Wybór VFO
+
+Dostępne opcje zależą od radia, na przykład VFO A/B lub Main/Sub. Otwarcie tej funkcji odczytuje bieżący wybór, jeśli jest dostępny, bez jego zmiany.
+
+Niektóre radia pozwalają wybrać VFO, ale nie mogą podać bieżącego wyboru. YAC ogłasza wtedy Nieznane. Otwarcie tej funkcji nie zmienia wyboru.
+
+Kropka) Wybierz następną opcję.
+Przecinek) Wybierz poprzednią opcję.
+v) Wybierz następną opcję.
+h) Odczytaj tę pomoc.
+q) Wyjdź i zapisz.
+
+***
+Koniec pomocy
+***

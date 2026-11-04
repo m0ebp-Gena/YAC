@@ -1,6 +1,11 @@
 Hilfe: Region
 
-Wählen Sie die Region des Funkgerätestandorts: 1 Europa, Afrika, Naher Osten und Nordasien; 2 Amerika; 3 übriges Asien und Pazifik. Vorgabe: 1. Beim Öffnen wird die Einstellung gelesen; r wechselt 1, 2, 3 und speichert sofort. h wiederholt die Hilfe; q meldet Fertig und kehrt zu Einstellungen zurück. Regionale Grenzen ersetzen keine Landesvorschriften und entsperren das Funkgerät nicht. Außerhalb der unterstützten Amateurbereiche startet YAC keine automatische Sendung.
+1) Europa, Afrika, der Nahe Osten und Nordasien.
+2) Nord-, Mittel- und Südamerika.
+3) Übrige Teile Asiens und der Pazifikraum.
+
+r) Nächste Region wählen. Änderungen werden sofort gespeichert.
+q) Beenden und zu Einstellungen zurückkehren. Änderungen bleiben erhalten.
 
 ***
 Ende der Hilfe

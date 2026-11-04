@@ -24,7 +24,7 @@ f: Filters. See the filter keys below.
 g: Get SWR. Connect an antenna; g again measures and restores settings. h helps; q returns.
 h: Help. Use h inside a control for its detailed help.
 i: Tone/code input. Repeat i for CTCSS, DCS normal or DCS inverted where supported. Enter a value, then follow the prompts.
-k: Lock. Entry reads; repeat k cycles lock states. h helps; q keeps the selected state.
+k: Lock. Changes to the next lock state immediately and stays at Top Level. No q is needed.
 l: Split/repeater setup. Repeat l to turn it off. h then Enter at the input gives help.
 m: Mode. Full stop next; comma previous.
 o: Offset: o alternates Receive and Transmit. c clears both; v verifies both; h helps; q keeps settings and returns.
@@ -49,7 +49,7 @@ c: Contour. Repeat c to toggle; full stop/comma adjust frequency while On. l sel
 h: Filter help.
 l: Low Cut. Full stop/comma adjust.
 n: Manual Notch. Repeat n to toggle; full stop/comma adjust position while On; w changes width.
-p: Bandwidth. Full stop/comma adjust.
+p: Passband width. Full stop/comma adjust.
 q: Return to the main menu. From an adjustment, q first returns to Filters.
 r: Noise Reduction. Repeat r to toggle; full stop/comma adjust level while On.
 u: Upper Cut. Full stop/comma adjust.

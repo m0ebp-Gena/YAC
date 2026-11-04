@@ -35,7 +35,7 @@ YAC espera a que vuelva la misma radio.
 PREFERENCIAS Y AYUDA
 yac.ini junto al programa guarda preferencias y conexiones detectadas.
 Mantén _internal, lang y rad_cmds junto al programa.
-Ayuda y comentarios: Gena por Active Elements o Blind Hams, o gena@m0ebp.uk.
+Ayuda y comentarios: Gena por Active Elements o Blind Hams, o m0ebp.gena@gmail.com.
 Incluye versión de YAC, sistema operativo, modelo y descripción del problema.
 La demo registra logs/yac-debug.log. Revisa datos personales y frecuencias
 antes de compartirlo; compartirlo es opcional.

@@ -1,20 +1,10 @@
-Pomoc: Dekodery
+Pomoc menu dekoderów
 
-Dekodery: c otwiera CW; r otwiera RTTY. Odbiór zaczyna się po wejściu, jeżeli konfiguracja na to pozwala. Działa jeden dekoder naraz.
-Przed dekodowaniem CW z audio naciśnij a w menu dekoderów, aby ustawić odbierane audio. Kropka wybiera następne wejście, przecinek poprzednie; c zmienia kanał; v sprawdza poziom. Enter zapisuje; q wraca do menu dekoderów. Następnie c uruchamia CW. Z widoku CW naciśnij q, aby wrócić do menu, a potem a. Brak wyboru zgłasza komunikat Nie ustawiono wejścia audio.
-W dekoderze: s jawnie zatrzymuje lub ponownie uruchamia odbiór. q mówi Poziom główny i pozostawia odbiór włączony. Kolejne q wraca na główny poziom. Zmiana dekodera zatrzymuje poprzedni. Wyjście z YAC zatrzymuje odbiór i przywraca ustawienia radia.
-v odczytuje najnowszy tekst; przecinek wcześniejszy; kropka późniejszy. Fragmenty mają 60 znaków. n usuwa tekst. Nowy tekst pojawia się automatycznie tylko w widoku dekodera; poza nim odbiór trwa po cichu. Mowę i brajl zapewnia dostępność terminala. h to pomoc.
-Dekoder CW z audio zaczyna od szacowanych 20 słów na minutę, a potem dostosowuje czas. cw_audio_wpm w yac.ini określa początkową szybkość od 5 do 60. Domyślna wartość cw_audio_pitch_hz wynosi 600 i musi odpowiadać odbieranemu tonowi. Silny sygnał radiowy nie potwierdza użytecznego audio na wybranym kanale wejściowym.
-Inne obsługiwane radia: eksperymentalne dekodowanie CW z audio, ze stałą częstotliwością tonu i automatycznym pomiarem czasu. Dopasuj cw_audio_pitch_hz w yac.ini do odbieranego tonu. Domyślny mikrofon nie jest wybierany. Dekoder pauzuje po wykryciu nadawania lub nieznanego stanu; odpytywanie nie jest natychmiastowe. Szum, zniekształcenia i ręczne nadawanie mogą powodować błędy.
-Przy błędzie startu sprawdź tryb, audio, porty i CAT. Szczegóły są w dzienniku debugowania. Dekoder nie nadaje i nie zmienia częstotliwości, trybu ani mocy.
-
-
-Nie można uruchomić dekodera. Sprawdź tryb i konfigurację; h to pomoc.
-Utracono wejście dekodera; zatrzymano odbiór. Sprawdź radio.
-
-z żąda automatycznego dostrojenia CW, jeśli jest obsługiwane. Przestraja odbiornik i dopasowuje dekoder do odczytanego tonu CW radia, bez zmiany tego tonu w radiu. Podaje częstotliwość i ton dekodera. Odczyt nie potwierdza dostrojenia do sygnału; sprawdź odsłuch i tekst. Zmiany częstotliwości pozostają. Ton dekodera obowiązuje tylko w tej sesji; zapisane ustawienia audio nie zmieniają się. Nieobsługiwane radia zgłaszają brak obsługi. Dekoder audio CW musi działać, a radio odbierać w CW.
-
-RIT aktywny lub XIT aktywny oznacza, że nie wysłano żądania dostrojenia z powodu włączonego przesunięcia. Wyłącz to przesunięcie przed ponownym z. YAC nie zeruje ani nie wyłącza przesunięć. Jeśli wykryje je przed dostrajaniem, odbiór audio trwa dalej.
+a Ustawia odbierane audio. Nie ustawiono wejścia audio: najpierw użyj a.
+c Otwiera CW i rozpoczyna odbiór, jeśli jest gotowy.
+h Wyświetla tę pomoc.
+q Wraca na poziom główny.
+r Otwiera RTTY i rozpoczyna odbiór, jeśli jest gotowy.
 
 ***
 Koniec pomocy

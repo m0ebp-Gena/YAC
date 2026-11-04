@@ -27,7 +27,7 @@ f          Open Filters
 g          Get SWR: g measures once, then returns to top level; h help; q cancels. Connect an antenna first.
 h          Help
 i          Tone/code input (CTCSS/DCS where supported); h gives help
-k: Lock. Entry reads; repeat k cycles lock states. h helps; q keeps the selected state.
+k: Lock. Changes to the next lock state immediately and stays at Top Level. No q is needed.
 l          Split/repeater setup; l again turns it off. h then Enter inside for help
 m          Mode selection
 o          Offset: o alternates Receive and Transmit. c clears both; v verifies both; h helps; q keeps settings and returns.
@@ -87,7 +87,7 @@ a adjusts AF Gain. r adjusts Squelch in FM, RF Gain in other modes. Starts at th
 Power edit: whole watts; h then Enter for help; blank Enter cancels. Icom watt entries are estimated and converted to a relative percentage; v reports that percentage. Successful changes repeat the entered value, for example 33W Set, after write and readback. This confirms the requested setting, not measured output watts. Leave Settings with q before v.
 
 FILTERS — press f first
-f then p   Bandwidth
+f then p   Passband width
 f then l   Low Cut
 f then u   Upper Cut
 Full stop  Increase the selected value
@@ -105,7 +105,7 @@ Notch: f then a reads Auto Notch without changing it; a inside toggles. TS-480 u
 
 Contour: f c reads current state without changing it; when On, reads frequency. Inside, c toggles On/Off. Navigation adjusts current frequency (10-3200 hertz). Inside Contour, l selects Contour level (-40 to +20, spoken as Dip/Neutral/Peak); w selects Contour width (1-11); c returns to frequency. When already on frequency, c toggles On/Off. Full stop increases and comma decreases the selected setting, stopping at endpoints. Off leaves settings unchanged. q returns to Filters, where l means Low Cut; q again returns to top level. Current settings are preserved on switching. FT-DX10, FT-710 and FTX-1 only; FTX-1 frequency/state follow selected Main/Sub, level/width are shared menu settings. APF is separate and is not altered.
 
-Filter Verify: f v lists switchable filters currently On for the current mode/receiver, using live readback. v inside any filter adjustment gives the same report without leaving the control. Off and unsupported filters are omitted; unreadable states are announced as unknown. If every applicable state is known and Off, says No switchable filters On. Bandwidth/low/upper cuts have no switchable On/Off state and are not included. FTX-1 reports Main or Sub. Verify changes no settings.
+Filter Verify: f v lists switchable filters currently On for the current mode/receiver, using live readback. v inside any filter adjustment gives the same report without leaving the control. Off and unsupported filters are omitted; unreadable states are announced as unknown. If every applicable state is known and Off, says No switchable filters On. Passband width/low/upper cuts have no switchable On/Off state and are not included. FTX-1 reports Main or Sub. Verify changes no settings.
 
 Repeated v review: first v gives the filters-On summary. Further consecutive v presses show one applicable filter at a time, including Off or unknown, then return to the summary. Each status is read live. Any other command restarts the next v at the summary; a receive-mode or receiver change also restarts review. q leaves Filters when at the submenu; inside an adjustment, q first returns to Filters. Main v is unchanged.
 

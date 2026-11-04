@@ -54,6 +54,8 @@
 
 4f. Explicit exception requested for c v: where sidetone volume shares a mode-dependent control, select and verify CW-U on entry if the radio is not already in CW-U or CW-L. Preserve an existing CW choice. Announce a mode change before reading the volume, leave the volume unchanged on entry, and keep the selected mode on q. An unreadable mode or unconfirmed mode change must not lead to a volume command. Other controls retain rule 4a.
 
+4g. Explicit exception requested for Top Level k: each press reads the current lock state, applies the next supported lock state and announces the verified result. Stay at Top Level without reading another key or requiring q. Preserve the supported lock-state order. Main v remains read-only.
+
 5. Labels
 
 5a. Labels are reusable text loaded from the selected language's labels directory. The 15-character limit applies to fixed label wording, not placeholders, substituted values or assembled radio-status output.

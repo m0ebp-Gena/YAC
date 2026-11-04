@@ -1,6 +1,8 @@
-Pomoc: Moc
+Pomoc: Moc wyjściowa
 
-Moc: wpisz całe waty i Enter. h i Enter czyta pomoc i wraca do pola. Pusty Enter lub q i Enter anulują i wracają do Ustawień. Dla Icom YAC przelicza waty na szacunkowy procent według mocy modelu i pasma. W IC-705 3 waty to około 30 procent skali 10-watowej; bateria ogranicza wpis do 5 watów. To szacunek, nie pomiar. Zasilanie, emisja, ograniczenia radia i wersje regionalne wpływają na rzeczywistą moc. Po udanym zapisie i odczycie pojawia się potwierdzenie wpisanej wartości, na przykład 33W Ustawiono. Potwierdza ono żądane ustawienie, a nie zmierzoną moc wyjściową. q opuszcza Ustawienia; v podaje procent dla Icom, waty dla Yaesu/Kenwood.
+Wpisz całkowitą liczbę watów w podanym zakresie i naciśnij Enter, aby zastosować wartość i wrócić do Ustawień.
+h, następnie Enter) Odczytaj tę pomoc.
+Pusty Enter lub q, następnie Enter) Anuluj i wróć do Ustawień bez zmian.
 
 ***
 Koniec pomocy

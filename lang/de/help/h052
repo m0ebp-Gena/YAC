@@ -1,0 +1,23 @@
+Hilfe zur CW-Dekodierung
+
+h Zeigt diese Hilfe einschließlich Rückblick.
+Komma senkt WPM um 1; Punkt erhöht sie, ohne Ansage. Bereich: 5 bis 60.
+Plus / Minus erhöht / senkt die Erkennungsschwelle, sofern unterstützt.
+q Stoppt den Empfang, kehrt zum Decoder-Menü zurück und behält den Text.
+r Öffnet den Rückblick beim neuesten Text; Empfang läuft still weiter.
+s Startet oder stoppt den Empfang in dieser Ansicht.
+v Liest Signalstärke, Frequenz und gewählte WPM-Schätzung.
+z Stimmt mit Zero In nach, passt den Decoder-Ton an; Änderungen bleiben.
+
+Im Rückblick:
+c Löscht den empfangenen Text; der Empfang läuft weiter.
+h Zeigt dieselbe CW-Hilfe.
+Komma / Punkt blättert zurück / vor, in Abschnitten mit 60 Zeichen.
+q Kehrt zur CW-Dekodierung zurück.
+Die Tonhöhe folgt automatisch der CW-Tonhöhe des Radios.
+WPM: Empfangsschätzung; passt sich an; nicht bei nativer Dekodierung.
+Text bleibt bis zum Löschen oder YAC-Ende; die letzten 10.000 Zeichen
+bleiben. Keine Textdatei wird gespeichert. WPM gilt für diese Sitzung.
+***
+Ende der Hilfe
+***

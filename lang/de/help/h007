@@ -1,27 +1,21 @@
-Hilfe: Filtermenü
+Filterhilfe
 
-Beim Öffnen eines Filters wird der aktuelle Zustand ohne Änderung vorgelesen. Bei Aus wird nur Aus gemeldet; bei Ein auch der aktive Einstellwert, soweit vorhanden. Erst ein weiterer Befehl ändert die Einstellung.
+h) Dieses Hilfedokument.
+Für Hilfe zu einem bestimmten Filter öffnen Sie ihn und drücken h.
 
-Filter: f drücken, dann eine Taste unten. Verfügbare Funktionen hängen vom Radio und der Betriebsart ab.
+q) Einstellung beenden und im Filtermenü bleiben. Im Filtermenü führt q zur Hauptebene zurück. Änderungen bleiben erhalten.
 
-a: Auto Notch. Erneutes a schaltet Ein oder Aus.
-b: Noise Blanker. Beim Öffnen werden Ein/Aus und bei Ein der Pegel ohne Änderung vorgelesen. Erneutes b schaltet Ein oder Aus. Punkt/Komma ändern den Pegel bei Ein.
-c: Contour. Erneutes c schaltet Ein oder Aus. Punkt/Komma ändern die Frequenz bei Ein. l wählt Pegel; w Breite; c kehrt zur Frequenz zurück. Bei gewählter Frequenz schaltet c Ein oder Aus.
-h: Diese Hilfe lesen.
-l: Untere Grenzfrequenz. Punkt erhöht; Komma verringert die untere Grenze.
-n: Manueller Notch. Erneutes n schaltet Ein oder Aus. Punkt/Komma ändern die Position bei Ein; w ändert die Breite.
-p: Bandbreite. Punkt erhöht; Komma verringert. Bei getrennten Grenzen l und u verwenden.
-q: Einstellung beenden und behalten; meldet Fertig. Erneutes q verlässt Filter; meldet Hauptebene.
-r: Noise Reduction. Erneutes r schaltet Ein oder Aus. Punkt/Komma ändern den Pegel bei Ein.
-u: Obere Grenzfrequenz. Punkt erhöht; Komma verringert die obere Grenze.
-v: Eingeschaltete Filter lesen. v wiederholen für einzelne Zustände, einschließlich Aus oder unbekannt. Ein anderer Befehl startet die Übersicht neu. Lesen ändert nichts.
+Die Unterstützung hängt von Funkgerät und Betriebsart ab. Eine Filtertaste liest die aktuelle Einstellung ohne Änderung.
 
-Einstellungen stoppen an ihren Grenzen. Bei ausgeschaltetem Filter lassen Einstelltasten seine Werte unverändert. Änderungen werden durch Rücklesen geprüft. Nicht unterstützte Funktionen und nicht lesbare Einstellungen werden gemeldet.
-Radiospezifische Einzelheiten stehen in den Hinweisen zu Ihrem Radio unter doc/supported-radios.
-Bei Standardbandbreite bleibt die Einstellung beim Aufruf unverändert. Punkt wählt die schmalste unterstützte numerische Bandbreite, Komma die breiteste. Weitere Tastendrücke ändern die Bandbreite schrittweise. YAC bestätigt jede Änderung durch Rücklesen vom Funkgerät.
-p wählt die Bandbreite. Bei getrennten Grenzen wählt p zuerst die untere Grenze, danach abwechselnd die obere und untere Grenze. Jede Auswahl liest den aktuellen Wert ohne Änderung. Komma und Punkt übernehmen jede Änderung sofort, damit sie hörbar ist; YAC liest den Wert zurück und meldet ihn.
-Die Nachführzeit der Rauschunterdrückung bestimmt bei unterstützten Geräten, wie schnell sie Änderungen des Empfangssignals folgt. Sie wird in Millisekunden gemessen. Bei gewählter Einstellung erhöht Punkt die Zeit, Komma verringert sie. Änderungen wirken sofort und werden durch Rücklesen bestätigt.
-In Filterstatusmeldungen bedeutet Nicht unterstützt, dass für das aktuelle Funkgerät und den Modus keine unterstützten schaltbaren Filter verfügbar sind.
+a) Automatische Notchfilterung
+b) Störaustaster
+c) Contour
+l) Untere Grenzfrequenz
+n) Manuelle Notchfilterung
+p) Durchlassbandbreite
+r) Rauschunterdrückung
+u) Obere Grenzfrequenz
+v) Aktive Filter prüfen
 
 ***
 Ende der Hilfe

@@ -14,7 +14,7 @@ La v principal también informa del bloqueo activado, del dial o del panel si es
 Abrir un filtro lee su estado actual sin cambiarlo. Si está desactivado, solo indica desactivado; si está activado, también el valor activo cuando corresponda. Solo un comando posterior cambia el ajuste.
 
 Preamplificador p, atenuador u y VFO/receptor s v: al abrir se anuncia el ajuste sin cambiarlo. Punto selecciona siguiente; coma anterior; repetir la letra también avanza. q conserva la selección y vuelve un nivel; h explica. Si no se puede leer el VFO actual, indica Desconocido sin seleccionar otro.
-k: Bloqueo. Al entrar lee; repita k para cambiar el estado. h ayuda; q conserva la selección.
+k: Bloqueo. Cambia al siguiente estado y permanece en el nivel principal. No necesita q.
 
 Pulsa una tecla cada vez. La mayoría de los comandos no necesitan Intro.
 Los comandos dependen de las funciones compatibles de la radio conectada.
@@ -82,7 +82,7 @@ a ajusta la ganancia AF. r ajusta el silenciador en FM y la ganancia RF en otros
 Campo de potencia: vatios enteros; h e Intro para ayuda; Intro vacío cancela. Los vatios de Icom son estimados y convertidos a porcentaje; v informa porcentaje. Tras escritura y lectura correctas se confirma el valor introducido, por ejemplo 33W Establecido. Confirma el ajuste solicitado, no la potencia de salida medida. Sal de Ajustes con q antes de v.
 
 FILTROS — pulsa f primero
-f luego p  Ancho de banda
+f luego p  Anchura de la banda pasante
 f luego l  Corte bajo
 f luego u  Corte superior
 Punto      Aumentar el valor
@@ -100,7 +100,7 @@ Notch: f luego a lee Auto Notch sin cambiarlo; a dentro lo cambia. TS-480 usa ca
 
 Contour: f c reads current state without changing it; when On, reads frequency. Inside, c toggles On/Off. Navigation adjusts current frequency (10-3200 hertz). Inside Contour, l selects Contour level (-40 to +20, spoken as Dip/Neutral/Peak); w selects Contour width (1-11); c returns to frequency. When already on frequency, c toggles On/Off. Full stop increases and comma decreases the selected setting, stopping at endpoints. Off leaves settings unchanged. q returns to Filters, where l means Low Cut; q again returns to top level. Current settings are preserved on switching. FT-DX10, FT-710 and FTX-1 only; FTX-1 frequency/state follow selected Main/Sub, level/width are shared menu settings. APF is separate and is not altered.
 
-Verificar filtros: f v enumera los filtros conmutables activados en el modo y receptor actuales, leyendo la radio. v dentro de un ajuste informa sin salir del control. Se omiten los filtros desactivados o no compatibles; se anuncian los estados desconocidos. El ancho de banda y los cortes inferior/superior no se cuentan como filtros conmutables. FTX-1 identifica el receptor principal o secundario. No cambia ajustes.
+Verificar filtros: f v enumera los filtros conmutables activados en el modo y receptor actuales, leyendo la radio. v dentro de un ajuste informa sin salir del control. Se omiten los filtros desactivados o no compatibles; se anuncian los estados desconocidos. El anchura de la banda pasante y los cortes inferior/superior no se cuentan como filtros conmutables. FTX-1 identifica el receptor principal o secundario. No cambia ajustes.
 
 Revisión con v repetida: la primera v da el resumen de filtros activados. Las siguientes v consecutivas muestran un filtro compatible cada vez, incluido desactivado o desconocido, y vuelven al resumen. Se lee el estado actual. Otro comando o un cambio de modo/receptor reinicia el resumen. q sale de Filtros; dentro de un ajuste, q vuelve primero a Filtros. La v principal no cambia.
 

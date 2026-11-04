@@ -3,3 +3,7 @@ Decoder radio notes
 TS-590SG CW: select CW mode first. Native decoder tracks speed automatically. Plus and minus adjust its threshold, 1 to 30. YAC preserves decoder enable and Auto Information settings and restores them on stop.
 
 IC-705 RTTY: select RTTY mode first. YAC uses the uniquely identified companion USB port B, preserving its function. It refuses DV/Weather use or port-B SEND/keying assignments. If identification is ambiguous, set rtty_port to the verified companion port; it must belong to this radio. Other RTTY models currently report Not supported.
+
+Audio CW: d c starts decoding. Comma lowers the starting estimate; period raises it silently (5-60 WPM). v announces signal, frequency and selected WPM. r opens Review; c clears text there, q returns to CW. q in CW stops capture and leaves. Text stays until cleared or YAC closes (last 10,000 characters); no text file is saved. Automatic timing adaptation continues; transmit speed is unchanged. Native radio decoding has no WPM adjustment.
+
+Audio setup uses one plain device list, with full Windows recording names where available and no advanced interface list. Saved selections remain in use; browsing never changes Windows sound settings.

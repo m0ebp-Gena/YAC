@@ -1,0 +1,23 @@
+CW continuous text correction - 2 November 2026
+
+User finding: poor decoding produced isolated characters on separate lines.
+The display flushed partial text after two seconds, at word boundaries or
+at 40 characters; each ordinary response began a new line. Reproduced with
+stored TES displayed as T, E and S on three lines, and CQ TEST as two lines.
+User approved continuous CW text after this finding was discussed.
+
+Changed live CW output to append consecutive batches on the same terminal
+line. Incoming CW line/tab separators are displayed as spaces. Normal
+screen-width wrapping remains. Ordinary help, review and control responses
+remain separated from the stream. RTTY presentation is unchanged. Capture
+outside the decoder view remains quiet. No automatic over/station detection
+and no decoder timing, tone detection or accuracy changes were made.
+Four-language decoder help describes the continuous display.
+
+46 focused decoder, control-entry and response checks passed, including
+sparse characters, word batches, control-message separation, quiet background
+capture and unchanged RTTY output. Output saved in:
+local_storage/testing/results/cw-continuous-text-20261102-173712-212.txt
+
+Source changes only; no replacement Windows ZIP or GitHub publication yet.
+Live speech/braille behaviour and decoding accuracy still need hardware checks.

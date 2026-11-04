@@ -1,6 +1,13 @@
 Pomoc wyboru tunera
 
-Wejście odczytuje bieżący tuner bez zmiany. kropka wybiera następną opcję; przecinek poprzednią. Każdy wybór jest stosowany od razu i sprawdzany. Wybór nie rozpoczyna strojenia. h czyta pomoc. q ogłasza Gotowe i wraca do Ustawień, zachowując zmiany. Kolejne q wraca do poziomu głównego, gdzie t rozpoczyna strojenie.
+Otwarcie tej funkcji odczytuje bieżące ustawienie tunera bez jego zmiany. Dostępne opcje zależą od radia.
+
+Kropka) Wybierz następną opcję.
+Przecinek) Wybierz poprzednią opcję.
+Każdy wybór jest stosowany od razu i sprawdzany. Wybór tunera nie rozpoczyna strojenia.
+
+h) Odczytaj tę pomoc.
+q) Wyjdź i zapisz.
 
 ***
 Koniec pomocy

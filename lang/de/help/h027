@@ -1,7 +1,7 @@
 Hilfe: YAC-Updates
 
 YAC aktualisieren
-YAC prüft GitHub über den vorhandenen Internetzugang.
+Eine Internetverbindung ist erforderlich. YAC sucht auf GitHub nach der neuesten Version. Wenn eine neuere Version verfügbar ist, können Sie die Versionshinweise lesen und entscheiden, ob Sie sie herunterladen und installieren möchten. Wenn Sie bereits die neueste Version haben, meldet YAC Kein Update und kehrt zu Einstellungen zurück.
 
 Kein Internet: GitHub nicht erreichbar; zurück zu Einstellungen.
 Kein Update: keine neuere Version; zurück zu Einstellungen.

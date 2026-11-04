@@ -35,6 +35,6 @@ PREFERENCES AND HELP
 YAC saves preferences and discovered connections in yac.ini beside the
 program. Keep _internal, lang and rad_cmds intact.
 For help or feedback, contact Gena through Active Elements or Blind Hams,
-or at gena@m0ebp.uk. Include your YAC version, operating system, radio
+or at m0ebp.gena@gmail.com. Include your YAC version, operating system, radio
 model and what happened. The demo records logs/yac-debug.log. Review it
 for personal details and frequencies before sharing; sharing is optional.

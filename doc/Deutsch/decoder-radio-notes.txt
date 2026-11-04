@@ -3,3 +3,7 @@ Decoder: Funkgerätehinweise
 TS-590SG: zuerst CW wählen. Der interne Decoder folgt der Geschwindigkeit automatisch. Plus/Minus ändern die Schwelle 1 bis 30. Decoderstatus und Auto Information werden beim Stopp wiederhergestellt.
 
 IC-705 RTTY: zuerst RTTY wählen. Verwendet den eindeutig zugeordneten USB-Port B. DV/Weather oder SEND/Tastung auf B verhindern das Öffnen. Bei Mehrdeutigkeit rtty_port auf den geprüften Begleitport setzen. Andere RTTY-Modelle sind noch nicht unterstützt.
+
+Audio-CW: d c startet die Dekodierung. Komma senkt die Anfangsschätzung, Punkt erhöht sie ohne Ansage (5-60 WPM). v liest Signalstärke, Frequenz und gewählte WPM. r öffnet den Rückblick; dort löscht c den Text, q kehrt zu CW zurück. q in CW stoppt den Empfang und verlässt die Ansicht. Text bleibt bis zum Löschen oder YAC-Ende (letzte 10.000 Zeichen); keine Textdatei wird gespeichert. Automatische Anpassung bleibt; Sendetempo unverändert. Keine WPM-Regelung bei nativer Radio-Dekodierung.
+
+Audioauswahl bietet eine einfache Geräteliste mit vollständigen Windows-Aufnahmenamen, soweit verfügbar, ohne erweiterte Schnittstellenliste. Gespeicherte Auswahl bleibt erhalten; Browsen ändert keine Windows-Soundeinstellungen.

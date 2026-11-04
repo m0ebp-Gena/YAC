@@ -1,20 +1,10 @@
-Ayuda: Decodificadores
+Ayuda del menú de decodificadores
 
-Decodificadores: c abre CW; r abre RTTY. La captura empieza al entrar si la configuración lo permite. Solo funciona un decodificador a la vez.
-Antes de decodificar CW por audio, pulse a en el menú de decodificadores para configurar el audio recibido. Punto elige la entrada siguiente; coma la anterior; c cambia el canal; v comprueba el nivel. Intro guarda; q vuelve al menú de decodificadores. Después, c inicia CW. Desde la vista CW, q vuelve al menú; pulse a allí. Sin selección se indica Entrada de audio sin configurar.
-Dentro: s detiene o reinicia explícitamente. q anuncia Nivel principal y mantiene la captura. Otro q vuelve al nivel principal. Cambiar de decodificador detiene el anterior. Salir de YAC detiene la captura y restaura los ajustes originales.
-v revisa el texto más reciente; coma el anterior; punto el siguiente. Bloques de 60 caracteres. n borra el texto. El texto nuevo aparece automáticamente solo en la vista del decodificador; fuera se captura en silencio. Utilice la voz y braille de su terminal. h muestra esta ayuda.
-CW por audio empieza con una estimación de 20 palabras por minuto y después se adapta. cw_audio_wpm en yac.ini establece una estimación inicial de 5 a 60. cw_audio_pitch_hz vale 600 por defecto y debe coincidir con el tono recibido. Una señal de radio fuerte no confirma audio utilizable en el canal seleccionado.
-Otras radios compatibles: CW por audio experimental, con tono fijo y temporización automática. Ajuste cw_audio_pitch_hz en yac.ini al tono recibido. No se selecciona un micrófono predeterminado. La decodificación se pausa al detectar transmisión o un estado desconocido; la consulta no es instantánea. El ruido, la distorsión y la manipulación manual pueden causar errores.
-Si no inicia, revise modo, audio, puertos y CAT. El registro de depuración tiene detalles. No transmite ni cambia frecuencia, modo o potencia.
-
-
-No se pudo iniciar el decodificador. Revise modo y configuración; h para ayuda.
-Entrada perdida; captura detenida. Revise los ajustes de la radio.
-
-z solicita el centrado automático de CW si está disponible. Resintoniza el receptor y adapta el decodificador al tono CW leído de la radio, sin cambiar ese tono. Anuncia frecuencia y tono del decodificador. La lectura no confirma la captura de la señal; compruebe el audio y el texto. Se conservan los cambios de frecuencia. El tono del decodificador solo se usa en esta sesión; los ajustes guardados no cambian. Las radios no compatibles indican No compatible. CW por audio debe estar activo y la radio recibiendo en CW.
-
-RIT activo o XIT activo indica que no se envió Zero In porque hay un clarificador activado. Desactive ese desplazamiento antes de repetir z. YAC no borra ni desactiva desplazamientos. Si se detecta antes de sintonizar, la captura de audio continúa.
+a Configura el audio recibido. Entrada de audio sin configurar: use a.
+c Abre CW e inicia la captura si está preparado.
+h Muestra esta ayuda.
+q Vuelve al nivel principal.
+r Abre RTTY e inicia la captura si está preparado.
 
 ***
 Fin de la ayuda

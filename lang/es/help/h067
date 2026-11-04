@@ -1,0 +1,18 @@
+Ayuda: Paso de sintonía
+
+Esto ajusta el paso de sintonía de YAC, no el de la radio.
+El paso depende del modo. Al cambiarlo, se guarda el valor para ese grupo de modos.
+
+Valores predeterminados:
+SSB y modos de datos asociados: 1000 Hz.
+CW: 500 Hz.
+AM: 2500 Hz.
+FM y voz digital: 12500 Hz.
+
+Introduzca un número entero positivo de hercios y pulse Enter para guardar y volver a Ajustes.
+h y después Enter) Leer esta ayuda.
+Enter sin valor o q y después Enter) Cancelar y volver a Ajustes sin cambios.
+
+***
+Fin de la ayuda
+***

@@ -1,0 +1,23 @@
+Help For CW Decoding
+
+Comma lowers WPM by 1; period raises it, silently. Range: 5 to 60.
+h Shows this help, including Review controls.
+Plus / minus raise / lower the detection threshold where supported.
+q Stops decoding and returns to the decoder menu; keeps received text.
+r Opens Review at the latest text; capture continues quietly.
+s Starts or stops decoding without leaving this view.
+v Announces signal, frequency and selected WPM estimate.
+z Runs Zero In: retunes and matches decoder pitch; changes are kept.
+
+In Review:
+c Clears received text; capture continues.
+Comma / period move backward / forward through 60-character chunks.
+h Shows this same CW help.
+q Returns to CW decoding.
+Pitch follows the radio's CW pitch setting automatically.
+WPM: receive estimate; adapts automatically; unavailable for native decoding.
+Text stays until cleared or YAC closes; the latest 10,000 characters are
+kept. No text file is saved. WPM is kept for this YAC session.
+***
+End of help
+***

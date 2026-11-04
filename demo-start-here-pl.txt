@@ -34,7 +34,7 @@ Przy utracie połączenia YAC czeka na to samo radio.
 USTAWIENIA I POMOC
 yac.ini obok programu zapisuje preferencje i wykryte połączenia.
 Zachowaj _internal, lang i rad_cmds razem z programem.
-Pomoc i uwagi: Gena przez Active Elements lub Blind Hams, albo gena@m0ebp.uk.
+Pomoc i uwagi: Gena przez Active Elements lub Blind Hams, albo m0ebp.gena@gmail.com.
 Podaj wersję YAC, system, model radia i opis problemu. Demo zapisuje
 logs/yac-debug.log. Przed dobrowolnym udostępnieniem sprawdź dane osobowe
 i częstotliwości w tym pliku.

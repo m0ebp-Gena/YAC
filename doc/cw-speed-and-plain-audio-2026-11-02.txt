@@ -1,0 +1,26 @@
+CW receive speed and plain audio input selection - 2 November 2026
+
+Received speed: d c k opens the selected starting estimate; full stop/comma
+adjust silently by one WPM, clamped to 5-60. v verifies; h gives short
+contextual help; q keeps the choice for the YAC session, including restarts.
+Live characters continue. A decoder lock serializes reseeding against audio
+processing. Explicit changes discard partial timing but preserve completed
+text, pitch, level gate and the open audio input. Automatic timing adaptation
+continues. The displayed setting is the starting estimate, not measured WPM.
+Native TS-590SG decoding remains automatic; transmit keyer speed is untouched.
+
+Audio selection: one plain list, no advanced list. Windows endpoint names
+from WASAPI are preferred; one available interface is used as fallback.
+Backend names are omitted from normal announcements. A saved older interface
+is preserved; its unique identical full-name entry is reused in the list.
+Unmatched saved names are retained separately instead of guessing an endpoint
+mapping. Identically named physical devices are not silently merged.
+Resolution still uses exact original name and host and rejects ambiguity.
+Browsing/cancel never open an input or save settings. Enter validates format
+and saves explicitly; v remains the explicit one-second level check. No
+Windows default, speaker output or screen-reader sound changes are made.
+Four-language help and labels updated; longer setup help uses the pager.
+
+Implementation and automated validation only; live decoding quality and
+screen-reader usability require the owner's test. No new build or publication
+has been made since the published 2 November revision 1 package.

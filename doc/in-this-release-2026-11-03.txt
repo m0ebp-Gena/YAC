@@ -1,0 +1,22 @@
+Windows test version - 3 November 2026, test 1
+
+CW decoding follows the radio CW pitch setting automatically, including
+changes during reception. No separate decoder pitch control is needed.
+Comma lowers the receive WPM estimate; period raises it silently. v reads
+signal, frequency and selected WPM. s starts or stops capture. r opens
+Review, where comma/period browse, c clears text and q returns to CW.
+q in CW stops capture and leaves. Text stays until cleared or YAC closes,
+limited to 10,000 characters. CW and RTTY use separate contextual help;
+CW help includes Review controls and lists keys alphabetically.
+
+Receive-audio selection uses one device list. Enter validates and saves;
+q returns without saving a browsing change. Live CW text flows continuously.
+
+CW audio decoding is implemented for FTDX10 and IC-705. Select the radio's
+receive-audio input with d a, select CW mode, then use d c. Tune the incoming
+signal to the radio CW pitch; YAC does not search for an arbitrary tone.
+FTDX10 also supports the explicit z Zero In request. IC-705 supports native
+RTTY decoding separately. Decode accuracy and accessibility require hardware
+testing; automated checks do not establish live reception quality.
+
+This is a local test build, not a published release or update-install test.

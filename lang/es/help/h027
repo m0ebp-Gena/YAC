@@ -1,7 +1,7 @@
 Ayuda: Actualizaciones de YAC
 
 Actualizar YAC
-YAC consulta GitHub mediante la conexión a internet existente.
+Se requiere una conexión a internet. YAC busca en GitHub la última versión. Si hay una versión más reciente, puede leer sus notas y decidir si desea descargarla e instalarla. Si ya tiene la última versión, YAC anuncia Sin novedades y vuelve a Ajustes.
 
 Buscando: comprobando si hay actualización.
 Nueva versión: pregunta Notas Y/N?. Tras leer u omitir las notas, pregunta Update Y/N?.

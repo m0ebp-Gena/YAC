@@ -1,0 +1,10 @@
+Ayuda: Tiempo de seguimiento de la reducción de ruido
+
+r) Activar o desactivar la reducción de ruido.
+Mientras está activada, coma acorta el tiempo de seguimiento; punto lo alarga.
+El tiempo en milisegundos determina la rapidez con que sigue los cambios de la señal recibida.
+q) Terminar y volver a Filtros. Los cambios se conservan.
+
+***
+Fin de la ayuda
+***

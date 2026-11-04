@@ -16,6 +16,32 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class DemoTests(unittest.TestCase):
+    def test_startup_reports_position_before_input_without_changing_radio(self):
+        for language in ('en', 'de', 'es', 'pl'):
+            for simulated in (False, True):
+                with self.subTest(language=language, simulated=simulated):
+                    radio = create_dummy_radio()
+                    radio.is_dummy = simulated
+                    output = io.StringIO()
+                    keys = iter(['q', 'y'])
+                    def read_key(**kwargs):
+                        if '7.159 LSB' not in output.getvalue():
+                            self.fail('Position must be reported before reading a key')
+                        return next(keys)
+                    with patch.object(yac, 'connect_radio', return_value=radio), \
+                         patch.object(yac, '_read_settings', return_value={'call':'TEST', 'lang':language}), \
+                         patch.object(yac, '_cat_exchange', wraps=yac._cat_exchange) as exchange, \
+                         patch.object(yac.time, 'sleep'), \
+                         patch.object(lang_sel, 'read_key', side_effect=read_key), redirect_stdout(output):
+                        self.assertEqual(yac.main([]), 0)
+                    connection = yac._read_label(ROOT, language, 'l107' if simulated else 'l008', '')
+                    if not simulated:
+                        connection += ' ' + radio.model_name
+                    self.assertTrue(output.getvalue().startswith(connection + '\nS 9 7.159 LSB'))
+                    self.assertTrue(all(c.args[1] in {'SM0;', 'FA;', 'MD0;'}
+                                        for c in exchange.call_args_list))
+                    self.assertFalse(radio.serial.is_open)
+
     def test_band_entry_reads_current_band_without_changing_it(self):
         for language in ('en', 'de', 'es', 'pl'):
             with self.subTest(language=language):
@@ -44,7 +70,7 @@ class DemoTests(unittest.TestCase):
                 self.assertEqual(errors.getvalue().strip(),yac._read_label(ROOT,language,'l355',''))
                 self.assertEqual(output.getvalue(),'')
 
-    def test_real_radio_connection_stays_under_cursor_until_first_command(self):
+    def test_real_radio_connection_then_status_stays_under_cursor_until_first_command(self):
         radio = create_dummy_radio()
         radio.is_dummy = False
         radio.model_name = 'IC-705'
@@ -52,7 +78,7 @@ class DemoTests(unittest.TestCase):
         def first_command(**kwargs):
             if 'Quit' in output.getvalue():
                 return 'y'
-            self.assertTrue(output.getvalue().endswith('Radio Connected IC-705'))
+            self.assertTrue(output.getvalue().endswith('Radio Connected IC-705\nS 9 7.159 LSB'))
             return 'q'
         with patch.object(yac, 'connect_radio', return_value=radio), \
              patch.object(yac, '_read_settings', return_value={'call': 'TEST', 'lang': 'en'}), \
@@ -60,13 +86,13 @@ class DemoTests(unittest.TestCase):
             self.assertEqual(yac.main([]), 0)
         self.assertIn('Bye TEST', output.getvalue())
 
-    def test_simulated_label_stays_under_cursor_until_first_command(self):
+    def test_simulated_label_then_status_stays_under_cursor_until_first_command(self):
         radio = create_dummy_radio()
         output = io.StringIO()
         def first_command():
             if 'Quit' in output.getvalue():
                 return 'y'
-            self.assertTrue(output.getvalue().endswith('Demo Mode'))
+            self.assertTrue(output.getvalue().endswith('Demo Mode\nS 9 7.159 LSB'))
             return 'q'
         with patch.object(yac, 'connect_radio', return_value=radio), \
              patch.object(yac, '_read_settings', return_value={'call': 'TEST', 'lang': 'en'}), \

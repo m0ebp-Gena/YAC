@@ -24,7 +24,7 @@ f: Filtry. Klawisze filtrów poniżej.
 g: Pomiar SWR. Podłącz antenę; kolejne g mierzy i przywraca ustawienia. h pomaga; q wraca.
 h: Pomoc. h wewnątrz funkcji czyta szczegółową pomoc.
 i: Ton/kod. i przełącza CTCSS, DCS normalny i odwrócony, jeśli obsługiwane. Wpisz wartość i wykonuj polecenia.
-k: Blokada. Wejście odczytuje; kolejne k zmienia stan. h pomoc; q zachowuje wybór.
+k: Blokada. Od razu wybiera następny stan i pozostaje na poziomie głównym. Nie wymaga q.
 l: Split/przemiennik. Ponowne l wyłącza. h i Enter w polu wpisywania dają pomoc.
 m: Emisja. Kropka następna; przecinek poprzednia.
 o: Przesunięcie: o przełącza Odbiór i Nadawanie. c zeruje oba; v sprawdza oba; h pomaga; q zachowuje i wraca.
@@ -49,7 +49,7 @@ c: Contour. c przełącza; kropka/przecinek zmieniają częstotliwość po włą
 h: Pomoc filtrów.
 l: Dolne odcięcie. Kropka/przecinek regulują.
 n: Ręczny notch. n przełącza; kropka/przecinek zmieniają pozycję po włączeniu; w zmienia szerokość.
-p: Szerokość pasma. Kropka/przecinek regulują.
+p: Szerokość pasma przepustowego. Kropka/przecinek regulują.
 q: Wróć do menu głównego. Z regulacji q najpierw wraca do Filtrów.
 r: Noise Reduction. r przełącza; kropka/przecinek zmieniają poziom po włączeniu.
 u: Górne odcięcie. Kropka/przecinek regulują.

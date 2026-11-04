@@ -17,7 +17,7 @@ def main():
         from modules import name_call_sel
         settings = yac._read_settings(root / 'yac.ini')
         assert not settings.get('lang') and not settings.get('call'), 'Use a fresh disposable package'
-        keys = iter(['1', 'y', 'y', 'k', 'k', 'q', 'q', 'y'])
+        keys = iter(['1', 'y', 'y', 'k', 'k', 'q', 'y'])
         with patch.object(yac, 'find_radios', return_value=[]), \
              patch.object(name_call_sel, '_edit_line', return_value='TEST'), \
              patch.object(yac.lang_sel, 'read_key', side_effect=lambda **kwargs: next(keys)), \
@@ -147,12 +147,17 @@ def main():
         import io
         from contextlib import redirect_stdout
         from types import SimpleNamespace
-        keys = iter(['k', 'q'])
+        def no_key():
+            raise AssertionError('Top-level lock must not read another key')
         output = io.StringIO()
         with redirect_stdout(output):
-            lock_control.control(yac, root, radio, 'en', lambda: next(keys), SimpleNamespace(lost=False))
-        assert 'Lock Off' in output.getvalue() and 'Lock On' in output.getvalue()
+            lock_control.control(yac, root, radio, 'en', no_key, SimpleNamespace(lost=False))
+        assert output.getvalue().strip() == 'Lock On'
         assert radio.serial.lock == '1'
+        with redirect_stdout(output):
+            lock_control.control(yac, root, radio, 'en', no_key, SimpleNamespace(lost=False))
+        assert output.getvalue().splitlines() == ['Lock On', 'Lock Off']
+        assert radio.serial.lock == '0'
         for language in yac.lang_sel.LANGUAGE_CODES:
             assert (root / 'lang' / language / 'help/h038').is_file()
             for token in ('l404', 'l405', 'l406', 'l407'):

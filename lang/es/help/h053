@@ -1,0 +1,14 @@
+Ayuda de decodificación RTTY
+
+Coma lee texto anterior; punto, posterior, en bloques de 60 caracteres.
+h Muestra esta ayuda.
+n Borra el texto recibido.
+q Vuelve al menú de decodificadores; la captura continúa.
+s Inicia o detiene la captura.
+v Lee el texto más reciente.
+
+Cerrar YAC detiene la captura y restaura los ajustes del decodificador.
+
+***
+Fin de la ayuda
+***

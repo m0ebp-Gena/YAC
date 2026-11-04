@@ -1,14 +1,8 @@
-Ayuda: Ancho de banda
+Ayuda: Anchura de la banda pasante
 
-Ancho de banda
-
-Control único: punto ensancha el ancho de banda; coma lo estrecha.
-Bordes separados: p selecciona el corte inferior y después alterna superior e inferior.
-Punto eleva el borde elegido; coma lo baja. Elegir un borde lee su valor sin cambiarlo.
-Cada ajuste se aplica inmediatamente y se confirma leyendo la radio.
-Desde Predeterminado, punto selecciona el ancho numérico más estrecho; coma, el más ancho.
-h muestra esta ayuda. q termina, conserva los cambios y vuelve a Filtros.
-No compatible significa que no hay control de ancho para la radio y el modo. YAC vuelve a Filtros sin cambios.
+Coma estrecha la banda pasante; punto la ensancha.
+Desde Predeterminado, punto selecciona la anchura numérica más estrecha; coma, la más ancha.
+q) Terminar y volver a Filtros. Los cambios se conservan.
 
 ***
 Fin de la ayuda

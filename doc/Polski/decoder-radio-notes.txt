@@ -3,3 +3,7 @@ Uwagi o dekoderach dla modeli radia
 TS-590SG: najpierw wybierz CW. Szybkość jest śledzona automatycznie. Plus/minus regulują próg 1 do 30. Stan dekodera i Auto Information są przywracane po zatrzymaniu.
 
 IC-705 RTTY: najpierw wybierz RTTY. Używa jednoznacznie powiązanego portu USB B i przywraca jego funkcję. Odmawia przy DV/Weather oraz SEND/kluczowaniu na B. Przy niejednoznaczności ustaw rtty_port na zweryfikowany port B tego radia. Inne modele RTTY nie są jeszcze obsługiwane.
+
+CW z audio: d c rozpoczyna dekodowanie. Przecinek zmniejsza oszacowanie, kropka zwiększa bez komunikatu (5-60 WPM). v podaje sygnał, częstotliwość i wybrane WPM. r otwiera przegląd; tam c czyści tekst, q wraca do CW. q w CW zatrzymuje odbiór i wychodzi. Tekst pozostaje do wyczyszczenia lub zamknięcia YAC (ostatnie 10 000 znaków); bez pliku tekstowego. Automatyczne dopasowanie trwa; tempo nadawania bez zmian. Brak regulacji WPM w dekoderze radia.
+
+Audio używa prostej listy z pełnymi nazwami wejść Windows, jeśli dostępne, bez zaawansowanej listy interfejsów. Zapisany wybór pozostaje; przeglądanie nie zmienia dźwięku Windows.

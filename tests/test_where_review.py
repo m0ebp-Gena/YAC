@@ -11,6 +11,24 @@ from tests.test_split_control import ROOT, Cat, Civ
 
 
 class WhereReviewTests(unittest.TestCase):
+    def test_radio_without_split_definition_repeats_normal_report(self):
+        from modules.find_rad import RadioConnection
+        radio = RadioConnection(serial=None, port='COM6', baudrate=115200,
+                                protocol='CAT', model_id='020', model_name='QRP Labs QMX')
+        self.assertFalse(split_control.has_report(ROOT, radio))
+        keys = iter(['w', 'w', 'w', 'q', 'y'])
+        with patch.object(yac, 'connect_radio', return_value=radio), \
+             patch.object(yac, '_read_settings', return_value={'call':'test', 'lang':'en'}), \
+             patch.object(lang_sel, 'read_key', side_effect=lambda **kwargs: next(keys)), \
+             patch.object(yac, '_radio_status', return_value='Normal report') as normal, \
+             patch('modules.tone_status.report', return_value=''), \
+             patch.object(split_control, 'report') as details, \
+             patch.object(RadioConnection, 'close'), \
+             redirect_stdout(io.StringIO()):
+            self.assertEqual(yac.main([]), 0)
+        details.assert_not_called()
+        self.assertEqual(normal.call_count, 4)  # Initial status plus three w presses.
+
     def test_alternation_and_any_other_key_resets_even_when_returned_from_submenu(self):
         radio=create_dummy_radio()
         keys=iter(['w','w','w','w','h','w','s','q','w','q', 'y'])
@@ -22,10 +40,10 @@ class WhereReviewTests(unittest.TestCase):
              patch.object(split_control,'report',return_value='Detailed report') as details,redirect_stdout(output):
             self.assertEqual(yac.main([]),0)
         self.assertEqual(details.call_count,2)
-        self.assertEqual(normal.call_count,4)
+        self.assertEqual(normal.call_count,5)
         lines=output.getvalue().splitlines()
         self.assertEqual([line for line in lines if line in {'Normal report','Detailed report'}],
-                         ['Normal report','Detailed report','Normal report','Detailed report','Normal report','Normal report'])
+                         ['Normal report','Normal report','Detailed report','Normal report','Detailed report','Normal report','Normal report'])
 
     def test_ftx_reads_live_shift_and_tone_instead_of_ini_defaults(self):
         cat=Cat(fm=True)

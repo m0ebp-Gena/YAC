@@ -111,4 +111,4 @@ Inside audio CW decoding, z reads KP and matches the decoder pitch without chang
 
 LOCK CONTROL - DEVELOPMENT
 k: Lock Off / Lock On. LK controls the native dial lock; the radio lock configuration determines dial coverage.
-Entry reads without changing the radio. Further k cycles; q keeps the selection. YAC does not change the speech/lock button assignment. Hardware verification pending.
+Each k reads the current state, applies the next state and announces the verified result at Top Level. No q is needed. YAC does not change the speech/lock button assignment. Hardware verification pending.

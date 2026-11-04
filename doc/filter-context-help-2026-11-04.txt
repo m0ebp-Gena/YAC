@@ -1,0 +1,25 @@
+Context-sensitive filter help - 4 November 2026
+
+In Filters, h shows the short general overview. Inside a filter, h shows
+instructions for that control and returns without another keypress.
+
+Separate topics cover Auto Notch, Noise Blanker, Manual Notch, noise reduction
+level, Beat Cancel, noise reduction following time, passband width, Low Cut,
+Upper Cut, and Contour frequency, level and width. Topics are aligned in
+English, German, Spanish and Polish and contain no named radio models.
+
+Help selection uses the connected radio's capabilities and mode. Where noise
+reduction offers level or following time, help reads the live reduction type.
+When it is Off, help describes the type that the next toggle would restore.
+Unreadable or unsupported contexts have short explanatory help instead of
+guessing. Help reads do not change settings.
+
+Passband width no longer automatically prints help on entry. Entry reports
+the current setting; h requests help. Passband width remains on p. Repeated
+l and u behaviour has not been changed by this work.
+
+Verification: 66 related automated tests passed, including all four languages,
+help selection, live noise reduction type, remembered type while Off,
+unsupported/unreadable contexts, short topic size, no writes from help and
+return to the same control. Testing used simulated radios and responses;
+hardware verification remains pending. No new package was built.

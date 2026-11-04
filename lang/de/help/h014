@@ -1,11 +1,14 @@
-Hilfe: Empfangsaudio einrichten
+Hilfe zur Empfangsaudio-Auswahl
 
-Empfangsaudio: Punkt nächster Eingang; Komma vorheriger; c wechselt den physischen Kanal. v prüft eine Sekunde den Pegel ohne Wiedergabe. Enter speichert; q zurück zum Decoder-Menü ohne Speichern; h Hilfe. Nur v öffnet den Eingang; Enter prüft das Format ohne Aufnahme. Name und Audiosystem werden angesagt. Mehrere Einträge können dasselbe Gerät darstellen. Radio wählen, nicht Mikrofon. Pegel beweist keine Geräteidentität. Mit einem stetigen Empfangssignal prüfen. Kanalnummern garantieren nicht Main/Sub. Gespeicherter Name und Audiosystem müssen eindeutig bleiben; kein Ersatzgerät bei Fehlern. Keine Änderung von Standardgeräten, Sprachausgabe oder Wiedergabe. Öffnen und Durchsehen lassen die Aufnahme laufen. Erst eine ausdrückliche Prüfung mit v oder Speichern mit Enter beendet laufende Audio-CW-Aufnahme; danach ausdrücklich neu starten. Ein fehlender gespeicherter Eingang wird gemeldet. Vor Prüfen oder Speichern mit Punkt/Komma oder c einen Kandidaten wählen. Optionale sounddevice/PortAudio-Abhängigkeit erforderlich. Nur Enter speichert.
+Wählen Sie den Aufnahmeeingang mit Ihrem Radioaudio. YAC verwendet die Gerätenamen des Systems, etwa USB Audio CODEC. Unter Windows mit der Registerkarte Aufnahme in den Soundeinstellungen vergleichen. USB im Namen beweist nicht, dass es das Funkgerät ist.
 
-Empfangspegel wird eine Sekunde geprüft
-Audioeingang fehlt, ist mehrdeutig oder inkompatibel; Auswahl nicht gespeichert
-Audioeinrichtung nicht verfügbar. Optionale Audio-Abhängigkeit installieren.
-Audio übersteuert; USB-Audiopegel am Radio senken
+Komma wählt den vorherigen Eingang, Punkt den nächsten. An den Enden wird angehalten. c wechselt den Eingangskanal. Kanalnummern bedeuten nicht unbedingt Main und Sub. Browsen öffnet keinen Eingang und speichert nichts.
+
+Enter prüft das Eingangsformat, speichert die Wahl für YAC und kehrt zum Decodermenü zurück. Bei einem Prüf- oder Speicherfehler bleibt die Auswahl offen. h liest die Hilfe. q verlässt ohne Speichern der Browsingänderungen. Die bisher gespeicherte Wahl bleibt erhalten.
+
+v prüft den Kanal eine Sekunde und meldet den Pegel ohne Wiedergabe. Gleichmäßiges Signal empfangen und Werte vergleichen. Dies prüft Audio, nicht korrekte Dekodierung. Übersteuerung bedeutet zu lauten Eingang. Prüfen oder Speichern stoppt laufende Audio-CW-Aufnahme; mit c im Decodermenü neu starten.
+
+YAC ändert weder Windows-Standardgeräte noch Bildschirmleser- oder Lautsprecherton. Die gespeicherte Gerätewahl bleibt erhalten. Fehlende oder mehrdeutige Eingänge werden gemeldet und nicht still ersetzt. Ohne gewählten Eingang zuerst Punkt/Komma oder c verwenden. Die optionale Audioabhängigkeit muss installiert sein.
 
 ***
 Ende der Hilfe

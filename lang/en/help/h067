@@ -1,0 +1,18 @@
+Tuning Step help
+
+This sets YAC's tuning step, not the radio's own tuning step.
+The step size depends on the mode. Changing it saves the value for that mode group.
+
+Defaults:
+SSB and associated data modes: 1000 Hz.
+CW: 500 Hz.
+AM: 2500 Hz.
+FM and digital voice: 12500 Hz.
+
+Enter a positive whole number of hertz, then press Enter to save and return to Settings.
+h then Enter) Read this help.
+Blank Enter or q then Enter) Cancel and return to Settings without changes.
+
+***
+End of help
+***

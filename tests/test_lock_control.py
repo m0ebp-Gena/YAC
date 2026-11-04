@@ -19,25 +19,22 @@ class LockTests(unittest.TestCase):
         return RadioConnection(None, 'test', 38400, 'CAT', model, model)
 
     def run_control(self, radio, keys, language='en', watch=None):
-        keys = iter(keys)
         output = io.StringIO()
         with redirect_stdout(output), patch.object(locks.LOG, 'exception'):
-            pending = locks.control(yac, ROOT, radio, language, lambda: next(keys),
-                                    watch or SimpleNamespace(lost=False))
+            pending = None
+            for _ in range(max(1, list(keys).count('k'))):
+                pending = locks.control(yac, ROOT, radio, language,
+                                        lambda: self.fail('Lock must not read another key'),
+                                        watch or SimpleNamespace(lost=False))
         return output.getvalue(), pending
 
-    def test_demo_entry_has_no_write_and_q_keeps_selection(self):
+    def test_demo_each_press_toggles_and_returns_without_q(self):
         radio = create_dummy_radio()
-        with patch.object(yac, '_cat_exchange', wraps=yac._cat_exchange) as cat:
-            out, _ = self.run_control(radio, ['q'])
-            self.assertIn('Lock Off', out)
-            self.assertEqual([c.args[1] for c in cat.call_args_list], ['LK;'])
-        out, _ = self.run_control(radio, ['k', 'q'])
-        self.assertIn('Lock On', out)
-        self.assertEqual(radio.serial.lock, '1')
-        out, _ = self.run_control(radio, ['q'])
-        self.assertIn('Lock On', out)
-        self.assertEqual(radio.serial.lock, '1')
+        for expected, raw in [('Lock On', '1'), ('Lock Off', '0')]:
+            out, pending = self.run_control(radio, [])
+            self.assertEqual(out.strip(), expected)
+            self.assertEqual(radio.serial.lock, raw)
+            self.assertIsNone(pending)
 
     def test_all_yaesu_and_ts590_exact_commands_and_wrap(self):
         for model, off, on in [('0761','LK0;','LK1;'),('0800','LK0;','LK1;'),
@@ -56,15 +53,13 @@ class LockTests(unittest.TestCase):
                 self.assertEqual(state[0], off[2:-1])
                 self.assertEqual([c for c in commands if c != 'LK;'], [on,off])
 
-    def test_external_physical_lock_change_is_read_before_cycle(self):
+    def test_external_physical_lock_change_is_read_before_action(self):
         radio = create_dummy_radio()
-        def keys():
-            radio.serial.lock = '1'
-            yield 'k'
-            yield 'q'
-        out, _ = self.run_control(radio, keys())
-        self.assertNotIn('Lock On', out)
-        self.assertEqual(radio.serial.lock, '0')
+        self.run_control(radio, [])
+        radio.serial.lock = '0'
+        out, _ = self.run_control(radio, [])
+        self.assertEqual(out.strip(), 'Lock On')
+        self.assertEqual(radio.serial.lock, '1')
 
     def test_ts480_identity_gate_and_both_existing_lock_bits(self):
         with patch.object(locks.ts480_control, 'variant', return_value=None), \
@@ -81,7 +76,7 @@ class LockTests(unittest.TestCase):
             with patch.object(locks.ts480_control,'variant',return_value='1'), \
                  patch.object(yac,'_cat_exchange',side_effect=exchange):
                 out,_=self.run_control(self.cat('020'),['k','q'])
-            self.assertIn('Lock On',out)
+            self.assertIn('Lock Off',out)
             self.assertEqual(state[0],'00')
 
     def civ(self, model, selector=None, enabled=0, scope=0, reject=None, mismatch=False):
@@ -113,18 +108,18 @@ class LockTests(unittest.TestCase):
                 with patch.object(yac,'_civ_exchange',side_effect=read), \
                      patch.object(yac,'_civ_send',side_effect=send):
                     out,_=self.run_control(radio,['k','k','k','q'])
-                self.assertLess(out.index('Lock Off'),out.index('Dial Lock'))
                 self.assertLess(out.index('Dial Lock'),out.index('Panel Lock'))
+                self.assertLess(out.index('Panel Lock'),out.index('Lock Off'))
                 t=bytes.fromhex('1A05'+selector)
                 self.assertEqual(writes,[t+b'\x00',b'\x16\x50\x01',t+b'\x01',b'\x16\x50\x00'])
                 self.assertEqual(state[b'\x16\x50'],0)
 
-    def test_icom_initial_panel_entry_and_q_make_no_changes(self):
+    def test_icom_initial_panel_cycles_off_without_changing_scope(self):
         radio,state,writes,read,send=self.civ('IC-705','0063',1,1)
         with patch.object(yac,'_civ_exchange',side_effect=read),patch.object(yac,'_civ_send',side_effect=send):
             out,_=self.run_control(radio,['q'])
-        self.assertIn('Panel Lock',out)
-        self.assertEqual(writes,[])
+        self.assertEqual(out.strip(),'Lock Off')
+        self.assertEqual(writes,[bytes.fromhex('165000')])
         self.assertEqual(state[bytes.fromhex('1A050063')],1)
 
     def test_ic7600_has_only_off_on_and_no_menu_write(self):
@@ -156,17 +151,26 @@ class LockTests(unittest.TestCase):
             self.assertIn('Radio Error',out)
         self.assertEqual(writes,[])
 
-    def test_help_reverse_keys_disconnect_and_passthrough(self):
+    def test_disconnect_does_not_send_lock_commands(self):
         radio=create_dummy_radio()
-        out,pending=self.run_control(radio,['h',',','.','w'])
-        self.assertIn('Help For Lock',out)
-        self.assertIn('Lock On',out)
+        with patch.object(yac,'_cat_exchange') as cat:
+            out,pending=self.run_control(radio,[],watch=SimpleNamespace(lost=True))
         self.assertEqual(pending,'w')
+        cat.assert_not_called()
+        self.assertEqual(out,'')
+
+    def test_real_top_level_k_returns_to_other_commands_without_q(self):
+        radio=create_dummy_radio()
+        keys=iter(['k','v','k','q','y'])
+        output=io.StringIO()
+        with patch.object(yac,'connect_radio',return_value=radio), \
+             patch.object(yac,'_read_settings',return_value={'call':'test','lang':'en'}), \
+             patch.object(lang_sel,'read_key',side_effect=lambda:next(keys)), \
+             redirect_stdout(output):
+            self.assertEqual(yac.main([]),0)
+        self.assertIn('Lock On',output.getvalue())
+        self.assertIn('Lock Off',output.getvalue())
         self.assertEqual(radio.serial.lock,'0')
-        with patch.object(yac,'_cat_exchange',wraps=yac._cat_exchange) as cat:
-            out,pending=self.run_control(radio,['k'],watch=SimpleNamespace(lost=True))
-        self.assertEqual(pending,'k')
-        self.assertEqual([c.args[1] for c in cat.call_args_list],['LK;'])
 
     def test_unknown_models_and_qmx_do_not_send_lock_commands(self):
         for radio in [self.cat('unknown'),RadioConnection(None,'test',115200,'CI-V','IC-7610','IC-7610')]:

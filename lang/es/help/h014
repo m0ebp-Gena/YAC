@@ -1,11 +1,14 @@
-Ayuda: Configuración del audio de recepción
+Ayuda de selección de audio recibido
 
-Audio de recepción: punto siguiente entrada; coma anterior; c cambia el canal físico. v comprueba el nivel un segundo sin reproducirlo. Intro guarda; q vuelve al menú de decodificadores sin guardar; h ayuda. Solo v abre la entrada; Intro comprueba el formato sin capturar. Se anuncian nombre y sistema de audio. Varias entradas pueden corresponder al mismo dispositivo. Elija la radio, no el micrófono. Un nivel no demuestra la identidad del dispositivo. Compruebe con una señal estable. Los canales no garantizan Main/Sub. Nombre y sistema guardados deben coincidir de forma única; no hay sustitución automática. No cambia dispositivos predeterminados, voz ni reproducción. Abrir y explorar mantiene la captura activa. Solo v para comprobar o Intro para guardar detiene antes CW por audio; reinícielo después explícitamente. Se indica si no hay entrada guardada disponible; use punto/coma o c para seleccionar una candidata antes de comprobar o guardar. Requiere sounddevice/PortAudio opcional. Solo Intro guarda.
+Elija la entrada de grabación que lleva el audio de la radio. YAC utiliza los nombres del sistema, como USB Audio CODEC. En Windows, compare con la pestaña Grabación de Sonido. USB en el nombre no demuestra que sea la radio.
 
-Comprobando el nivel durante un segundo
-Entrada ausente, ambigua o incompatible; selección no guardada
-Audio no disponible. Instale la dependencia de audio opcional.
-Audio saturado; reduzca el nivel USB de la radio
+Coma selecciona la entrada anterior; punto la siguiente. Se detienen en los extremos. c cambia el canal de entrada. Los números no significan necesariamente Main y Sub. Explorar no abre una entrada ni guarda cambios.
+
+Enter comprueba el formato, guarda la elección para YAC y vuelve al menú del decodificador. Si falla la comprobación o el guardado, la selección sigue abierta. h lee la ayuda. q sale sin guardar los cambios de exploración. Se conserva la elección guardada anteriormente.
+
+v comprueba el canal durante un segundo y anuncia su nivel sin reproducirlo. Reciba una señal constante y compare la lectura. Comprueba audio, no una decodificación correcta. La saturación indica una entrada demasiado alta. Comprobar o guardar detiene la captura CW por audio activa; reiníciela con c en el menú del decodificador.
+
+YAC no cambia los dispositivos predeterminados de Windows, el sonido del lector de pantalla ni los altavoces. Conserva la entrada guardada. Las entradas ausentes o ambiguas se notifican, sin sustituirlas automáticamente. Sin entrada elegida, use primero punto/coma o c. Se requiere la dependencia de audio opcional.
 
 ***
 Fin de la ayuda

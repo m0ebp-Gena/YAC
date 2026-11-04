@@ -1,0 +1,10 @@
+Noise reduction following time help
+
+r) Turn noise reduction On or Off.
+While On, comma shortens the following time; full stop lengthens it.
+The time is in milliseconds and controls how quickly noise reduction follows changes in the received signal.
+q) Finish and return to Filters. Changes are kept.
+
+***
+End of help
+***

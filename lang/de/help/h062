@@ -1,0 +1,10 @@
+Hilfe: Nachführzeit der Rauschunterdrückung
+
+r) Rauschunterdrückung ein- oder ausschalten.
+Bei Ein verkürzt Komma die Nachführzeit; Punkt verlängert sie.
+Die Zeit in Millisekunden bestimmt, wie schnell die Rauschunterdrückung Änderungen des Empfangssignals folgt.
+q) Beenden und zum Filtermenü zurückkehren. Änderungen bleiben erhalten.
+
+***
+Ende der Hilfe
+***

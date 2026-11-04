@@ -14,7 +14,7 @@ Das Haupt-v meldet bei aktiver Sperre auch Ein, Drehknopf- oder Bedienfeldsperre
 Beim Öffnen eines Filters wird der aktuelle Zustand ohne Änderung vorgelesen. Bei Aus wird nur Aus gemeldet; bei Ein auch der aktive Einstellwert, soweit vorhanden. Erst ein weiterer Befehl ändert die Einstellung.
 
 Vorverstärker p, Abschwächer u und VFO/Empfänger s v: Öffnen liest den aktuellen Wert ohne Änderung. Punkt wählt die nächste, Komma die vorherige Option; der wiederholte Befehlsbuchstabe wählt ebenfalls weiter. q behält die Auswahl und kehrt eine Ebene zurück; h erklärt. Ist der aktuelle VFO nicht lesbar, wird Unbekannt gemeldet, ohne einen VFO auszuwählen.
-k: Sperre. Einstieg liest; erneutes k wechselt die Sperre. h hilft; q behält die Auswahl.
+k: Sperre. Wechselt sofort zum nächsten Sperrzustand und bleibt auf der Hauptebene. Kein q nötig.
 
 Drücken Sie jeweils eine Taste. Meist ist keine Eingabetaste nötig.
 Befehle hängen von den unterstützten Funktionen des Funkgeräts ab.
@@ -83,7 +83,7 @@ a regelt AF-Verstärkung. r regelt in FM die Rauschsperre, sonst RF-Verstärkung
 Leistungseingabe: ganze Watt; h und Eingabetaste für Hilfe; leere Eingabe bricht ab. Icom-Watteingaben sind geschätzt und werden in Prozent umgerechnet; v meldet Prozent. Nach erfolgreichem Schreiben und Rücklesen wird die Eingabe bestätigt, zum Beispiel 33W Gesetzt. Dies bestätigt den angeforderten Wert, keine gemessene Ausgangsleistung. Vor v Einstellungen mit q verlassen.
 
 FILTER — zuerst f drücken
-f dann p   Bandbreite
+f dann p   Durchlassbandbreite
 f dann l   Untere Grenzfrequenz
 f dann u   Obere Grenzfrequenz
 Punkt      Wert erhöhen
@@ -101,7 +101,7 @@ Kerbfilter: f dann a schaltet Auto Notch um; a im Regler erneut. TS-480 verwende
 
 Contour: f c reads current state without changing it; when On, reads frequency. Inside, c toggles On/Off. Navigation adjusts current frequency (10-3200 hertz). Inside Contour, l selects Contour level (-40 to +20, spoken as Dip/Neutral/Peak); w selects Contour width (1-11); c returns to frequency. When already on frequency, c toggles On/Off. Full stop increases and comma decreases the selected setting, stopping at endpoints. Off leaves settings unchanged. q returns to Filters, where l means Low Cut; q again returns to top level. Current settings are preserved on switching. FT-DX10, FT-710 and FTX-1 only; FTX-1 frequency/state follow selected Main/Sub, level/width are shared menu settings. APF is separate and is not altered.
 
-Filterprüfung: f v nennt die aktuell eingeschalteten schaltbaren Filter der Betriebsart und des Empfängers. v innerhalb einer Filtereinstellung prüft, ohne die Einstellung zu verlassen. Ausgeschaltete oder nicht unterstützte Filter werden ausgelassen; unbekannte Zustände werden genannt. Bandbreite und untere/obere Grenzfrequenzen werden nicht als Ein/Aus-Filter gezählt. FTX-1 nennt Haupt- oder Nebenempfänger. Die Prüfung ändert keine Einstellungen.
+Filterprüfung: f v nennt die aktuell eingeschalteten schaltbaren Filter der Betriebsart und des Empfängers. v innerhalb einer Filtereinstellung prüft, ohne die Einstellung zu verlassen. Ausgeschaltete oder nicht unterstützte Filter werden ausgelassen; unbekannte Zustände werden genannt. Durchlassbandbreite und untere/obere Grenzfrequenzen werden nicht als Ein/Aus-Filter gezählt. FTX-1 nennt Haupt- oder Nebenempfänger. Die Prüfung ändert keine Einstellungen.
 
 Wiederholte v-Prüfung: Das erste v zeigt die Übersicht eingeschalteter Filter. Weitere aufeinanderfolgende v zeigen jeweils einen unterstützten Filter, auch Aus oder unbekannt, und danach wieder die Übersicht. Jeder Zustand wird neu gelesen. Andere Befehle oder ein Wechsel der Betriebsart/des Empfängers starten wieder bei der Übersicht. q verlässt das Filtermenü; innerhalb einer Einstellung führt q zuerst zum Filtermenü. Das Haupt-v bleibt unverändert.
 

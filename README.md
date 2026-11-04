@@ -136,7 +136,7 @@ Generated packages and previous builds remain excluded from Git.
 ## Feedback
 
 Contact Gena through the Active Elements or Blind Hams email lists, or at
-gena@m0ebp.uk. Include the YAC version, operating system, radio model and steps
+m0ebp.gena@gmail.com. Include the YAC version, operating system, radio model and steps
 to reproduce any problem.
 
 IC-9700 control support is based on Icom documentation and offline simulations;

@@ -1,0 +1,33 @@
+YAC 001 - 4 November 2026 revision 1: verification record
+
+The offline suite ran 652 tests successfully, with one skipped check where
+Windows denied creation of a test directory junction. That protection check
+is not claimed as passed. Existing native PowerShell updater tests also ran.
+
+Windows was built in the existing isolated Python environment. Package
+self-checks passed, including bundled audio, certificates, translated data
+and simulated controls. All 57 embedded application modules were compared
+with the working source. ZIP integrity, resource contents, clean defaults,
+release metadata and SHA-256 checksums were checked for both packages.
+
+Fresh Windows extraction passed language selection, name entry, simulated
+radio startup, immediate lock toggles and normal exit. No physical serial
+ports were opened by these checks.
+
+Disposable Windows installations exercised the native update installer using
+the new updater and the updater embedded in the 2 November release. Both
+preserved settings and a diagnostic log, installed the expected files, and
+removed update staging directories. Installation on D: was tested with the
+new updater's default temporary directory pointing to C:.
+
+Harness adaptations: downloads supplied exact local package bytes; frozen
+and terminal flags were supplied by the harness. Installer prompts were
+automatically answered and its restart request recorded. Python then ran the
+installed executable's package check and verified its exit status. This
+tests local update installation and executable restart, not a user-operated
+download and update from GitHub. Disposable installations were removed and
+diagnostic records retained under local_storage/testing/results and builds.
+
+Physical QMX SM; readback and identity, real reception, speech and braille,
+and native macOS/Linux behaviour still require user testing. The Mac/Linux
+ZIP is an installer package, not a native executable built on those systems.

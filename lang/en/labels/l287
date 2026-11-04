@@ -1,1 +1,1 @@
-In {number}/{total}: {name}, {host}, ch {channel}/{channels}
+In {number}/{total}: {name}, ch {channel}/{channels}

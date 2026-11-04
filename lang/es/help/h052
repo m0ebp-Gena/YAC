@@ -1,0 +1,23 @@
+Ayuda de decodificación CW
+
+Coma baja 1 PPM; punto sube 1 PPM, sin anuncio. Rango: 5 a 60.
+h Muestra esta ayuda, incluidos los controles de revisión.
+Más / menos sube / baja el umbral de detección, si está disponible.
+q Detiene la captura y vuelve al menú; conserva el texto recibido.
+r Abre la revisión del texto más reciente; la captura sigue en silencio.
+s Inicia o detiene la captura sin salir de esta vista.
+v Anuncia señal, frecuencia y estimación de PPM seleccionada.
+z Ejecuta Zero In: resintoniza y adapta el tono; conserva los cambios.
+
+En revisión:
+c Borra el texto recibido; la captura continúa.
+Coma / punto retrocede / avanza por bloques de 60 caracteres.
+h Muestra esta misma ayuda de CW.
+q Vuelve a la decodificación CW.
+El tono sigue automáticamente el ajuste de tono CW de la radio.
+PPM: estimación de recepción; se adapta; no disponible en decodificación nativa.
+El texto dura hasta borrarlo o cerrar YAC; los últimos 10.000 caracteres.
+No se crea un archivo. Las PPM duran esta sesión de YAC.
+***
+Fin de la ayuda
+***

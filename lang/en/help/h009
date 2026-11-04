@@ -1,42 +1,22 @@
-Help For The Settings Menu
+Settings help
 
-Preamp p, Attenuator u and VFO/receiver s v: opening reports the current setting without changing it. Full stop selects next; comma previous; repeating the control letter also advances. q keeps the choice and returns one level; h explains. If the current VFO cannot be read, Unknown is reported without selecting a VFO.
+h) This help document.
+For help with a particular setting, open it and request help.
 
-Settings: a AGC; m Mic Gain; p Power; r Region; s Step Size; t Tuner; v VFO/receiver; e Speech Processor. q returns and announces Top Level, or Done after AGC selection. h reads this help.
+q) Return to Top Level.
 
-Choose the region for the radio location with s r. Default: Region 1. Repeat r to cycle 1, 2, 3; each change saves immediately. h gives help; q returns to Settings with Done.
+a) Automatic Gain Control
+e) Speech Processor
+i) Radio information
+m) Microphone Gain
+p) Output Power
+r) Region
+s) Tuning Step
+t) Tuner Selection
+u) Update YAC
+v) VFO/Receiver
 
-s a reads the current AGC setting without changing it. Another a selects the next AGC setting and announces the confirmed choice. q finishes and announces Done. Fast recovers sooner after a strong signal; Slow holds gain reduction longer. Choose by listening. Off allows larger changes in received volume. No transmission is needed.
-
-m opens microphone gain for the current mode. Full stop/comma adjust immediately; h explains the mode-specific procedure. Space offers optional ALC feedback where supported. You operate PTT yourself.
-
-p announces current power and the entry range. Type whole watts and press Enter; blank Enter cancels. A confirmed change announces the entered value followed by Set. This is a setting, not measured transmitted power. h then Enter gives power help. Blank Enter or q then Enter cancels and returns to Settings.
-
-s opens tuning step entry for the current mode. t opens tuner selection and reads the current setting without changing it. Inside, full stop selects next, comma previous; q keeps changes and returns to Settings. Selection does not start tuning. Leave Settings and press t to start a tuning cycle. v selects the supported VFO or receiver and reports the selection.
-
-e opens Speech Processor and reads its settings. e inside toggles it; full stop increases and comma decreases the selected level. n cancels and restores entry processor settings; q keeps changes. h inside explains the available controls and feedback.
-
-Model-specific choices, limits and exceptions are in doc/supported-radios: open the text file named for your radio. READ-ME.txt explains these notes. Spoken responses are also written as text for the braille display. Unsupported controls and failed or unknown readings are reported.
-
-
-s b: full stop or b selects the next mode; comma the previous. q applies, saves and returns. h reads help. Braille only silences Speakup; connected braille remains available in every mode.
-
-s o: r Rate; v Volume; p Pitch; u Punctuation; full stop increases; comma decreases; t Test; d Defaults; h Help; q returns. Changes apply and save immediately.
-
-s u: Update YAC. Starts with Looking. h reads update help. No Internet or No Update returns to Settings. Update Found asks Read Notes Y/N?, then Update Y/N?. y accepts; n skips notes or declines installation; q returns. Long notes use Space for the next page and q to leave.
-
-s w: Wi-Fi setup is available only on the Raspberry Pi image. Use your operating system Wi-Fi settings here. Wi-Fi setup. Country, network name and password. Ctrl+C cancels entry; punctuation and command letters are literal.
-
-Tuning cycle finished
-Tune failed or tuner bypassed
-Tune result unconfirmed
-Tuning timed out; stop requested
-Tuning stop could not be confirmed
-
-
-s i: Radio info. Reads identity and connection details, one value per line. i reads again; h help; q returns to Settings. No settings change.
-
-s t: Entry reads the current tuner without changing it. full stop selects the next choice; comma selects the previous choice. Each selection applies immediately and is checked. Selection does not start tuning. h reads help. q finishes with Done and returns to Settings, keeping changes. Press q again to return to top level, where t starts tuning.
+Availability depends on your radio.
 
 ***
 End of help

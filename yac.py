@@ -1638,8 +1638,22 @@ def _radio_status(root: Path, radio: RadioConnection, language: str) -> str:
         if radio.model_id == "020":
             frequency = _current_frequency(root, radio)
             mode = _current_mode(radio)
-            match = re.search(r'SM0(\d{4});', _cat_exchange(radio, 'SM0;'))
-            signal = f'S {int(match.group(1))}' if match else 'S ?'
+            if getattr(radio, 'qmx_firmware', None):
+                match = re.fullmatch(r'SM([+-]?\d+(?:\.\d+)?);',
+                                     _cat_exchange(radio, 'SM;').strip())
+                if match:
+                    value = match.group(1)
+                    sign = ('l080' if value.startswith('-') else 'l079')
+                    # Keep the documented dB reading; no unverified S-unit calibration.
+                    signal = f'S {value} dB'
+                    if value.startswith(('-', '+')):
+                        spoken = _read_label(root, language, sign, 'Minus' if value[0] == '-' else 'Plus')
+                        signal = f'S {spoken} {value[1:]} dB'
+                else:
+                    signal = 'S ?'
+            else:
+                match = re.search(r'SM0(\d{4});', _cat_exchange(radio, 'SM0;'))
+                signal = f'S {int(match.group(1))}' if match else 'S ?'
             return f'{signal} {frequency} {mode}' if frequency and mode else _radio_error(root, radio, language)
         command_path = _radio_command_file(root, radio, "read", "w")
         if command_path is None:
@@ -1835,6 +1849,8 @@ def _main(argv: list[str] | None = None) -> int:
     prompt_open = True
     where_details_next = False
     try:
+        with watch.command():
+            chat_int.show_response(_dispatch(root, radio, language, "w", None) or "")
         while True:
             with watch.command():
                 if pending_key is not None:
@@ -1872,9 +1888,10 @@ def _main(argv: list[str] | None = None) -> int:
                         chat_int.show_response(_read_label(root, language, 'l109', 'Reconnecting'))
                     continue
                 if key == "w":
+                    has_details = split_control.has_report(root, radio)
                     response = (split_control.report(sys.modules[__name__], root, radio, language)
-                                if where_details_next else _dispatch(root, radio, language, key, None))
-                    where_details_next = not where_details_next
+                                if has_details and where_details_next else _dispatch(root, radio, language, key, None))
+                    where_details_next = has_details and not where_details_next
                 elif key == "e":
                     original_frequency = _current_frequency(root, radio)
                     if original_frequency is None:
@@ -2068,43 +2085,8 @@ def _main(argv: list[str] | None = None) -> int:
                         if settings_key == "s":
                             DEBUG_LOG.debug("Settings key=%r", settings_key)
                             chat_int.show_request(call, settings_key)
-                            step_profile = _step_size_key(_current_mode(radio))
-                            if step_profile is None:
-                                response = _read_label(root, language, "l072", "NOT Understood.")
-                                break
-                            setting_key, mode_name = step_profile
-                            chat_int.show_step_size_prompt(root, language, mode_name,
-                                                           _step_size_value(settings, setting_key))
-                            try:
-                                entered_step = input().strip()
-                            except (EOFError, KeyboardInterrupt):
-                                print()
-                                chat_int.show_response(_read_label(root, language, "l355", "Aborted"))
-                                response = None
-                                continue
-                            if not entered_step:
-                                chat_int.show_response(_read_label(root, language, "l355", "Aborted"))
-                                response = None
-                                continue
-                            try:
-                                step_hz = int(entered_step)
-                            except ValueError:
-                                step_hz = 0
-                            if (
-                                not entered_step.isascii()
-                                or not entered_step.isdecimal()
-                                or step_hz <= 0
-                            ):
-                                chat_int.show_response(_read_label(root, language, "l356", "Invalid"))
-                                response = None
-                                continue
-                            _set_yac_value(root / "yac.ini", setting_key, str(step_hz))
-                            settings[setting_key] = str(step_hz)
-                            applied_template = _read_label(
-                                root, language, "l070", "Step size {value} Hz applied.",
-                            )
-                            response = applied_template.format(value=step_hz)
-                            chat_int.show_response(response)
+                            from modules import step_control
+                            step_control.control(sys.modules[__name__], root, radio, language, settings)
                             response = None
                             continue
                         if settings_key == "e":

@@ -1,0 +1,14 @@
+Pomoc dekodowania RTTY
+
+h Wyświetla tę pomoc.
+n Czyści odebrany tekst.
+Przecinek czyta wcześniejszy, kropka późniejszy tekst, po 60 znaków.
+q Wraca do menu dekoderów; odbiór trwa dalej.
+s Rozpoczyna lub zatrzymuje odbiór.
+v Odczytuje najnowszy tekst.
+
+Zamknięcie YAC zatrzymuje odbiór i przywraca ustawienia dekodera.
+
+***
+Koniec pomocy
+***

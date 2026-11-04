@@ -1,0 +1,14 @@
+Help For RTTY Decoding
+
+Comma reads earlier text; period reads later text, in 60-character chunks.
+h Shows this help.
+n Clears received text.
+q Returns to the decoder menu; capture continues.
+s Starts or stops decoding.
+v Reads the latest received text.
+
+Leaving YAC stops capture and restores the original decoder settings.
+
+***
+End of help
+***

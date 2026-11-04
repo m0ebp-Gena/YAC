@@ -130,6 +130,8 @@ class AudioCW:
         self.stop_event = threading.Event()
         self.worker = None
         self.paused = True
+        self.decoder_lock = threading.RLock()
+        self.initial_wpm = None
 
     def start(self):
         import sounddevice as sd
@@ -152,6 +154,7 @@ class AudioCW:
         if not 200 <= pitch <= 1500 or not 0 < threshold <= 1 or not 5 <= wpm <= 60:
             raise ValueError('Invalid audio decoder settings')
         self.decoder = ToneDecoder(self.output, pitch, threshold, wpm)
+        self.initial_wpm = wpm
         import struct
         def callback(data, frames, timing, status):
             if status:
@@ -182,14 +185,47 @@ class AudioCW:
             if self.paused:
                 was_paused = True
                 continue
-            if was_paused:
+            with self.decoder_lock:
+                if was_paused:
+                    old = self.decoder
+                    self.decoder = ToneDecoder(self.output, old.pitch, old.threshold,
+                                                1.2/old.timing.unit)
+                    was_paused = False
+                # USB radio audio commonly uses 48 kHz. Average each six samples
+                # before decimating to the timing detector's 8 kHz stream.
+                self.decoder.feed([sum(samples[i:i+6])/6 for i in range(0, len(samples)-5, 6)])
+
+    def set_pitch(self, pitch):
+        """Follow radio pitch silently, retaining adapted timing and completed text."""
+        if not 200 <= pitch <= 1500:
+            raise ValueError('Invalid decoder pitch')
+        with self.decoder_lock:
+            old = self.decoder
+            if old.pitch != pitch:
+                decoder = ToneDecoder(self.output, pitch, old.threshold, self.initial_wpm)
+                decoder.timing = old.timing
+                # A partial character across a pitch change is not reliable.
+                decoder.timing.pending = []
+                decoder.timing.last_gap = None
+                decoder.timing.character_ended = decoder.timing.word_ended = True
+                self.decoder = decoder
+
+    def speed(self, direction=0):
+        """Read the selected starting estimate, or reseed live timing explicitly."""
+        with self.decoder_lock:
+            if self.initial_wpm is None:
+                raise ValueError('Audio decoder is not running')
+            current = self.initial_wpm
+            target = (math.floor(current) + 1 if direction > 0 else
+                      math.ceil(current) - 1 if direction < 0 else current)
+            target = max(5, min(60, target))
+            if target != current:
                 old = self.decoder
-                self.decoder = ToneDecoder(self.output, old.pitch, old.threshold,
-                                            1.2/old.timing.unit)
-                was_paused = False
-            # USB radio audio commonly uses 48 kHz. Average each six samples
-            # before decimating to the timing detector's 8 kHz stream.
-            self.decoder.feed([sum(samples[i:i+6])/6 for i in range(0, len(samples)-5, 6)])
+                # Discard partial Morse timing, retaining all completed text,
+                # the open audio input, pitch and level gate.
+                self.decoder = ToneDecoder(self.output, old.pitch, old.threshold, target)
+                self.initial_wpm = target
+            return self.initial_wpm
 
     def close(self):
         self.stop_event.set()

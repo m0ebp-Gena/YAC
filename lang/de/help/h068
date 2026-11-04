@@ -1,0 +1,15 @@
+Hilfe: VFO-Auswahl
+
+Die verfügbaren Optionen hängen vom Funkgerät ab, zum Beispiel VFO A/B oder Main/Sub. Beim Öffnen wird die aktuelle Auswahl gelesen, soweit verfügbar, ohne sie zu ändern.
+
+Manche Funkgeräte erlauben die VFO-Auswahl, können die aktuelle Auswahl aber nicht melden. YAC sagt in diesem Fall Unbekannt an. Das Öffnen dieser Funktion ändert die Auswahl nicht.
+
+Punkt) Nächste Option wählen.
+Komma) Vorherige Option wählen.
+v) Nächste Option wählen.
+h) Diese Hilfe lesen.
+q) Beenden und speichern.
+
+***
+Ende der Hilfe
+***

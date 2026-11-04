@@ -1,0 +1,28 @@
+Filter navigation review - 4 November 2026
+
+Required sequence
+Press f, then the filter key. Entry reads the current setting without
+changing it. Toggle or adjust as supported. Press q to keep the setting
+and finish the adjustment with Done, remaining in Filters. Another filter
+can then be opened directly. Press q from Filters to return to Top Level.
+
+Reviewed controls
+a Auto Notch, b Noise Blanker, c Contour, l Low Cut, n Manual Notch,
+p Bandwidth, r Noise Reduction, and u Upper Cut. Included Contour frequency,
+level and width, Manual Notch width, and separate bandwidth edges.
+
+Finding and correction
+Noise Reduction already followed the required q sequence. Bandwidth cleared
+its active adjustment state when its profile was unsupported or unreadable.
+The next q left Filters, and adjustment keys could be forwarded to Top Level.
+Bandwidth now retains its active control until q, consistently with the other
+filters. Bandwidth help is updated in all four languages.
+
+Verification
+68 related automated tests passed. Navigation checks cover all eight filter
+keys in English, German, Spanish and Polish, entry without writes, toggles,
+adjustments, active filters, help, verification, unsupported and unreadable
+responses, and opening another filter after q. q preserves settings.
+The new regression checks reproduced the Bandwidth failure before the fix.
+Testing used the dummy radio and simulated native responses; physical radio
+verification remains pending. No new user package was built for this change.

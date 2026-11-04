@@ -1,0 +1,18 @@
+Pomoc: Krok strojenia
+
+To ustawia krok strojenia YAC, a nie samego radia.
+Krok zależy od trybu. Zmiana zapisuje wartość dla danej grupy trybów.
+
+Wartości domyślne:
+SSB i powiązane tryby danych: 1000 Hz.
+CW: 500 Hz.
+AM: 2500 Hz.
+FM i głos cyfrowy: 12500 Hz.
+
+Wpisz dodatnią całkowitą liczbę herców i naciśnij Enter, aby zapisać i wrócić do Ustawień.
+h, następnie Enter) Odczytaj tę pomoc.
+Pusty Enter lub q, następnie Enter) Anuluj i wróć do Ustawień bez zmian.
+
+***
+Koniec pomocy
+***

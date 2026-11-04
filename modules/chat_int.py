@@ -11,14 +11,16 @@ from pathlib import Path
 
 
 _response_open = False
+_stream_open = False
 
 
 def finish_response() -> None:
     """Advance only when needed, keeping a response under the cursor until then."""
-    global _response_open
+    global _response_open, _stream_open
     if _response_open:
         sys.stdout.write("\n")
         _response_open = False
+    _stream_open = False
 
 
 def label(root: Path, language: str, key: str, fallback: str = "") -> str:
@@ -63,6 +65,17 @@ def show_response(response: str) -> None:
         sys.stdout.write(response)
         sys.stdout.flush()
         _response_open = True
+
+
+def show_stream(text: str) -> None:
+    """Append received text; ordinary responses keep their separate lines."""
+    global _response_open, _stream_open
+    if text:
+        if not _stream_open:
+            finish_response()
+        sys.stdout.write(text)
+        sys.stdout.flush()
+        _response_open = _stream_open = True
 
 
 def show_goodbye(root: Path, language: str, call: str = "") -> None:

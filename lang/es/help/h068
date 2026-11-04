@@ -1,0 +1,15 @@
+Ayuda: Selección de VFO
+
+Las opciones disponibles dependen de la radio, como VFO A/B o Main/Sub. Al abrir este control se lee la selección actual cuando está disponible, sin cambiarla.
+
+Algunas radios permiten seleccionar el VFO, pero no pueden informar de la selección actual. YAC anuncia Desconocido en ese caso. Abrir este control no cambia la selección.
+
+Punto) Seleccionar la opción siguiente.
+Coma) Seleccionar la opción anterior.
+v) Seleccionar la opción siguiente.
+h) Leer esta ayuda.
+q) Salir y guardar.
+
+***
+Fin de la ayuda
+***

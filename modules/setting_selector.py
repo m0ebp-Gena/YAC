@@ -2,7 +2,7 @@
 from modules import chat_int, help_int
 
 
-def control(root, language, read_current, change, read_key, watch, repeat_key):
+def control(root, language, read_current, change, read_key, watch, repeat_key, help_id='h041'):
     chat_int.show_response(read_current())
     while True:
         try:
@@ -15,7 +15,7 @@ def control(root, language, read_current, change, read_key, watch, repeat_key):
             chat_int.show_done(root, language)
             return
         if key == 'h':
-            chat_int.show_response(help_int.get_help(root, language, 'h041'))
+            chat_int.show_response(help_int.get_help(root, language, help_id))
         elif key in {'.', ',', repeat_key}:
             chat_int.show_response(change(-1 if key == ',' else 1))
 
@@ -47,4 +47,4 @@ def vfo(yac, root, radio, language, read_key, watch):
             or radio.protocol == 'CAT' and radio.model_id == '020'):
         chat_int.show_response(yac._read_label(root, language, 'l129', ''))
         return
-    control(root, language, current, change, read_key, watch, 'v')
+    control(root, language, current, change, read_key, watch, 'v', help_id='h068')

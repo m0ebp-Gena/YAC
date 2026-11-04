@@ -160,7 +160,8 @@ class Responses(unittest.TestCase):
             with patch('modules.tone_status.report',return_value=''),patch.object(yac,'connect_radio',return_value=r),patch.object(yac,'_configure_debug'),patch.object(lang_sel,'read_key',side_effect=lambda **kwargs:next(keys)),patch('builtins.input',side_effect=lambda:next(inputs)),patch.object(yac,'_current_frequency',return_value='7.159'),patch.object(yac,'_current_mode',return_value='USB'),patch.object(yac,'_current_mode_code',return_value=1 if model=='IC-705' else '2'),patch.object(yac,'_radio_status',return_value='S 7 7.159 USB') as status,patch.object(yac,'_set_frequency',return_value='7.159'),patch.object(yac,'_set_mode',return_value=True),patch.object(yac,'_band_change',return_value='40M 7.159 USB'),patch.object(yac,'_set_yac_value') as save,patch.object(yac,'_edit_tone',return_value=('enter','88.5')),patch.object(yac,'_set_tone',return_value='CTCSS 88.5 Hz Both'),patch.object(yac,'_zero_offsets',return_value=True),patch.object(yac,'_offset_action',return_value='Receive Plus 10 Hertz'),patch.object(yac,'_step_frequency',return_value='7.16'),patch.object(yac,'_round_frequency_to_khz',return_value='7.159'),redirect_stdout(output):
                 self.assertEqual(yac.main([]),0)
                 save.assert_called_once_with(root/'yac.ini','step_ssb','2500')
-                self.assertEqual(status.call_count,2)  # Only w reads status; f is reserved.
+                # Initial report plus both w presses, separated by other commands.
+                self.assertEqual(status.call_count, 3)
             transcript=output.getvalue()
             self.assertIn('Bye Gena',transcript)
             self.assertNotIn('yac:',transcript)

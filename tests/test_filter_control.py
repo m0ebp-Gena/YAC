@@ -192,7 +192,7 @@ class FilterTests(unittest.TestCase):
             self.assertEqual(yac.main([]), 0)
         self.assertEqual(radio.serial.bandwidth, '21')
         self.assertIn('Bandwidth 3200 Hz', output.getvalue())
-        self.assertIn('Filters: p', output.getvalue())
+        self.assertIn('Filters help', output.getvalue())
 
     def test_catalog_values_are_ordered_and_labels_translated(self):
         for path in (ROOT/'rad_cmds').rglob('settings.json'):

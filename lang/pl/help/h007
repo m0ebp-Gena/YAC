@@ -1,27 +1,21 @@
-Pomoc: Menu filtrów
+Pomoc filtrów
 
-Otwarcie filtra odczytuje bieżący stan bez zmiany. Gdy jest wyłączony, podaje tylko wyłączenie; gdy włączony, także aktywną wartość, jeśli dotyczy. Dopiero kolejne polecenie zmienia ustawienie.
+h) Ten dokument pomocy.
+Aby uzyskać pomoc dotyczącą filtra, otwórz go i naciśnij h.
 
-Filtry: naciśnij f, potem klawisz poniżej. Dostępne funkcje zależą od radia i emisji.
+q) Zakończ regulację i pozostań w Filtrach. W menu Filtry naciśnij q, aby wrócić do poziomu głównego. Zmiany zostają zachowane.
 
-a: Automatyczny notch. Kolejne a włącza lub wyłącza.
-b: Noise Blanker. Otwarcie odczytuje stan oraz poziom, gdy jest włączony, bez zmiany ustawień. Kolejne b włącza lub wyłącza. Kropka/przecinek zmieniają poziom po włączeniu.
-c: Contour. Kolejne c włącza lub wyłącza. Kropka/przecinek zmieniają częstotliwość po włączeniu. l wybiera poziom; w szerokość; c wraca do częstotliwości. Przy wybranej częstotliwości c włącza lub wyłącza.
-h: Czytaj tę pomoc.
-l: Dolne odcięcie. Kropka zwiększa; przecinek zmniejsza dolną granicę.
-n: Ręczny notch. Kolejne n włącza lub wyłącza. Kropka/przecinek zmieniają pozycję po włączeniu; w zmienia szerokość.
-p: Szerokość pasma. Kropka zwiększa; przecinek zmniejsza. Przy oddzielnych granicach użyj l i u.
-q: Zakończ regulację i zachowaj ustawienie; ogłasza Gotowe. Kolejne q opuszcza Filtry; ogłasza Poziom główny.
-r: Noise Reduction. Kolejne r włącza lub wyłącza. Kropka/przecinek zmieniają poziom po włączeniu.
-u: Górne odcięcie. Kropka zwiększa; przecinek zmniejsza górną granicę.
-v: Odczytaj włączone filtry. Powtarzaj v dla poszczególnych stanów, także wyłączonych lub nieznanych. Inne polecenie rozpoczyna przegląd od nowa. Odczyt niczego nie zmienia.
+Obsługa zależy od radia i trybu. Naciśnij klawisz filtra, aby odczytać jego ustawienie bez zmiany.
 
-Regulacja zatrzymuje się na granicach. Przy wyłączonym filtrze klawisze regulacji nie zmieniają jego wartości. Zmiany są sprawdzane odczytem radia. Funkcje nieobsługiwane i nieczytelne ustawienia są zgłaszane.
-Szczegóły dotyczące radia są w jego notatkach w doc/supported-radios.
-Gdy szerokość pasma jest domyślna, wejście do regulacji jej nie zmienia. Kropka wybiera najwęższą obsługiwaną szerokość liczbową, a przecinek najszerszą. Kolejne naciśnięcia zmieniają szerokość krokowo. YAC potwierdza każdą zmianę odczytem z radia.
-p wybiera szerokość pasma. Przy osobnych granicach p najpierw wybiera dolną, a kolejne naciśnięcia przełączają górną i dolną. Wybór odczytuje wartość bez zmiany. Przecinek i kropka stosują każdą zmianę natychmiast, aby można było usłyszeć jej efekt; YAC odczytuje i podaje wynik.
-Czas śledzenia redukcji szumów określa szybkość podążania za zmianami odbieranego sygnału, jeśli radio go obsługuje. Jest podawany w milisekundach. Przy wybranej regulacji kropka zwiększa czas, a przecinek go zmniejsza. Każda zmiana działa natychmiast i jest potwierdzana odczytem.
-W stanie filtrów Brak obsługi oznacza brak obsługiwanych przełączanych filtrów dla bieżącego radia i trybu.
+a) Automatyczny notch
+b) Eliminator zakłóceń impulsowych
+c) Contour
+l) Dolne odcięcie
+n) Ręczny notch
+p) Szerokość pasma przepustowego
+r) Redukcja szumów
+u) Górne odcięcie
+v) Sprawdź aktywne filtry
 
 ***
 Koniec pomocy

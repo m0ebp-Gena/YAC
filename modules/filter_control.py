@@ -131,8 +131,63 @@ def adjust(yac, root, radio, language, direction=0, key='p'):
     return label(label_token, value=widths[current])
 
 
+def _help_topic(yac, root, radio, adjusting, contour_parameter='frequency'):
+    """Select help from live capabilities without changing radio settings."""
+    if adjusting is None:
+        return 'h007'
+    catalog = settings.catalog(root, radio, yac)
+    if adjusting in {'p', 'l', 'u'}:
+        feature = catalog.get('bandwidth')
+        if not feature:
+            return 'h064'
+        profile, error = _profile(yac, radio, feature)
+        if error:
+            return 'h063' if error == 'l050' else 'h064'
+        if adjusting in {'l', 'u'}:
+            if not profile.get('low_read'):
+                return 'h064'
+            return 'h057' if adjusting == 'l' else 'h060'
+        return 'h031'
+    feature = catalog.get({'a': 'notch', 'n': 'notch', 'b': 'noise_blanker',
+                           'r': 'noise_reduction', 'c': 'contour'}[adjusting])
+    if adjusting in {'a', 'n'}:
+        feature = (feature or {}).get(adjusting)
+    if not feature:
+        return 'h064'
+    mode = yac._current_mode_code(radio)
+    if mode is None:
+        return 'h063'
+    if str(mode).upper() not in feature['modes']:
+        return 'h064'
+    if adjusting == 'a':
+        return 'h061' if feature.get('beat_cancel') else 'h054'
+    if adjusting == 'r' and not feature.get('levels'):
+        return 'h062' if feature.get('level', {}).get('following_time') else 'h059'
+    if adjusting == 'r' and feature.get('levels'):
+        side = str(yac._yaesu_vfo_side) if radio.model_id == '0840' else '0'
+        spec = {k: v.replace('{side}', side) if isinstance(v, str) else v
+                for k, v in feature['state'].items()}
+        state = settings.read(yac, radio, spec)
+        if state is None or str(state) not in spec['on_values'] + [spec['off']]:
+            return 'h063'
+        state = str(state)
+        allowed = feature.get('on_by_mode', {}).get(str(mode).upper(), spec['on_values'])
+        if state == spec['off']:
+            memory_key = (radio.radio_id_path, side)
+            state = getattr(radio, '_nr_memory', {}).get(memory_key, spec['on_values'][0])
+            if state not in allowed:
+                state = allowed[0]
+        elif state not in allowed:
+            return 'h064'
+        level = feature['levels'].get(state, feature.get('level', {}))
+        return 'h062' if level.get('following_time') else 'h059'
+    if adjusting == 'c':
+        return {'frequency': 'h056', 'level': 'h065', 'width': 'h066'}[contour_parameter]
+    return {'b': 'h055', 'n': 'h058', 'r': 'h059'}[adjusting]
+
+
 def control(yac, root, radio, language, call, read_key, watch):
-    """q leaves width, q again leaves Filters; other commands return to top."""
+    """q finishes any filter, q again leaves Filters; other commands return to top."""
     chat_int.show_response(settings._label(yac, root, language, 'l065'))
     adjusting = None
     contour_parameter = "frequency"
@@ -157,7 +212,8 @@ def control(yac, root, radio, language, call, read_key, watch):
             chat_int.show_done(root, language)
             adjusting = None
         elif key == 'h':
-            chat_int.show_response(help_int.get_help(root, language, 'h031' if adjusting in {'p', 'l', 'u'} else 'h007'))
+            topic = _help_topic(yac, root, radio, adjusting, contour_parameter)
+            chat_int.show_response(help_int.get_help(root, language, topic))
         elif key == 'v':
             chat_int.show_response(filter_review.next(yac, root, radio, language))
         elif key == 'b' and adjusting in {None, 'b'}:
@@ -183,12 +239,12 @@ def control(yac, root, radio, language, call, read_key, watch):
         elif key == 'w' and adjusting == 'n':
             chat_int.show_response(notch_control.operate(yac, root, radio, language, 'n', width=True))
         elif key == 'p' and adjusting in {None, 'p', 'l', 'u'}:
-            if adjusting is None:
-                chat_int.show_response(help_int.get_help(root, language, 'h031'))
             feature = settings.catalog(root, radio).get('bandwidth')
             spec, error = _profile(yac, radio, feature) if feature else (None, 'l129')
             if error:
-                adjusting = None
+                # Keep the same nesting as every other filter, even when
+                # unsupported or unreadable. q must finish this control first.
+                adjusting = adjusting or 'p'
                 response = yac._radio_error(root, radio, language) if error == 'l050' else settings._label(yac, root, language, error)
             else:
                 adjusting = ('u' if adjusting == 'l' else 'l') if spec and spec.get('low_read') else 'p'

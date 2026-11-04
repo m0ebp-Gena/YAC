@@ -1,5 +1,6 @@
 """Decoder lifecycle and keyboard/text presentation, independent of discovery."""
 import logging
+import math
 import time
 from modules.decoder_text import TextBuffer, RestoreError
 from modules import chat_int, help_int, hints
@@ -18,6 +19,9 @@ class DecoderManager:
         self.last_output = time.monotonic()
         self.last_audio_check = 0
         self.audio_pitch = None
+        self.audio_wpm = None
+        self.cw_buffer = self.buffer
+        self.rtty_buffer = TextBuffer()
 
     def label(self, token, **values):
         return self.yac._read_label(self.root, self.language, token, '').format(**values)
@@ -27,6 +31,16 @@ class DecoderManager:
         if session:
             session.close()
 
+    def radio_pitch(self):
+        from modules.cw_control import Settings
+        pitch = Settings(self.yac, self.root, self.radio, 'pitch')
+        if pitch.spec is None:
+            raise ValueError('Radio CW pitch is unavailable')
+        value = int(pitch.read())
+        if not 200 <= value <= 1500:
+            raise ValueError('Radio CW pitch is outside decoder range')
+        return value
+
     def start(self, kind, *, clear=True):
         if self.session and self.kind == kind:
             return self.label('l276')
@@ -35,6 +49,12 @@ class DecoderManager:
         except Exception:
             LOG.exception('Previous decoder restoration failed')
             return self.label('l003')
+        # CW history survives stop, restart and visits to other decoder views.
+        if kind != self.kind:
+            self.pending = ''
+        self.buffer = self.cw_buffer if kind == 'c' else self.rtty_buffer
+        if kind == 'c':
+            clear = False
         settings = self.yac._read_settings(self.root / 'yac.ini')
         if kind == 'c':
             if self.radio.protocol == 'CAT' and self.radio.model_id == '023':
@@ -50,8 +70,14 @@ class DecoderManager:
                     return self.label('l285')
                 if not any(settings.get(name, '').strip() for name in ('cw_audio_identity', 'cw_audio_device')):
                     return self.label('l279') + '. ' + hints.get_hint(self.root, self.language, 'm004')
-                if self.audio_pitch is not None:
-                    settings = dict(settings, cw_audio_pitch_hz=str(self.audio_pitch))
+                try:
+                    self.audio_pitch = self.radio_pitch()
+                except (OSError, ValueError, KeyError, TypeError):
+                    LOG.exception('Radio CW pitch could not be read')
+                    return self.label('l003')
+                settings = dict(settings, cw_audio_pitch_hz=str(self.audio_pitch))
+                if self.audio_wpm is not None:
+                    settings = dict(settings, cw_audio_wpm=str(self.audio_wpm))
                 session = AudioCW(self.buffer, settings)
         else:
             if self.radio.model_id.casefold() != 'ic-705':
@@ -71,6 +97,8 @@ class DecoderManager:
             # Constructors own no devices; start() cleans up any partial setup.
             return self.label('l279')
         self.session, self.kind = session, kind
+        if kind == 'c' and callable(getattr(session, 'speed', None)):
+            self.audio_wpm = session.speed()
         return self.label('l276')
 
     def zero_in(self):
@@ -115,8 +143,13 @@ class DecoderManager:
             try:
                 mode = self.yac._current_mode_code(self.radio)
                 if spec and mode in ('3', '7', 3, 7):
-                    self.session.paused = mic_gain.tx_state(self.yac, self.radio, spec) is not False
-            except (OSError, ValueError):
+                    if mic_gain.tx_state(self.yac, self.radio, spec) is False:
+                        if callable(getattr(self.session, 'set_pitch', None)):
+                            pitch = self.radio_pitch()
+                            self.session.set_pitch(pitch)
+                            self.audio_pitch = pitch
+                        self.session.paused = False
+            except (OSError, ValueError, KeyError, TypeError):
                 LOG.exception('Audio decoder receive-state check failed')
         if self.session and self.session.error:
             LOG.error('Decoder input failed: %s', self.session.error)
@@ -130,7 +163,10 @@ class DecoderManager:
         self.pending = self.pending[-10000:]
         if self.view and self.pending and (self.pending.endswith((' ', '\n')) or
                                           len(self.pending) >= 40 or now-self.last_output >= 2):
-            chat_int.show_response(self.pending)
+            if self.kind == 'c':
+                chat_int.show_stream(self.pending.replace('\n', ' ').replace('\t', ' '))
+            else:
+                chat_int.show_response(self.pending)
             self.pending = ''
             self.last_output = now
 
@@ -142,6 +178,51 @@ class DecoderManager:
             return self.label('l278'), -1
         position = len(lines)-1 if position == -1 else min(len(lines)-1, max(0, position))
         return lines[position], position
+
+    def cw_speed(self, direction=0):
+        session = self.session
+        if self.kind == 'c' and callable(getattr(session, 'speed', None)):
+            self.audio_wpm = session.speed(direction)
+            return self.label('l431', value=f'{self.audio_wpm:g}')
+        if self.kind == 'c' and session is None and self.audio_wpm is not None:
+            target = (math.floor(self.audio_wpm) + 1 if direction > 0 else
+                      math.ceil(self.audio_wpm) - 1 if direction < 0 else self.audio_wpm)
+            self.audio_wpm = max(5, min(60, target))
+            return self.label('l431', value=f'{self.audio_wpm:g}')
+        return self.label('l129')
+
+    def cw_review(self, read_key):
+        # Read a stable history while capture continues quietly in the background.
+        was_view = self.view
+        self.view = False
+        text = self.buffer.snapshot()
+        chunks = [line[i:i+60] for line in text.splitlines()
+                  for i in range(0, len(line), 60)]
+        position = max(0, len(chunks)-1)
+        def announce():
+            chat_int.show_response(chunks[position] if chunks else self.label('l278'))
+        announce()
+        try:
+            while True:
+                key = read_key().casefold()
+                if key == 'q':
+                    chat_int.show_done(self.root, self.language)
+                    return
+                if key == 'h':
+                    chat_int.show_response(help_int.get_help(self.root, self.language, 'h052'))
+                elif key in (',', '.'):
+                    position = max(0, min(len(chunks)-1, position + (1 if key == '.' else -1)))
+                    announce()
+                elif key == 'c':
+                    self.buffer.clear()
+                    self.pending = ''
+                    chunks = []
+                    position = 0
+                    chat_int.show_response(self.label('l281'))
+                elif key:
+                    chat_int.show_response(self.label('l129'))
+        finally:
+            self.view = was_view
 
     def control(self, read_key):
         chat_int.show_response(self.label('l272'))
@@ -175,10 +256,19 @@ class DecoderManager:
             while True:
                 key = read_key().casefold()
                 if key == 'q':
+                    if kind == 'c':
+                        try:
+                            self.stop()
+                        except Exception:
+                            LOG.exception('CW decoder stop failed')
+                            chat_int.show_response(self.label('l003'))
+                            return
+                        self.pending = ''
+                        self.buffer.take()
                     chat_int.show_done(self.root, self.language)
                     return
                 if key == 'h':
-                    chat_int.show_response(help_int.get_help(self.root, self.language, 'h013'))
+                    chat_int.show_response(help_int.get_help(self.root, self.language, 'h052' if kind == 'c' else 'h053'))
                 elif key == 's':
                     try:
                         if self.session and self.kind == kind:
@@ -192,6 +282,21 @@ class DecoderManager:
                     chat_int.show_response(response)
                 elif key == 'z' and kind == 'c':
                     chat_int.show_response(self.zero_in())
+                elif key == 'r' and kind == 'c':
+                    self.cw_review(read_key)
+                elif key in ('.', ',') and kind == 'c':
+                    try:
+                        response = self.cw_speed(1 if key == '.' else -1)
+                        if response == self.label('l129'):
+                            chat_int.show_response(response)
+                    except (ValueError, OSError):
+                        chat_int.show_response(self.label('l003'))
+                elif key == 'v' and kind == 'c':
+                    try:
+                        chat_int.show_response(self.yac._radio_status(self.root, self.radio, self.language))
+                        chat_int.show_response(self.cw_speed())
+                    except (ValueError, OSError):
+                        chat_int.show_response(self.label('l003'))
                 elif key in ('v', '.', ','):
                     if key == 'v':
                         position = -1
@@ -204,7 +309,7 @@ class DecoderManager:
                         position = max(0, position)
                     response, position = self.review(position)
                     chat_int.show_response(response)
-                elif key == 'n':
+                elif key == 'n' and kind != 'c':
                     self.buffer.clear()
                     self.pending = ''
                     position = -1

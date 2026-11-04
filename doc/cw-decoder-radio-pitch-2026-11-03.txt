@@ -1,0 +1,22 @@
+CW decoder controls and radio pitch - 3 November 2026
+
+Audio decoding reads the current radio CW pitch before opening capture and
+uses that value instead of a fixed or saved decoder pitch. During reception,
+it checks the pitch with the existing receive-state polling and follows
+changes silently. No pitch-setting commands are sent to the radio. There is
+no decoder p control. WPM remains adjustable silently using comma and period.
+
+An unreadable pitch prevents startup. If pitch readback fails during capture,
+decoding pauses and retries on the next receive-state check. It resumes after
+valid readback. Native radio CW decoding is unchanged.
+
+s starts or stops decoding. v announces signal, frequency and selected WPM.
+r opens Review; h displays the same CW-only help in CW and Review. q in
+Review returns to CW; q in CW stops capture and leaves. Text is retained
+until cleared or YAC closes, up to 10,000 characters. c clears text in Review.
+
+Verification: 35 decoder tests and 8 Zero In tests passed, including radio
+pitch reads, startup/restart overrides, unreadable pitch, live changes,
+retained timing/text, unchanged speed and readback recovery. These are
+automated checks; live radio decoding and accessibility remain unverified.
+No package was rebuilt or published.

@@ -1,42 +1,22 @@
-Pomoc: Menu ustawień
+Pomoc ustawień
 
-Przedwzmacniacz p, tłumik u i VFO/odbiornik s v: otwarcie odczytuje ustawienie bez zmiany. Kropka wybiera następne, przecinek poprzednie; powtórzona litera także przechodzi dalej. q zachowuje wybór i wraca o poziom; h wyjaśnia. Jeśli bieżącego VFO nie można odczytać, zgłasza Nieznane bez wybierania VFO.
+h) Ten dokument pomocy.
+Aby uzyskać pomoc dotyczącą ustawienia, otwórz je i wywołaj pomoc.
 
-Ustawienia: a AGC; m wzmocnienie mikrofonu; p moc; r Region; s krok; t tuner; v VFO/odbiornik; e procesor mowy. q wraca i ogłasza Poziom główny, a po wyborze AGC Gotowe. h czyta tę pomoc.
+q) Wróć do poziomu głównego.
 
-Wybierz przez s r region lokalizacji radia. Domyślnie: Region 1. Kolejne r przełącza 1, 2, 3 i zapisuje od razu. h daje pomoc; q ogłasza Gotowe i wraca do Ustawień.
+a) Automatyczna regulacja wzmocnienia
+e) Procesor mowy
+i) Informacje o radiu
+m) Wzmocnienie mikrofonu
+p) Moc wyjściowa
+r) Region
+s) Krok strojenia
+t) Wybór tunera
+u) Aktualizuj YAC
+v) VFO/Odbiornik
 
-s a odczytuje bieżące AGC bez zmiany ustawienia. Kolejne a wybiera następne ustawienie i potwierdza wybór. q kończy i ogłasza Gotowe. Szybkie szybciej przywraca wzmocnienie po silnym sygnale; Wolne dłużej utrzymuje redukcję. Wybieraj słuchając. Wyłączenie pozwala na większe zmiany głośności. Bez nadawania.
-
-m otwiera wzmocnienie mikrofonu bieżącej emisji. Kropka/przecinek regulują od razu; h wyjaśnia właściwą procedurę. Spacja oferuje opcjonalny pomiar ALC, jeśli dostępny. PTT obsługujesz samodzielnie.
-
-p podaje aktualną moc i zakres wpisywania. Wpisz całe waty i Enter; pusty Enter anuluje. Potwierdzenie podaje wpisaną wartość i Ustawiono. To ustawienie, nie zmierzona moc nadawania. h i Enter czytają pomoc mocy. Pusty Enter lub q i Enter anulują i wracają do Ustawień.
-
-s otwiera krok dla bieżącej emisji. t otwiera wybór tunera i odczytuje stan bez zmiany. Wewnątrz kropka wybiera następny, przecinek poprzedni; q zachowuje zmiany i wraca do Ustawień. Wybór nie rozpoczyna strojenia. Wyjdź z Ustawień i naciśnij t, aby stroić. v wybiera obsługiwany VFO lub odbiornik i podaje wybór.
-
-e otwiera procesor i czyta ustawienia. e wewnątrz przełącza; kropka zwiększa, przecinek zmniejsza. n przywraca początkowe ustawienia procesora; q zachowuje zmiany. h wewnątrz wyjaśnia obsługę i komunikaty.
-
-Wybory, ograniczenia i wyjątki danego modelu są w doc/supported-radios, w pliku tekstowym nazwanym jak Twoje radio. READ-ME.txt wyjaśnia te notatki. Komunikaty głosowe pojawiają się także jako tekst dla monitora brajlowskiego. Funkcje nieobsługiwane oraz nieznane lub nieudane odczyty są zgłaszane.
-
-
-s b: kropka lub b wybiera następny tryb; przecinek poprzedni. q stosuje, zapisuje i wraca. h czyta pomoc. Tylko brajl wycisza Speakup; podłączony brajl pozostaje dostępny w każdym trybie.
-
-s o: r tempo; v głośność; p wysokość; u interpunkcja; kropka zwiększa; przecinek zmniejsza; t próba; d domyślne; h pomoc; q wraca. Zmiany stosują się i zapisują natychmiast.
-
-s u: Aktualizacja YAC. Zaczyna od Szukam. h wyświetla pomoc aktualizacji. Brak internetu lub Brak zmian wraca do Ustawień. Nowa wersja pyta Opis Y/N?, potem Update Y/N?. y potwierdza; n pomija opis lub odmawia instalacji; q wraca. Przy długim opisie Spacja przechodzi dalej, q opuszcza opis.
-
-s w: Konfiguracja Wi-Fi jest dostępna tylko w obrazie Raspberry Pi. Tutaj użyj ustawień Wi-Fi systemu. Konfiguracja Wi-Fi: kraj, nazwa sieci i hasło. Ctrl+C anuluje wpisywanie; interpunkcja i litery poleceń są zwykłymi znakami.
-
-Cykl strojenia zakończony
-Strojenie nieudane lub tuner wyłączony
-Wynik strojenia niepotwierdzony
-Przekroczono czas; wysłano zatrzymanie
-Nie potwierdzono zatrzymania strojenia
-
-
-s i: Informacje o radiu. Identyfikacja i połączenie, jedna wartość w wierszu. i ponowny odczyt; h pomoc; q powrót do Ustawień. Bez zmian ustawień.
-
-s t: Wejście odczytuje bieżący tuner bez zmiany. kropka wybiera następną opcję; przecinek poprzednią. Każdy wybór jest stosowany od razu i sprawdzany. Wybór nie rozpoczyna strojenia. h czyta pomoc. q ogłasza Gotowe i wraca do Ustawień, zachowując zmiany. Kolejne q wraca do poziomu głównego, gdzie t rozpoczyna strojenie.
+Dostępność zależy od radia.
 
 ***
 Koniec pomocy

@@ -1,20 +1,10 @@
-Help For The Decoders
+Help For The Decoder Menu
 
-Decoders: c opens CW decoding; r opens RTTY decoding. Capture starts on entry when setup allows it. Only one decoder runs at a time.
-Before audio CW decoding, press a in the decoder menu to set up receive audio. Full stop selects the next input; comma the previous; c changes channel; v checks the level. Enter saves; q returns to the decoder menu. Then c starts CW decoding. From the CW view, q returns to the decoder menu; press a there. An unset audio input is reported as Audio input not set.
-Inside a decoder: s explicitly stops or restarts capture. q says Top Level and leaves capture running. q again returns to the main controls. Returning to another decoder stops the previous capture. YAC exit stops capture and restores native decoder settings.
-v reviews the latest text; comma reviews earlier text; full stop later text. Review chunks are 60 characters. n clears received text. New text appears automatically only inside the decoder view; capture continues quietly elsewhere. Terminal speech and braille read that text using your existing accessibility setup. h gives this help.
-Audio CW starts with an estimated speed of 20 WPM and then adapts. Set cw_audio_wpm in yac.ini to an initial estimate, from 5 to 60. The default cw_audio_pitch_hz is 600; it must match the received tone. A strong radio signal alone does not confirm usable audio on the selected input channel.
-Other supported radios: CW uses received audio, not CAT text. This experimental decoder uses a fixed pitch with automatic timing. Match cw_audio_pitch_hz in yac.ini to the received tone. No microphone or default input is selected automatically. Decoder pauses when transmit status is detected or cannot be read; polling is not instantaneous. Audio distortion, noise and hand sending can cause mistakes.
-A start failure can mean wrong mode, missing audio dependency, invalid audio input, ambiguous USB ports, keying assignments or rejected CAT settings. Details go to the YAC debug log. No decoder transmits or changes operating frequency, mode or power.
-
-
-Decoder could not start. Check mode and decoder setup; press h for help.
-Decoder input lost; capture stopped. Check radio settings.
-
-z requests automatic CW Zero In where supported. It retunes the receiver, reads the radio CW pitch and matches the audio decoder to it without changing the radio pitch. The frequency and decoder pitch are announced. Readback does not prove signal lock; listen and check the decoded text. Frequency changes are kept. The decoder pitch is used for this YAC session only; saved audio settings are unchanged. Unsupported radios report Not supported. CW audio must be running and the radio must be receiving in CW.
-
-RIT active or XIT active means Zero In was not sent because a clarifier is enabled. Turn that offset off before retrying z. YAC does not clear or disable offsets for you; existing audio capture continues when this is detected before tuning.
+a Sets up receive audio. Audio input not set: use a first.
+c Opens CW decoding and starts capture when ready.
+h Shows this help.
+q Returns to Top Level.
+r Opens RTTY decoding and starts capture when ready.
 
 ***
 End of help

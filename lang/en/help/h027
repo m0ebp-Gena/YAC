@@ -1,7 +1,7 @@
 Help For The YAC Updates
 
 Update YAC
-YAC checks GitHub using the existing internet connection.
+An internet connection is required. YAC checks GitHub for the latest version. If a newer version is available, you can read its release notes and choose whether to download and install it. If you already have the latest version, YAC reports No Update and returns to Settings.
 
 Looking: checking for an update.
 No Internet: GitHub could not be reached; returns to Settings.

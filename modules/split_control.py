@@ -294,6 +294,11 @@ class Radio:
         return success, tx
 
 
+def has_report(root, radio):
+    """Whether this radio has a native split/repeater report definition."""
+    return (root / radio.radio_id_path / 'split.json').exists()
+
+
 def report(yac, root, radio, language):
     """Read split routing and native repeater shift without sending setters."""
     label = lambda token, **values: yac._read_label(root, language, token, '').format(**values)

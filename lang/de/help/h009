@@ -1,42 +1,22 @@
-Hilfe: Einstellungsmenü
+Hilfe zu Einstellungen
 
-Vorverstärker p, Abschwächer u und VFO/Empfänger s v: Öffnen liest den aktuellen Wert ohne Änderung. Punkt wählt die nächste, Komma die vorherige Option; der wiederholte Befehlsbuchstabe wählt ebenfalls weiter. q behält die Auswahl und kehrt eine Ebene zurück; h erklärt. Ist der aktuelle VFO nicht lesbar, wird Unbekannt gemeldet, ohne einen VFO auszuwählen.
+h) Dieses Hilfedokument.
+Für Hilfe zu einer bestimmten Einstellung öffnen Sie sie und rufen die Hilfe auf.
 
-Einstellungen: a AGC; m Mikrofonverstärkung; p Leistung; r Region; s Schrittweite; t Tuner; v VFO/Empfänger; e Sprachprozessor. q kehrt zurück und meldet Hauptebene, nach AGC-Auswahl Fertig. h liest diese Hilfe.
+q) Zur Hauptebene zurückkehren.
 
-Wählen Sie mit s r die Region des Funkgerätestandorts. Vorgabe: Region 1. Erneutes r wechselt 1, 2, 3 und speichert sofort. h hilft; q meldet Fertig und kehrt zu Einstellungen zurück.
+a) Automatische Verstärkungsregelung
+e) Sprachprozessor
+i) Funkgeräteinformationen
+m) Mikrofonverstärkung
+p) Ausgangsleistung
+r) Region
+s) Abstimmschritt
+t) Tunerauswahl
+u) YAC aktualisieren
+v) VFO/Empfänger
 
-s a liest die aktuelle AGC-Einstellung, ohne sie zu ändern. Erneutes a wählt die nächste Einstellung und bestätigt sie. q beendet und meldet Fertig. Schnell erholt sich früher nach einem starken Signal, Langsam hält die Verstärkungsreduzierung länger. Nach Gehör wählen. Aus erlaubt größere Lautstärkeschwankungen. Kein Senden nötig.
-
-m öffnet die Mikrofonverstärkung für die aktuelle Betriebsart. Punkt/Komma ändern sofort; h erklärt das passende Verfahren. Leertaste bietet optionale ALC-Messung, falls unterstützt. PTT bedienen Sie selbst.
-
-p meldet aktuelle Leistung und Eingabebereich. Ganze Watt eingeben und Enter drücken; leeres Enter bricht ab. Bestätigung nennt den eingegebenen Wert und Gesetzt. Das ist eine Einstellung, keine gemessene Sendeleistung. h und Enter geben Leistungshilfe. Leeres Enter oder q und Enter brechen ab und kehren zu Einstellungen zurück.
-
-s öffnet die Schrittweite für die aktuelle Betriebsart. t öffnet die Tunerauswahl und liest ohne Änderung. Darin wählt Punkt weiter, Komma zurück; q behält Änderungen und kehrt zu Einstellungen zurück. Die Auswahl startet keine Abstimmung. Einstellungen verlassen und t drücken, um abzustimmen. v wählt den unterstützten VFO oder Empfänger und meldet die Auswahl.
-
-e öffnet den Sprachprozessor und liest Einstellungen. e darin schaltet; Punkt erhöht, Komma verringert. n stellt ursprüngliche Prozessorwerte wieder her; q behält Änderungen. h darin erklärt Bedienung und Rückmeldungen.
-
-Modellspezifische Auswahl, Grenzen und Ausnahmen stehen in doc/supported-radios in der nach Ihrem Radio benannten Textdatei. READ-ME.txt erklärt diese Hinweise. Sprachausgaben erscheinen auch als Text für die Braillezeile. Nicht unterstützte Funktionen und fehlgeschlagene oder unbekannte Abfragen werden gemeldet.
-
-
-s b: Punkt oder b wählt den nächsten Modus; Komma den vorherigen. q wendet an, speichert und kehrt zurück. h liest Hilfe. Nur Braille schaltet Speakup stumm; angeschlossenes Braille bleibt in jedem Modus verfügbar.
-
-s o: r Tempo; v Lautstärke; p Tonhöhe; u Satzzeichen; Punkt erhöht; Komma verringert; t Test; d Standardwerte; h Hilfe; q kehrt zurück. Änderungen gelten und speichern sofort.
-
-s u: YAC aktualisieren. Beginnt mit Suche. h zeigt die Update-Hilfe. Kein Internet oder Kein Update führt zu Einstellungen zurück. Update gefunden fragt Hinweise Y/N?, dann Update Y/N?. y bestätigt; n überspringt Hinweise oder lehnt Installation ab; q kehrt zurück. Lange Hinweise: Leertaste weiter; q beendet die Hinweise.
-
-s w: WLAN-Einrichtung ist nur im Raspberry-Pi-Abbild verfügbar. Hier die WLAN-Einstellungen des Betriebssystems verwenden. WLAN-Einrichtung: Land, Netzwerkname und Passwort. Strg+C bricht die Eingabe ab; Satzzeichen und Befehlsbuchstaben sind normale Zeichen.
-
-Abstimmvorgang beendet
-Abstimmung fehlgeschlagen oder Tuner umgangen
-Abstimmergebnis nicht bestätigt
-Zeitüberschreitung; Stopp angefordert
-Stopp der Abstimmung nicht bestätigt
-
-
-s i: Geräteinfo. Kennung und Verbindungsdaten, ein Wert pro Zeile. i erneut lesen; h Hilfe; q zurück zu Einstellungen. Keine Änderungen.
-
-s t: Beim Öffnen wird der aktuelle Tuner gelesen, ohne ihn zu ändern. Punkt wählt die nächste Option; Komma die vorherige. Jede Auswahl wird sofort angewendet und geprüft. Die Auswahl startet keine Abstimmung. h liest die Hilfe. q meldet Fertig und kehrt zu Einstellungen zurück; Änderungen bleiben erhalten. Ein weiteres q führt zur Hauptebene, wo t die Abstimmung startet.
+Die Verfügbarkeit hängt von Ihrem Funkgerät ab.
 
 ***
 Ende der Hilfe

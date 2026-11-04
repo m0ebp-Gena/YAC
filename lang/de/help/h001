@@ -24,7 +24,7 @@ f: Filter. Siehe Filtertasten unten.
 g: SWR messen. Antenne anschließen; erneutes g misst und stellt Einstellungen wieder her. h hilft; q zurück.
 h: Hilfe. h innerhalb einer Funktion liest deren ausführliche Hilfe.
 i: Ton/Code eingeben. i wechselt zwischen CTCSS, DCS normal und DCS invertiert, soweit unterstützt. Wert eingeben und den Ansagen folgen.
-k: Sperre. Einstieg liest; erneutes k wechselt die Sperre. h hilft; q behält die Auswahl.
+k: Sperre. Wechselt sofort zum nächsten Sperrzustand und bleibt auf der Hauptebene. Kein q nötig.
 l: Split/Relais einrichten. Erneutes l schaltet aus. h und Enter im Eingabefeld geben Hilfe.
 m: Betriebsart. Punkt weiter; Komma zurück.
 o: Ablage: o wechselt Empfang und Senden. c löscht beide; v prüft beide; h hilft; q behält Einstellungen und kehrt zurück.
@@ -49,7 +49,7 @@ c: Contour. c schaltet um; Punkt/Komma ändern die Frequenz bei Ein. l wählt Pe
 h: Filterhilfe.
 l: Untere Grenzfrequenz. Punkt/Komma ändern.
 n: Manueller Notch. n schaltet um; Punkt/Komma ändern die Position bei Ein; w ändert die Breite.
-p: Bandbreite. Punkt/Komma ändern.
+p: Durchlassbandbreite. Punkt/Komma ändern.
 q: Hauptebene zum Hauptmenü. Aus einer Einstellung kehrt q zunächst zu Filter zurück.
 r: Noise Reduction. r schaltet um; Punkt/Komma ändern den Pegel bei Ein.
 u: Obere Grenzfrequenz. Punkt/Komma ändern.
