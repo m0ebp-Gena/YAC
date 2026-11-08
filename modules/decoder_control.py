@@ -1,6 +1,7 @@
 """Decoder lifecycle and keyboard/text presentation, independent of discovery."""
 import logging
 import math
+import sys
 import time
 from modules.decoder_text import TextBuffer, RestoreError
 from modules import chat_int, help_int, hints
@@ -22,6 +23,8 @@ class DecoderManager:
         self.audio_wpm = None
         self.cw_buffer = self.buffer
         self.rtty_buffer = TextBuffer()
+        self.ft_buffer = TextBuffer()
+        self.ft_mode = 'FT8'
 
     def label(self, token, **values):
         return self.yac._read_label(self.root, self.language, token, '').format(**values)
@@ -44,6 +47,29 @@ class DecoderManager:
     def start(self, kind, *, clear=True):
         if self.session and self.kind == kind:
             return self.label('l276')
+        if kind == 'f':
+            settings = self.yac._read_settings(self.root / 'yac.ini')
+            if sys.platform != 'win32':
+                return self.label('l129')
+            if not settings.get('cw_audio_identity'):
+                return hints.get_hint(self.root, self.language, 'm004')
+            try:
+                import sounddevice as sd
+                from modules.audio_setup import resolve
+                from experiments.nexus_ft8 import NexusReceive
+                device = resolve(sd, settings['cw_audio_identity'])
+                if device['channels'] != 1 or int(settings.get('cw_audio_channel', '1')) != 1:
+                    return hints.get_hint(self.root, self.language, 'm006')
+                engine = self.root / settings.get('ft_engine', '')
+                output = settings.get('ft_audio_output', '')
+                callsign, grid = settings.get('call', '').upper(), settings.get('ft_grid', '').upper()
+                if not engine.is_file() or not all((output, callsign, grid)):
+                    return hints.get_hint(self.root, self.language, 'm007')
+                session = NexusReceive(self.ft_buffer.append, engine, device['name'], output,
+                                       callsign, grid, self.ft_mode, self.label('l079'), self.label('l080'))
+            except (ImportError, OSError, KeyError, ValueError, TypeError):
+                LOG.exception('FT audio input could not be resolved')
+                return self.label('l279')
         try:
             self.stop()
         except Exception:
@@ -52,10 +78,11 @@ class DecoderManager:
         # CW history survives stop, restart and visits to other decoder views.
         if kind != self.kind:
             self.pending = ''
-        self.buffer = self.cw_buffer if kind == 'c' else self.rtty_buffer
-        if kind == 'c':
+        self.buffer = {'c': self.cw_buffer, 'r': self.rtty_buffer, 'f': self.ft_buffer}[kind]
+        if kind in ('c', 'f'):
             clear = False
-        settings = self.yac._read_settings(self.root / 'yac.ini')
+        if kind != 'f':
+            settings = self.yac._read_settings(self.root / 'yac.ini')
         if kind == 'c':
             if self.radio.protocol == 'CAT' and self.radio.model_id == '023':
                 from modules.cw_decode import KenwoodCW
@@ -79,7 +106,7 @@ class DecoderManager:
                 if self.audio_wpm is not None:
                     settings = dict(settings, cw_audio_wpm=str(self.audio_wpm))
                 session = AudioCW(self.buffer, settings)
-        else:
+        elif kind == 'r':
             if self.radio.model_id.casefold() != 'ic-705':
                 return self.label('l129')
             from modules.rtty_decode import IcomRTTY
@@ -134,6 +161,8 @@ class DecoderManager:
 
     def tick(self):
         now = time.monotonic()
+        if self.session and self.kind == 'f':
+            self.session.poll()
         if self.session and hasattr(self.session, 'paused') and now-self.last_audio_check >= 0.75:
             self.last_audio_check = now
             from modules import mic_gain
@@ -159,6 +188,8 @@ class DecoderManager:
                 LOG.exception('Decoder restore failed')
                 chat_int.show_response(self.label('l003'))
             chat_int.show_response(self.label('l284'))
+        if self.kind == 'f':
+            return
         self.pending += self.buffer.take()
         self.pending = self.pending[-10000:]
         if self.view and self.pending and (self.pending.endswith((' ', '\n')) or
@@ -170,8 +201,8 @@ class DecoderManager:
             self.pending = ''
             self.last_output = now
 
-    def review(self, position=-1):
-        text = self.buffer.snapshot()
+    def review(self, position=-1, *, buffer=None):
+        text = (self.buffer if buffer is None else buffer).snapshot()
         # Fixed review chunks also work for native CW streams with no line endings.
         lines = [line[i:i+60] for line in text.splitlines() for i in range(0, len(line), 60)]
         if not lines:
@@ -245,22 +276,27 @@ class DecoderManager:
             elif key in ('c', 'r'):
                 chat_int.show_response(self.start(key))
                 self.decoder_view(key, read_key)
+            elif key == 'f':
+                self.decoder_view(key, read_key)
             elif key:
                 chat_int.show_response(self.label('l129'))
 
     def decoder_view(self, kind, read_key):
-        chat_int.show_response(self.label('l273' if kind == 'c' else 'l274'))
+        if kind == 'f':
+            chat_int.show_response(f'{self.ft_mode}. {self.label("l277")}')
+        else:
+            chat_int.show_response(self.label('l273' if kind == 'c' else 'l274'))
         position = -1
-        self.view = True
+        self.view = kind != 'f'
         try:
             while True:
                 key = read_key().casefold()
                 if key == 'q':
-                    if kind == 'c':
+                    if kind == 'c' or (kind == 'f' and self.kind == 'f'):
                         try:
                             self.stop()
                         except Exception:
-                            LOG.exception('CW decoder stop failed')
+                            LOG.exception('Decoder stop failed')
                             chat_int.show_response(self.label('l003'))
                             return
                         self.pending = ''
@@ -268,7 +304,8 @@ class DecoderManager:
                     chat_int.show_done(self.root, self.language)
                     return
                 if key == 'h':
-                    chat_int.show_response(help_int.get_help(self.root, self.language, 'h052' if kind == 'c' else 'h053'))
+                    topic = {'c': 'h052', 'r': 'h053', 'f': 'h074'}[kind]
+                    chat_int.show_response(help_int.get_help(self.root, self.language, topic))
                 elif key == 's':
                     try:
                         if self.session and self.kind == kind:
@@ -280,6 +317,19 @@ class DecoderManager:
                         LOG.exception('Decoder stop failed')
                         response = self.label('l003')
                     chat_int.show_response(response)
+                elif key == 'm' and kind == 'f':
+                    if self.session and self.kind == 'f':
+                        try:
+                            self.stop()
+                        except (OSError, RuntimeError):
+                            LOG.exception('FT decoder stop failed')
+                            chat_int.show_response(self.label('l003'))
+                            continue
+                        chat_int.show_response(self.label('l277'))
+                    self.ft_mode = 'FT4' if self.ft_mode == 'FT8' else 'FT8'
+                    self.ft_buffer.clear()
+                    position = -1
+                    chat_int.show_response(self.ft_mode)
                 elif key == 'z' and kind == 'c':
                     chat_int.show_response(self.zero_in())
                 elif key == 'r' and kind == 'c':
@@ -298,20 +348,24 @@ class DecoderManager:
                     except (ValueError, OSError):
                         chat_int.show_response(self.label('l003'))
                 elif key in ('v', '.', ','):
+                    buffer = self.ft_buffer if kind == 'f' else self.buffer
                     if key == 'v':
                         position = -1
                     elif position < 0:
-                        _, position = self.review()
+                        _, position = self.review(buffer=buffer)
                         if key == ',':
                             position = max(0, position-1)
                     else:
                         position += 1 if key == '.' else -1
                         position = max(0, position)
-                    response, position = self.review(position)
+                    response, position = self.review(position, buffer=buffer)
                     chat_int.show_response(response)
                 elif key == 'n' and kind != 'c':
-                    self.buffer.clear()
-                    self.pending = ''
+                    if kind == 'f':
+                        self.ft_buffer.clear()
+                    else:
+                        self.buffer.clear()
+                        self.pending = ''
                     position = -1
                     chat_int.show_response(self.label('l281'))
                 elif key in ('+', '-') and self.session and self.kind == kind and hasattr(self.session, 'threshold'):

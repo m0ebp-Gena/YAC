@@ -1,15 +1,19 @@
 """Windows FT8 receive experiment using Jimmy Next 2.0.88's Nexus engine host."""
 
 import argparse
+import json
 from pathlib import Path
+import secrets
 import socket
 import struct
 import subprocess
+import time
 
 
 HEADER = struct.Struct('>III')
 DECODE_HEADER = (0xADBCCBDA, 3, 2)
 DECODE_FIELDS = struct.Struct('>BIidI')
+NO_WINDOW = getattr(subprocess, 'CREATE_NO_WINDOW', 0)
 
 
 def read_text(packet, offset):
@@ -21,7 +25,7 @@ def read_text(packet, offset):
     return packet[start:end].decode('utf-8'), end
 
 
-def decode_line(packet):
+def decode_line(packet, plus='Plus', minus='Minus'):
     """Format a new, on-air decode from the Nexus host's schema 3 feed."""
     try:
         if HEADER.unpack_from(packet) != DECODE_HEADER:
@@ -38,50 +42,131 @@ def decode_line(packet):
         return None
     hours, seconds = divmod(time_ms // 1000, 3600)
     minutes, seconds = divmod(seconds, 60)
-    signal = f'Minus {-snr}' if snr < 0 else f'{snr}'
+    signal = str(abs(snr))
+    if snr:
+        signal = f'{minus if snr < 0 else plus} {signal}'
     return f'{hours:02d}:{minutes:02d}:{seconds:02d} UTC. {message}. {signal} dB.'
 
 
 def require_device(engine, flag, name):
     result = subprocess.run(
         [str(engine), flag], cwd=engine.parent, capture_output=True, encoding='utf-8', timeout=10,
+        creationflags=NO_WINDOW,
     )
     if result.returncode:
         raise RuntimeError(f'Could not list audio devices. Engine exit code {result.returncode}.')
     devices = result.stdout.splitlines()
-    if name not in devices:
+    if devices.count(name) != 1:
         available = '\n'.join(devices) or 'None'
         raise RuntimeError(f'Audio device unavailable. {name}\nAvailable devices\n{available}')
 
 
-def receive(engine, input_device, output_device, callsign, grid):
-    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as listener:
-        listener.bind(('127.0.0.1', 0))
-        listener.settimeout(1)
-        address, port = listener.getsockname()
-        # Model zero leaves CAT disconnected. The control socket is local and uses
-        # an ephemeral port. This experiment only listens to the outbound relay.
-        command = [
-            str(engine), '--device', input_device, '--output-device', output_device,
-            '--mycall', callsign, '--mygrid', grid,
-            '--rig-model', '0', '--ptt-method', 'vox', '--control-port', '0',
-            '--clock-check', 'off', '--wsjtx-out', f'{address}:{port}',
-        ]
-        with subprocess.Popen(command, cwd=engine.parent, stdout=subprocess.DEVNULL) as process:
+def control(port, command):
+    with socket.create_connection(('127.0.0.1', port), timeout=0.5) as connection:
+        connection.sendall((command + '\n').encode('ascii'))
+        with connection.makefile('rb') as response:
+            return response.readline(1_048_576)
+
+
+class NexusReceive:
+    def __init__(self, output, engine, input_device, output_device, callsign, grid, mode='FT8',
+                 plus='Plus', minus='Minus'):
+        self.output = output
+        self.engine = engine
+        self.input_device = input_device
+        self.output_device = output_device
+        self.callsign, self.grid, self.mode = callsign, grid, mode
+        self.plus, self.minus = plus, minus
+        self.listener = self.process = None
+        self.error = None
+
+    def start(self):
+        if (not all((self.input_device, self.output_device, self.callsign, self.grid)) or
+                self.input_device.casefold() == self.output_device.casefold()):
+            raise ValueError('Configure radio input, non-radio output, callsign and grid')
+        require_device(self.engine, '--list-devices', self.input_device)
+        require_device(self.engine, '--list-output-devices', self.output_device)
+        token = secrets.token_hex(16)
+        try:
+            self.listener = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self.listener.bind(('127.0.0.1', 0))
+            self.listener.setblocking(False)
+            address, port = self.listener.getsockname()
+            with socket.socket() as candidate:
+                candidate.bind(('127.0.0.1', 0))
+                control_port = candidate.getsockname()[1]
+            # Model zero leaves CAT disconnected. Only select the receive mode
+            # after confirming that the control port belongs to our child process.
+            command = [
+                str(self.engine), '--device', self.input_device, '--output-device', self.output_device,
+                '--mycall', self.callsign, '--mygrid', self.grid,
+                '--rig-model', '0', '--ptt-method', 'vox', '--control-port', str(control_port),
+                '--session-token', token, '--clock-check', 'off', '--wsjtx-out', f'{address}:{port}',
+            ]
+            self.process = subprocess.Popen(command, cwd=self.engine.parent, stdout=subprocess.DEVNULL,
+                                            stderr=subprocess.DEVNULL,
+                                            creationflags=NO_WINDOW)
+            deadline = time.monotonic() + 3
+            while self.process.poll() is None and time.monotonic() < deadline:
+                try:
+                    snapshot = json.loads(control(control_port, 'SNAPSHOT'))
+                except (ConnectionRefusedError, TimeoutError):
+                    time.sleep(0.05)
+                    continue
+                if snapshot.get('sessionToken') != token:
+                    raise RuntimeError('Unexpected Nexus engine on the control port')
+                reply = control(control_port, f'SET_TIER {self.mode}')
+                if reply.split()[:2] != [b'OK', self.mode.encode('ascii')]:
+                    raise RuntimeError('Nexus engine could not select the decode mode')
+                return
+            raise RuntimeError(f'Nexus engine did not start. Exit code {self.process.poll()}')
+        except BaseException:
+            self.close()
+            raise
+
+    def poll(self):
+        if self.process.poll() is not None:
+            self.error = f'Nexus engine exited with code {self.process.returncode}'
+            return
+        # Bound the work done per YAC keyboard poll, even during a busy FT8 slot.
+        for _ in range(32):
             try:
-                print('Listening for FT8 decodes. Control+C stops.', flush=True)
-                while process.poll() is None:
-                    try:
-                        packet = listener.recv(65535)
-                    except TimeoutError:
-                        continue
-                    line = decode_line(packet)
-                    if line is not None:
-                        print(line, flush=True)
-                raise RuntimeError(f'Nexus engine exited with code {process.returncode}')
-            finally:
-                if process.poll() is None:
-                    process.terminate()
+                packet = self.listener.recv(65535)
+            except BlockingIOError:
+                return
+            except OSError as error:
+                self.error = str(error)
+                return
+            line = decode_line(packet, self.plus, self.minus)
+            if line is not None:
+                self.output(line + '\n')
+
+    def close(self):
+        if self.listener is not None:
+            self.listener.close()
+            self.listener = None
+        if self.process is not None:
+            process, self.process = self.process, None
+            if process.poll() is None:
+                process.terminate()
+            try:
+                process.wait(timeout=3)
+            except subprocess.TimeoutExpired as error:
+                raise RuntimeError('Nexus engine did not stop') from error
+
+
+def receive(engine, input_device, output_device, callsign, grid):
+    session = NexusReceive(lambda line: print(line, end='', flush=True), engine, input_device,
+                           output_device, callsign, grid)
+    try:
+        session.start()
+        print('Listening for FT8 decodes. Control+C stops.', flush=True)
+        while not session.error:
+            session.poll()
+            time.sleep(0.1)
+        raise RuntimeError(session.error)
+    finally:
+        session.close()
 
 
 def main(argv=None):
@@ -98,12 +183,10 @@ def main(argv=None):
     if args.input.strip().casefold() == args.output.strip().casefold():
         parser.error('Choose a separate non-radio audio output')
     try:
-        require_device(engine, '--list-devices', args.input)
-        require_device(engine, '--list-output-devices', args.output)
         receive(engine, args.input, args.output, args.call.strip().upper(), args.grid.strip().upper())
     except KeyboardInterrupt:
         return 0
-    except (OSError, RuntimeError, subprocess.TimeoutExpired) as error:
+    except (OSError, ValueError, RuntimeError, subprocess.TimeoutExpired) as error:
         parser.exit(1, f'{error}\n')
     return 0
 

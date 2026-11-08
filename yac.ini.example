@@ -31,3 +31,9 @@ cw_audio_threshold=0.01
 cw_audio_wpm=20
 # Optional verified IC-705 companion USB B port, only needed if identification fails.
 rtty_port=
+
+# Experimental Windows FT8/FT4 receive view. Save the mono radio input with d a.
+# Use the Jimmy Next 2.0.88 engine host and its DLLs. Choose a non-radio output.
+ft_engine=
+ft_audio_output=
+ft_grid=

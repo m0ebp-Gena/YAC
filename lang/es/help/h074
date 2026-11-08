@@ -1,0 +1,15 @@
+Ayuda para la recepción de FT8 y FT4
+
+Este experimento para Windows usa la entrada mono de la radio guardada en la configuración del audio de recepción. Configura el motor Nexus, una salida de audio ajena a la radio y el localizador en yac.ini.
+
+m) Alternar entre FT8 y FT4. Se detiene la decodificación y se borran los resultados.
+s) Iniciar o detener la decodificación.
+v) Leer el último mensaje.
+Coma) Leer el mensaje anterior.
+Punto) Leer el mensaje siguiente.
+n) Borrar los resultados.
+q) Detener la decodificación y volver. El modo y los resultados se conservan durante esta sesión de YAC.
+
+***
+Fin de la ayuda
+***

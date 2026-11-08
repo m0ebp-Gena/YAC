@@ -1,0 +1,15 @@
+Hilfe zum FT8- und FT4-Empfang
+
+Dieses Windows-Experiment verwendet den unter Empfangsaudio gespeicherten Mono-Funkeingang. Nexus-Engine, Audioausgang außerhalb des Funkgeräts und Locator in yac.ini einstellen.
+
+m) Zwischen FT8 und FT4 wechseln. Die Decodierung stoppt und die Ergebnisse werden gelöscht.
+s) Decodierung starten oder stoppen.
+v) Neueste Meldung lesen.
+Komma) Vorherige Meldung lesen.
+Punkt) Nächste Meldung lesen.
+n) Ergebnisse löschen.
+q) Decodierung stoppen und zurückkehren. Betriebsart und Ergebnisse bleiben für diese YAC-Sitzung erhalten.
+
+***
+Ende der Hilfe
+***
