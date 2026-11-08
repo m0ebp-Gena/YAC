@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import os
 from pathlib import Path
 import secrets
 import socket
@@ -14,6 +15,8 @@ HEADER = struct.Struct('>III')
 DECODE_HEADER = (0xADBCCBDA, 3, 2)
 DECODE_FIELDS = struct.Struct('>BIidI')
 NO_WINDOW = getattr(subprocess, 'CREATE_NO_WINDOW', 0)
+CHANNEL_ENV = 'YAC_NEXUS_INPUT_CHANNEL'
+CHANNEL_CAPABILITY = 'yac-input-channel-v1'
 
 
 def read_text(packet, offset):
@@ -48,14 +51,21 @@ def decode_line(packet, plus='Plus', minus='Minus'):
     return f'{hours:02d}:{minutes:02d}:{seconds:02d} UTC. {message}. {signal} dB.'
 
 
-def require_device(engine, flag, name):
+def require_device(engine, flag, name, *, select_channel=False):
+    command = [str(engine), flag]
+    if select_channel:
+        command.append('--yac-channel-support')
     result = subprocess.run(
-        [str(engine), flag], cwd=engine.parent, capture_output=True, encoding='utf-8', timeout=10,
+        command, cwd=engine.parent, capture_output=True, encoding='utf-8', timeout=10,
         creationflags=NO_WINDOW,
     )
     if result.returncode:
         raise RuntimeError(f'Could not list audio devices. Engine exit code {result.returncode}.')
     devices = result.stdout.splitlines()
+    if select_channel:
+        if devices[:1] != [CHANNEL_CAPABILITY]:
+            raise RuntimeError('Nexus engine does not support selecting an input channel')
+        devices = devices[1:]
     if devices.count(name) != 1:
         available = '\n'.join(devices) or 'None'
         raise RuntimeError(f'Audio device unavailable. {name}\nAvailable devices\n{available}')
@@ -70,10 +80,11 @@ def control(port, command):
 
 class NexusReceive:
     def __init__(self, output, engine, input_device, output_device, callsign, grid, mode='FT8',
-                 plus='Plus', minus='Minus'):
+                 plus='Plus', minus='Minus', *, input_channel=None):
         self.output = output
         self.engine = engine
         self.input_device = input_device
+        self.input_channel = input_channel
         self.output_device = output_device
         self.callsign, self.grid, self.mode = callsign, grid, mode
         self.plus, self.minus = plus, minus
@@ -84,8 +95,13 @@ class NexusReceive:
         if (not all((self.input_device, self.output_device, self.callsign, self.grid)) or
                 self.input_device.casefold() == self.output_device.casefold()):
             raise ValueError('Configure radio input, non-radio output, callsign and grid')
-        require_device(self.engine, '--list-devices', self.input_device)
+        require_device(self.engine, '--list-devices', self.input_device,
+                       select_channel=self.input_channel is not None)
         require_device(self.engine, '--list-output-devices', self.output_device)
+        env = os.environ.copy()
+        env.pop(CHANNEL_ENV, None)
+        if self.input_channel is not None:
+            env[CHANNEL_ENV] = str(self.input_channel)
         token = secrets.token_hex(16)
         try:
             self.listener = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -104,7 +120,7 @@ class NexusReceive:
                 '--session-token', token, '--clock-check', 'off', '--wsjtx-out', f'{address}:{port}',
             ]
             self.process = subprocess.Popen(command, cwd=self.engine.parent, stdout=subprocess.DEVNULL,
-                                            stderr=subprocess.DEVNULL,
+                                            stderr=subprocess.DEVNULL, env=env,
                                             creationflags=NO_WINDOW)
             deadline = time.monotonic() + 3
             while self.process.poll() is None and time.monotonic() < deadline:

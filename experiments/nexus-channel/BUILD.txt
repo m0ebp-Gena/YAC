@@ -1,0 +1,20 @@
+Nexus engine for the YAC Windows audio-channel experiment
+
+Use Jimmy Next v2.0.88 (c38093aa928cba96c5f8ecc77481c6fd6b8da2b3).
+https://github.com/Jimr9/JimmyNext/tree/v2.0.88
+
+Prepare the Nexus checkout with Jimmy Next's scripts/prepare-nexus.ps1.
+Its pin is Nexus v1.21.0 (a5777aef0797c78decb8d4cdbc1dfefb34bcd44f).
+https://github.com/kd9taw/Nexus/tree/a5777aef0797c78decb8d4cdbc1dfefb34bcd44f
+
+Apply jimmy-input-channel.patch at the Jimmy Next root. Apply
+nexus-input-channel.patch at the prepared EngineHost/.nexus-src root.
+Build EngineHost with cargo build --release --locked, using the GNU target
+and MSYS2 UCRT64 packages listed in Jimmy Next's CI workflow. Stage the
+engine and matching runtime DLLs as shown in that workflow.
+
+An unmodified engine can still use a mono device. For a multichannel input,
+YAC checks the patched host's capability and passes the saved one-based
+channel in YAC_NEXUS_INPUT_CHANNEL to that child process. The patched
+capture callback uses that channel before resampling. With the variable
+absent the upstream engine retains its usual mono downmix.

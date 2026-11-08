@@ -1,0 +1,10 @@
+--- a/EngineHost/src/main.rs
++++ b/EngineHost/src/main.rs
+@@ -2378,4 +2378,7 @@
+     // arguments) expect verbatim; `.label` is display-only.
+     if std::env::args().any(|a| a == "--list-devices") {
++        if std::env::args().any(|a| a == "--yac-channel-support") {
++            println!("yac-input-channel-v1");
++        }
+         let (inputs, _outputs) = tempo_audio::device::available_devices();
+         for dev in inputs {

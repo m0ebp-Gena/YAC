@@ -58,7 +58,8 @@ class DecoderManager:
                 from modules.audio_setup import resolve
                 from experiments.nexus_ft8 import NexusReceive
                 device = resolve(sd, settings['cw_audio_identity'])
-                if device['channels'] != 1 or int(settings.get('cw_audio_channel', '1')) != 1:
+                channel = int(settings.get('cw_audio_channel', '1'))
+                if not 1 <= channel <= device['channels']:
                     return hints.get_hint(self.root, self.language, 'm006')
                 engine = self.root / settings.get('ft_engine', '')
                 output = settings.get('ft_audio_output', '')
@@ -66,7 +67,8 @@ class DecoderManager:
                 if not engine.is_file() or not all((output, callsign, grid)):
                     return hints.get_hint(self.root, self.language, 'm007')
                 session = NexusReceive(self.ft_buffer.append, engine, device['name'], output,
-                                       callsign, grid, self.ft_mode, self.label('l079'), self.label('l080'))
+                                       callsign, grid, self.ft_mode, self.label('l079'), self.label('l080'),
+                                       input_channel=channel if device['channels'] > 1 else None)
             except (ImportError, OSError, KeyError, ValueError, TypeError):
                 LOG.exception('FT audio input could not be resolved')
                 return self.label('l279')

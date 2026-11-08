@@ -1,0 +1,45 @@
+--- a/crates/tempo-audio/src/device.rs
++++ b/crates/tempo-audio/src/device.rs
+@@ -1463,4 +1463,5 @@
+     cfg: &cpal::SupportedStreamConfig,
+     ch: usize,
++    input_channel: Option<usize>,
+     taps: RxTaps,
+     err: impl FnMut(cpal::Error) + Clone + Send + 'static,
+@@ -1481,11 +1482,11 @@
+                 let mut sum_sq = 0.0f32;
+                 let mut n = 0usize;
+-                for frame in data.chunks(ch) {
+-                    // Fold to mono by AVERAGING the channels (× RX gain). Averaging keeps the signal
+-                    // phase-coherent across the whole FT8 window no matter how the rig's codec lays
+-                    // mono onto a stereo stream. Per-block "loudest lane" picking (0.8.9) thrashed L↔R
+-                    // on a hiss channel and shredded decodes on stereo interfaces (Flex DAX, Xiegu
+-                    // DE-19) — a quiet rig is handled by RX Gain, not by discarding a channel.
+-                    let m = frame.iter().map(|&s| s.to_unit()).sum::<f32>() / ch as f32 * g;
++                for frame in data.chunks_exact(ch) {
++                    // A chosen radio channel may carry a different receiver from its neighbours.
++                    // Preserve the upstream mono downmix when no channel was requested.
++                    let m = match input_channel {
++                        Some(index) => frame[index].to_unit(),
++                        None => frame.iter().map(|&s| s.to_unit()).sum::<f32>() / ch as f32,
++                    } * g;
+                     sum_sq += m * m;
+                     n += 1;
+@@ -1663,3 +1664,11 @@
+         let out_rate = out_cfg.sample_rate();
+         let in_ch = in_cfg.channels() as usize;
++        let input_channel = match std::env::var("YAC_NEXUS_INPUT_CHANNEL") {
++            Ok(value) => Some(value.parse::<usize>().ok()
++                .filter(|channel| (1..=in_ch).contains(channel))
++                .ok_or_else(|| format!("receive channel {value:?} unavailable ({in_ch} channels)"))?
++                - 1),
++            Err(std::env::VarError::NotPresent) => None,
++            Err(error) => return Err(error.to_string()),
++        };
+         let out_ch = out_cfg.channels() as usize;
+@@ -1745,4 +1754,5 @@
+             &in_cfg,
+             in_ch.max(1),
++            input_channel,
+             taps,
+             err_capture,
