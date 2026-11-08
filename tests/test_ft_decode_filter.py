@@ -33,7 +33,7 @@ class FTDecodeFilterTests(unittest.TestCase):
             ('M0AAA W1AW RR73', 'acknowledgement'),
         ])
         self.assertEqual(manager.review(kind='f')[0], 'acknowledgement')
-        with patch.object(yac, '_read_settings', return_value={'ft_distance': '4000', 'ft_distance_unit': 'mi'}), \
+        with patch.object(yac, '_read_settings', return_value={'ft_distance': '4000', 'ft_distance_unit': 'miles'}), \
              patch('modules.chat_int.show_response') as show, patch('modules.chat_int.show_done'):
             manager.ft_filter_control(iter(['.', 'q']).__next__)
             self.assertEqual(manager.ft_lines(), ['far CQ', 'near CQ'])
@@ -47,6 +47,8 @@ class FTDecodeFilterTests(unittest.TestCase):
 
     def test_distance_setting_defaults_and_validation(self):
         self.assertEqual(distance_settings({}), (2000, 'km'))
+        for unit in ('mi', 'miles', 'MILES'):
+            self.assertEqual(distance_settings({'ft_distance_unit': unit}), (2000, 'mi'))
         for settings in ({'ft_distance': 'nan'}, {'ft_distance': '0'}, {'ft_distance_unit': 'yards'}):
             with self.assertRaises(ValueError):
                 distance_settings(settings)

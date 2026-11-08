@@ -37,6 +37,6 @@ rtty_port=
 ft_engine=
 ft_audio_output=
 ft_grid=
-# Distance filter cutoff. Use km or mi for the unit.
+# Distance filter cutoff. Use km, mi or miles for the unit.
 ft_distance=2000
 ft_distance_unit=km

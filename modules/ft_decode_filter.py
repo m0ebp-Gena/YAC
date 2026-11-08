@@ -44,6 +44,8 @@ def message_distance(message, origin):
 def distance_settings(settings):
     limit = float(settings.get('ft_distance', '2000'))
     unit = settings.get('ft_distance_unit', 'km').casefold()
+    if unit == 'miles':
+        unit = 'mi'
     if not isfinite(limit) or limit <= 0 or unit not in ('km', 'mi'):
         raise ValueError('Invalid FT distance setting')
     return limit, unit
