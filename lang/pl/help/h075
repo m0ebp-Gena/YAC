@@ -1,0 +1,13 @@
+Filtry komunikatów FT8 i FT4
+
+Kropka) Wybierz następny filtr.
+Przecinek) Wybierz poprzedni filtr.
+
+Wszystkie pokazuje wszystkie komunikaty. Wywołania CQ obejmują także kierunkowe CQ.
+Odległość jest szacowana z lokatora w komunikacie. Próg i jednostkę określają ft_distance i ft_distance_unit w yac.ini. Domyślnie jest to 2000 km.
+
+q) Wróć do wyników. Filtr pozostaje do końca tej sesji YAC.
+
+***
+Koniec pomocy
+***

@@ -2,6 +2,7 @@ Help for FT8 and FT4 reception
 
 This Windows experiment uses the radio input and channel saved under Receive Audio Setup. Configure the Nexus engine, non-radio audio output and grid locator in yac.ini.
 
+f) Filter decoded messages.
 m) Switch between FT8 and FT4. This stops decoding and clears the results.
 s) Start or stop decoding.
 v) Read the latest message.

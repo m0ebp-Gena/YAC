@@ -1,0 +1,13 @@
+Meldungsfilter für FT8 und FT4
+
+Punkt) Nächsten Filter auswählen.
+Komma) Vorherigen Filter auswählen.
+
+Alle zeigt alle Meldungen. CQ-Rufe enthält auch gerichtete CQ-Rufe.
+Die Entfernung wird aus dem Locator der Meldung geschätzt. Grenze und Einheit stehen in yac.ini unter ft_distance und ft_distance_unit. Standard sind 2000 km.
+
+q) Zu den Ergebnissen zurückkehren. Der Filter bleibt für diese YAC-Sitzung erhalten.
+
+***
+Ende der Hilfe
+***

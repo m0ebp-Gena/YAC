@@ -28,8 +28,8 @@ def read_text(packet, offset):
     return packet[start:end].decode('utf-8'), end
 
 
-def decode_line(packet, plus='Plus', minus='Minus'):
-    """Format a new, on-air decode from the Nexus host's schema 3 feed."""
+def decode_message(packet, plus='Plus', minus='Minus'):
+    """Return the on-air message and its display line from the Nexus feed."""
     try:
         if HEADER.unpack_from(packet) != DECODE_HEADER:
             return None
@@ -48,7 +48,7 @@ def decode_line(packet, plus='Plus', minus='Minus'):
     signal = str(abs(snr))
     if snr:
         signal = f'{minus if snr < 0 else plus} {signal}'
-    return f'{hours:02d}:{minutes:02d}:{seconds:02d} UTC. {message}. {signal} dB.'
+    return message, f'{hours:02d}:{minutes:02d}:{seconds:02d} UTC. {message}. {signal} dB.'
 
 
 def require_device(engine, flag, name, *, select_channel=False):
@@ -153,9 +153,9 @@ class NexusReceive:
             except OSError as error:
                 self.error = str(error)
                 return
-            line = decode_line(packet, self.plus, self.minus)
-            if line is not None:
-                self.output(line + '\n')
+            decoded = decode_message(packet, self.plus, self.minus)
+            if decoded is not None:
+                self.output(*decoded)
 
     def close(self):
         if self.listener is not None:
@@ -172,7 +172,7 @@ class NexusReceive:
 
 
 def receive(engine, input_device, output_device, callsign, grid):
-    session = NexusReceive(lambda line: print(line, end='', flush=True), engine, input_device,
+    session = NexusReceive(lambda _message, line: print(line, flush=True), engine, input_device,
                            output_device, callsign, grid)
     try:
         session.start()

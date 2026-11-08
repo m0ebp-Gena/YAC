@@ -1,0 +1,13 @@
+Filtros de mensajes FT8 y FT4
+
+Punto) Seleccionar el filtro siguiente.
+Coma) Seleccionar el filtro anterior.
+
+Todos muestra todos los mensajes. Llamadas CQ incluye las llamadas CQ dirigidas.
+La distancia se estima con el localizador del mensaje. El límite y la unidad se definen en yac.ini con ft_distance y ft_distance_unit. El valor inicial es 2000 km.
+
+q) Volver a los resultados. El filtro se conserva durante esta sesión de YAC.
+
+***
+Fin de la ayuda
+***

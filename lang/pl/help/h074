@@ -2,6 +2,7 @@ Pomoc dotycząca odbioru FT8 i FT4
 
 Ten eksperyment dla systemu Windows używa wejścia i kanału radia zapisanych w konfiguracji dźwięku odbiorczego. Ustaw silnik Nexus, wyjście dźwięku inne niż radio oraz lokator w pliku yac.ini.
 
+f) Filtruj zdekodowane komunikaty.
 m) Przełącz między FT8 i FT4. Dekodowanie zostanie zatrzymane, a wyniki usunięte.
 s) Rozpocznij lub zatrzymaj dekodowanie.
 v) Odczytaj najnowszy komunikat.

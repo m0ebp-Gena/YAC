@@ -1,10 +1,11 @@
 """Decoder lifecycle and keyboard/text presentation, independent of discovery."""
+from collections import deque
 import logging
 import math
 import sys
 import time
 from modules.decoder_text import TextBuffer, RestoreError
-from modules import chat_int, help_int, hints
+from modules import chat_int, ft_decode_filter, help_int, hints
 
 LOG = logging.getLogger('yac')
 
@@ -23,8 +24,11 @@ class DecoderManager:
         self.audio_wpm = None
         self.cw_buffer = self.buffer
         self.rtty_buffer = TextBuffer()
-        self.ft_buffer = TextBuffer()
+        self.ft_buffer = deque(maxlen=250)
         self.ft_mode = 'FT8'
+        self.ft_filter = 0
+        self.ft_origin = None
+        self.ft_distance = (2000, 'km')
 
     def label(self, token, **values):
         return self.yac._read_label(self.root, self.language, token, '').format(**values)
@@ -66,7 +70,8 @@ class DecoderManager:
                 callsign, grid = settings.get('call', '').upper(), settings.get('ft_grid', '').upper()
                 if not engine.is_file() or not all((output, callsign, grid)):
                     return hints.get_hint(self.root, self.language, 'm007')
-                session = NexusReceive(self.ft_buffer.append, engine, device['name'], output,
+                session = NexusReceive(lambda message, line: self.ft_buffer.append((message, line)),
+                                       engine, device['name'], output,
                                        callsign, grid, self.ft_mode, self.label('l079'), self.label('l080'),
                                        input_channel=channel if device['channels'] > 1 else None)
             except (ImportError, OSError, KeyError, ValueError, TypeError):
@@ -80,7 +85,8 @@ class DecoderManager:
         # CW history survives stop, restart and visits to other decoder views.
         if kind != self.kind:
             self.pending = ''
-        self.buffer = {'c': self.cw_buffer, 'r': self.rtty_buffer, 'f': self.ft_buffer}[kind]
+        if kind != 'f':
+            self.buffer = self.cw_buffer if kind == 'c' else self.rtty_buffer
         if kind in ('c', 'f'):
             clear = False
         if kind != 'f':
@@ -126,6 +132,8 @@ class DecoderManager:
             # Constructors own no devices; start() cleans up any partial setup.
             return self.label('l279')
         self.session, self.kind = session, kind
+        if kind == 'f':
+            self.ft_origin = ft_decode_filter.grid_center(grid)
         if kind == 'c' and callable(getattr(session, 'speed', None)):
             self.audio_wpm = session.speed()
         return self.label('l276')
@@ -203,14 +211,59 @@ class DecoderManager:
             self.pending = ''
             self.last_output = now
 
-    def review(self, position=-1, *, buffer=None):
-        text = (self.buffer if buffer is None else buffer).snapshot()
-        # Fixed review chunks also work for native CW streams with no line endings.
-        lines = [line[i:i+60] for line in text.splitlines() for i in range(0, len(line), 60)]
+    def review(self, position=-1, *, kind=None):
+        if kind == 'f':
+            lines = self.ft_lines()
+        else:
+            # Fixed review chunks also work for native CW streams with no line endings.
+            lines = [line[i:i+60] for line in self.buffer.snapshot().splitlines()
+                     for i in range(0, len(line), 60)]
         if not lines:
             return self.label('l278'), -1
         position = len(lines)-1 if position == -1 else min(len(lines)-1, max(0, position))
         return lines[position], position
+
+    def ft_lines(self):
+        if self.ft_filter == 0:
+            return [line for _, line in self.ft_buffer]
+        if self.ft_filter == 1:
+            return [line for message, line in self.ft_buffer if message.upper().split(maxsplit=1)[:1] == ['CQ']]
+        if self.ft_distance is None:
+            return []
+        limit, unit = self.ft_distance
+        factor = ft_decode_filter.KM_PER_MILE if unit == 'mi' else 1
+        unit_label = self.label('l443') if unit == 'mi' else 'km'
+        results = []
+        for message, line in self.ft_buffer:
+            distance = ft_decode_filter.message_distance(message, self.ft_origin)
+            if distance is not None and distance / factor > limit:
+                results.append(f'{line} {round(distance / factor)} {unit_label}.')
+        return results
+
+    def ft_filter_control(self, read_key):
+        try:
+            self.ft_distance = ft_decode_filter.distance_settings(self.yac._read_settings(self.root / 'yac.ini'))
+        except ValueError:
+            self.ft_distance = None
+        labels = [self.label('l440'), self.label('l441'), self.label('l356')]
+        if self.ft_distance is not None:
+            limit, unit = self.ft_distance
+            labels[2] = self.label('l442', value=f'{limit:g}', unit=self.label('l443') if unit == 'mi' else 'km')
+        chat_int.show_response(labels[self.ft_filter])
+        while True:
+            key = read_key().casefold()
+            if key == 'q':
+                chat_int.show_done(self.root, self.language)
+                return
+            if key == 'h':
+                chat_int.show_response(help_int.get_help(self.root, self.language, 'h075'))
+            elif key in ('.', ','):
+                target = (self.ft_filter + (1 if key == '.' else -1)) % len(labels)
+                if target != 2 or self.ft_distance is not None:
+                    self.ft_filter = target
+                chat_int.show_response(labels[target])
+            elif key:
+                chat_int.show_response(self.label('l129'))
 
     def cw_speed(self, direction=0):
         session = self.session
@@ -302,7 +355,8 @@ class DecoderManager:
                             chat_int.show_response(self.label('l003'))
                             return
                         self.pending = ''
-                        self.buffer.take()
+                        if kind == 'c':
+                            self.buffer.take()
                     chat_int.show_done(self.root, self.language)
                     return
                 if key == 'h':
@@ -332,6 +386,9 @@ class DecoderManager:
                     self.ft_buffer.clear()
                     position = -1
                     chat_int.show_response(self.ft_mode)
+                elif key == 'f' and kind == 'f':
+                    self.ft_filter_control(read_key)
+                    position = -1
                 elif key == 'z' and kind == 'c':
                     chat_int.show_response(self.zero_in())
                 elif key == 'r' and kind == 'c':
@@ -350,17 +407,16 @@ class DecoderManager:
                     except (ValueError, OSError):
                         chat_int.show_response(self.label('l003'))
                 elif key in ('v', '.', ','):
-                    buffer = self.ft_buffer if kind == 'f' else self.buffer
                     if key == 'v':
                         position = -1
                     elif position < 0:
-                        _, position = self.review(buffer=buffer)
+                        _, position = self.review(kind=kind)
                         if key == ',':
                             position = max(0, position-1)
                     else:
                         position += 1 if key == '.' else -1
                         position = max(0, position)
-                    response, position = self.review(position, buffer=buffer)
+                    response, position = self.review(position, kind=kind)
                     chat_int.show_response(response)
                 elif key == 'n' and kind != 'c':
                     if kind == 'f':

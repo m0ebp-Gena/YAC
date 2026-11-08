@@ -1,0 +1,13 @@
+FT8 and FT4 message filters
+
+Full stop) Select the next filter.
+Comma) Select the previous filter.
+
+All shows every decoded message. Calling CQ includes directed CQs.
+Distance uses the grid in the message. The cutoff and units come from ft_distance and ft_distance_unit in yac.ini. The default is 2000 km.
+
+q) Return to the results and keep the selected filter for this YAC session.
+
+***
+End of help
+***
