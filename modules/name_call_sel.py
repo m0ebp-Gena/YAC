@@ -135,7 +135,7 @@ def _read_edit_key() -> str:
     }.get(sequence, "")
 
 
-def _edit_line(initial: str = "") -> str:
+def _edit_line(initial: str = "", *, max_length: int = MAX_CALL_LENGTH) -> str:
     """Read one echoed line with insertion, deletion, and cursor movement."""
     if os.name != "nt":
         if not sys.stdin.isatty():
@@ -149,7 +149,7 @@ def _edit_line(initial: str = "") -> str:
     else:
         previous_settings = None
 
-    buffer = list(initial[:MAX_CALL_LENGTH])
+    buffer = list(initial[:max_length])
     cursor = len(buffer)
     drawn_length = _draw_input(buffer, cursor, 0)
     try:
@@ -175,7 +175,7 @@ def _edit_line(initial: str = "") -> str:
                 if cursor < len(buffer):
                     del buffer[cursor]
             elif len(key) == 1 and key.isprintable():
-                if len(buffer) < MAX_CALL_LENGTH:
+                if len(buffer) < max_length:
                     buffer.insert(cursor, key)
                     cursor += 1
                 else:
@@ -186,37 +186,71 @@ def _edit_line(initial: str = "") -> str:
             termios.tcsetattr(descriptor, termios.TCSADRAIN, previous_settings)
 
 
+def _confirm_entry(root: Path, language: str) -> bool:
+    from modules import help_int, lang_sel
+
+    confirmation = _read_label(root, language, 'l007', 'Continue Y/N?')
+    print(confirmation, flush=True)
+    while True:
+        key = lang_sel.read_key().casefold()
+        if key in ('y', 'n'):
+            return key == 'y'
+        if key == 'h':
+            print(help_int.get_help(root, language, 'h028'))
+            print(confirmation, flush=True)
+
+
 def collect_name(
     root: Path, ini_path: Path, language: str, *, initial: str = ""
 ) -> str:
     """Collect a name/callsign of at most 10 characters and save it to yac.ini."""
-    from modules import help_int, lang_sel
+    prompt = _read_label(root, language, "l004", "Callsign?")
+    entered_label = _read_label(root, language, "l006", "Callsign =")
 
-    prompt = _read_label(root, language, "l004", "Name / Call?")
-    entered_label = _read_label(root, language, "l006", "Name / Call =")
-    confirmation = _read_label(
-        root, language, "l007", "Continue Y/N?"
-    )
-
-    print(help_int.get_help(root, language, 'h028'))
     name = initial[:MAX_CALL_LENGTH]
     while True:
-        print(prompt)
+        print(prompt, flush=True)
         name = _edit_line(name).strip()
         if not name:
             continue
 
         print(f'{entered_label} {name}')
-        print(confirmation)
-        while True:
-            key = lang_sel.read_key().casefold()
-            if key == "y":
-                _save_call(ini_path, name)
-                os.system("cls" if os.name == "nt" else "clear")
-                return name
-            if key == "h":
-                print(help_int.get_help(root, language, 'h028'))
-                print(confirmation)
-            if key == "n":
-                print()
-                break
+        if _confirm_entry(root, language):
+            _save_call(ini_path, name)
+            os.system("cls" if os.name == "nt" else "clear")
+            return name
+        print()
+
+
+def collect_locator(root: Path, ini_path: Path, language: str, initial: str, save) -> None:
+    """Offer to save the station's optional FT8/FT4 distance origin."""
+    from modules import help_int, hints, lang_sel
+    from modules.ft_decode_filter import grid_center
+
+    question = hints.get_hint(root, language, 'm008')
+    prompt = hints.get_hint(root, language, 'm009')
+    entered_label = _read_label(root, language, 'l446', 'Locator =')
+    print(question, flush=True)
+    while True:
+        key = lang_sel.read_key().casefold()
+        if key == 'n':
+            return
+        if key == 'h':
+            print(help_int.get_help(root, language, 'h028'))
+            print(question, flush=True)
+        elif key == 'y':
+            while True:
+                print(prompt, flush=True)
+                locator = _edit_line(initial).strip().upper()
+                if not locator:
+                    print(_read_label(root, language, 'l355', 'Aborted'), flush=True)
+                    return
+                if grid_center(locator) is None:
+                    print(_read_label(root, language, 'l356', 'Invalid'))
+                    break
+                print(f'{entered_label} {locator}')
+                if _confirm_entry(root, language):
+                    save(ini_path, 'ft_grid', locator)
+                    return
+                initial = locator
+            print(question, flush=True)

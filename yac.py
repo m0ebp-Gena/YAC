@@ -64,7 +64,7 @@ def _icom_select_vfo(root: Path, radio: RadioConnection, language: str) -> str:
     if frequency is None or mode is None:
         return _radio_error(root, radio, language)
     labels = _icom_profile(radio).get("vfo_labels", ["VFO A", "VFO B"])
-    return f"{labels[selected]} {frequency} {mode}"
+    return f"{labels[selected]} {frequency} {_spoken_mode(mode)}"
 
 
 def _ftx1(radio: RadioConnection) -> bool:
@@ -111,17 +111,15 @@ def _read_settings(ini_path: Path) -> dict[str, str]:
     return read_settings(ini_path)
 
 
-def _set_yac_value(ini_path: Path, key: str, value: str) -> None:
+def _set_yac_value(ini_path: Path, key: str, value: str, **other_values: str) -> None:
     from modules.ini_settings import save_error
     try:
-        _write_yac_value(ini_path, key, value)
+        _write_yac_value(ini_path, key, value, **other_values)
     except (OSError, UnicodeError) as error:
         save_error(ini_path, error)
 
 
-def _write_yac_value(ini_path: Path, key: str, value: str) -> None:
-    """Update one [yac] value without rewriting radio profiles."""
-    contents = ini_path.read_text(encoding="utf-8-sig") if ini_path.exists() else ""
+def _with_yac_value(contents: str, key: str, value: str) -> str:
     newline = "\r\n" if "\r\n" in contents else "\n"
     lines = contents.splitlines(keepends=True)
     start: int | None = None
@@ -158,6 +156,15 @@ def _write_yac_value(ini_path: Path, key: str, value: str) -> None:
             insertion -= 1
         lines.insert(insertion, f"{key}={value}{newline}")
 
+    return "".join(lines)
+
+
+def _write_yac_value(ini_path: Path, key: str, value: str, **other_values: str) -> None:
+    """Update [yac] values together without rewriting radio profiles."""
+    contents = ini_path.read_text(encoding="utf-8-sig") if ini_path.exists() else ""
+    for setting, entered in ((key, value), *other_values.items()):
+        contents = _with_yac_value(contents, setting, entered)
+
     ini_path.parent.mkdir(parents=True, exist_ok=True)
     temporary_path: Path | None = None
     try:
@@ -165,7 +172,7 @@ def _write_yac_value(ini_path: Path, key: str, value: str) -> None:
             "w", encoding="utf-8", newline="", dir=ini_path.parent,
             prefix=f".{ini_path.name}.", suffix=".tmp", delete=False,
         ) as temporary_file:
-            temporary_file.write("".join(lines))
+            temporary_file.write(contents)
             temporary_path = Path(temporary_file.name)
         os.replace(temporary_path, ini_path)
     finally:
@@ -919,12 +926,13 @@ AMATEUR_BANDS = (
     (420.0, 450.0, "l023", "70CM"),
     (1240.0, 1300.0, "l024", "23CM"),
 )
-SHORT_MODE_LABELS = {
-    "CW-U": "CWU", "CW-L": "CWL", "RTTY-L": "RTTYL", "RTTY-U": "RTTYU",
-    "DATA-L": "DATAL", "DATA-U": "DATAU", "DATA-FM": "DATAFM",
-    "DATA-FM-N": "DATAFMN", "FM-N": "FMN", "AM-N": "AMN",
-    "CW-R": "CWR", "RTTY-R": "RTTYR",
-    "C4FM-DN": "C4FMDN", "C4FM-VW": "C4FMVW",
+SPOKEN_MODE_LABELS = {
+    "CWU": "CW USB", "CWL": "CW LSB", "CWR": "CW Reverse",
+    "RTTYL": "RTTY LSB", "RTTYU": "RTTY USB", "RTTYR": "RTTY Reverse",
+    "DATAL": "Data LSB", "DATAU": "Data USB", "DATAR": "Data Reverse",
+    "DATA": "Data", "DATAFM": "Data FM", "DATAFMN": "Data FM Narrow",
+    "FMN": "FM Narrow", "AMN": "AM Narrow", "PSKR": "PSK Reverse",
+    "C4FMDN": "C4FM DN", "C4FMVW": "C4FM VW",
 }
 STEP_SIZE_DEFAULTS = {
     "step_ssb": 1000,
@@ -932,6 +940,11 @@ STEP_SIZE_DEFAULTS = {
     "step_fm": 12500,
     "step_cw": 500,
 }
+
+
+def _spoken_mode(mode: str) -> str:
+    """Format a mode for speech and braille at the point of display."""
+    return SPOKEN_MODE_LABELS.get(mode.replace('-', ''), mode.replace('-', ' '))
 
 
 def _step_size_key(mode: str | None) -> tuple[str, str] | None:
@@ -1241,7 +1254,7 @@ def _current_frequency(root: Path, radio: RadioConnection) -> str | None:
 
 
 def _current_mode(radio: RadioConnection) -> str | None:
-    """Read the active mode and return its short spoken/display form."""
+    """Read the active mode as the compact key used by radio controls."""
     if _icom_supported(radio):
         response = _icom_read(radio, "mode")
         data = _civ_response_data(response, radio.civ_address, 0x04)
@@ -1261,7 +1274,7 @@ def _current_mode(radio: RadioConnection) -> str | None:
         mode = None
     if mode is None:
         return None
-    return SHORT_MODE_LABELS.get(mode, mode.replace("-", ""))
+    return mode.replace("-", "")
 
 
 def _current_mode_code(radio: RadioConnection) -> int | str | None:
@@ -1340,7 +1353,7 @@ def _mode_name(radio: RadioConnection, mode_code: int | str) -> str:
         mode = KENWOOD_MODE_LABELS[str(mode_code)]
     else:
         mode = MODE_LABELS[str(mode_code)]
-    return SHORT_MODE_LABELS.get(mode, mode.replace('-', ''))
+    return _spoken_mode(mode)
 
 
 def _band_name(root: Path, language: str, frequency: str) -> str:
@@ -1356,7 +1369,7 @@ def _band_name(root: Path, language: str, frequency: str) -> str:
 
 def _band_status(root: Path, language: str, frequency: str, mode: str | None) -> str:
     """Format compact band, frequency, and mode status for chat_int."""
-    return " ".join((_band_name(root, language, frequency), frequency, mode or "?"))
+    return " ".join((_band_name(root, language, frequency), frequency, _spoken_mode(mode or "?")))
 
 
 def _band_change(root: Path, radio: RadioConnection, language: str, direction: int) -> str:
@@ -1488,7 +1501,7 @@ def _icom_status(root: Path, radio: RadioConnection, language: str, command_path
     signal_raw = _civ_bcd_value(signal_data)
     if frequency and mode and signal_raw is not None:
         signal = format_s_meter(int(signal_raw), radio.model_id)
-        return f"{signal} {frequency} {SHORT_MODE_LABELS.get(mode, mode.replace('-', ''))}"
+        return f"{signal} {frequency} {_spoken_mode(mode)}"
     return _radio_error(root, radio, language)
 
 
@@ -1637,7 +1650,7 @@ def _radio_status(root: Path, radio: RadioConnection, language: str) -> str:
         mode = _current_mode(radio)
         if frequency and mode:
             signal = elecraft_kx2.signal(_cat_exchange, radio)
-            return f"{signal} {frequency} {mode}"
+            return f"{signal} {frequency} {_spoken_mode(mode)}"
         return _radio_error(root, radio, language)
     if _icom_supported(radio):
         command_path = _radio_command_file(root, radio, "read", "w")
@@ -1665,7 +1678,7 @@ def _radio_status(root: Path, radio: RadioConnection, language: str) -> str:
         else:
             DEBUG_LOG.warning("FTX-1 S-meter response did not match expected side=%s response=%r", side, signal_response)
         signal = format_s_meter(int(meter_match.group(1)), radio.model_id) if meter_match else "S ?"
-        return f"{signal} {frequency} {mode}" if frequency and mode else _radio_error(root, radio, language)
+        return f"{signal} {frequency} {_spoken_mode(mode)}" if frequency and mode else _radio_error(root, radio, language)
     if radio.manufacturer_key == "kenwood":
         if radio.model_id == "020":
             frequency = _current_frequency(root, radio)
@@ -1686,7 +1699,7 @@ def _radio_status(root: Path, radio: RadioConnection, language: str) -> str:
             else:
                 match = re.search(r'SM0(\d{4});', _cat_exchange(radio, 'SM0;'))
                 signal = f'S {int(match.group(1))}' if match else 'S ?'
-            return f'{signal} {frequency} {mode}' if frequency and mode else _radio_error(root, radio, language)
+            return f'{signal} {frequency} {_spoken_mode(mode)}' if frequency and mode else _radio_error(root, radio, language)
         command_path = _radio_command_file(root, radio, "read", "w")
         if command_path is None:
             return _radio_error(root, radio, language)
@@ -1704,7 +1717,7 @@ def _radio_status(root: Path, radio: RadioConnection, language: str) -> str:
         # calibrated raw strength scale; retain the reading without conversion.
         signal = f"S {int(meter_match.group(1))}" if meter_match else "S ?"
         if frequency and mode:
-            return f"{signal} {frequency} {SHORT_MODE_LABELS.get(mode, mode.replace('-', ''))}"
+            return f"{signal} {frequency} {_spoken_mode(mode)}"
         return _radio_error(root, radio, language)
     command_path = _radio_command_file(root, radio, "read", "w")
     if command_path is None:
@@ -1728,7 +1741,7 @@ def _radio_status(root: Path, radio: RadioConnection, language: str) -> str:
         if meter_match else "S ?"
     )
     if frequency and mode:
-        return f"{signal} {frequency} {SHORT_MODE_LABELS.get(mode, mode.replace('-', ''))}"
+        return f"{signal} {frequency} {_spoken_mode(mode)}"
     return _radio_error(root, radio, language)
 
 
@@ -1774,13 +1787,14 @@ def connect_radio(ini_path: Path | None = None) -> RadioConnection | None:
     if language is None:
         return None
     settings = _read_settings(ini_path)
-    from modules.name_call_sel import collect_name
+    from modules.name_call_sel import collect_locator, collect_name
 
     saved_call = settings.get("call", "").strip()
     _show_welcome(root, language, saved_call)
     time.sleep(1)
     if not saved_call:
         collect_name(root, ini_path, language)
+        collect_locator(root, ini_path, language, settings.get('ft_grid', ''), _set_yac_value)
     from modules import region_plan, hints
     region = region_plan.selected(_read_settings(ini_path))
     hint = hints.get_hint(root, language, 'm000', region=region)

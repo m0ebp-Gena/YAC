@@ -8,7 +8,7 @@ s) Start or stop decoding.
 v) Read the latest message.
 Comma) Read the previous message.
 Full stop) Read the next message.
-n) Clear the results.
+c) Clear the results.
 q) Stop decoding and return. The selected mode and results stay for this YAC session.
 
 ***

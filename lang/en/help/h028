@@ -2,10 +2,13 @@ Help For The Name and Callsign
 
 Name and callsign
 Enter the name, callsign or combination you want YAC to use, up to 10 characters including spaces. Press Enter to review it.
+For FT8 or FT4, enter your amateur radio callsign by itself.
 
 h: at Continue Y/N?, read this help again, then return to the question.
 n: return to the entry without saving. Your text is kept for editing; use the arrow keys, Home, End, Backspace or Delete.
-y: save the displayed entry and continue starting YAC. Space does not confirm.
+y: save the displayed entry. Space does not confirm.
+
+At the Maidenhead locator question, press y to add your locator or n to skip. Enter a four- or six-character locator such as IO83 or IO83PS and press Enter to review it. Use the same y, n and h keys at confirmation. An empty entry skips this step. The locator is used for FT8 and FT4 distances.
 
 ***
 End of help

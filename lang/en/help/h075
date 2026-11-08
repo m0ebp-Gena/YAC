@@ -4,7 +4,9 @@ Full stop) Select the next filter.
 Comma) Select the previous filter.
 
 All shows every decoded message. Calling CQ includes directed CQs.
-Distance uses the grid in the message. The cutoff and units come from ft_distance and ft_distance_unit in yac.ini. The default is 2000 km.
+Distance uses the grid in the message. The default is 2000 km.
+
+e) Edit the distance cutoff. Press k for kilometres or m for miles. Press q at the unit question to cancel. Enter a positive number and press Enter to save and select the distance filter. A blank entry aborts and keeps the previous filter. You return to the filter selector.
 
 q) Return to the results and keep the selected filter for this YAC session.
 

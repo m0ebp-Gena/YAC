@@ -29,22 +29,27 @@ class Responses(unittest.TestCase):
     def test_mode_response_consistency(self):
         for model in ['0761','0840','023','IC-705']:
             r=self.radio(model)
-            for code,_ in yac._available_modes(r):
+            for code,mode_key in yac._available_modes(r):
                 with self.subTest(model=model,code=code):
                     expected=yac._mode_name(r,code)
+                    if mode_key in {'DATA-U', 'DATA-L', 'RTTY-U', 'RTTY-L', 'FM-N'}:
+                        self.assertEqual(expected, {
+                            'DATA-U': 'Data USB', 'DATA-L': 'Data LSB',
+                            'RTTY-U': 'RTTY USB', 'RTTY-L': 'RTTY LSB', 'FM-N': 'FM Narrow',
+                        }[mode_key])
                     if r.protocol=='CAT':
                         mode=f'MD0{code};' if model!='023' else f'MD{code};'
                         def exchange(r,c):
                             return mode if c.startswith('MD') else 'FA00007159000;' if c=='FA;' else 'SM00009;' if model=='023' else 'SM0130;'
                         with patch.object(yac,'_cat_exchange',side_effect=exchange):
-                            self.assertEqual(yac._current_mode(r),expected)
+                            self.assertEqual(yac._current_mode(r),mode_key.replace('-',''))
                             self.assertTrue(yac._radio_status(root,r,'en').endswith(' '+expected))
                     else:
                         def exchange(r,c,s=None):
                             data=yac._civ_frequency_bytes(7159000) if c==3 else bytes([code,1]) if c==4 else bytes.fromhex('0120')
                             return bytes([0xFE,0xFE,0xE0,0xA4,c])+ (bytes([s]) if s is not None else b'')+data+b'\xfd'
                         with patch.object(yac,'_civ_exchange',side_effect=exchange):
-                            self.assertEqual(yac._current_mode(r),expected)
+                            self.assertEqual(yac._current_mode(r),mode_key.replace('-',''))
                             self.assertTrue(yac._radio_status(root,r,'en').endswith(' '+expected))
     def test_rejected_frequency_restores_each_vfo(self):
         for model in ['0761','0840','023','IC-705']:

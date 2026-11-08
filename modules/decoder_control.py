@@ -245,10 +245,7 @@ class DecoderManager:
             self.ft_distance = ft_decode_filter.distance_settings(self.yac._read_settings(self.root / 'yac.ini'))
         except ValueError:
             self.ft_distance = None
-        labels = [self.label('l440'), self.label('l441'), self.label('l356')]
-        if self.ft_distance is not None:
-            limit, unit = self.ft_distance
-            labels[2] = self.label('l442', value=f'{limit:g}', unit=self.label('l443') if unit == 'mi' else 'km')
+        labels = [self.label('l440'), self.label('l441'), self.ft_distance_label()]
         chat_int.show_response(labels[self.ft_filter])
         while True:
             key = read_key().casefold()
@@ -257,6 +254,9 @@ class DecoderManager:
                 return
             if key == 'h':
                 chat_int.show_response(help_int.get_help(self.root, self.language, 'h075'))
+            elif key == 'e':
+                chat_int.show_response(self.ft_edit_distance(read_key))
+                labels[2] = self.ft_distance_label()
             elif key in ('.', ','):
                 target = (self.ft_filter + (1 if key == '.' else -1)) % len(labels)
                 if target != 2 or self.ft_distance is not None:
@@ -264,6 +264,49 @@ class DecoderManager:
                 chat_int.show_response(labels[target])
             elif key:
                 chat_int.show_response(self.label('l129'))
+
+    def ft_distance_label(self):
+        if self.ft_distance is None:
+            return self.label('l356')
+        limit, unit = self.ft_distance
+        return self.label('l442', value=f'{limit:g}', unit=self.label('l443') if unit == 'mi' else 'km')
+
+    def ft_edit_distance(self, read_key):
+        from modules.name_call_sel import _edit_line
+
+        unit_prompt = hints.get_hint(self.root, self.language, 'm010')
+        chat_int.show_response(unit_prompt)
+        key = read_key().casefold()
+        while key == 'h':
+            chat_int.show_response(help_int.get_help(self.root, self.language, 'h075'))
+            chat_int.show_response(unit_prompt)
+            key = read_key().casefold()
+        if key == 'q' or not key:
+            return self.label('l355')
+        unit = {'k': 'km', 'm': 'mi'}.get(key)
+        if unit is None:
+            return self.label('l356')
+
+        initial = ''
+        if self.ft_distance is not None and self.ft_distance[1] == unit:
+            initial = str(self.ft_distance[0]).removesuffix('.0')
+        chat_int.finish_response()
+        print(self.label('l444' if unit == 'mi' else 'l445'), flush=True)
+        try:
+            entered = _edit_line(initial, max_length=32).strip()
+        except (EOFError, KeyboardInterrupt):
+            print()
+            return self.label('l355')
+        if not entered:
+            return self.label('l355')
+        try:
+            distance = ft_decode_filter.distance_settings({'ft_distance': entered, 'ft_distance_unit': unit})
+        except ValueError:
+            return self.label('l356')
+        self.yac._set_yac_value(self.root / 'yac.ini', 'ft_distance', entered, ft_distance_unit=unit)
+        self.ft_distance = distance
+        self.ft_filter = 2
+        return self.ft_distance_label()
 
     def cw_speed(self, direction=0):
         session = self.session
@@ -418,7 +461,7 @@ class DecoderManager:
                         position = max(0, position)
                     response, position = self.review(position, kind=kind)
                     chat_int.show_response(response)
-                elif key == 'n' and kind != 'c':
+                elif kind != 'c' and key == ('c' if kind == 'f' else 'n'):
                     if kind == 'f':
                         self.ft_buffer.clear()
                     else:

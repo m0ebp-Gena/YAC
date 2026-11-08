@@ -2,10 +2,13 @@ Pomoc: Imię i znak wywoławczy
 
 Imię i znak wywoławczy
 Wpisz imię, znak lub połączenie obu, którego ma używać YAC, do 10 znaków ze spacjami. Enter wyświetla wpis do sprawdzenia.
+Do pracy w FT8 lub FT4 wpisz sam znak wywoławczy stacji amatorskiej.
 
 h: przy Dalej Y/N? czytaj tę pomoc ponownie, potem wróć do pytania.
 n: wróć do wpisywania bez zapisu. Tekst pozostaje do edycji; użyj strzałek, Home, End, Backspace lub Delete.
-y: zapisz wyświetlony wpis i kontynuuj uruchamianie YAC. Spacja nie potwierdza.
+y: zapisz wyświetlony wpis. Spacja nie potwierdza.
+
+Przy pytaniu o lokator Maidenhead naciśnij y, aby go dodać, lub n, aby pominąć. Wpisz lokator o czterech lub sześciu znakach, np. IO83 lub IO83PS, i naciśnij Enter, aby go sprawdzić. Przy potwierdzaniu użyj tych samych klawiszy y, n i h. Pusty wpis pomija ten krok. Lokator służy do obliczania odległości w FT8 i FT4.
 
 ***
 Koniec pomocy

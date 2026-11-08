@@ -8,7 +8,7 @@ s) Rozpocznij lub zatrzymaj dekodowanie.
 v) Odczytaj najnowszy komunikat.
 Przecinek) Odczytaj poprzedni komunikat.
 Kropka) Odczytaj następny komunikat.
-n) Usuń wyniki.
+c) Usuń wyniki.
 q) Zatrzymaj dekodowanie i wróć. Tryb i wyniki pozostają do końca tej sesji YAC.
 
 ***

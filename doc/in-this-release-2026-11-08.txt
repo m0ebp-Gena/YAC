@@ -1,0 +1,45 @@
+YAC 001 r9, 8 November 2026
+
+FT8 and FT4 reception on Windows
+
+The experimental decoder uses the bundled Jimmy Next EngineHost and Nexus.
+It reads the radio audio and collects received messages. The YAC interface
+supports reception only. FT8 and FT4 decoding is available on Windows.
+
+At first run, enter your amateur radio callsign at Callsign and confirm with y.
+If you want distance estimates, answer y to the Maidenhead locator question.
+Enter a four- or six-character locator and press Enter. Press y to save it or n
+to revise the entry. If you already use YAC, set ft_grid in your yac.ini.
+
+At Top Level, press d then a. Select the radio audio input with full stop or
+comma, choose the channel with c and press Enter to save. In yac.ini, set
+ft_engine=_internal/nexus/jimmy-engine-host.exe and set ft_audio_output to the
+exact name of a separate non-radio playback device, such as your PC speakers.
+From the YAC folder, the following PowerShell command lists the playback names
+accepted by the engine.
+
+.\_internal\nexus\jimmy-engine-host.exe --list-output-devices
+
+For the first decoder test, tune your radio to the desired FT8 or FT4 frequency
+and set the appropriate data mode. At Top Level, press d then f. Press m to
+switch between FT8 and FT4, then s to start decoding. Press v to read the latest
+result. Use comma or full stop to review earlier or later results. Press c to
+clear the results, or h for help.
+
+Press f inside the decoder to open the filter selector. Full stop and comma
+choose All Messages, Calling CQ or Distance. Press e, then k for kilometres or
+m for miles, to edit the distance cutoff. Enter saves and selects Distance.
+Blank Enter aborts. Press q to return to the results. Distance is estimated
+from the grids in the message and your own locator.
+
+Mode announcements
+
+Mode selection and radio status now say names such as Data USB, Data LSB and
+FM Narrow. C4FM, FT8 and FT4 retain their usual spellings.
+
+Verification
+
+Live Windows FT8 reception and distance review were exercised on an FTX-1.
+The packaged Windows startup and locator confirmation were checked with a
+simulated radio. The mode announcement checks used simulated CAT and CI-V
+responses. The Mac/Linux package contains the shared interface changes.

@@ -4,7 +4,9 @@ Kropka) Wybierz następny filtr.
 Przecinek) Wybierz poprzedni filtr.
 
 Wszystkie pokazuje wszystkie komunikaty. Wywołania CQ obejmują także kierunkowe CQ.
-Odległość jest szacowana z lokatora w komunikacie. Próg i jednostkę określają ft_distance i ft_distance_unit w yac.ini. Domyślnie jest to 2000 km.
+Odległość jest szacowana z lokatora w komunikacie. Domyślnie jest to 2000 km.
+
+e) Edytuj próg odległości. Naciśnij k dla kilometrów lub m dla mil. Przy wyborze jednostki q anuluje edycję. Wpisz dodatnią liczbę i naciśnij Enter, aby zapisać i wybrać filtr odległości. Pusty wpis anuluje edycję i zachowuje poprzedni filtr. Potem wrócisz do wyboru filtra.
 
 q) Wróć do wyników. Filtr pozostaje do końca tej sesji YAC.
 

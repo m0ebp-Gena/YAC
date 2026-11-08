@@ -8,7 +8,7 @@ s) Iniciar o detener la decodificación.
 v) Leer el último mensaje.
 Coma) Leer el mensaje anterior.
 Punto) Leer el mensaje siguiente.
-n) Borrar los resultados.
+c) Borrar los resultados.
 q) Detener la decodificación y volver. El modo y los resultados se conservan durante esta sesión de YAC.
 
 ***

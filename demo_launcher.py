@@ -17,16 +17,18 @@ def main():
         from modules import name_call_sel
         settings = yac._read_settings(root / 'yac.ini')
         assert not settings.get('lang') and not settings.get('call'), 'Use a fresh disposable package'
-        keys = iter(['1', 'y', 'y', 'k', 'k', 'q', 'y'])
+        keys = iter(['1', 'y', 'y', 'y', 'n', 'y', 'k', 'k', 'q', 'y'])
         with patch.object(yac, 'find_radios', return_value=[]), \
-             patch.object(name_call_sel, '_edit_line', return_value='TEST'), \
+             patch.object(name_call_sel, '_edit_line', side_effect=['TEST', 'io83', 'io83ps']) as edit, \
              patch.object(yac.lang_sel, 'read_key', side_effect=lambda **kwargs: next(keys)), \
              patch.object(yac.time, 'sleep'), patch.object(name_call_sel.os, 'system', return_value=0):
             result = yac.main([])
         assert result == 0
         settings = yac._read_settings(root / 'yac.ini')
         assert settings['lang'] == 'en' and settings['call'] == 'TEST'
-        print('Fresh first-run language, name, demo, lock and exit checks passed. No radio ports were opened.')
+        assert settings['ft_grid'] == 'IO83PS'
+        assert edit.call_args.args == ('IO83',)
+        print('Fresh first-run language, name, locator, demo, lock and exit checks passed. No radio ports were opened.')
         return result
     if '--check-demo-session' in sys.argv:
         from unittest.mock import patch

@@ -4,7 +4,9 @@ Punto) Seleccionar el filtro siguiente.
 Coma) Seleccionar el filtro anterior.
 
 Todos muestra todos los mensajes. Llamadas CQ incluye las llamadas CQ dirigidas.
-La distancia se estima con el localizador del mensaje. El límite y la unidad se definen en yac.ini con ft_distance y ft_distance_unit. El valor inicial es 2000 km.
+La distancia se estima con el localizador del mensaje. El valor inicial es 2000 km.
+
+e) Editar el límite de distancia. Pulsa k para kilómetros o m para millas. Pulsa q en la pregunta de unidad para cancelar. Escribe un número positivo y pulsa Enter para guardar y seleccionar el filtro de distancia. Una entrada vacía cancela y conserva el filtro anterior. Después vuelves al selector de filtros.
 
 q) Volver a los resultados. El filtro se conserva durante esta sesión de YAC.
 

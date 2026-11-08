@@ -2,10 +2,13 @@ Ayuda: Nombre e indicativo
 
 Nombre e indicativo
 Introduce el nombre, indicativo o combinación que quieres usar en YAC, hasta 10 caracteres incluidos los espacios. Enter muestra la entrada para revisarla.
+Para FT8 o FT4, introduce solo tu indicativo de radioaficionado.
 
 h: en Seguir Y/N?, leer esta ayuda de nuevo y volver a la pregunta.
 n: volver a la entrada sin guardar. El texto se conserva para editar; usa flechas, Inicio, Fin, Retroceso o Suprimir.
-y: guardar la entrada mostrada y continuar el inicio de YAC. Espacio no confirma.
+y: guardar la entrada mostrada. Espacio no confirma.
+
+En la pregunta sobre el localizador Maidenhead, pulsa y para añadirlo o n para omitirlo. Escribe un localizador de cuatro o seis caracteres, como IO83 o IO83PS, y pulsa Enter para revisarlo. En la confirmación se usan las mismas teclas y, n y h. Una entrada vacía omite este paso. El localizador se usa para calcular distancias en FT8 y FT4.
 
 ***
 Fin de la ayuda

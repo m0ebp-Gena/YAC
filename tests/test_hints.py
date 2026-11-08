@@ -44,6 +44,7 @@ class HintTests(unittest.TestCase):
                     with patch.object(yac, 'detect_platform', return_value='linux'), \
                          patch.object(yac.time, 'sleep'), \
                          patch.object(name_call_sel, 'collect_name', side_effect=collect) as prompt, \
+                         patch.object(name_call_sel, 'collect_locator') as locator, \
                          patch.object(yac, 'find_radios', side_effect=discover), \
                          patch.object(yac, '_choose_radio', return_value='radio'), \
                          redirect_stdout(output):
@@ -56,8 +57,10 @@ class HintTests(unittest.TestCase):
                     self.assertLess(text.index(search), text.index('DISCOVERY'))
                     if not saved_call:
                         self.assertLess(text.index('NAME CONFIRMED'), text.index(message))
+                        locator.assert_called_once_with(ROOT, path, language, '', yac._set_yac_value)
                     else:
                         prompt.assert_not_called()
+                        locator.assert_not_called()
                     self.assertEqual(yac._read_settings(path).get('region', '1'), region or '1')
                     if region is None:
                         self.assertNotIn('region', yac._read_settings(path))
