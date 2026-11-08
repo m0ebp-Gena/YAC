@@ -1,0 +1,25 @@
+Elecraft KX2
+
+Connect the radio's ACC port to the computer using the Elecraft USB serial
+interface cable, then turn on the radio and start YAC. YAC probes the serial
+connection and confirms the KX2 using its model-specific CAT option reply.
+
+YAC controls VFO A frequency, tuning steps, band and mode selection, AF and
+RF gain, FM squelch, preamplifier, attenuator, VFO A lock and CW keyer speed.
+Use Settings, then i, for radio information and MCU firmware. Verify status
+reports the configured power setting in watts. The signal readout reports
+the raw CAT meter value.
+
+In Filters, r reads the noise reduction state. Press r again to switch it
+on or off, and q to return to Filters. YAC verifies the state using the
+radio display response. Level adjustment still requires the radio control.
+Noise reduction requires automatic gain control and is unavailable in DATA.
+
+Frequency entry covers 0.5 to 32 MHz. Band Select covers the 80 to 10 metre
+amateur bands. Keyer speed uses 8 to 50 WPM. FM selection requires MCU 2.89 or
+later and FM MODE enabled in the radio menu. AM selection depends on the
+radio's mode configuration.
+
+Power editing, split, offsets, other filters, native decoding, tuner operation and
+SWR measurement require further integration. Initial verification uses
+simulated CAT replies. Physical-radio verification is pending.

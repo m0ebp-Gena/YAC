@@ -23,7 +23,7 @@ class FilterVerifyTests(unittest.TestCase):
         with patch.object(yac,'_cat_exchange',side_effect=exchange):
             self.assertEqual(filter_verify.verify(yac,ROOT,radio,'en'),'No Filters On')
             radio.serial.noise_blanker='1';radio.serial.noise_reduction='1';radio.serial.auto_notch='1';radio.serial.manual_notch='001';radio.serial.contour['CO00']='0001'
-            expected='Filters On: NB On, NR On, Auto Notch On, Manual Notch On, Contour On'
+            expected='Filters On: NB, NR, Auto Notch, Manual Notch, Contour'
             self.assertEqual(filter_verify.verify(yac,ROOT,radio,'en'),expected)
             self.assertNotIn('Filters',verify_settings.verify(yac,ROOT,radio,'en'))
         self.assertTrue(set(commands)<= {'MD0;','NB0;','NR0;','BC0;','BP00;','CO00;','PA0;','RA0;','PC;','AC;','EX030105;','LK;'},commands)
@@ -40,17 +40,17 @@ class FilterVerifyTests(unittest.TestCase):
         radio=RadioConnection(None,'test',38400,'CAT','0840','0840')
         replies={'NL1;':'NL1005;','RL1;':'RL107;','BC1;':'BC10;','BP10;':'BP10001;','CO10;':'CO100001;'}
         with patch.object(yac,'_yaesu_vfo_side',1),patch.object(yac,'_current_mode_code',return_value='2'),patch.object(yac,'_cat_exchange',side_effect=lambda r,c:replies[c]) as exchange:
-            self.assertEqual(filter_verify.verify(yac,ROOT,radio,'en'),'Sub receiver: Filters On: NB On, NR On, Manual Notch On, Contour On')
+            self.assertEqual(filter_verify.verify(yac,ROOT,radio,'en'),'Sub receiver: Filters On: NB, NR, Manual Notch, Contour')
             self.assertEqual(exchange.call_count,5)
     def test_kenwood_shared_notch_and_nr_type(self):
         radio=RadioConnection(None,'test',38400,'CAT','023','023')
         replies={'NB;':'NB2;','NR;':'NR2;','NT;':'NT21;'}
         with patch.object(yac,'_current_mode_code',return_value='2'),patch.object(yac,'_cat_exchange',side_effect=lambda r,c:replies[c]) as exchange:
             report=filter_verify.verify(yac,ROOT,radio,'en')
-            self.assertEqual(report,'Filters On: NB 2 On, NR 2 On, Manual Notch On')
+            self.assertEqual(report,'Filters On: NB 2, NR 2, Manual Notch')
             self.assertEqual(exchange.call_count,3)
             replies['NT;']='NT10;'
-            self.assertIn('Auto Notch On',filter_verify.verify(yac,ROOT,radio,'en'))
+            self.assertIn('Auto Notch',filter_verify.verify(yac,ROOT,radio,'en'))
             self.assertNotIn('Manual Notch',filter_verify.verify(yac,ROOT,radio,'en'))
     def test_icom_models_only_query_applicable_states(self):
         for model,address in [('IC-705',0xA4),('IC-7300',0x94),('IC-7300MK2',0xB6),('IC-7600',0x7A),('IC-9700',0xA2)]:
@@ -58,17 +58,17 @@ class FilterVerifyTests(unittest.TestCase):
             serial.settings.update({b'\x16\x22':b'\x01',b'\x16\x40':b'\x00',b'\x16\x41':b'\x01',b'\x16\x48':b'\x00'})
             radio=RadioConnection(serial,'test',115200,'CI-V',model,model,civ_address=address)
             with patch.object(yac,'_current_mode_code',return_value=1):
-                self.assertEqual(filter_verify.verify(yac,ROOT,radio,'en'),'Filters On: NB On, Auto Notch On')
+                self.assertEqual(filter_verify.verify(yac,ROOT,radio,'en'),'Filters On: NB, Auto Notch')
             self.assertTrue(all(len(packet)==7 for packet in serial.writes),serial.writes)
             serial.writes.clear()
             with patch.object(yac,'_current_mode_code',return_value=3):
-                self.assertEqual(filter_verify.verify(yac,ROOT,radio,'en'),'Filters On: NB On')
+                self.assertEqual(filter_verify.verify(yac,ROOT,radio,'en'),'Filters On: NB')
             self.assertFalse(any(packet[4:6]==b'\x16\x41' for packet in serial.writes))
     def test_ts480_beat_cancel_and_qmx(self):
         radio=RadioConnection(None,'test',38400,'CAT','020','020');radio._ts480_variant='1'
         replies={'NB;':'NB0;','NR;':'NR1;','BC;':'BC2;'}
         with patch.object(yac,'_current_mode_code',return_value='2'),patch.object(yac,'_cat_exchange',side_effect=lambda r,c:replies[c]):
-            self.assertEqual(filter_verify.verify(yac,ROOT,radio,'en'),'Filters On: NR 1 On, BC 2 On')
+            self.assertEqual(filter_verify.verify(yac,ROOT,radio,'en'),'Filters On: NR 1, BC 2')
         del radio._ts480_variant
         with patch.object(yac,'_cat_exchange',return_value='?;') as exchange:
             self.assertEqual(filter_verify.verify(yac,ROOT,radio,'en'),'Not Supported')
@@ -80,12 +80,12 @@ class FilterVerifyTests(unittest.TestCase):
         with patch.object(yac,'connect_radio',return_value=radio),patch.object(yac,'_read_settings',return_value={'call':'test','lang':'en'}),patch.object(lang_sel,'read_key',side_effect=lambda:next(keys)),redirect_stdout(output):
             self.assertEqual(yac.main([]),0)
         self.assertEqual(radio.serial.contour['EX030202'],'-14')
-        self.assertEqual(output.getvalue().count('Filters On: Contour On'),2)
+        self.assertEqual(output.getvalue().count('Filters On: Contour'),2)
     def test_repeated_v_cycles_all_statuses_and_wraps(self):
         radio=create_dummy_radio()
         radio.serial.noise_blanker='1'
         review=filter_verify.Review()
-        expected=['Filters On: NB On','NB On','NR Off','Auto Notch Off','Man Notch Off','Contour Off','Filters On: NB On']
+        expected=['Filters On: NB','NB On','NR Off','Auto Notch Off','Man Notch Off','Contour Off','Filters On: NB']
         self.assertEqual([review.next(yac,ROOT,radio,'en') for _ in expected],expected)
         review.reset()
         self.assertEqual(review.next(yac,ROOT,radio,'en'),expected[0])

@@ -1,12 +1,12 @@
-Help For Receive and Transmit Offsets
+Offset help
 
-o opens Offset at Receive without changing any setting. The opening hint gives v Verify, c Clear Offset and h Help. Further o presses alternate Transmit and Receive; selecting a side does not enable or change it.
-
-Full stop adds 10 hertz and comma subtracts 10 hertz from the radio offset, enabling the selected side. Changes apply immediately and are read back. The starting amount is the retained radio value; opening never resets it. Radios with a shared offset amount use that amount for both sides when both are enabled.
-
-v reads both effective offsets, Receive then Transmit, in hertz. An inactive side reports 0. Positive and negative amounts are spoken as Plus and Minus. Verification changes nothing. c explicitly clears the amount and switches both receive and transmit offsets Off, with readback confirmation. The selected side stays selected.
-
-h reads this help. q announces Done and returns to top level, keeping your current settings. Neither opening nor q clears anything. Unreadable or unsupported settings are reported without guessing.
+Offset opens on Receive.
+o) Switch between Receive and Transmit.
+Full stop) Increase the selected offset by 10 Hz.
+Comma) Decrease the selected offset by 10 Hz.
+v) Read both offsets. An inactive offset reads zero.
+c) Clear both offsets and turn them off.
+q) Return to Top Level and keep the settings.
 
 ***
 End of help

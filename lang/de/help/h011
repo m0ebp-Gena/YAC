@@ -1,12 +1,12 @@
 Hilfe für Split und Relais
 
-l öffnet die Regelung und liest den aktuellen Zustand ohne Änderung. Bei Aus wird nur Aus gemeldet. Bei Ein werden Empfangs- und Sendefrequenz gemeldet. h liest diese Hilfe. q behält die Einstellungen, meldet Fertig und kehrt zur Hauptebene zurück.
+l) Ausschalten, wenn aktiv, oder Einrichtung starten, wenn inaktiv.
 
-Erneutes l führt eine Aktion entsprechend dem aktuellen Zustand aus. Bei Ein wird Split/Relais ausgeschaltet und die Regelung verlassen. Bei Aus beginnt die Einrichtung. Außerhalb FM Sendefrequenz in MHz eingeben und Enter drücken. Der Empfang bleibt auf dem gewählten VFO; Frequenz und Modus des anderen VFO werden ersetzt. In FM wird eine gespeicherte Bandablage verwendet, falls vorhanden; sonst Ablage mit Vorzeichen in Hertz eingeben. Öffnen allein übernimmt keine gespeicherte Ablage.
-
-Bei der Eingabe bricht leeres Enter oder q und Enter ohne Änderung ab. h und Enter erklärt die Regelung. Für Minus 600000 Hertz -600000 eingeben; für Plus 600000 Hertz 600000 oder +600000. Änderungen werden durch Rücklesen geprüft. Es wird nicht gesendet. Nicht unterstützte oder nicht lesbare Zustände werden gemeldet.
-
-Wiederholtes w auf der Hauptebene wechselt zwischen normalem Status und aktuellen Split-/Relaisdetails. Nach fehlgeschlagenem Wiederherstellen Empfangs- und Sendefrequenz prüfen; der alte Zustand ist nicht bestätigt. Gerätespezifische Optionen und gespeicherte Ablagen stehen in den Radiohinweisen.
+In FM verwendet YAC einen gespeicherten Versatz, falls vorhanden. Bei Aufforderung den Versatz in Hertz eingeben. - für Minus oder + für Plus eingeben.
+In anderen Betriebsarten die Sendefrequenz in MHz eingeben.
+Enter) Wert übernehmen.
+Leeres Enter) Einrichtung abbrechen.
+q) Zur Hauptebene zurückkehren und die aktuelle Einstellung behalten.
 
 ***
 Ende der Hilfe

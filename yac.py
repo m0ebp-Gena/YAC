@@ -12,7 +12,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from modules import lang_sel
+from modules import elecraft_kx2, lang_sel
 from modules.ini_settings import IniError
 from modules.find_rad import RadioConnection, find_radios
 from modules.signal_report import format_s_meter
@@ -322,6 +322,8 @@ def _cat_exchange(radio: RadioConnection, command: str) -> str:
             if b";" in response:
                 break
     DEBUG_LOG.debug("CAT RX port=%s bytes=%r", radio.port, bytes(response))
+    if command == "DS;" and radio.manufacturer_key == "elecraft":
+        return response.decode("latin-1")
     return response.decode("ascii", errors="ignore").upper()
 
 
@@ -935,7 +937,7 @@ STEP_SIZE_DEFAULTS = {
 def _step_size_key(mode: str | None) -> tuple[str, str] | None:
     """Map a reported radio mode to YAC's user-configured tuning increment."""
     if mode in {
-        "LSB", "USB", "RTTY", "RTTYR", "RTTYL", "RTTYU", "DATAL", "DATAU", "PSK",
+        "LSB", "USB", "RTTY", "RTTYR", "RTTYL", "RTTYU", "DATA", "DATAR", "DATAL", "DATAU", "PSK",
     }:
         return "step_ssb", "SSB"
     if mode in {"CW", "CWU", "CWL", "CWR"}:
@@ -1227,7 +1229,7 @@ def _current_frequency(root: Path, radio: RadioConnection) -> str | None:
         prefix = command[:2]
         match = re.search(rf"{prefix}(\d{{5,11}});", response)
         return _frequency_mhz(match.group(1)) if match else None
-    if radio.protocol == "CAT" and radio.manufacturer_key == "kenwood":
+    if radio.protocol == "CAT" and radio.manufacturer_key in {"kenwood", "elecraft"}:
         side = ts480_control.vfo(sys.modules[__name__], radio) if radio.model_id == "020" else '0'
         if side is None:
             return None
@@ -1249,6 +1251,8 @@ def _current_mode(radio: RadioConnection) -> str | None:
         response = _cat_exchange(radio, f"MD{side};")
         match = re.search(rf"MD{side}([0-9A-FHI]);", response)
         mode = MODE_LABELS.get(match.group(1)) if match else None
+    elif radio.manufacturer_key == "elecraft":
+        mode = elecraft_kx2.MODES.get(_current_mode_code(radio))
     elif radio.protocol == "CAT" and radio.manufacturer_key == "kenwood":
         response = _cat_exchange(radio, "MD;")
         match = re.search(r"MD([0-9]);", response)
@@ -1270,6 +1274,8 @@ def _current_mode_code(radio: RadioConnection) -> int | str | None:
         response = _cat_exchange(radio, f"MD{side};")
         match = re.search(rf"MD{side}([0-9A-FHI]);", response)
         return match.group(1) if match else None
+    if radio.manufacturer_key == "elecraft":
+        return elecraft_kx2.read_mode(_cat_exchange, radio)
     if radio.protocol == "CAT" and radio.manufacturer_key == "kenwood":
         response = _cat_exchange(radio, "MD;")
         match = re.search(r"MD([0-9]);", response)
@@ -1278,6 +1284,11 @@ def _current_mode_code(radio: RadioConnection) -> int | str | None:
 
 
 def _available_modes(radio: RadioConnection) -> list[tuple[int | str, str]]:
+    if radio.manufacturer_key == "elecraft":
+        modes = elecraft_kx2.modes(_cat_exchange, radio)
+        if "4" not in dict(modes) and _current_mode_code(radio) == "4":
+            modes.insert(3, ("4", "FM"))
+        return modes
     if _icom_supported(radio):
         modes = list(_icom_profile(radio)["modes"].items())
         if radio.model_id.casefold() == "ic-9700":
@@ -1309,6 +1320,10 @@ def _set_mode(radio: RadioConnection, mode_code: int | str) -> bool:
     elif radio.protocol == "CAT" and radio.manufacturer_key == "yaesu":
         side = _yaesu_vfo_side if _ftx1(radio) else 0
         _cat_exchange(radio, f"MD{side}{mode_code};")
+    elif radio.manufacturer_key == "elecraft":
+        if mode_code not in dict(_available_modes(radio)):
+            return False
+        _cat_exchange(radio, f"MD{mode_code};")
     elif radio.protocol == "CAT" and radio.manufacturer_key == "kenwood":
         _cat_exchange(radio, f"MD{mode_code};")
     else:
@@ -1319,6 +1334,8 @@ def _set_mode(radio: RadioConnection, mode_code: int | str) -> bool:
 def _mode_name(radio: RadioConnection, mode_code: int | str) -> str:
     if _icom_supported(radio):
         mode = _icom_profile(radio)["modes"][int(mode_code)]
+    elif radio.manufacturer_key == "elecraft":
+        mode = elecraft_kx2.MODES[str(mode_code)]
     elif radio.protocol == "CAT" and radio.manufacturer_key == "kenwood":
         mode = KENWOOD_MODE_LABELS[str(mode_code)]
     else:
@@ -1343,6 +1360,12 @@ def _band_status(root: Path, language: str, frequency: str, mode: str | None) ->
 
 
 def _band_change(root: Path, radio: RadioConnection, language: str, direction: int) -> str:
+    if radio.manufacturer_key == "elecraft":
+        if elecraft_kx2.change_band(_cat_exchange, radio, direction):
+            frequency = _current_frequency(root, radio)
+            if frequency:
+                return _band_status(root, language, frequency, _current_mode(radio))
+        return _read_label(root, language, "l061", "Band Error")
     direction_name = "up" if direction > 0 else "down"
     DEBUG_LOG.info(
         "Band request direction=%s model=%s protocol=%s port=%s baud=%s",
@@ -1484,6 +1507,8 @@ def _set_frequency(
     if radio.protocol == "CAT" and radio.manufacturer_key == "yaesu":
         minimum_hz = 30_000
         maximum_hz = 75_000_000 if radio.model_id == "0761" else 470_000_000 if radio.model_id == "0840" else 0
+    elif radio.manufacturer_key == "elecraft":
+        minimum_hz, maximum_hz = elecraft_kx2.FREQUENCY_RANGE
     elif radio.protocol == "CAT" and radio.manufacturer_key == "kenwood" and radio.model_id in {"023", "020"}:
         minimum_hz, maximum_hz = 30_000, 60_000_000
     elif _icom_supported(radio):
@@ -1527,7 +1552,7 @@ def _set_frequency(
             template = template_path.read_text(encoding="ascii").strip()
         except (OSError, UnicodeError):
             return _read_label(root, language, "l053", "Cmd File Error")
-        if radio.manufacturer_key == "kenwood":
+        if radio.manufacturer_key in {"kenwood", "elecraft"}:
             if radio.model_id == "020":
                 side = ts480_control.vfo(sys.modules[__name__], radio)
                 if side is None:
@@ -1571,7 +1596,7 @@ def _set_frequency(
                         0xFE, 0xFE, 0xE0, radio.civ_address, 0xFB, 0xFD
                     ))
                     restored = restore_ack in restore_response
-                elif cat_command is not None and radio.manufacturer_key == "kenwood":
+                elif cat_command is not None and radio.manufacturer_key in {"kenwood", "elecraft"}:
                     restore_digits = f"{original_hz:011d}"
                     restore_command = re.sub(r"\?{11}", restore_digits, template, count=1)
                     _cat_exchange(radio, restore_command)
@@ -1607,6 +1632,13 @@ def _set_frequency(
 
 
 def _radio_status(root: Path, radio: RadioConnection, language: str) -> str:
+    if radio.manufacturer_key == "elecraft":
+        frequency = _current_frequency(root, radio)
+        mode = _current_mode(radio)
+        if frequency and mode:
+            signal = elecraft_kx2.signal(_cat_exchange, radio)
+            return f"{signal} {frequency} {mode}"
+        return _radio_error(root, radio, language)
     if _icom_supported(radio):
         command_path = _radio_command_file(root, radio, "read", "w")
         if command_path is None:
@@ -2035,11 +2067,12 @@ def _main(argv: list[str] | None = None) -> int:
                     if spec is None:
                         response = _read_label(root, language, "l129", "Not Supported")
                     else:
-                        setting_selector.control(
+                        pending_key = setting_selector.control(
                             root, language,
                             lambda: verify_settings.describe(sys.modules[__name__], root, radio, language, name, spec),
                             lambda direction: verify_settings.cycle(sys.modules[__name__], root, radio, language, name, direction=direction),
-                            read_radio_key, watch, key)
+                            read_radio_key, watch, key,
+                            help_id="h071" if key == "p" else "h072", forward_command=True)
                         response = None
                 elif key == "s":
                     response = _read_label(root, language, "l068", "Settings")
@@ -2071,8 +2104,7 @@ def _main(argv: list[str] | None = None) -> int:
                             continue
                         if settings_key == "i":
                             from modules import radio_info
-                            radio_info.control(sys.modules[__name__], root, radio, language,
-                                               read_radio_key, watch)
+                            radio_info.control(sys.modules[__name__], root, radio, language)
                             continue
                         if settings_key == "u":
                             if update_control.confirm(root, language, read_radio_key):

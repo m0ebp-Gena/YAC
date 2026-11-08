@@ -1,14 +1,15 @@
 CW-Hilfe
 
-b: Break-in. Automatische Sende-/Empfangsumschaltung beim Morsen.
-d: Break-in-Verzögerung. Punkt erhöht; Komma verringert; d liest erneut; q behält die Einstellung.
-h: Diese Hilfe.
-i: Interne Taste. Automatische Punkte und Striche mit einem Paddle ein- oder ausschalten.
-k: Tasttempo. Bis zu zwei Ziffern; Enter übernimmt. h hilft sofort; q bricht ab.
-p: CW-Tonhöhe. Punkt erhöht; Komma verringert; p liest erneut.
-q: CW verlassen; Hauptebene wird angesagt.
-v: Mithörtonlautstärke. Punkt erhöht; Komma verringert; v liest erneut. Wählt bei Bedarf automatisch CW; q behält diesen Modus.
-Beim Öffnen wird der aktuelle Zustand ohne Änderung vorgelesen. Navigationsänderungen gelten sofort; Eingabefelder werden mit Enter übernommen. Übernommene Einstellungen bleiben beim Verlassen erhalten. Nicht verfügbare Regler melden Nicht unterstützt.
+Für Hilfe zu einer Funktion öffnen Sie sie und drücken Sie h.
+
+b) Break-in
+d) Break-in-Verzögerung
+i) Interner Keyer
+k) Keyer-Geschwindigkeit
+p) CW-Tonhöhe
+v) Mithörtonlautstärke
+
+q) Zur Hauptebene zurückkehren.
 
 ***
 Ende der Hilfe

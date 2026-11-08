@@ -1,7 +1,11 @@
-Hilfe: Bandauswahl
+Hilfe zur Bandauswahl
 
-Punkt wählt das nächste Band, Komma das vorherige. q beendet die Bandauswahl, h zeigt diese Hilfe. Eine andere Befehlstaste beendet die Auswahl und führt den Befehl aus.
-Die Bandauswahl beginnt beim aktuellen Band. Icom und Kenwood stoppen an beiden Grenzen; Yaesu folgt dem Funkgerät. An der oberen Grenze: Komma abwärts oder mit e eine Frequenz eingeben.
+Punkt) Nächstes Band wählen.
+Komma) Vorheriges Band wählen.
+Nach einem Wechsel meldet YAC Band, Frequenz und Betriebsart.
+
+q) Zur Hauptebene zurückkehren. Das gewählte Band bleibt erhalten.
+Eine andere Befehlstaste verlässt die Bandauswahl und führt den Befehl aus.
 
 ***
 Ende der Hilfe

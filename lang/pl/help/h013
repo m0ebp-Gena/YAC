@@ -1,10 +1,15 @@
-Pomoc menu dekoderów
+Pomoc dekoderów
 
-a Ustawia odbierane audio. Nie ustawiono wejścia audio: najpierw użyj a.
-c Otwiera CW i rozpoczyna odbiór, jeśli jest gotowy.
-h Wyświetla tę pomoc.
-q Wraca na poziom główny.
-r Otwiera RTTY i rozpoczyna odbiór, jeśli jest gotowy.
+Aby uzyskać pomoc dotyczącą funkcji, otwórz ją i naciśnij h.
+
+a) Konfiguracja dźwięku odbiorczego
+c) Dekodowanie CW
+r) Dekodowanie RTTY
+
+Jeśli radio nie ma wbudowanego dekodera dla wybranego trybu,
+dekodowanie dźwięku w YAC jest eksperymentalne.
+
+q) Wróć do poziomu głównego.
 
 ***
 Koniec pomocy

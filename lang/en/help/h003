@@ -1,7 +1,9 @@
-Help For The Mode Selection
+Mode Select help
 
-Full stop selects the next mode; comma selects the previous mode. Press q to leave Mode Select. Press h for this help. Any other command key leaves Mode Select and runs that command.
-Mode selection starts at the radio's current mode and loops through the available modes.
+Full stop) Select the next mode.
+Comma) Select the previous mode.
+q) Return to Top Level and keep the selected mode.
+Another command key leaves Mode Select and runs that command.
 
 ***
 End of help

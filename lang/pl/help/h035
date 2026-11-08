@@ -1,10 +1,9 @@
-Pomoc: Pomiar SWR
+Pomoc pomiaru SWR
 
-Podłącz antenę odpowiednią dla tej częstotliwości i sprawdź, czy częstotliwość jest wolna. g krótko nadaje, aby zmierzyć SWR. YAC kończy nadawanie i przywraca ustawienia przed podaniem wyniku. Nieprawidłowe oznacza nieodpowiednią częstotliwość lub stan radia. Po jednym pomiarze i przywróceniu ustawień YAC podaje wynik i automatycznie wraca do poziomu głównego. Aby zmierzyć ponownie, otwórz g jeszcze raz. h czyta pomoc; q anuluje i wraca bez pomiaru.
+Podłącz odpowiednią antenę i sprawdź, czy częstotliwość jest wolna.
 
-Wysoki SWR oznacza przybliżony odczyt 2,5 lub więcej. Wewnętrzna skrzynka antenowa ma ograniczony zakres dopasowania. Dopasowuje obciążenie widziane przez nadajnik, ale nie usuwa strat w instalacji antenowej. Wyższy SWR może nadal pozwalać na pracę, zależnie od linii zasilającej i sprzętu. Sam SWR nie określa sprawności anteny.
-
-Blisko 1 do 1 z Dobre dopasowanie zastępuje wynik zaokrąglony do 1,0. Oznacza odczyt bliski jedności, a nie potwierdzone idealne dopasowanie.
+g) Nadaj krótko, aby zmierzyć SWR. YAC przywraca ustawienia, podaje wynik i wraca do poziomu głównego.
+q) Anuluj i wróć do poziomu głównego bez nadawania.
 
 ***
 Koniec pomocy

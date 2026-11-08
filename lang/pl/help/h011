@@ -1,12 +1,12 @@
-Pomoc Split i przemienników
+Pomoc trybu split i przemiennika
 
-l otwiera regulację i odczytuje stan bez zmiany. Gdy wyłączone, podaje tylko wyłączenie. Gdy włączone, podaje częstotliwości odbioru i nadawania. h odczytuje pomoc. q zachowuje ustawienia, ogłasza Gotowe i wraca do poziomu głównego.
+l) Wyłącz, jeśli funkcja jest włączona, lub rozpocznij konfigurację, jeśli jest wyłączona.
 
-Kolejne l działa według bieżącego stanu. Gdy włączone, wyłącza split/przemiennik i wraca. Gdy wyłączone, rozpoczyna konfigurację. Poza FM wpisz częstotliwość nadawania w MHz i Enter. Odbiór pozostaje na wybranym VFO; częstotliwość i emisja drugiego VFO są zastępowane. W FM używane jest zapisane przesunięcie pasma, jeśli istnieje; inaczej wpisz przesunięcie ze znakiem w hercach. Samo otwarcie nie stosuje zapisanego przesunięcia.
-
-Podczas wpisywania pusty Enter lub q i Enter anuluje bez zmian. h i Enter wyjaśnia regulację. Wpisz -600000 dla Minus 600000 herców; 600000 lub +600000 dla Plus 600000 herców. Zmiany są sprawdzane odczytem radia. Nie rozpoczyna nadawania. Zgłasza stany nieobsługiwane lub nieczytelne.
-
-Powtarzane w na poziomie głównym przełącza zwykły stan i bieżące szczegóły split/przemiennika. Po błędzie przywracania odczytaj częstotliwości odbioru/nadawania przed użyciem radia; poprzedni stan nie jest potwierdzony. Opcje modeli i zapisane przesunięcia opisano w notatkach radia.
+W FM YAC używa zapisanego przesunięcia, jeśli jest dostępne. Na żądanie wpisz przesunięcie w hercach. Wpisz - dla Minus lub + dla Plus.
+W innych trybach wpisz częstotliwość nadawania w MHz.
+Enter) Zastosuj wartość.
+Pusty Enter) Anuluj konfigurację.
+q) Wróć do poziomu głównego i zachowaj bieżące ustawienie.
 
 ***
 Koniec pomocy

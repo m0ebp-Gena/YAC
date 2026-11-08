@@ -1,81 +1,40 @@
-Help For The YAC Commands
+Top Level help
 
-c p: CW Pitch. Full stop raises; comma lowers; p reads again.
-c v: Sidetone Volume. Full stop increases; comma decreases; v reads again. Automatically selects CW when needed; q keeps that mode.
+For help with a control or submenu, open it and press h.
 
-c k: Keyer Speed. Enter up to two digits; Enter applies. h helps immediately; q cancels.
+Frequency navigation
 
-c d: Break-in Delay. Full stop increases; comma decreases; d reads again; q keeps the setting.
+Comma) Tune down
+Full stop) Tune up
+Set the tuning step by pressing s s.
 
-c: CW. b Break-in; i Internal Keyer; h help; q returns to top level. Opening reads the current state; repeat b or i changes it. Full stop/comma select next/previous. q inside a control keeps the setting and returns to CW.
+Submenus
 
-Main v also reports Lock On, Dial Lock or Panel Lock when active. Lock Off is omitted. An unreadable supported lock reports Lock Unknown. Verify changes nothing.
+c) CW
+d) Decoders
+f) Filters
+s) Settings
 
-Preamp p, Attenuator u and VFO/receiver s v: opening reports the current setting without changing it. Full stop selects next; comma previous; repeating the control letter also advances. q keeps the choice and returns one level; h explains. If the current VFO cannot be read, Unknown is reported without selecting a VFO.
+Top Level controls
 
-YAC commands, in key order. Press keys separately.
-Commands depend on the radio and current mode.
-
-a: AF Gain. Full stop increases; comma decreases.
-b: Band. Full stop next; comma previous.
-d: Decoders. c CW; r RTTY; a receive audio setup.
-e: New frequency. Enter MHz, then Enter.
-f: Filters. See the filter keys below.
-g: Get SWR. Connect an antenna; g again measures and restores settings. h helps; q returns.
-h: Help. Use h inside a control for its detailed help.
-i: Tone/code input. Repeat i for CTCSS, DCS normal or DCS inverted where supported. Enter a value, then follow the prompts.
-k: Lock. Changes to the next lock state immediately and stays at Top Level. No q is needed.
-l: Split/repeater setup. Repeat l to turn it off. h then Enter at the input gives help.
-m: Mode. Full stop next; comma previous.
-o: Offset: o alternates Receive and Transmit. c clears both; v verifies both; h helps; q keeps settings and returns.
-p: Preamp selector: reads current state; . next, , previous; q finishes.
-q: Quit YAC. y confirms; n or q cancels. Inside a control or menu, q returns and keeps changes unless its help says otherwise.
-r: RF Gain, or Squelch in FM. Full stop increases; comma decreases.
-s: Settings. See the settings keys below.
-t: Start the configured tuner. Available only with a supported tuner. Select or enable it with s t first.
-u: Attenuator selector: reads current state; . next, , previous; q finishes.
-v: Read attenuator, preamp, power and supported tuner status. Power is the configured setting, not measured RF output.
-w: Read signal strength, frequency, mode and active FM tone/code. Repeat w for split/repeater details.
-x: Antennas. Entry reads routing; repeat x changes main antenna; r changes receive input.
-z: Round frequency to the nearest kilohertz.
-
-Comma: decrease frequency by the configured step.
-Full stop: increase frequency by the configured step.
-
-Filters: press f, then:
-a: Auto Notch, or supported Beat Cancel. Repeat a to toggle.
-b: Noise Blanker. Repeat b to toggle; full stop/comma adjust level while On.
-c: Contour. Repeat c to toggle; full stop/comma adjust frequency while On. l selects level; w selects width; c returns to frequency.
-h: Filter help.
-l: Low Cut. Full stop/comma adjust.
-n: Manual Notch. Repeat n to toggle; full stop/comma adjust position while On; w changes width.
-p: Passband width. Full stop/comma adjust.
-q: Return to the main menu. From an adjustment, q first returns to Filters.
-r: Noise Reduction. Repeat r to toggle; full stop/comma adjust level while On.
-u: Upper Cut. Full stop/comma adjust.
-v: Read filters currently On. Repeat v to review individual filter states.
-
-Settings: press s, then:
-a: Read current AGC. Repeat a to select the next preset; q finishes.
-b: Pi speech/braille mode. Full stop next; comma previous; q applies and saves.
-e: Speech Processor. Entry reads settings; e toggles; full stop/comma adjust while On. Kenwood i/o select Input/Output. n restores entry settings; q keeps changes.
-h: Settings help.
-m: Mode-dependent Mic Gain. Full stop/comma adjust; h explains the current mode. Space offers optional ALC preparation where supported. PTT remains under your control.
-o: Pi speech settings. r rate; v volume; p pitch; u punctuation; full stop/comma adjust; t tests; d defaults. Changes save immediately.
-p: Output power. Enter whole watts, then Enter. Blank Enter or q then Enter cancels. Successful changes announce the entered value. Icom uses an estimated conversion to relative power; v reports its percentage.
-q: Return to the main menu; after AGC selection, announces Done.
-s: Tuning step. Enter whole hertz, then Enter.
-t: Cycle supported tuner settings. Repeat t. Selecting a tuner does not start tuning.
-u: Update YAC. Shows help, then checks GitHub. r reads notes; y installs; n or q returns.
-v: Select supported VFO A/B or Main/Sub.
-w: Pi Wi-Fi setup. Follow the prompts; h gives help where offered.
-
-Profile selection: type a radio number, then Space to select; q cancels.
-Pi-only settings require the configured Pi launcher.
-
-Radio recovery: Radio Error and Reconnecting start a 60-second recovery period. Radio Restored resumes operation; otherwise Aborting ends YAC. Press h while waiting for recovery help.
-
-Choose the region for the radio location with s r. Default: Region 1. Repeat r to cycle 1, 2, 3; each change saves immediately. h gives help; q returns to Settings with Done.
+a) AF gain
+b) Band select
+e) Frequency entry
+g) Get SWR
+i) CTCSS tone or DCS code
+k) Lock tuning dial or front panel controls
+l) Split VFOs or repeater configuration
+m) Mode select
+o) Offset (RIT or XIT clarifier)
+p) Preamplifier
+q) Quit YAC. Press y to confirm or n to cancel.
+r) RF gain or FM squelch
+t) Tune the connected antenna. Select the tuner in Settings with s t.
+u) Attenuator
+v) Verify status
+w) Where am I? Read signal, frequency and mode.
+x) Antennas
+z) Round frequency to the nearest kHz
 
 ***
 End of help

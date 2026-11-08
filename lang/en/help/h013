@@ -1,10 +1,15 @@
-Help For The Decoder Menu
+Decoders help
 
-a Sets up receive audio. Audio input not set: use a first.
-c Opens CW decoding and starts capture when ready.
-h Shows this help.
-q Returns to Top Level.
-r Opens RTTY decoding and starts capture when ready.
+For help with a control, open it and press h.
+
+a) Receive audio setup
+c) CW decoding
+r) RTTY decoding
+
+Where the radio lacks built-in decoding for the selected mode,
+YAC’s audio decoding is experimental.
+
+q) Return to Top Level.
 
 ***
 End of help

@@ -1,6 +1,8 @@
-Pomoc: Wzmocnienie audio i wielkiej częstotliwości
+Pomoc wzmocnienia AF
 
-a reguluje wzmocnienie AF. r reguluje blokadę szumów w FM, w innych trybach wzmocnienie RF. Początek od bieżącej wartości radia, w zaokrąglonych procentach. Kropka zwiększa; przecinek zmniejsza. Krok około 3 procent. Bez zapętlania na krańcach. q wychodzi i zachowuje wartość. Inny klawisz polecenia uruchamia to polecenie.
+Przecinek zmniejsza. Kropka zwiększa. YAC podaje nową wartość w procentach.
+s) Odczytaj bieżący krok. Wpisz od 1 do 100 punktów procentowych i naciśnij Enter, aby zapisać i użyć nowego kroku. Pusty Enter anuluje.
+q) Wróć do poziomu głównego. Zmiany są zachowane.
 
 ***
 Koniec pomocy

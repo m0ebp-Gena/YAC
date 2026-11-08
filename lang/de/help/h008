@@ -1,10 +1,14 @@
-SSB-Mikrofonverstärkung
+Hilfe zur Mikrofonverstärkung in SSB
 
-Leertaste öffnet die ALC-Vorbereitung. Sprachprozessor für die Grundeinstellung ausschalten. Bei Continue Y/N? startet y die Messung; n oder q bricht die Vorbereitung ab. Nach dem Sprechen PTT loslassen: YAC meldet den abgetasteten ALC-Spitzenwert. Kurze Spitzen können fehlen; Rohwerte sind weder kalibrierte Prozentwerte noch ein Qualitätsurteil. Leertaste löscht danach den Spitzenwert. Eine nötige Messgeräteauswahl wird beim Verlassen im Empfang wiederhergestellt; Fehler werden gemeldet. Eigene Vorbereitungseinstellungen selbst zurücksetzen.
+1. Eine geeignete Antenne oder einen Abschlusswiderstand anschließen. Eine niedrige Sendeleistung einstellen und prüfen, ob die Frequenz frei ist.
+2. Das Mikrofon wie beim normalen Senden halten.
+3. Die Leertaste und dann y drücken, um die ALC-Überwachung zu starten.
+4. PTT gedrückt halten und das Rufzeichen mit normaler Sprechstimme nennen.
+5. PTT loslassen. YAC gibt den ALC-Spitzenwert per Sprache oder Braille aus.
+6. Bei losgelassener PTT mit Komma die Mikrofonverstärkung senken oder mit Punkt erhöhen.
+7. Schritte 4 bis 6 wiederholen, bis die ALC-Anzeige den Angaben im Funkgerätehandbuch entspricht.
 
-Bei losgelassener PTT erhöht Punkt die Verstärkung; Komma verringert sie. Die Endwerte werden nicht überschritten. h Hilfe; q beendet mit Fertig und behält den Wert; v liest ihn. Öffnen ändert nichts. Ein Betriebsartwechsel beendet die Einstellung; erneut öffnen. YAC startet keine Sendung.
-
-Vor dem Senden geeignete Antenne oder Abschlusslast anschließen und passende Leistung selbst einstellen. Kleine Leistung macht eine ungeeignete Last nicht sicher. Physische PTT benutzen und normal sprechen.
+q) Zu den Einstellungen zurückkehren und die Mikrofonverstärkung behalten.
 
 ***
 Ende der Hilfe

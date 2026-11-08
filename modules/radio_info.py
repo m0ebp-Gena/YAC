@@ -2,7 +2,7 @@
 import json
 import re
 
-from modules import chat_int, help_int, region_plan
+from modules import chat_int, region_plan
 
 
 def _clean(value):
@@ -84,20 +84,5 @@ def report(yac, root, radio, language):
     return '\n'.join(lines)
 
 
-def control(yac, root, radio, language, read_key, watch=None):
+def control(yac, root, radio, language):
     chat_int.show_response(report(yac, root, radio, language))
-    while True:
-        try:
-            key = read_key().casefold()
-        except (EOFError, KeyboardInterrupt):
-            chat_int.show_done(root, language)
-            return
-        if watch is not None and watch.lost:
-            return
-        if key == 'i':
-            chat_int.show_response(report(yac, root, radio, language))
-        elif key == 'h':
-            chat_int.show_response(help_int.get_help(root, language, 'h036'))
-        elif key == 'q':
-            chat_int.show_done(root, language)
-            return

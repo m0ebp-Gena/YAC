@@ -87,16 +87,6 @@ class RadioInfoTests(unittest.TestCase):
         self.assertNotIn('\x1b', output)
         self.assertTrue(output.splitlines()[0].startswith('USB description: USBforged'))
 
-    def test_control_refresh_help_and_exit(self):
-        keys = iter(['i', 'h', 'q'])
-        with patch.object(radio_info, 'report', return_value='Model: test') as report, \
-             patch.object(radio_info.help_int, 'get_help', return_value='Info help'), \
-             redirect_stdout(io.StringIO()) as output:
-            radio_info.control(yac, ROOT, self.radio(), 'en', lambda: next(keys))
-        self.assertEqual(report.call_count, 2)
-        self.assertIn('Info help', output.getvalue())
-        self.assertIn('Done', output.getvalue())
-
     def test_languages_and_settings_route(self):
         for language in ('en', 'de', 'es', 'pl'):
             for number in range(378, 397):
@@ -120,7 +110,7 @@ class RadioInfoTests(unittest.TestCase):
     def test_settings_i_returns_to_settings_then_top_level(self):
         from modules import lang_sel
         from modules.dummy_radio import create_dummy_radio
-        keys = iter(['s', 'i', 'h', 'i', 'q', 'a', 'q', 'q', 'y'])
+        keys = iter(['s', 'i', 'a', 'q', 'q', 'y'])
         with patch.object(yac, 'connect_radio', return_value=create_dummy_radio()), \
              patch.object(yac, '_read_settings', return_value={'call': 'Test', 'lang': 'en'}), \
              patch.object(lang_sel, 'read_key', side_effect=lambda: next(keys)), \
@@ -128,8 +118,7 @@ class RadioInfoTests(unittest.TestCase):
              patch.object(yac, '_set_yac_value') as save, \
              redirect_stdout(io.StringIO()) as output:
             self.assertEqual(yac.main([]), 0)
-        self.assertEqual(output.getvalue().count('Model: FT-DX10 simulation'), 2)
-        self.assertIn('Radio information help', output.getvalue())
+        self.assertEqual(output.getvalue().count('Model: FT-DX10 simulation'), 1)
         agc.assert_called_once()
         save.assert_not_called()
 

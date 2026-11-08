@@ -1,81 +1,40 @@
-Ayuda: Comandos de YAC
+Ayuda del nivel principal
 
-c p: Tono CW. Punto sube; coma baja; p lee de nuevo.
-c v: Volumen del tono local. Punto aumenta; coma reduce; v lee de nuevo. Selecciona CW automáticamente si hace falta; q conserva ese modo.
+Para obtener ayuda sobre un control o submenú, ábrelo y pulsa h.
 
-c k: Velocidad. Hasta dos cifras; Enter aplica. h ayuda inmediatamente; q cancela.
+Navegación por frecuencia
 
-c d: Retardo de Break-in. Punto aumenta; coma reduce; d lee de nuevo; q conserva el ajuste.
+Coma) Bajar la frecuencia
+Punto) Subir la frecuencia
+Pulsa s s para ajustar el paso de sintonía.
 
-c: CW. b Break-in; i manipulador interno; h ayuda; q vuelve al nivel superior. Abrir lee el estado; otra b o i lo cambia. Punto/coma selecciona siguiente/anterior. q dentro del control conserva el ajuste y vuelve a CW.
+Submenús
 
-La v principal también informa del bloqueo activado, del dial o del panel si está activo. Omite el bloqueo desactivado. Si no puede leer un bloqueo compatible, indica desconocido. Verificar no cambia nada.
+c) CW
+d) Decodificadores
+f) Filtros
+s) Ajustes
 
-Preamplificador p, atenuador u y VFO/receptor s v: al abrir se anuncia el ajuste sin cambiarlo. Punto selecciona siguiente; coma anterior; repetir la letra también avanza. q conserva la selección y vuelve un nivel; h explica. Si no se puede leer el VFO actual, indica Desconocido sin seleccionar otro.
+Controles del nivel principal
 
-Comandos YAC en orden de tecla. Pulsa las teclas por separado.
-Los comandos dependen de la radio y del modo actual.
-
-a: Ganancia AF. Punto aumenta; coma disminuye.
-b: Banda. Punto siguiente; coma anterior.
-d: Decodificadores. c CW; r RTTY; a configurar audio de recepción.
-e: Nueva frecuencia. Introduce MHz y pulsa Enter.
-f: Filtros. Consulta las teclas de filtros más abajo.
-g: Medir SWR. Conecte una antena; otra g mide y restaura los ajustes. h ayuda; q vuelve.
-h: Ayuda. h dentro de un control lee su ayuda detallada.
-i: Introducir tono/código. Repite i para CTCSS, DCS normal o invertido, donde se admita. Introduce un valor y sigue las indicaciones.
-k: Bloqueo. Cambia al siguiente estado y permanece en el nivel principal. No necesita q.
-l: Configurar split/repetidor. Repite l para desactivar. h y Enter en el campo dan ayuda.
-m: Modo. Punto siguiente; coma anterior.
-o: Offset: o alterna Recepción y Transmisión. c borra ambos; v verifica ambos; h ayuda; q conserva ajustes y vuelve.
-p: Preamplificador: lee el estado; punto siguiente, coma anterior; q termina.
-q: Salir de YAC. y confirma; n o q cancela. Dentro de un control o menú, q vuelve y conserva cambios salvo que su ayuda indique otra cosa.
-r: Ganancia RF, o silenciador en FM. Punto aumenta; coma disminuye.
-s: Ajustes. Consulta las teclas de ajustes más abajo.
-t: Iniciar el sintonizador configurado, si se admite. Primero selecciona o activa con s t.
-u: Atenuador: lee el estado; punto siguiente, coma anterior; q termina.
-v: Leer atenuador, preamplificador, potencia y estado del sintonizador admitido. La potencia es el ajuste, no una medición de RF.
-w: Leer señal, frecuencia, modo y tono/código FM activo. Repite w para detalles de split/repetidor.
-x: Antenas. Al entrar lee la ruta; x cambia antena principal; r entrada de recepción.
-z: Redondear frecuencia al kilohercio más cercano.
-
-Coma: reducir frecuencia según el paso configurado.
-Punto: aumentar frecuencia según el paso configurado.
-
-Filtros: pulsa f y después:
-a: Notch automático o Beat Cancel admitido. Repite a para conmutar.
-b: Noise Blanker. b conmuta; punto/coma ajustan nivel estando activado.
-c: Contour. c conmuta; punto/coma ajustan frecuencia estando activado. l selecciona nivel; w anchura; c vuelve a frecuencia.
-h: Ayuda de filtros.
-l: Corte inferior. Punto/coma ajustan.
-n: Notch manual. n conmuta; punto/coma ajustan posición estando activado; w cambia anchura.
-p: Anchura de la banda pasante. Punto/coma ajustan.
-q: Volver al menú principal. Desde un ajuste, q vuelve primero a Filtros.
-r: Noise Reduction. r conmuta; punto/coma ajustan nivel estando activado.
-u: Corte superior. Punto/coma ajustan.
-v: Leer filtros activados. Repite v para revisar estados individuales.
-
-Ajustes: pulsa s y después:
-a: Leer AGC actual. Repite a para seleccionar la opción siguiente; q termina.
-b: Voz/braille del Pi. Punto siguiente; coma anterior; q aplica y guarda.
-e: Procesador de voz. Al entrar lee ajustes; e conmuta; punto/coma ajustan estando activado. Kenwood i/o seleccionan Entrada/Salida. n restaura ajustes iniciales; q conserva cambios.
-h: Ayuda de ajustes.
-m: Ganancia de micrófono según el modo. Punto/coma ajustan; h explica el modo actual. Espacio ofrece preparación ALC opcional si se admite. Tú accionas el PTT.
-o: Voz del Pi. r velocidad; v volumen; p tono; u puntuación; punto/coma ajustan; t prueba; d valores predeterminados. Los cambios se guardan inmediatamente.
-p: Potencia. Introduce vatios enteros y Enter. Enter vacío o q y Enter cancelan. El éxito anuncia el valor introducido. Icom utiliza una conversión estimada; v informa su porcentaje relativo.
-q: Volver al menú principal; tras seleccionar AGC anuncia Listo.
-s: Paso de sintonía. Introduce hercios enteros y Enter.
-t: Recorrer ajustes del sintonizador admitido. Repite t. Seleccionarlo no inicia la sintonización.
-u: Actualizar YAC. Muestra ayuda y consulta GitHub. r lee notas; y instala; n o q vuelve.
-v: Seleccionar VFO A/B o Main/Sub admitido.
-w: Wi-Fi del Pi. Sigue las indicaciones; h da ayuda donde se ofrezca.
-
-Selección de perfil: introduce el número de radio y Espacio para seleccionar; q cancela.
-Los ajustes exclusivos del Pi requieren su lanzador configurado.
-
-Recuperación: Error de radio y Reconectando inician un plazo de 60 segundos. Radio conectada reanuda el uso; si no, Cancelando cierra YAC. h durante la espera lee la ayuda.
-
-Elija con s r la región donde está la radio. Predeterminada: Región 1. Otra r recorre 1, 2, 3 y guarda inmediatamente. h da ayuda; q anuncia Listo y vuelve a Ajustes.
+a) Ganancia AF
+b) Selección de banda
+e) Entrada de frecuencia
+g) Medir la ROE
+i) Tono CTCSS o código DCS
+k) Bloquear el dial de sintonía o los controles del panel frontal
+l) VFO separados o configuración de repetidor
+m) Selección de modo
+o) Desplazamiento de frecuencia (RIT o XIT)
+p) Preamplificador
+q) Salir de YAC. Pulsa y para confirmar o n para cancelar.
+r) Ganancia RF o silenciador de FM
+t) Adaptar la antena conectada. Selecciona el acoplador en Ajustes con s t.
+u) Atenuador
+v) Verificar el estado
+w) ¿Dónde estoy? Leer señal, frecuencia y modo.
+x) Antenas
+z) Redondear la frecuencia al kHz más cercano
 
 ***
 Fin de la ayuda

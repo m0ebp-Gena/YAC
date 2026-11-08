@@ -1,10 +1,14 @@
-Ganancia de micrófono SSB
+Ayuda de ganancia del micrófono en SSB
 
-Espacio abre la preparación de ALC. Desactive el procesador de voz para el ajuste básico. En Continue Y/N?, y inicia la medición; n o q cancela la preparación. Suelte PTT tras hablar para oír el pico ALC muestreado. Pueden perderse picos breves; los valores brutos no son porcentajes calibrados ni un juicio de calidad. Espacio borra después el pico. Si se cambia el medidor, se restaura al salir en recepción; se notifican los fallos. Restaure sus propios ajustes de preparación.
+1. Conecta una antena adecuada o una carga ficticia. Ajusta una potencia de transmisión baja y comprueba que la frecuencia esté libre.
+2. Sujeta el micrófono como lo haces normalmente al transmitir.
+3. Pulsa Espacio y luego y para iniciar la monitorización de ALC.
+4. Mantén pulsado PTT y di tu indicativo con tu voz habitual en el aire.
+5. Suelta PTT. YAC indica el pico de ALC por voz o braille.
+6. Con PTT suelto, pulsa coma para bajar la ganancia del micrófono o punto para subirla.
+7. Repite los pasos 4 a 6 hasta que la indicación de ALC se ajuste a las instrucciones del manual de la radio.
 
-Con PTT suelto, punto aumenta la ganancia; coma la reduce. Se detiene en los límites. h ayuda; q vuelve a Ajustes con Listo y conserva la ganancia; v lee el valor. Abrir no cambia nada. Un cambio de modo termina el ajuste; vuelva a abrirlo. YAC nunca inicia una transmisión.
-
-Antes de transmitir, conecte una antena o carga artificial adecuada y ajuste usted la potencia apropiada. Una potencia baja no hace segura una carga inadecuada. Use el PTT físico y hable normalmente.
+q) Volver a Ajustes y conservar la ganancia del micrófono.
 
 ***
 Fin de la ayuda

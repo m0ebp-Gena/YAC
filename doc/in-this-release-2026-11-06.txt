@@ -1,0 +1,14 @@
+YAC local test build - 6 November 2026, revision 1
+
+AF and RF gain have separate adjustable steps. Press s inside either
+control to enter a step in percentage points. The step saves on Enter.
+
+Top Level, CW and Decoders help give short overviews. Individual
+controls have shorter help. Settings, i reads radio information and
+returns to Settings. SSB microphone gain help gives seven steps for
+checking ALC and adjusting gain.
+
+Initial Elecraft KX2 support includes CAT identification, tuning,
+band and mode selection, receive gain, preamplifier, attenuator,
+dial lock, keyer speed and noise reduction on/off. KX2 checks used
+simulated replies. Physical-radio verification is pending.

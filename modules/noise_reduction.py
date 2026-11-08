@@ -45,7 +45,7 @@ def operate(yac, root, radio, language, *, toggle=False, direction=0):
         return label('l161')
     level_spec = feature.get('levels', {}).get(state, feature.get('level'))
     if level_spec is None:
-        return label('l053')
+        return label('l129' if direction else feature.get('on_labels', {}).get(state, 'l160'))
     level_spec = expand(level_spec)
     combined = feature.get('combined', False)
     current_level = int(current) if combined else settings.read(yac, radio, level_spec)

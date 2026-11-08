@@ -1,10 +1,14 @@
-SSB Microphone Gain
+SSB microphone gain help
 
-Space opens ALC preparation. Switch speech processing off for basic adjustment. At Continue Y/N?, y starts monitoring; n or q cancels preparation. After speaking, release PTT to hear sampled peak ALC. Brief peaks may be missed; raw units are not calibrated percentages or an audio-quality verdict. Space then clears the peak. A required meter selection is restored on exit while receiving; failures are reported. Restore your own preparation settings.
+1. Connect a suitable antenna or dummy load. Set RF power low and check that the frequency is clear.
+2. Hold the microphone as you normally would when transmitting.
+3. Press Space, then y to start ALC monitoring.
+4. Hold PTT and say your callsign in your normal on-air voice.
+5. Release PTT. YAC reports the peak ALC in speech or braille.
+6. With PTT released, press comma to decrease mic gain or full stop to increase it.
+7. Repeat steps 4 to 6 until the ALC indication meets the guidance in your radio manual.
 
-With PTT released, full stop increases gain; comma decreases it. Values stop at the ends. h reads this help; q returns to Settings with Done, keeping gain; v reads gain. Opening changes nothing. A mode change ends adjustment; reopen the control. YAC never starts transmission.
-
-Before transmitting, connect a suitable antenna or dummy load and set suitable power yourself. Lower power does not make an unsuitable load safe. Use physical PTT and speak normally.
+q) Return to Settings and keep the mic gain.
 
 ***
 End of help

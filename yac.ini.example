@@ -11,6 +11,10 @@ step_cw=500
 step_am=2500
 step_fm=12500
 
+# Gain steps in percentage points. Change with s inside the gain control.
+af_gain_step=6
+rf_gain_step=5
+
 # Optional signed FM repeater offsets in hertz. Blank prompts; choose local values.
 repeater_offset_10m_hz=
 repeater_offset_6m_hz=

@@ -1,6 +1,13 @@
 """Read-only summary of switchable filters applicable to the receive mode."""
 from modules import verify_settings as settings
 
+SUMMARY_LABELS = {
+    'l153': ('l434', ''), 'l205': ('l434', ' 1'), 'l206': ('l434', ' 2'),
+    'l160': ('l435', ''), 'l167': ('l435', ' 1'), 'l168': ('l435', ' 2'),
+    'l171': ('l436', ''), 'l173': ('l437', ''), 'l190': ('l438', ''),
+    'l185': ('l439', ' 1'), 'l186': ('l439', ' 2'),
+}
+
 
 def _reports(yac, root, radio, language, features=None):
     label = lambda token, **values: settings._label(yac, root, language, token, **values)
@@ -57,7 +64,8 @@ def _reports(yac, root, radio, language, features=None):
             elif name == 'noise_blanker' and radio.model_id == '023':
                 token = {'1': 'l205', '2': 'l206'}[value]
             item = label(token)
-            active.append(item)
+            summary_token, number = SUMMARY_LABELS[token]
+            active.append(label(summary_token) + number)
         else:
             token = {'noise_blanker': 'l154', 'noise_reduction': 'l161',
                      'a': 'l187' if spec.get('beat_cancel') else 'l172',

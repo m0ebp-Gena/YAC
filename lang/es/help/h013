@@ -1,10 +1,15 @@
-Ayuda del menú de decodificadores
+Ayuda de decodificadores
 
-a Configura el audio recibido. Entrada de audio sin configurar: use a.
-c Abre CW e inicia la captura si está preparado.
-h Muestra esta ayuda.
-q Vuelve al nivel principal.
-r Abre RTTY e inicia la captura si está preparado.
+Para obtener ayuda sobre un control, ábrelo y pulsa h.
+
+a) Configuración del audio de recepción
+c) Decodificación de CW
+r) Decodificación de RTTY
+
+Si la radio carece de decodificación integrada para el modo seleccionado,
+la decodificación de audio de YAC es experimental.
+
+q) Volver al nivel principal.
 
 ***
 Fin de la ayuda

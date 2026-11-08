@@ -1,14 +1,15 @@
 Ayuda de CW
 
-b: Break-in. Conmutación automática entre transmisión y recepción al enviar Morse.
-d: Retardo de Break-in. Punto aumenta; coma reduce; d lee de nuevo; q conserva el ajuste.
-h: Leer esta ayuda.
-i: Manipulador interno. Activar o desactivar puntos y rayas automáticos con una paleta.
-k: Velocidad. Hasta dos cifras; Enter aplica. h ayuda inmediatamente; q cancela.
-p: Tono CW. Punto sube; coma baja; p lee de nuevo.
-q: Salir de CW y anunciar Nivel superior.
-v: Volumen del tono local. Punto aumenta; coma reduce; v lee de nuevo. Selecciona CW automáticamente si hace falta; q conserva ese modo.
-Abrir un ajuste anuncia su estado sin cambiarlo. La navegación aplica cambios inmediatamente; los campos de entrada los aplican con Enter. Los ajustes aplicados se conservan al salir. Los controles no disponibles indican No compatible.
+Para obtener ayuda sobre un control, ábrelo y pulsa h.
+
+b) Conmutación automática
+d) Retardo de conmutación
+i) Manipulador interno
+k) Velocidad del manipulador
+p) Tono de CW
+v) Volumen del tono de monitorización
+
+q) Volver al nivel principal.
 
 ***
 Fin de la ayuda

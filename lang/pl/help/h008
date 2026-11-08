@@ -1,10 +1,14 @@
-Wzmocnienie mikrofonu SSB
+Pomoc wzmocnienia mikrofonu w SSB
 
-Spacja otwiera przygotowanie ALC. Wyłącz procesor mowy do regulacji podstawowej. Przy Continue Y/N? y uruchamia pomiar; n lub q anuluje przygotowanie. Po mówieniu zwolnij PTT, aby usłyszeć próbkowany szczyt ALC. Krótkie szczyty mogą zostać pominięte; surowe wartości nie są skalibrowanymi procentami ani oceną jakości. Spacja następnie kasuje szczyt. Wymagany wybór miernika jest przywracany przy wyjściu podczas odbioru; błędy są zgłaszane. Sam przywróć własne ustawienia przygotowawcze.
+1. Podłącz odpowiednią antenę lub sztuczne obciążenie. Ustaw niską moc nadawania i sprawdź, czy częstotliwość jest wolna.
+2. Trzymaj mikrofon tak jak podczas zwykłego nadawania.
+3. Naciśnij spację, a następnie y, aby rozpocząć monitorowanie ALC.
+4. Przytrzymaj PTT i podaj swój znak wywoławczy zwykłym głosem używanym podczas nadawania.
+5. Zwolnij PTT. YAC podaje szczytową wartość ALC za pomocą mowy lub brajla.
+6. Po zwolnieniu PTT naciśnij przecinek, aby zmniejszyć wzmocnienie mikrofonu, lub kropkę, aby je zwiększyć.
+7. Powtarzaj kroki od 4 do 6, aż wskazanie ALC będzie zgodne z instrukcją radia.
 
-Przy zwolnionym PTT kropka zwiększa wzmocnienie, przecinek zmniejsza. Wartości zatrzymują się na końcach. h pomoc; q wraca do Ustawień z Gotowe, zachowując wartość; v odczytuje ją. Otwarcie niczego nie zmienia. Zmiana emisji kończy regulację; otwórz ją ponownie. YAC nigdy nie rozpoczyna nadawania.
-
-Przed nadawaniem podłącz odpowiednią antenę lub sztuczne obciążenie i sam ustaw odpowiednią moc. Mała moc nie zapewnia bezpieczeństwa niewłaściwego obciążenia. Używaj fizycznego PTT i mów normalnie.
+q) Wróć do ustawień i zachowaj wzmocnienie mikrofonu.
 
 ***
 Koniec pomocy

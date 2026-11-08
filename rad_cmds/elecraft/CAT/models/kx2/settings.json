@@ -1,0 +1,71 @@
+{
+  "af_gain": {
+    "protocol": "cat",
+    "read": "AG;",
+    "pattern": "AG(\\d{3});",
+    "set": "AG{value};",
+    "minimum": 0,
+    "maximum": 255,
+    "step": 8,
+    "label": "l140"
+  },
+  "rf_gain": {
+    "protocol": "cat",
+    "read": "RG;",
+    "pattern": "RG(\\d{3});",
+    "set": "RG{value};",
+    "minimum": 0,
+    "maximum": 250,
+    "step": 8,
+    "label": "l141",
+    "squelch_modes": [
+      "4"
+    ]
+  },
+  "squelch": {
+    "protocol": "cat",
+    "read": "SQ;",
+    "pattern": "SQ(\\d{3});",
+    "set": "SQ{value};",
+    "minimum": 0,
+    "maximum": 29,
+    "step": 1,
+    "label": "l142"
+  },
+  "preamp": {
+    "protocol": "cat",
+    "read": "PA;",
+    "pattern": "PA([01]);",
+    "set": "PA{value};",
+    "states": {
+      "0": "l116",
+      "1": "l136"
+    }
+  },
+  "attenuator": {
+    "protocol": "cat",
+    "read": "RA;",
+    "pattern": "RA(0[01]);",
+    "set": "RA{value};",
+    "states": {
+      "00": "l111",
+      "01": "l112"
+    }
+  },
+  "noise_reduction": {
+    "modes": ["1", "2", "3", "5", "7"],
+    "help": "h073",
+    "state": {
+      "protocol": "kx2_nr",
+      "read": "DS;",
+      "set": "SWH19;",
+      "off": "0",
+      "on_values": ["1"]
+    }
+  },
+  "power": {
+    "protocol": "cat",
+    "read": "PC;",
+    "pattern": "PC(\\d{3});"
+  }
+}

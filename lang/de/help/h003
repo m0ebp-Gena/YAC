@@ -1,7 +1,9 @@
-Hilfe: Betriebsartenauswahl
+Hilfe zur Betriebsartwahl
 
-Punkt wählt den nächsten Modus, Komma den vorherigen. q beendet die Modusauswahl, h zeigt diese Hilfe. Eine andere Befehlstaste beendet die Auswahl und führt den Befehl aus.
-Die Modusauswahl beginnt bei der aktuellen Betriebsart und läuft durch die verfügbaren Betriebsarten im Kreis.
+Punkt) Nächste Betriebsart wählen.
+Komma) Vorherige Betriebsart wählen.
+q) Zur Hauptebene zurückkehren und die gewählte Betriebsart behalten.
+Eine andere Befehlstaste verlässt die Betriebsartwahl und führt den Befehl aus.
 
 ***
 Ende der Hilfe

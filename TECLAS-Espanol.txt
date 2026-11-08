@@ -77,7 +77,7 @@ Potencia: vatios configurados para Yaesu/Kenwood; porcentaje relativo para Icom.
 Desconocido: no se pudo leer el ajuste. Se omiten sintonizadores no compatibles.
 Solo se incluyen comandos implementados. h: ayuda detallada.
 
-a ajusta la ganancia AF. r ajusta el silenciador en FM y la ganancia RF en otros modos. Empieza con el valor actual de la radio, en porcentaje redondeado. Punto aumenta; coma disminuye. Pasos de unos 3 por ciento. Se detiene en los extremos. q sale y conserva el valor. Otra tecla de comando sale y ejecuta ese comando.
+a ajusta la ganancia AF. r ajusta el silenciador en FM y la ganancia RF en otros modos. Empieza con el valor actual de la radio, en porcentaje redondeado. Punto aumenta; coma disminuye. En la ganancia AF o RF, s pide el paso en puntos porcentuales (1 a 100). Intro lo guarda para uso inmediato. Intro en blanco o q seguido de Intro cancela. Los valores iniciales son 6 para AF y 5 para RF. El silenciador usa su propio paso fijo. Se detiene en los extremos. q sale y conserva el valor. Otra tecla de comando sale y ejecuta ese comando.
 
 Campo de potencia: vatios enteros; h e Intro para ayuda; Intro vacío cancela. Los vatios de Icom son estimados y convertidos a porcentaje; v informa porcentaje. Tras escritura y lectura correctas se confirma el valor introducido, por ejemplo 33W Establecido. Confirma el ajuste solicitado, no la potencia de salida medida. Sal de Ajustes con q antes de v.
 

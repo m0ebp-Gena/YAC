@@ -1,10 +1,9 @@
-Hilfe: SWR messen
+Hilfe zur SWR-Messung
 
-Schließen Sie eine für diese Frequenz geeignete Antenne an und prüfen Sie, ob die Frequenz frei ist. g sendet kurz zur SWR-Messung. YAC beendet die Sendung und stellt Ihre Einstellungen vor der Ansage wieder her. Ungültig bedeutet ungeeignete Frequenz oder Funkgerätezustand. Nach einer Messung und Wiederherstellung meldet YAC das Ergebnis und kehrt automatisch zur Hauptebene zurück. Für eine weitere Messung g erneut öffnen. h liest die Hilfe; q bricht ohne Messung ab und kehrt zurück.
+Eine geeignete Antenne anschließen und prüfen, ob die Frequenz frei ist.
 
-Hohes SWR bedeutet einen ungefähren Messwert ab 2,5. Ein interner Antennentuner hat einen begrenzten Anpassbereich. Er verbessert die Anpassung am Sender, beseitigt aber keine Verluste im Antennensystem. Ein höheres SWR kann je nach Speiseleitung und Geräten weiterhin nutzbar sein. Das SWR allein misst nicht den Wirkungsgrad der Antenne.
-
-Nahe 1 zu 1 mit Gute Anpassung ersetzt einen auf 1,0 gerundeten Wert. Dies bedeutet einen Messwert nahe eins, keine nachgewiesene perfekte Anpassung.
+g) Kurz senden, um das SWR zu messen. YAC stellt die Einstellungen wieder her, meldet das Ergebnis und kehrt zur Hauptebene zurück.
+q) Abbrechen und ohne zu senden zur Hauptebene zurückkehren.
 
 ***
 Ende der Hilfe

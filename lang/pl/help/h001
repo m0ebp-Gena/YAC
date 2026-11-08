@@ -1,81 +1,40 @@
-Pomoc: Polecenia YAC
+Pomoc poziomu głównego
 
-c p: Ton CW. Kropka podnosi; przecinek obniża; p odczytuje ponownie.
-c v: Głośność odsłuchu. Kropka zwiększa; przecinek zmniejsza; v odczytuje ponownie. Wybiera CW automatycznie w razie potrzeby; q zachowuje tryb.
+Aby uzyskać pomoc dotyczącą funkcji lub podmenu, otwórz je i naciśnij h.
 
-c k: Tempo klucza. Do dwóch cyfr; Enter stosuje. h pomaga natychmiast; q anuluje.
+Zmiana częstotliwości
 
-c d: Zwłoka Break-in. Kropka zwiększa; przecinek zmniejsza; d odczytuje ponownie; q zachowuje ustawienie.
+Przecinek) Zmniejsz częstotliwość
+Kropka) Zwiększ częstotliwość
+Naciśnij s s, aby ustawić krok strojenia.
 
-c: CW. b Break-in; i klucz wewnętrzny; h pomoc; q wraca na poziom główny. Otwarcie odczytuje stan; kolejne b lub i zmienia go. Kropka/przecinek wybiera dalej/wstecz. q w regulacji zachowuje ustawienie i wraca do CW.
+Podmenu
 
-Główne v podaje także aktywną blokadę, blokadę pokrętła lub panelu. Pomija wyłączoną blokadę. Nieczytelna obsługiwana blokada jest zgłaszana jako nieznana. Sprawdzanie niczego nie zmienia.
+c) CW
+d) Dekodery
+f) Filtry
+s) Ustawienia
 
-Przedwzmacniacz p, tłumik u i VFO/odbiornik s v: otwarcie odczytuje ustawienie bez zmiany. Kropka wybiera następne, przecinek poprzednie; powtórzona litera także przechodzi dalej. q zachowuje wybór i wraca o poziom; h wyjaśnia. Jeśli bieżącego VFO nie można odczytać, zgłasza Nieznane bez wybierania VFO.
+Funkcje poziomu głównego
 
-Polecenia YAC według klawiszy. Naciskaj klawisze osobno.
-Polecenia zależą od radia i bieżącej emisji.
-
-a: Wzmocnienie AF. Kropka zwiększa; przecinek zmniejsza.
-b: Pasmo. Kropka następne; przecinek poprzednie.
-d: Dekodery. c CW; r RTTY; a ustawienia dźwięku odbioru.
-e: Nowa częstotliwość. Wpisz MHz i Enter.
-f: Filtry. Klawisze filtrów poniżej.
-g: Pomiar SWR. Podłącz antenę; kolejne g mierzy i przywraca ustawienia. h pomaga; q wraca.
-h: Pomoc. h wewnątrz funkcji czyta szczegółową pomoc.
-i: Ton/kod. i przełącza CTCSS, DCS normalny i odwrócony, jeśli obsługiwane. Wpisz wartość i wykonuj polecenia.
-k: Blokada. Od razu wybiera następny stan i pozostaje na poziomie głównym. Nie wymaga q.
-l: Split/przemiennik. Ponowne l wyłącza. h i Enter w polu wpisywania dają pomoc.
-m: Emisja. Kropka następna; przecinek poprzednia.
-o: Przesunięcie: o przełącza Odbiór i Nadawanie. c zeruje oba; v sprawdza oba; h pomaga; q zachowuje i wraca.
-p: Przedwzmacniacz: odczytuje stan; kropka dalej, przecinek wstecz; q kończy.
-q: Zakończ YAC. y potwierdza; n lub q anuluje. W funkcji lub menu q wraca i zachowuje zmiany, chyba że pomoc mówi inaczej.
-r: Wzmocnienie RF, w FM blokada szumów. Kropka zwiększa; przecinek zmniejsza.
-s: Ustawienia. Klawisze ustawień poniżej.
-t: Uruchom wybrany tuner, jeśli obsługiwany. Najpierw wybierz lub włącz przez s t.
-u: Tłumik: odczytuje stan; kropka dalej, przecinek wstecz; q kończy.
-v: Odczytaj tłumik, przedwzmacniacz, moc i obsługiwany stan tunera. Moc oznacza ustawienie, nie pomiar RF.
-w: Odczytaj sygnał, częstotliwość, emisję i aktywny ton/kod FM. Powtórz w dla szczegółów splitu/przemiennika.
-x: Anteny. Wejście odczytuje połączenia; x zmienia główną antenę; r wejście odbiorcze.
-z: Zaokrąglij częstotliwość do najbliższego kiloherca.
-
-Przecinek: zmniejsz częstotliwość o ustawiony krok.
-Kropka: zwiększ częstotliwość o ustawiony krok.
-
-Filtry: naciśnij f, potem:
-a: Automatyczny notch lub obsługiwany Beat Cancel. Ponowne a przełącza.
-b: Noise Blanker. b przełącza; kropka/przecinek zmieniają poziom po włączeniu.
-c: Contour. c przełącza; kropka/przecinek zmieniają częstotliwość po włączeniu. l wybiera poziom; w szerokość; c wraca do częstotliwości.
-h: Pomoc filtrów.
-l: Dolne odcięcie. Kropka/przecinek regulują.
-n: Ręczny notch. n przełącza; kropka/przecinek zmieniają pozycję po włączeniu; w zmienia szerokość.
-p: Szerokość pasma przepustowego. Kropka/przecinek regulują.
-q: Wróć do menu głównego. Z regulacji q najpierw wraca do Filtrów.
-r: Noise Reduction. r przełącza; kropka/przecinek zmieniają poziom po włączeniu.
-u: Górne odcięcie. Kropka/przecinek regulują.
-v: Odczytaj włączone filtry. Powtarzaj v dla stanów poszczególnych filtrów.
-
-Ustawienia: naciśnij s, potem:
-a: Odczytaj bieżące AGC. Ponowne a wybiera następne ustawienie; q kończy.
-b: Mowa/brajl Pi. Kropka następny tryb; przecinek poprzedni; q stosuje i zapisuje.
-e: Procesor mowy. Wejście odczytuje ustawienia; e przełącza; kropka/przecinek regulują po włączeniu. Kenwood i/o wybierają Wejście/Wyjście. n przywraca początkowe ustawienia; q zachowuje zmiany.
-h: Pomoc ustawień.
-m: Wzmocnienie mikrofonu zależne od emisji. Kropka/przecinek regulują; h wyjaśnia bieżącą emisję. Spacja oferuje opcjonalne przygotowanie ALC, jeśli dostępne. PTT obsługujesz samodzielnie.
-o: Mowa Pi. r tempo; v głośność; p wysokość; u interpunkcja; kropka/przecinek regulują; t próba; d domyślne. Zmiany zapisują się natychmiast.
-p: Moc. Wpisz całe waty i Enter. Pusty Enter lub q i Enter anulują. Sukces podaje wpisaną wartość. Icom używa szacunkowego przeliczenia; v podaje względny procent.
-q: Wróć do menu głównego; po wyborze AGC ogłasza Gotowe.
-s: Krok strojenia. Wpisz całe herce i Enter.
-t: Przełączaj obsługiwane ustawienia tunera. Powtarzaj t. Wybór nie rozpoczyna strojenia.
-u: Aktualizacja YAC. Wyświetla pomoc i sprawdza GitHub. r czyta opis; y instaluje; n lub q wraca.
-v: Wybierz obsługiwany VFO A/B lub Main/Sub.
-w: Wi-Fi Pi. Wykonuj polecenia; h daje pomoc tam, gdzie dostępna.
-
-Wybór profilu: wpisz numer radia i Spację, aby wybrać; q anuluje.
-Ustawienia tylko dla Pi wymagają skonfigurowanego programu uruchamiającego Pi.
-
-Przywracanie: Błąd radia i Łączę Ponownie rozpoczynają 60 sekund prób. Radio powróciło wznawia obsługę; inaczej Kończenie zamyka YAC. h podczas oczekiwania czyta pomoc.
-
-Wybierz przez s r region lokalizacji radia. Domyślnie: Region 1. Kolejne r przełącza 1, 2, 3 i zapisuje od razu. h daje pomoc; q ogłasza Gotowe i wraca do Ustawień.
+a) Wzmocnienie AF
+b) Wybór pasma
+e) Wprowadzanie częstotliwości
+g) Pomiar SWR
+i) Ton CTCSS lub kod DCS
+k) Zablokuj pokrętło strojenia lub elementy sterujące panelu przedniego
+l) Rozdzielone VFO lub konfiguracja przemiennika
+m) Wybór trybu
+o) Przesunięcie częstotliwości (RIT lub XIT)
+p) Przedwzmacniacz
+q) Zakończ YAC. Naciśnij y, aby potwierdzić, lub n, aby anulować.
+r) Wzmocnienie RF lub blokada szumów FM
+t) Dostrój podłączoną antenę. Wybierz tuner w Ustawieniach klawiszami s t.
+u) Tłumik
+v) Sprawdź stan
+w) Gdzie jestem? Odczytaj sygnał, częstotliwość i tryb.
+x) Anteny
+z) Zaokrąglij częstotliwość do najbliższego kHz
 
 ***
 Koniec pomocy

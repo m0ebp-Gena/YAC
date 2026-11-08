@@ -1,10 +1,7 @@
-Pomoc: Wprowadzanie częstotliwości
+Pomoc wprowadzania częstotliwości
 
-Wprowadzanie częstotliwości
-
-Wpisz nową częstotliwość w megahercach i naciśnij Enter. Dla części megaherca użyj kropki dziesiętnej. YAC natychmiast stosuje obsługiwaną wartość i potwierdza częstotliwość odczytem z radia.
-Wpisz h i naciśnij Enter, aby przeczytać tę pomoc i wrócić do wprowadzania bez zmian.
-Pusty Enter anuluje z komunikatem Anulowano. Nieakceptowana wartość daje Nieprawidłowe. Oba kończą żądanie bez zmiany częstotliwości i wracają do głównych poleceń. Naciśnij e, aby spróbować ponownie.
+Wpisz nową częstotliwość w MHz. Użyj kropki dziesiętnej, np. 7.1
+Pusty Enter) Anuluj wprowadzanie.
 
 ***
 Koniec pomocy

@@ -1,81 +1,40 @@
-Hilfe: YAC-Befehle
+Hilfe zur Hauptebene
 
-c p: CW-Tonhöhe. Punkt erhöht; Komma verringert; p liest erneut.
-c v: Mithörtonlautstärke. Punkt erhöht; Komma verringert; v liest erneut. Wählt bei Bedarf automatisch CW; q behält diesen Modus.
+Für Hilfe zu einer Funktion oder einem Untermenü öffnen Sie es und drücken Sie h.
 
-c k: Tasttempo. Bis zu zwei Ziffern; Enter übernimmt. h hilft sofort; q bricht ab.
+Frequenznavigation
 
-c d: Break-in-Verzögerung. Punkt erhöht; Komma verringert; d liest erneut; q behält die Einstellung.
+Komma) Frequenz senken
+Punkt) Frequenz erhöhen
+Mit s s stellen Sie die Abstimmschrittweite ein.
 
-c: CW. b Break-in; i interne Taste; h Hilfe; q zur Hauptebene. Öffnen liest den Zustand; weiteres b oder i ändert ihn. Punkt/Komma wählt weiter/zurück. q im Regler behält die Einstellung und kehrt zu CW zurück.
+Untermenüs
 
-Das Haupt-v meldet bei aktiver Sperre auch Ein, Drehknopf- oder Bedienfeldsperre. Aus wird weggelassen. Eine nicht lesbare unterstützte Sperre wird als unbekannt gemeldet. Prüfen ändert nichts.
+c) CW
+d) Decoder
+f) Filter
+s) Einstellungen
 
-Vorverstärker p, Abschwächer u und VFO/Empfänger s v: Öffnen liest den aktuellen Wert ohne Änderung. Punkt wählt die nächste, Komma die vorherige Option; der wiederholte Befehlsbuchstabe wählt ebenfalls weiter. q behält die Auswahl und kehrt eine Ebene zurück; h erklärt. Ist der aktuelle VFO nicht lesbar, wird Unbekannt gemeldet, ohne einen VFO auszuwählen.
+Funktionen der Hauptebene
 
-YAC-Befehle in Tastenreihenfolge. Tasten einzeln drücken.
-Befehle hängen vom Radio und der Betriebsart ab.
-
-a: AF Gain. Punkt erhöht; Komma verringert.
-b: Band. Punkt weiter; Komma zurück.
-d: Decoder. c CW; r RTTY; a Empfangsaudio einrichten.
-e: Neue Frequenz. MHz eingeben, dann Enter.
-f: Filter. Siehe Filtertasten unten.
-g: SWR messen. Antenne anschließen; erneutes g misst und stellt Einstellungen wieder her. h hilft; q zurück.
-h: Hilfe. h innerhalb einer Funktion liest deren ausführliche Hilfe.
-i: Ton/Code eingeben. i wechselt zwischen CTCSS, DCS normal und DCS invertiert, soweit unterstützt. Wert eingeben und den Ansagen folgen.
-k: Sperre. Wechselt sofort zum nächsten Sperrzustand und bleibt auf der Hauptebene. Kein q nötig.
-l: Split/Relais einrichten. Erneutes l schaltet aus. h und Enter im Eingabefeld geben Hilfe.
-m: Betriebsart. Punkt weiter; Komma zurück.
-o: Ablage: o wechselt Empfang und Senden. c löscht beide; v prüft beide; h hilft; q behält Einstellungen und kehrt zurück.
-p: Vorverstärker: liest den Zustand; Punkt weiter, Komma zurück; q beendet.
-q: YAC beenden. y bestätigt; n oder q bricht ab. Innerhalb einer Funktion oder eines Menüs kehrt q zurück und behält Änderungen, sofern die Hilfe nichts anderes sagt.
-r: RF Gain, bei FM Rauschsperre. Punkt erhöht; Komma verringert.
-s: Einstellungen. Siehe Einstellungstasten unten.
-t: Konfigurierten Tuner starten, soweit unterstützt. Zuerst mit s t auswählen oder aktivieren.
-u: Abschwächer: liest den Zustand; Punkt weiter, Komma zurück; q beendet.
-v: Abschwächer, Vorverstärker, Leistung und unterstützten Tunerstatus lesen. Leistung ist der eingestellte Wert, keine gemessene HF-Leistung.
-w: Signalstärke, Frequenz, Betriebsart und aktiven FM-Ton/Code lesen. w wiederholen für Split/Relaisdetails.
-x: Antennen. Einstieg liest Zuordnung; x wechselt Hauptantenne; r Empfangseingang.
-z: Frequenz auf das nächste Kilohertz runden.
-
-Komma: Frequenz um die eingestellte Schrittweite verringern.
-Punkt: Frequenz um die eingestellte Schrittweite erhöhen.
-
-Filter: f drücken, dann:
-a: Auto Notch oder unterstützte Beat-Cancel-Funktion. Erneutes a schaltet um.
-b: Noise Blanker. b schaltet um; Punkt/Komma ändern den Pegel bei Ein.
-c: Contour. c schaltet um; Punkt/Komma ändern die Frequenz bei Ein. l wählt Pegel; w Breite; c zurück zur Frequenz.
-h: Filterhilfe.
-l: Untere Grenzfrequenz. Punkt/Komma ändern.
-n: Manueller Notch. n schaltet um; Punkt/Komma ändern die Position bei Ein; w ändert die Breite.
-p: Durchlassbandbreite. Punkt/Komma ändern.
-q: Hauptebene zum Hauptmenü. Aus einer Einstellung kehrt q zunächst zu Filter zurück.
-r: Noise Reduction. r schaltet um; Punkt/Komma ändern den Pegel bei Ein.
-u: Obere Grenzfrequenz. Punkt/Komma ändern.
-v: Eingeschaltete Filter lesen. v wiederholen für einzelne Filterzustände.
-
-Einstellungen: s drücken, dann:
-a: Aktuelle AGC lesen. Erneutes a wählt die nächste Stufe; q beendet.
-b: Pi-Sprache/Braille. Punkt weiter; Komma zurück; q wendet an und speichert.
-e: Sprachprozessor. Einstieg liest Einstellungen; e schaltet um; Punkt/Komma ändern bei Ein. Kenwood i/o wählen Eingang/Ausgang. n stellt Anfangswerte wieder her; q behält Änderungen.
-h: Einstellungshilfe.
-m: Betriebsartabhängige Mikrofonverstärkung. Punkt/Komma ändern; h erklärt die aktuelle Betriebsart. Leertaste bietet optionale ALC-Vorbereitung, falls unterstützt. PTT bedienen Sie selbst.
-o: Pi-Spracheinstellungen. r Tempo; v Lautstärke; p Tonhöhe; u Satzzeichen; Punkt/Komma ändern; t Test; d Standardwerte. Änderungen werden sofort gespeichert.
-p: Ausgangsleistung. Ganze Watt und Enter eingeben. Leeres Enter oder q und Enter brechen ab. Erfolg nennt den eingegebenen Wert. Icom verwendet eine geschätzte Umrechnung; v meldet den relativen Prozentwert.
-q: Hauptebene zum Hauptmenü; nach AGC-Auswahl wird Fertig angesagt.
-s: Schrittweite. Ganze Hertz und Enter eingeben.
-t: Unterstützte Tuner-Einstellungen durchschalten. t wiederholen. Die Auswahl startet keine Abstimmung.
-u: YAC aktualisieren. Zeigt Hilfe und prüft GitHub. r liest Hinweise; y installiert; n oder q kehrt zurück.
-v: Unterstützten VFO A/B oder Main/Sub auswählen.
-w: Pi-WLAN einrichten. Ansagen folgen; h gibt Hilfe, wo angeboten.
-
-Profilauswahl: Radionummer eingeben, dann Leertaste zum Auswählen; q bricht ab.
-Pi-Einstellungen erfordern den konfigurierten Pi-Starter.
-
-Wiederherstellung: Funkfehler und Neu Verbinden starten eine Frist von 60 Sekunden. Radio wieder da setzt die Bedienung fort; sonst beendet Abbruch YAC. h liest währenddessen die Hilfe.
-
-Wählen Sie mit s r die Region des Funkgerätestandorts. Vorgabe: Region 1. Erneutes r wechselt 1, 2, 3 und speichert sofort. h hilft; q meldet Fertig und kehrt zu Einstellungen zurück.
+a) AF-Verstärkung
+b) Bandauswahl
+e) Frequenzeingabe
+g) SWR messen
+i) CTCSS-Ton oder DCS-Code
+k) Abstimmknopf oder Bedienelemente an der Front sperren
+l) Getrennte VFOs oder Relaiskonfiguration
+m) Betriebsart wählen
+o) Frequenzversatz (RIT oder XIT)
+p) Vorverstärker
+q) YAC beenden. Mit y bestätigen oder mit n abbrechen.
+r) RF-Verstärkung oder FM-Rauschsperre
+t) Angeschlossene Antenne abstimmen. Den Tuner in den Einstellungen mit s t wählen.
+u) Abschwächer
+v) Status prüfen
+w) Wo bin ich? Signal, Frequenz und Betriebsart abfragen.
+x) Antennen
+z) Frequenz auf das nächste kHz runden
 
 ***
 Ende der Hilfe

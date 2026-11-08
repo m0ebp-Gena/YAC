@@ -1,13 +1,13 @@
-Pomoc: Wybór tonu
+Pomoc tonu i kodu
 
-Wprowadzanie tonu: naciśnij i, aby przełączać CTCSS, DCS N (polaryzacja normalna) i DCS I (polaryzacja odwrócona). Cykl się powtarza. W radiu obsługującym tylko CTCSS pozostaje CTCSS.
-Dla CTCSS wpisz obsługiwany ton w hercach, na przykład 88.5 lub 100.0. Pole przyjmuje cyfry i jedną kropkę dziesiętną, do pięciu znaków.
-Dla DCS wpisz obsługiwany trzycyfrowy kod, na przykład 023 lub 754, z zerem na początku, jeśli jest wymagane. Nie wpisuj D, N, I ani kropki. Cyfry kodu DCS mają wartości od 0 do 7; nie każda kombinacja jest obsługiwana.
-Do edycji użyj Backspace, Delete i klawiszy kursora. Enter zatwierdza wartość. Przy TX/Oba: t/b naciśnij t, aby wysyłać ton lub kod tylko przy nadawaniu, albo b, aby wysyłać go i wymagać go przy odbiorze. Oba stosuje wybraną polaryzację DCS do nadawania i odbioru. Gdy radio obsługuje tylko Oba, YAC stosuje ustawienie bezpośrednio po Enter, bez pytania t/b.
-Radio jest zmieniane po t lub b albo bezpośrednio po Enter, gdy Oba jest stosowane automatycznie. Po powodzeniu YAC potwierdza wynik i wraca do głównego interfejsu. Po błędzie można poprawić wartość i spróbować ponownie. Enter w pustym polu pozostawia je otwarte.
-h wyświetla pomoc i zachowuje wartość. i wybiera następny typ tonu i czyści pole. q na obu etapach anuluje i wraca do głównego interfejsu.
-Te funkcje są dostępne w obsługiwanych pasmach przemienników FM. Aby wyłączyć tony, użyj przycisków radia.
-Stan pokazuje osobno różne tony nadawania i odbioru. Ton TX Nieznany oznacza niezweryfikowany ton nadawania przy zewnętrznym podziale częstotliwości; nie oznacza utraty połączenia.
+i) Przełączaj dostępne typy: CTCSS, DCS normalny i DCS odwrócony.
+Wpisz ton CTCSS w Hz, np. 88.5, lub trzycyfrowy kod DCS, np. 023. Naciśnij Enter.
+
+Jeśli YAC pyta o TX lub oba:
+t) Zastosuj tylko przy nadawaniu.
+b) Zastosuj przy nadawaniu i odbiorze.
+
+q) Anuluj i wróć do poziomu głównego.
 
 ***
 Koniec pomocy

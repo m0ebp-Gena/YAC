@@ -68,5 +68,22 @@ class GainTests(unittest.TestCase):
         keys=iter(['a','.','q','r',',','w','q', 'y'])
         with patch.object(yac,'connect_radio',return_value=r),patch.object(yac,'_read_settings',return_value={'call':'test','lang':'en'}),patch.object(lang_sel,'read_key',side_effect=lambda:next(keys)),redirect_stdout(io.StringIO()):
             self.assertEqual(yac.main([]),0)
-        self.assertEqual(r.serial.gains['AG0'],136)
-        self.assertEqual(r.serial.gains['RG0'],247)
+        self.assertEqual(r.serial.gains['AG0'],143)
+        self.assertEqual(r.serial.gains['RG0'],242)
+
+    def test_edit_step_applies_inside_rf_control_and_saves_separately(self):
+        from types import SimpleNamespace
+        radio = create_dummy_radio()
+        keys = iter(['s', ',', 's', ',', 'q'])
+        with patch.object(yac, '_read_settings', return_value={'af_gain_step': '20'}), \
+             patch.object(yac, '_set_yac_value') as save, \
+             patch('builtins.input', side_effect=['10', '0']) as entry, \
+             patch.object(gain.chat_int, 'show_response') as response:
+            gain.control(yac, ROOT, radio, 'en', 'r', 'Test', keys.__next__,
+                         SimpleNamespace(lost=False))
+        save.assert_called_once_with(ROOT / 'yac.ini', 'rf_gain_step', '10')
+        self.assertEqual([call.args[0].strip() for call in entry.call_args_list],
+                         ['Step 5?', 'Step 10?'])
+        self.assertEqual([call.args[0] for call in response.call_args_list],
+                         ['RF Gain 100%', 'Step 10', 'RF Gain 90%', 'Invalid', 'RF Gain 80%',
+                          'Done'])

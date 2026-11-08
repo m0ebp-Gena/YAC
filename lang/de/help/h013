@@ -1,10 +1,15 @@
-Hilfe zum Decoder-Menü
+Hilfe zu den Decodern
 
-a Richtet Empfangsaudio ein. Audioeingang nicht festgelegt: zuerst a.
-c Öffnet CW und startet den Empfang, wenn eingerichtet.
-h Zeigt diese Hilfe.
-q Kehrt zur Hauptebene zurück.
-r Öffnet RTTY und startet den Empfang, wenn eingerichtet.
+Für Hilfe zu einer Funktion öffnen Sie sie und drücken Sie h.
+
+a) Empfangsaudio einrichten
+c) CW-Decodierung
+r) RTTY-Decodierung
+
+Hat das Funkgerät keinen eingebauten Decoder für die gewählte Betriebsart,
+ist die Audio-Decodierung von YAC experimentell.
+
+q) Zur Hauptebene zurückkehren.
 
 ***
 Ende der Hilfe

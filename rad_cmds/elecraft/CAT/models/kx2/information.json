@@ -1,0 +1,11 @@
+{
+  "manufacturer": "Elecraft",
+  "model": "KX2",
+  "queries": [
+    {
+      "field": "firmware",
+      "read": "RVM;",
+      "pattern": "RVM(\\d{2}\\.\\d{2});"
+    }
+  ]
+}

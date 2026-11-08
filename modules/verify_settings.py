@@ -39,6 +39,9 @@ def band(yac, radio):
 
 
 def read(yac, radio, spec, selected_band=0):
+    if spec['protocol'] == 'kx2_nr':
+        from modules.elecraft_kx2 import noise_reduction_state
+        return noise_reduction_state(yac._cat_exchange, radio)
     if spec['protocol'] == 'civ':
         command = bytes.fromhex(spec['read'])
         sub = command[1] if len(command) > 1 else None
@@ -63,6 +66,11 @@ def read(yac, radio, spec, selected_band=0):
 
 
 def _write(yac, radio, spec, value, selected_band=0):
+    if spec['protocol'] == 'kx2_nr':
+        if yac._cat_exchange(radio, 'MN;').strip() != 'MN255;':
+            return False
+        yac._cat_exchange(radio, spec['set'])
+        return True  # The caller verifies the new state from the NR icon.
     if spec['protocol'] == 'civ':
         command = bytes.fromhex(spec['set'])
         result = yac._civ_send(radio, command[0], command[1:] + bytes.fromhex(value))

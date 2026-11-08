@@ -196,4 +196,4 @@ class LockTests(unittest.TestCase):
                 self.assertNotIn(model,help_text)
             if lang == 'en':
                 self.assertIn('See the notes for your radio',help_text)
-            self.assertIn('k:',(ROOT/f'lang/{lang}/help/h001').read_text(encoding='utf-8'))
+            self.assertIn('\nk) ',(ROOT/f'lang/{lang}/help/h001').read_text(encoding='utf-8'))

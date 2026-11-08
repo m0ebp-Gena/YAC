@@ -4,7 +4,7 @@
 
 1. Help
 
-1a. Explain key presses, expected responses, their meanings and what the user can do next.
+1a. Help is requested with h in the current context. Menu help lists the choices at that level and directs the user to open a control for its help. Control help covers only the active control, mode or parameter. Give each key and what it does on its own line where practical. Explain feedback when its meaning affects what the user can do next.
 
 1b. Arrange help topics alphabetically so users can find them quickly. This does not change menu, mode or control order.
 
@@ -14,7 +14,7 @@
 
 1e. Explain how to leave the control and whether changes are kept.
 
-1f. Long help uses a pager, with q to leave. Individual help topics should fit on one screen and return without requiring q. Help must be explicit without repetition.
+1f. Opening a control reports its setting. Show help when requested, without changing settings. Keep each control topic to one screen and return to the same control or prompt automatically. Use a pager with q to leave long general help. Avoid repeating menu choices and instructions from other controls.
 
 1g. Every help file starts with a descriptive help title. End with three asterisks on a separate line, End of help in the selected language, then three asterisks on a separate line. These announce the boundary between help and operating prompts.
 

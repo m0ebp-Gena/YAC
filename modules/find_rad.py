@@ -364,7 +364,15 @@ def _cat_model_id(connection: Any) -> str:
     except Exception:
         return ""
     match = re.search(rb"(?:^|[^A-Z])ID([0-9]{3,4});", response)
-    return match.group(1).decode("ascii") if match else ""
+    model_id = match.group(1).decode("ascii") if match else ""
+    if model_id == "017":
+        try:
+            options = _exchange(connection, b"OM;", b";", 48).upper()
+        except Exception:
+            return model_id
+        if re.fullmatch(rb"OM [A-Z-]{10}01;", options.strip()):
+            return "kx2"
+    return model_id
 
 
 def _yaesu_main_mode(connection: Any, model_id: str) -> str:
@@ -380,6 +388,8 @@ def _yaesu_main_mode(connection: Any, model_id: str) -> str:
 
 
 def _cat_model_name(model_id: str, port_info: Any) -> str:
+    if model_id == "kx2":
+        return "Elecraft KX2"
     text = _port_text(port_info)
     if model_id == "020":
         if "qmx" in text or "qrp labs" in text:
@@ -498,6 +508,8 @@ class RadioConnection:
         if self.protocol == "CI-V":
             return "icom"
         if self.protocol == "CAT":
+            if self.model_id == "kx2":
+                return "elecraft"
             if self.model_id in YAESU_CAT_IDS:
                 return "yaesu"
             if self.model_id in KENWOOD_CAT_IDS:

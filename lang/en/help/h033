@@ -1,10 +1,7 @@
-Help For The Frequency Entry
+Frequency Entry help
 
-Frequency entry
-
-Type the new frequency in megahertz, then press Enter. Use a decimal point for fractions of a megahertz. YAC applies a supported value immediately and confirms the frequency by reading the radio.
-Type h, then Enter, to read this help and return to frequency entry without changing anything.
-Blank Enter cancels with Aborted. An unacceptable value gives Invalid. Both end the request without changing the frequency and return to the main controls. Press e to try again.
+Enter a new frequency in MHz. Use a decimal point e.g 7.1
+Blank Enter) Abort and Cancel.
 
 ***
 End of help

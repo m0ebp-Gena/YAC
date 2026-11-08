@@ -1,7 +1,11 @@
-Help For The Band Selection
+Band Select help
 
-Full stop moves up one band; comma moves down one band. Press q to leave Band Select. Press h for this help. Any other command key leaves Band Select and runs that command.
-Band selection starts at the current band. Icom and Kenwood stop at each end; Yaesu follows the radio's band behavior. At an upper limit, use comma to go down, or e to enter a frequency.
+Full stop) Select the next band.
+Comma) Select the previous band.
+YAC announces the band, frequency, and mode after a change.
+
+q) Return to Top Level. The selected band is kept.
+Another command key leaves Band Select and runs that command.
 
 ***
 End of help

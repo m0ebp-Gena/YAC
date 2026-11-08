@@ -162,6 +162,8 @@ def _help_topic(yac, root, radio, adjusting, contour_parameter='frequency'):
     if adjusting == 'a':
         return 'h061' if feature.get('beat_cancel') else 'h054'
     if adjusting == 'r' and not feature.get('levels'):
+        if feature.get('help'):
+            return feature['help']
         return 'h062' if feature.get('level', {}).get('following_time') else 'h059'
     if adjusting == 'r' and feature.get('levels'):
         side = str(yac._yaesu_vfo_side) if radio.model_id == '0840' else '0'

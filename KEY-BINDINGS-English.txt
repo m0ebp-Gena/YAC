@@ -82,7 +82,7 @@ Power: configured watts for Yaesu/Kenwood; relative percentage for Icom.
 Unknown means the setting could not be read. Unsupported tuners are omitted.
 Only implemented commands are listed. Press h for detailed help.
 
-a adjusts AF Gain. r adjusts Squelch in FM, RF Gain in other modes. Starts at the current radio value, shown as a rounded percentage. Full stop increases; comma decreases. Steps are about 3 percent. Stops at each end without looping. q leaves and keeps the setting. Another command key leaves and starts that command.
+a adjusts AF Gain. r adjusts Squelch in FM, RF Gain in other modes. Starts at the current radio value, shown as a rounded percentage. Full stop increases; comma decreases. In AF or RF Gain, s asks for the step in percentage points (1 to 100). Enter saves it for immediate use. Blank Enter or q then Enter cancels. Defaults are 6 for AF and 5 for RF. Squelch uses its own fixed step. Stops at each end without looping. q leaves and keeps the setting. Another command key leaves and starts that command.
 
 Power edit: whole watts; h then Enter for help; blank Enter cancels. Icom watt entries are estimated and converted to a relative percentage; v reports that percentage. Successful changes repeat the entered value, for example 33W Set, after write and readback. This confirms the requested setting, not measured output watts. Leave Settings with q before v.
 

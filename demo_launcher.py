@@ -106,7 +106,7 @@ def main():
         assert contour_control.operate(yac, root, radio, "en", parameter="width", direction=-1) == "Width 9"
         assert contour_control.operate(yac, root, radio, "en", direction=1) == "Contour 1210 Hz"
         from modules import filter_verify
-        assert filter_verify.verify(yac, root, radio, "en") == "Filters On: Auto Notch On, Manual Notch On, Contour On"
+        assert filter_verify.verify(yac, root, radio, "en") == "Filters On: Auto Notch, Manual Notch, Contour"
         assert "Filters On:" not in yac.verify_settings.verify(yac, root, radio, "en")
         review = filter_verify.Review()
         assert review.next(yac, root, radio, "en").startswith("Filters On:")

@@ -77,7 +77,7 @@ Moc: ustawione waty dla Yaesu/Kenwood; względny procent dla Icom.
 Nieznany: ustawienie nieczytelne. Nieobsługiwane tunery są pomijane.
 Lista zawiera tylko wdrożone polecenia. h: szczegółowa pomoc.
 
-a reguluje wzmocnienie AF. r reguluje blokadę szumów w FM, w innych trybach wzmocnienie RF. Początek od bieżącej wartości radia, w zaokrąglonych procentach. Kropka zwiększa; przecinek zmniejsza. Krok około 3 procent. Bez zapętlania na krańcach. q wychodzi i zachowuje wartość. Inny klawisz polecenia uruchamia to polecenie.
+a reguluje wzmocnienie AF. r reguluje blokadę szumów w FM, w innych trybach wzmocnienie RF. Początek od bieżącej wartości radia, w zaokrąglonych procentach. Kropka zwiększa; przecinek zmniejsza. W regulacji AF lub RF klawisz s pyta o krok w punktach procentowych (od 1 do 100). Enter zapisuje go do natychmiastowego użycia. Pusty Enter lub q i Enter anuluje. Domyślnie 6 dla AF i 5 dla RF. Blokada szumów ma stały krok. Bez zapętlania na krańcach. q wychodzi i zachowuje wartość. Inny klawisz polecenia uruchamia to polecenie.
 
 Pole mocy: całe waty; h i Enter daje pomoc; puste Enter anuluje. Waty dla Icom są szacowane i przeliczane na procent; v podaje procent. Po udanym zapisie i odczycie pojawia się potwierdzenie wpisanej wartości, na przykład 33W Ustawiono. Potwierdza ono żądane ustawienie, a nie zmierzoną moc wyjściową. Przed v opuść Ustawienia przez q.
 

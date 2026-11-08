@@ -78,7 +78,7 @@ Leistung: eingestellte Watt bei Yaesu/Kenwood; relativer Prozentwert bei Icom.
 Unbekannt: Einstellung nicht lesbar. Nicht unterstützte Tuner werden ausgelassen.
 Nur implementierte Befehle sind aufgeführt. h zeigt ausführliche Hilfe.
 
-a regelt AF-Verstärkung. r regelt in FM die Rauschsperre, sonst RF-Verstärkung. Start beim aktuellen Funkgerätewert, als gerundeter Prozentwert. Punkt erhöht; Komma verringert. Schritte etwa 3 Prozent. Kein Umlauf an den Grenzen. q beendet und behält den Wert. Eine andere Befehlstaste startet diesen Befehl.
+a regelt AF-Verstärkung. r regelt in FM die Rauschsperre, sonst RF-Verstärkung. Start beim aktuellen Funkgerätewert, als gerundeter Prozentwert. Punkt erhöht; Komma verringert. Bei AF- oder RF-Verstärkung fragt s nach der Schrittweite in Prozentpunkten (1 bis 100). Enter speichert sie zur sofortigen Nutzung. Leeres Enter oder q und Enter bricht ab. Vorgaben sind 6 für AF und 5 für RF. Die Rauschsperre hat eine feste Schrittweite. Kein Umlauf an den Grenzen. q beendet und behält den Wert. Eine andere Befehlstaste startet diesen Befehl.
 
 Leistungseingabe: ganze Watt; h und Eingabetaste für Hilfe; leere Eingabe bricht ab. Icom-Watteingaben sind geschätzt und werden in Prozent umgerechnet; v meldet Prozent. Nach erfolgreichem Schreiben und Rücklesen wird die Eingabe bestätigt, zum Beispiel 33W Gesetzt. Dies bestätigt den angeforderten Wert, keine gemessene Ausgangsleistung. Vor v Einstellungen mit q verlassen.
 

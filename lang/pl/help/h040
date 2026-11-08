@@ -1,12 +1,12 @@
-Pomoc przesunięcia odbioru i nadawania
+Pomoc przesunięcia częstotliwości
 
-o otwiera przesunięcie na Odbiór bez zmiany ustawień. Wskazówka podaje v Sprawdź, c Zeruj offset i h Pomoc. Kolejne o przełączają Nadawanie i Odbiór bez włączania ani zmiany strony.
-
-Kropka dodaje 10 herców, przecinek odejmuje 10 herców od zachowanej wartości radia i włącza wybraną stronę. Zmiany działają natychmiast i są sprawdzane odczytem. Otwarcie nie zeruje wartości. Jeśli radio ma wspólną wartość przesunięcia, obie włączone strony używają tej wartości.
-
-v odczytuje czynne przesunięcia Odbioru i Nadawania w hercach. Nieaktywna strona podaje 0. Znaki są wypowiadane jako Plus i Minus. Sprawdzanie niczego nie zmienia. c jawnie zeruje wartość i wyłącza obie strony, potwierdzając odczytem. Wybrana strona pozostaje wybrana.
-
-h odczytuje pomoc. q ogłasza Gotowe i wraca do poziomu głównego, zachowując bieżące ustawienia. Ani otwarcie, ani q niczego nie zeruje. Nieczytelne i nieobsługiwane stany są zgłaszane bez zgadywania.
+Przesunięcie otwiera się na odbiorze.
+o) Przełącz między odbiorem a nadawaniem.
+Kropka) Zwiększ wybrane przesunięcie o 10 Hz.
+Przecinek) Zmniejsz wybrane przesunięcie o 10 Hz.
+v) Odczytaj oba przesunięcia. Nieaktywne przesunięcie jest podawane jako zero.
+c) Wyzeruj i wyłącz oba przesunięcia.
+q) Wróć do poziomu głównego i zachowaj ustawienia.
 
 ***
 Koniec pomocy

@@ -1,12 +1,12 @@
-Ayuda de Split y repetidores
+Ayuda de split y repetidor
 
-l abre el control y lee el estado actual sin cambiarlo. Si está desactivado, solo anuncia desactivado. Si está activado, anuncia las frecuencias de recepción y transmisión. h lee esta ayuda. q conserva los ajustes, anuncia Terminado y vuelve al nivel principal.
+l) Desactivar si está activado o iniciar la configuración si está desactivado.
 
-Otra l actúa sobre el estado actual. Si está activado, desactiva split/repetidor y vuelve. Si está desactivado, inicia la configuración. Fuera de FM, introduzca la frecuencia de transmisión en MHz y pulse Intro. La recepción sigue en el VFO elegido; se sustituyen frecuencia y modo del otro VFO. En FM se usa un desplazamiento de banda guardado, si existe; si no, introduzca un desplazamiento con signo en hercios. Abrir el control nunca aplica por sí solo el valor guardado.
-
-En una entrada, Intro vacío o q e Intro cancela sin cambios. h e Intro explica el control. Escriba -600000 para Menos 600000 hercios; 600000 o +600000 para Más 600000 hercios. Se verifican los cambios leyendo la radio. No se inicia transmisión. Se indican estados no admitidos o ilegibles.
-
-Repetir w en el nivel principal alterna el estado normal y los detalles actuales de split/repetidor. Si falla la restauración, lea las frecuencias de recepción/transmisión antes de usar la radio; el estado anterior no queda confirmado. Las opciones de cada modelo y los desplazamientos guardados se explican en sus notas.
+En FM, YAC usa un desplazamiento guardado si está disponible. Si se solicita, introduce el desplazamiento en hercios. Escribe - para Menos o + para Más.
+En otros modos, introduce la frecuencia de transmisión en MHz.
+Intro) Aplicar el valor.
+Intro en blanco) Cancelar la configuración.
+q) Volver al nivel principal y conservar el ajuste actual.
 
 ***
 Fin de la ayuda

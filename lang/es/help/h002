@@ -1,7 +1,11 @@
-Ayuda: Selección de banda
+Ayuda de selección de banda
 
-El punto sube una banda; la coma baja. Pulsa q para salir de la selección de banda o h para ver esta ayuda. Cualquier otra tecla de comando sale y ejecuta ese comando.
-La selección de banda empieza en la banda actual. Icom y Kenwood se detienen en los extremos; Yaesu sigue la radio. En el límite superior, usa coma para bajar o e para introducir una frecuencia.
+Punto) Seleccionar la banda siguiente.
+Coma) Seleccionar la banda anterior.
+Tras un cambio, YAC anuncia la banda, la frecuencia y el modo.
+
+q) Volver al nivel principal. Se conserva la banda seleccionada.
+Otra tecla de comando sale de la selección de banda y ejecuta ese comando.
 
 ***
 Fin de la ayuda

@@ -1,6 +1,8 @@
-Help For The Audio and Radio Frequency Gain
+AF Gain help
 
-a adjusts AF Gain. r adjusts Squelch in FM, RF Gain in other modes. Starts at the current radio value, shown as a rounded percentage. Full stop increases; comma decreases. Steps are about 3 percent. Stops at each end without looping. q leaves and keeps the setting. Another command key leaves and starts that command.
+Comma decreases. Full stop increases. YAC announces the new percentage.
+s) Hear the current step. Enter 1 to 100 percentage points and press Enter to save and use the new step. Blank Enter cancels.
+q) Return to Top Level. Changes are kept.
 
 ***
 End of help

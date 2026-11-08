@@ -2,7 +2,8 @@
 from modules import chat_int, help_int
 
 
-def control(root, language, read_current, change, read_key, watch, repeat_key, help_id='h041'):
+def control(root, language, read_current, change, read_key, watch, repeat_key,
+            help_id='h041', *, forward_command=False):
     chat_int.show_response(read_current())
     while True:
         try:
@@ -18,6 +19,8 @@ def control(root, language, read_current, change, read_key, watch, repeat_key, h
             chat_int.show_response(help_int.get_help(root, language, help_id))
         elif key in {'.', ',', repeat_key}:
             chat_int.show_response(change(-1 if key == ',' else 1))
+        elif key and forward_command:
+            return key
 
 
 def vfo(yac, root, radio, language, read_key, watch):
