@@ -11,6 +11,7 @@ from contextlib import redirect_stdout
 from unittest.mock import patch
 import zipfile
 import update_yac as updater
+from modules import ft_engine_update, nexus_ft8, update_control
 
 
 def archive(extra=None):
@@ -29,6 +30,74 @@ def release():
 
 
 class Updates(unittest.TestCase):
+    def test_current_release_offers_only_matching_missing_decoder(self):
+        published = release()
+        base = published['assets'][0]['browser_download_url'].rsplit('/', 1)[0] + '/'
+        name = ft_engine_update.asset_name('linux-arm64')
+        published['assets'].extend(dict(name=n, browser_download_url=base+n)
+                                   for n in (name, name+'.sha256'))
+        metadata = json.dumps([published]).encode()
+        with tempfile.TemporaryDirectory() as folder, \
+             patch.object(nexus_ft8.sys, 'platform', 'linux'), \
+             patch.object(nexus_ft8.platform, 'machine', return_value='aarch64') as machine, \
+             patch.object(updater, 'fetch', return_value=metadata) as fetch:
+            root = Path(folder)
+            (root/'release.json').write_text(json.dumps({'tag': published['tag_name']}))
+            self.assertEqual(update_control.lookup(root), published)
+            fetch.assert_called_once_with(updater.API, 2 * 1024 * 1024)
+            self.assertEqual(ft_engine_update.offer(root, published)[1][0]['name'], name)
+            machine.return_value = 'x86_64'
+            self.assertIsNone(update_control.lookup(root))
+            machine.return_value = 'aarch64'
+            bundled = root / nexus_ft8.LINUX_ARM64_ENGINE
+            bundled.parent.mkdir(parents=True)
+            bundled.touch()
+            self.assertIsNone(update_control.lookup(root))
+
+    def test_decoder_download_checks_checksum_and_binary_before_install(self):
+        target = 'linux-arm64'
+        name = ft_engine_update.asset_name(target)
+        published = release()
+        base = published['assets'][0]['browser_download_url'].rsplit('/', 1)[0] + '/'
+        assets = tuple(dict(name=n, browser_download_url=base+n) for n in (name, name+'.sha256'))
+        binary = b'\x7fELF\x02\x01' + bytes(10) + b'\x03\x00\xb7\x00'
+        for valid_hash, valid_arch, exit_code in ((False, True, 0), (True, False, 0),
+                                                  (True, True, 127), (True, True, 0)):
+            with self.subTest(valid_hash=valid_hash, valid_arch=valid_arch, exit_code=exit_code), \
+                 tempfile.TemporaryDirectory() as folder, \
+                 patch.object(nexus_ft8.sys, 'platform', 'linux'), \
+                 patch.object(nexus_ft8.platform, 'machine', return_value='aarch64'), \
+                 patch.object(ft_engine_update.subprocess, 'run', return_value=
+                              subprocess.CompletedProcess([], exit_code, stderr=b'Missing library')) as check:
+                stream = io.BytesIO()
+                with zipfile.ZipFile(stream, 'w') as package:
+                    package.writestr(ft_engine_update.ENGINE_FILES[0],
+                                     binary if valid_arch else binary[:-2] + b'\x3e\x00')
+                    for notice in ft_engine_update.ENGINE_FILES[1:]:
+                        package.writestr(notice, 'License text')
+                data = stream.getvalue()
+                digest = hashlib.sha256(data).hexdigest() if valid_hash else '0' * 64
+                root = Path(folder)
+                engine = root / nexus_ft8.downloaded_engine(target)
+                with patch.object(updater, 'fetch', side_effect=[data, f'{digest}  {name}'.encode()]) as fetch:
+                    if not (valid_hash and valid_arch):
+                        with self.assertRaises(ValueError):
+                            ft_engine_update.install(root, target, assets)
+                        self.assertFalse(engine.parent.exists())
+                        check.assert_not_called()
+                    elif exit_code:
+                        with self.assertRaisesRegex(RuntimeError, 'Missing library'):
+                            ft_engine_update.install(root, target, assets)
+                        self.assertFalse(engine.parent.exists())
+                        self.assertEqual(list(engine.parent.parent.iterdir()), [])
+                    else:
+                        ft_engine_update.install(root, target, assets)
+                        self.assertEqual(engine.read_bytes(), binary)
+                        self.assertEqual(nexus_ft8.configured_engine(root, {}), engine)
+                        ft_engine_update.install(root, target, assets)
+                        check.assert_called_once()
+                    self.assertEqual(fetch.call_count, 2)
+
     def test_portable_windows_download_coexists_with_legacy_update_asset(self):
         base = 'https://github.com/m0ebp-Gena/YAC/releases/download/v-test/'
         names = ['yac-win-portable-2026-10-27-r7.zip', 'YAC-001-beta-r7-2026-10-27.zip']

@@ -4,7 +4,7 @@ For help with a control, open it and press h.
 
 a) Receive audio setup
 c) CW decoding
-f) FT8 and FT4 decoding (Windows)
+f) FT8 and FT4 decoding (Windows, Linux, Apple Silicon Mac)
 r) RTTY decoding
 
 Where the radio lacks built-in decoding for the selected mode,

@@ -68,6 +68,48 @@ class UpdateControlTests(unittest.TestCase):
                 self.assertEqual(update_control.confirm(ROOT, 'en', iter(keys).__next__), expected)
                 run.assert_not_called()
 
+    def test_application_update_is_offered_first_and_can_skip_engine(self):
+        engine = ('linux-arm64', ())
+        with patch.object(update_control, 'supported', return_value=True), \
+             patch.object(update_control, '_lookup_while_cancellable', return_value=(True, release())), \
+             patch.object(update_control.ft_engine_update, 'offer', return_value=engine), \
+             patch.object(update_control.ft_engine_update, 'install') as install, \
+             redirect_stdout(io.StringIO()) as output:
+            self.assertTrue(update_control.confirm(ROOT, 'en', iter(['n', 'y', 'n']).__next__))
+            install.assert_not_called()
+        self.assertLess(output.getvalue().index('Update Y/N?'), output.getvalue().index('Download FT8'))
+
+    def test_accepting_both_installs_yac_before_optional_engine(self):
+        published = release()
+        engine = ('linux-arm64', ())
+        order = []
+        with patch.object(update_control, 'supported', return_value=True), \
+             patch.object(update_control.sys, 'platform', 'linux'), \
+             patch.object(update_control, '_lookup_while_cancellable', return_value=(True, published)), \
+             patch.object(update_control.ft_engine_update, 'offer', return_value=engine), \
+             patch.object(update_control.ft_engine_update, 'install',
+                          side_effect=lambda *args: order.append('engine')) as install, \
+             patch.object(update_yac, 'run', side_effect=lambda *args, **kw: order.append('yac') or 0), \
+             patch.object(update_control.os, 'execv'), redirect_stdout(io.StringIO()):
+            self.assertTrue(update_control.confirm(ROOT, 'en', iter(['n', 'y', 'y']).__next__))
+            self.assertEqual(order, [])
+            self.assertEqual(update_control.run(ROOT), 0)
+        install.assert_called_once_with(ROOT, *engine)
+        self.assertEqual(order, ['yac', 'engine'])
+
+    def test_current_application_can_install_engine_without_restart(self):
+        engine = ('linux-arm64', ())
+        with patch.object(update_control, 'supported', return_value=True), \
+             patch.object(update_control, '_lookup_while_cancellable', return_value=(True, release())), \
+             patch.object(update_yac, 'release_is_newer', return_value=False), \
+             patch.object(update_control.ft_engine_update, 'offer', return_value=engine), \
+             patch.object(update_control.ft_engine_update, 'install') as install, \
+             redirect_stdout(io.StringIO()) as output:
+            self.assertFalse(update_control.confirm(ROOT, 'en', iter(['y']).__next__))
+            install.assert_called_once_with(ROOT, *engine)
+        self.assertIn('FT8 and FT4 engine installed.', output.getvalue())
+        self.assertIsNone(update_control._pending)
+
     def test_unsupported_tree_does_not_consume_a_key(self):
         with patch.object(update_control, 'supported', return_value=False), redirect_stdout(io.StringIO()):
             self.assertFalse(update_control.confirm(ROOT, 'en', lambda: self.fail('read a key')))
@@ -215,7 +257,7 @@ class UpdateControlTests(unittest.TestCase):
                 update_control.lookup(ROOT)
 
     def test_selected_release_installs_without_rechecking_or_confirming(self):
-        update_control._pending=(ROOT.resolve(),release(),'en')
+        update_control._pending=(ROOT.resolve(),release(),'en',None)
         with patch.object(update_control.sys,'platform','linux'), \
              patch.object(update_yac,'run',return_value=0) as install, \
              patch.object(update_control.os,'execv') as restart,redirect_stdout(io.StringIO()):

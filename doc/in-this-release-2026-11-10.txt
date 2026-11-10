@@ -1,0 +1,46 @@
+YAC 001 r7, 10 November 2026
+
+FT8 and FT4 reception
+
+This release adds receive-only FT8 and FT4 support on Apple Silicon Macs and
+Linux ARM64. The Linux engine was tested on 64-bit Raspberry Pi OS Trixie.
+Windows uses its bundled engine as before. The Mac/Linux application ZIP
+keeps the engine separate. In Settings, press u to check for updates. YAC
+asks about its own update first, then offers the compatible decoder if
+none is installed or configured. Press y to install it or n to skip.
+An internet connection is required for the download. Once installed, the
+decoder can run without internet access.
+
+On Windows, set ft_engine=_internal/nexus/jimmy-engine-host.exe in the
+[yac] section of yac.ini. Set ft_audio_output to the exact name of a
+separate playback device, such as your PC speakers. The bundled engine's
+--list-output-devices option lists those names.
+
+The Linux ARM64 engine uses system ALSA, udev, OpenSSL, GFortran and
+single-precision FFTW runtime libraries. On Trixie these are supplied by
+libasound2t64, libudev1, libssl3t64, libgfortran5 and libfftw3-single3.
+The optional download checks that the engine can start on your system.
+
+Save the radio input with d then a. Browse with full stop or comma and
+press Enter to save. On Mac and Linux a choice announced as FT saves the
+FT input only. Channel and level controls apply to audio CW. On Mac and
+Linux YAC chooses a playback-only device if none is configured. Enter a
+callsign and Maidenhead locator. If your existing install has no locator,
+set ft_grid in the [yac] section of yac.ini. macOS may ask for microphone
+permission when Terminal first opens the radio audio device.
+
+Tune the radio for reception. From Top Level, press d then f and press s
+to start. Press v to read the latest decode, or comma and full stop to
+browse. A message with a usable locator includes estimated distance in
+every filter mode. Distances use the chosen kilometres or miles setting.
+The Distance filter applies its cutoff. Press q to stop and leave the
+FT view. Press m in the FT view to switch between FT8 and FT4.
+
+Verification
+
+Live FT8 was received from an FTX-1 on the MacBook Air and Pi 3B. On the
+MacBook Air, a clean test installed the optional engine, skipped the engine
+question on the next check, and updated and restarted YAC. That first
+restarted session reported No Text Yet. The same downloaded engine decoded
+after quitting and starting that test installation directly. The reason
+for the first session's lack of decodes is unknown.

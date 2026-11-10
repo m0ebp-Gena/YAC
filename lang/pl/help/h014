@@ -8,7 +8,9 @@ Enter sprawdza format, zapisuje wybór dla YAC i wraca do menu dekodera. Jeśli 
 
 v sprawdza kanał przez sekundę i podaje poziom bez odtwarzania. Odbieraj stały sygnał i porównuj wynik. Sprawdza to audio, nie poprawne dekodowanie. Przesterowanie oznacza za głośne wejście. Sprawdzenie lub zapis zatrzymuje aktywny odbiór CW z audio; uruchom go ponownie klawiszem c w menu dekodera.
 
-YAC nie zmienia domyślnych urządzeń Windows, dźwięku czytnika ani głośników. Zachowuje zapisane wejście. Brak lub niejednoznaczność wejścia jest zgłaszana bez automatycznej zamiany. Gdy nie wybrano wejścia, najpierw użyj kropki/przecinka lub c. Wymagana jest opcjonalna biblioteka audio.
+YAC nie zmienia domyślnych urządzeń Windows, dźwięku czytnika ani głośników. Zachowuje zapisane wejście. Brak lub niejednoznaczność wejścia jest zgłaszana bez automatycznej zamiany. Gdy nie wybrano wejścia, najpierw użyj kropki/przecinka lub c. Odbiór CW z audio wymaga opcjonalnej biblioteki audio.
+
+W systemach Linux i Mac lista zawiera także wejścia FT. Jeden wybór zapisuje ustawienia obu dekoderów, gdy YAC rozpozna to samo wejście. Pozycja oznajmiana jako FT zapisuje tylko wejście FT. Kanał i poziom dotyczą CW z audio. FT korzysta z miksu wejścia silnika.
 
 ***
 Koniec pomocy

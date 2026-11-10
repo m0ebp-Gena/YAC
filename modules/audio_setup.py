@@ -2,9 +2,13 @@
 import json
 import logging
 import math
+from pathlib import Path
+import re
 import struct
+import subprocess
 import sys
 from modules import chat_int, help_int
+from modules.nexus_ft8 import alsa_pcm, audio_devices, configured_engine, require_device
 
 LOG = logging.getLogger('yac')
 
@@ -48,6 +52,43 @@ def resolve(sd, identity):
     return matches[0]
 
 
+def alsa_cw_pcm(device):
+    if device['host'] != 'ALSA':
+        return None
+    name = device['name']
+    match = re.search(r'\(hw:(\d+),(\d+)\)$', name)
+    if not match:
+        return alsa_pcm(name)
+    try:
+        card = Path(f'/proc/asound/card{match[1]}/id').read_text(encoding='ascii').strip()
+    except (OSError, UnicodeError):
+        return None
+    return card, int(match[2])
+
+
+def ft_input_key(name):
+    return name if sys.platform == 'darwin' else alsa_pcm(name)
+
+
+def cw_input_key(device):
+    if sys.platform == 'darwin':
+        return device['name'] if device['host'] == 'Core Audio' else None
+    return alsa_cw_pcm(device)
+
+
+def native_ft_inputs(cw_devices, ft_names):
+    """Pair inputs only when both backends identify the same unique input."""
+    choices = [dict(device) for device in cw_devices]
+    cw_keys = [cw_input_key(device) for device in choices]
+    for name in ft_names:
+        key = ft_input_key(name)
+        if key is not None and cw_keys.count(key) == 1:
+            choices[cw_keys.index(key)]['ft_name'] = name
+        else:
+            choices.append(dict(name=name, channels=0, ft_name=name))
+    return choices
+
+
 def level(sd, device, channel):
     # Shared input only. The user explicitly requests this one-second check.
     sd.check_input_settings(device=device, channels=channel, dtype='float32', samplerate=48000)
@@ -66,40 +107,63 @@ def level(sd, device, channel):
 def control(yac, root, language, read_key, *, prepare_input=None):
     def label(token, **values):
         return yac._read_label(root, language, token, '').format(**values)
+    ini = root / 'yac.ini'
+    settings = yac._read_settings(ini)
+    ft_names = []
+    if sys.platform in ('linux', 'darwin'):
+        engine = configured_engine(root, settings)
+        if engine.is_file():
+            try:
+                ft_names = audio_devices(engine, '--list-devices')
+            except (OSError, RuntimeError, ValueError, subprocess.TimeoutExpired):
+                LOG.exception('FT audio input enumeration failed')
     try:
         import sounddevice as sd
         all_devices = inputs(sd)
     except Exception:
-        LOG.exception('Audio input enumeration failed')
-        chat_int.show_response(label('l292'))
-        return
-    if not all_devices:
+        if not ft_names:
+            LOG.exception('Audio input enumeration failed')
+            chat_int.show_response(label('l292'))
+            return
+        sd, all_devices = None, []
+    if not all_devices and not ft_names:
         chat_int.show_response(label('l293'))
         return
     devices = normal_inputs(all_devices)
-    settings = yac._read_settings(root/'yac.ini')
-    position, channel = 0, 1
-    saved_available = False
+    channel = 1
+    saved = None
     try:
-        saved = resolve(sd, settings['cw_audio_identity'])
-        devices = normal_inputs(all_devices, saved)
-        position = next(i for i,d in enumerate(devices) if d == saved)
-        channel = min(saved['channels'], max(1, int(settings.get('cw_audio_channel', '1'))))
-        saved_available = True
+        if sd is not None:
+            saved = resolve(sd, settings['cw_audio_identity'])
+            devices = normal_inputs(all_devices, saved)
     except (KeyError, ValueError, TypeError):
         pass
+    if ft_names:
+        devices = native_ft_inputs(devices, ft_names)
+    position = next((i for i, d in enumerate(devices)
+                     if d.get('ft_name') and d['ft_name'] == settings.get('ft_audio_input')), None)
+    if position is None and saved is not None:
+        position = next(i for i, d in enumerate(devices) if d.get('index') == saved['index'])
+    if position is not None and saved is not None and devices[position].get('index') == saved['index']:
+        try:
+            channel = min(saved['channels'], max(1, int(settings.get('cw_audio_channel', '1'))))
+        except (ValueError, TypeError):
+            position = None
     def describe():
         device = devices[position]
-        chat_int.show_response(label('l287', number=position+1, total=len(devices),
-                                    name=device['name'], host=device['host'], channel=channel,
+        token = 'l287' if device['channels'] else 'l447'
+        chat_int.show_response(label(token, number=position+1, total=len(devices),
+                                    name=device['name'], channel=channel,
                                     channels=device['channels']))
-    if saved_available:
+    described = position is not None
+    if described:
         describe()
     else:
-        chat_int.show_response(label('l292' if settings.get('cw_audio_identity') or settings.get('cw_audio_device') else 'l410'))
+        position = 0
+        has_saved = any(settings.get(key) for key in ('cw_audio_identity', 'cw_audio_device', 'ft_audio_input'))
+        chat_int.show_response(label('l292' if has_saved else 'l410'))
     chat_int.show_response(label('l398'))
     chat_int.show_response(label('l399'))
-    described = saved_available
     while True:
         key = read_key().casefold()
         if key == 'q':
@@ -114,6 +178,9 @@ def control(yac, root, language, read_key, *, prepare_input=None):
             describe()
             described = True
         elif key == 'c':
+            if not devices[position]['channels']:
+                chat_int.show_response(label('l129'))
+                continue
             channel = channel % devices[position]['channels'] + 1
             describe()
             described = True
@@ -122,7 +189,17 @@ def control(yac, root, language, read_key, *, prepare_input=None):
                 chat_int.show_response(label('l410'))
                 continue
             device = devices[position]
+            ft_name = device.get('ft_name')
+            if key == 'v' and not device['channels']:
+                chat_int.show_response(label('l129'))
+                continue
             try:
+                if key != 'v' and ft_name:
+                    require_device(engine, '--list-devices', ft_name)
+                    if not device['channels']:
+                        yac._write_yac_value(ini, 'ft_audio_input', ft_name)
+                        chat_int.show_response(label('l448'))
+                        return
                 # Re-enumerate, so a hotplug/reordered index cannot select a microphone.
                 identity = json.dumps({'name':device['name'], 'host':device['host']})
                 live = resolve(sd, identity)
@@ -137,9 +214,14 @@ def control(yac, root, language, read_key, *, prepare_input=None):
                 else:
                     sd.check_input_settings(device=live['index'], channels=channel,
                                             dtype='float32', samplerate=48000)
-                    # Save stable identity last; capture always validates both fields.
-                    yac._set_yac_value(root/'yac.ini', 'cw_audio_channel', str(channel))
-                    yac._set_yac_value(root/'yac.ini', 'cw_audio_identity', identity)
+                    if ft_name:
+                        if cw_input_key(live) != ft_input_key(ft_name):
+                            raise ValueError('CW and FT inputs no longer match')
+                        yac._write_yac_value(ini, 'ft_audio_input', ft_name,
+                                             cw_audio_channel=str(channel), cw_audio_identity=identity)
+                    else:
+                        yac._set_yac_value(ini, 'cw_audio_channel', str(channel))
+                        yac._set_yac_value(ini, 'cw_audio_identity', identity)
                     chat_int.show_response(label('l290'))
                     return
             except Exception:

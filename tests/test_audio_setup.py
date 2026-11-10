@@ -16,6 +16,46 @@ def device(name, channels=2):
 
 
 class AudioSetupTests(unittest.TestCase):
+    def test_linux_one_choice_saves_ft_and_verified_alsa_cw_input(self):
+        name = 'USB Radio: USB Audio (hw:2,0)'
+        ft_input = 'plughw:CARD=Device,DEV=0'
+        sd = self.backend([device(name)])
+        sd.query_hostapis.return_value = [{'name': 'ALSA'}]
+        with patch('modules.audio_setup.sys.platform', 'linux'), \
+             patch.dict('sys.modules', {'sounddevice': sd}), \
+             patch.object(audio_setup, 'Path') as proc_path, \
+             patch.object(audio_setup, 'configured_engine', return_value=ROOT / 'modules/nexus_ft8.py'), \
+             patch.object(audio_setup, 'audio_devices', return_value=[ft_input]), \
+             patch.object(audio_setup, 'require_device') as verify, \
+             patch.object(yac, '_read_settings', return_value={}), \
+             patch.object(yac, '_write_yac_value') as save, \
+             patch('modules.chat_int.show_response'):
+            proc_path.return_value.read_text.return_value = 'Device\n'
+            audio_setup.control(yac, ROOT, 'en', iter(['.', 'c', '\r']).__next__)
+        self.assertEqual(proc_path.call_args.args[0], '/proc/asound/card2/id')
+        verify.assert_called_once_with(ROOT / 'modules/nexus_ft8.py', '--list-devices', ft_input)
+        save.assert_called_once_with(ROOT / 'yac.ini', 'ft_audio_input', ft_input,
+                                     cw_audio_channel='2',
+                                     cw_audio_identity=json.dumps({'name': name, 'host': 'ALSA'}))
+        sd.RawInputStream.assert_not_called()
+
+    def test_native_ft_setup_can_save_without_portaudio(self):
+        for platform, ft_input in (('linux', 'plughw:CARD=Device,DEV=0'), ('darwin', 'USB Audio Device')):
+            with self.subTest(platform=platform), patch('modules.audio_setup.sys.platform', platform), \
+                 patch.dict('sys.modules', {'sounddevice': None}), \
+                 patch.object(audio_setup, 'configured_engine', return_value=ROOT / 'modules/nexus_ft8.py'), \
+                 patch.object(audio_setup, 'audio_devices', return_value=[ft_input]), \
+                 patch.object(audio_setup, 'require_device'), \
+                 patch.object(yac, '_read_settings', return_value={}), \
+                 patch.object(yac, '_write_yac_value') as save, \
+                 patch('modules.chat_int.show_response') as say, \
+                 patch('modules.chat_int.show_done'):
+                audio_setup.control(yac, ROOT, 'en', iter(['.', 'q']).__next__)
+                save.assert_not_called()
+                audio_setup.control(yac, ROOT, 'en', iter(['.', '\r']).__next__)
+            save.assert_called_once_with(ROOT / 'yac.ini', 'ft_audio_input', ft_input)
+            self.assertEqual(say.call_args.args[0], 'FT Input Saved')
+
     def test_successful_enter_saves_and_returns_without_an_extra_key(self):
         for enter in ('\r', '\n'):
             sd = self.backend()

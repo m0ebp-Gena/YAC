@@ -6,6 +6,8 @@ import zipfile
 import hashlib
 import json
 from modules.build_outputs import publish
+from modules.ft_engine_update import check_engine_header
+from modules.nexus_ft8 import BUNDLED_ENGINES
 from modules.package_layout import documents
 import shutil
 
@@ -15,9 +17,18 @@ parser.add_argument("--date", default=date.today().isoformat())
 parser.add_argument("--stage-only", action="store_true", help="Create a checked local package without rotating release artifacts")
 parser.add_argument('--revision', type=int, default=0, help='Same-day release revision')
 parser.add_argument('--tag', help='GitHub release tag to record in the package')
+parser.add_argument('--nexus-linux-arm64', type=Path, help='Include a verified Linux ARM64 engine in a local test package')
+parser.add_argument('--nexus-macos-arm64', type=Path, help='Include a verified Apple Silicon engine in a local test package')
 args = parser.parse_args()
 if args.revision < 0:
     parser.error('revision must be nonnegative')
+engines = {target: path for target, path in (('linux-arm64', args.nexus_linux_arm64),
+                                           ('macos-arm64', args.nexus_macos_arm64)) if path is not None}
+if engines and not args.stage_only:
+    parser.error('bundled test engines require --stage-only')
+for target, engine in engines.items():
+    with engine.open('rb') as stream:
+        check_engine_header(stream.read(20), target)
 release_suffix = '-r' + str(args.revision) if args.revision else ''
 date.fromisoformat(args.date)
 folder = "yac-mac-linux-" + args.date + release_suffix
@@ -45,6 +56,19 @@ staging.mkdir(parents=True, exist_ok=True)
 archive = staging / (folder + '.zip')
 with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as package:
     package.writestr(folder + '/release.json', json.dumps({'tag': args.tag or 'v001-' + args.date + release_suffix, 'published_at': args.date + 'T00:00:00Z'}))
+    for target, engine in engines.items():
+        bundled = BUNDLED_ENGINES[target]
+        entry = zipfile.ZipInfo(folder + '/' + bundled.as_posix())
+        entry.external_attr = 0o100755 << 16
+        entry.compress_type = zipfile.ZIP_DEFLATED
+        package.writestr(entry, engine.read_bytes())
+        jimmy = root / 'builds/.work/nexus-channel/JimmyNext'
+        for name, notice in (
+            ('Jimmy-Next-LICENSE.txt', jimmy / 'LICENSE'),
+            ('Nexus-COPYING.txt', jimmy / 'EngineHost/.nexus-src/COPYING'),
+            ('Nexus-NOTICE.txt', jimmy / 'EngineHost/.nexus-src/NOTICE'),
+        ):
+            package.write(notice, folder + '/' + (bundled.parent / name).as_posix())
     for path in sorted(files):
         entry = zipfile.ZipInfo((Path(folder) / path.relative_to(root)).as_posix())
         mode = 0o100755 if path.name == "install-yac.sh" else 0o100444 if path.name.endswith('-template.txt') else 0o100644
@@ -82,13 +106,16 @@ import update_yac
 with tempfile.TemporaryDirectory(prefix='yac-source-check-') as temporary:
     extracted = update_yac.extract_source(archive.read_bytes(), Path(temporary))
     assert (extracted / 'modules/__init__.py').is_file()
+    for target, engine in engines.items():
+        assert (extracted / BUNDLED_ENGINES[target]).read_bytes() == engine.read_bytes()
 checksum = Path(str(archive) + '.sha256')
 checksum.write_text(hashlib.sha256(archive.read_bytes()).hexdigest() + '  ' + archive.name + '\n', encoding='ascii')
-# Older installed updaters require this exact asset name.
-legacy = staging / 'yac-source.zip'
-shutil.copyfile(archive, legacy)
-legacy_checksum = Path(str(legacy) + '.sha256')
-legacy_checksum.write_text(hashlib.sha256(legacy.read_bytes()).hexdigest() + '  ' + legacy.name + '\n', encoding='ascii')
-if not args.stage_only:
-    archive = publish(root, args.date, [archive, checksum, legacy, legacy_checksum])[0]
+if not engines:
+    # Older installed updaters require this exact asset name.
+    legacy = staging / 'yac-source.zip'
+    shutil.copyfile(archive, legacy)
+    legacy_checksum = Path(str(legacy) + '.sha256')
+    legacy_checksum.write_text(hashlib.sha256(legacy.read_bytes()).hexdigest() + '  ' + legacy.name + '\n', encoding='ascii')
+    if not args.stage_only:
+        archive = publish(root, args.date, [archive, checksum, legacy, legacy_checksum])[0]
 print("Created and checked " + str(archive))

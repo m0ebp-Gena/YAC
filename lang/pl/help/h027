@@ -3,6 +3,8 @@ Pomoc: Aktualizacje YAC
 Aktualizacja YAC
 Wymagane jest połączenie z internetem. YAC sprawdza najnowszą wersję na GitHub. Jeśli jest dostępna nowsza wersja, możesz przeczytać jej opis i zdecydować, czy ją pobrać i zainstalować. Jeśli masz już najnowszą wersję, YAC ogłasza Brak zmian i wraca do Ustawień.
 
+YAC najpierw pyta o własną aktualizację. Potem oferuje zgodny dekoder FT8 i FT4, jeśli żaden nie jest skonfigurowany, nawet gdy YAC jest aktualny. y pobiera i sprawdza dekoder, a n go pomija. Po zaakceptowaniu obu opcji YAC najpierw instaluje własną aktualizację. q anuluje.
+
 Brak internetu: nie można połączyć się z GitHub; powrót do Ustawień.
 Brak zmian: brak nowszego wydania; powrót do Ustawień.
 Nowa wersja: pyta Opis Y/N?. Po przeczytaniu lub pominięciu opisu pyta Update Y/N?.

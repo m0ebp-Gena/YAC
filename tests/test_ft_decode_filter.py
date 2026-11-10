@@ -3,7 +3,7 @@ import struct
 import unittest
 from unittest.mock import patch
 
-from experiments.nexus_ft8 import NexusReceive
+from modules.nexus_ft8 import NexusReceive
 from modules.decoder_control import DecoderManager
 from modules.ft_decode_filter import distance_settings, grid_center, message_distance
 import yac
@@ -29,21 +29,25 @@ class FTDecodeFilterTests(unittest.TestCase):
         manager.ft_buffer.extend([
             ('CQ DX W1AW FN31', 'far CQ'),
             ('CQ G4BBB IO91', 'near CQ'),
+            ('CQ G4BBB', 'CQ without locator'),
             ('M0AAA JA1ABC PM95', 'far reply'),
             ('M0AAA W1AW RR73', 'acknowledgement'),
         ])
         self.assertEqual(manager.review(kind='f')[0], 'acknowledgement')
+        self.assertEqual(manager.review(0, kind='f')[0], 'far CQ 5211 km.')
         with patch.object(yac, '_read_settings', return_value={'ft_distance': '4000', 'ft_distance_unit': 'miles'}), \
              patch('modules.chat_int.show_response') as show, patch('modules.chat_int.show_done'):
             manager.ft_filter_control(iter(['.', 'q']).__next__)
-            self.assertEqual(manager.ft_lines(), ['far CQ', 'near CQ'])
+            self.assertEqual(manager.ft_lines(), ['far CQ 3238 miles.', 'near CQ 172 miles.',
+                                                  'CQ without locator'])
             manager.ft_filter_control(iter(['.', 'q']).__next__)
             self.assertEqual(show.call_args.args[0], 'Over 4000 miles')
-            self.assertEqual(len(manager.ft_lines()), 1)
-            self.assertTrue(manager.review(kind='f')[0].startswith('far reply'))
-            self.assertTrue(manager.review(kind='f')[0].endswith('miles.'))
+            self.assertEqual(manager.ft_lines(), ['far reply 5859 miles.'])
+            self.assertEqual(manager.review(kind='f')[0], 'far reply 5859 miles.')
             manager.ft_filter_control(iter(['.', 'q']).__next__)
-        self.assertEqual(manager.ft_lines(), ['far CQ', 'near CQ', 'far reply', 'acknowledgement'])
+        self.assertEqual(manager.ft_lines(), ['far CQ 3238 miles.', 'near CQ 172 miles.',
+                                              'CQ without locator', 'far reply 5859 miles.',
+                                              'acknowledgement'])
 
     def test_distance_setting_defaults_and_validation(self):
         self.assertEqual(distance_settings({}), (2000, 'km'))
@@ -62,13 +66,14 @@ class FTDecodeFilterTests(unittest.TestCase):
                   + field(b'FT8') + field(b'CQ DX W1AW FN31') + b'\0\0')
         manager = DecoderManager(yac, ROOT, None, 'en')
         manager.ft_filter = 1
+        manager.ft_origin = grid_center('IO83PS')
         receiver = NexusReceive(lambda message, line: manager.ft_buffer.append((message, line)),
                                 ROOT / 'host.exe', 'radio', 'speakers', 'N0CALL', 'IO91')
         with patch.object(receiver, 'listener') as listener, patch.object(receiver, 'process') as process:
             process.poll.return_value = None
             listener.recv.side_effect = [packet, BlockingIOError()]
             receiver.poll()
-        self.assertEqual(manager.ft_lines(), ['12:34:00 UTC. CQ DX W1AW FN31. Minus 12 dB.'])
+        self.assertEqual(manager.ft_lines(), ['12:34:00 UTC. CQ DX W1AW FN31. Minus 12 dB. 5211 km.'])
 
 
 if __name__ == '__main__':

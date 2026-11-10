@@ -7,8 +7,10 @@ import subprocess
 import sys
 
 
-def copy_changed(source, target):
+def copy_changed(source, target, *, excluded=()):
     """Merge shipped files, preserving identical files and unrelated user data."""
+    if source in excluded:
+        return
     if target.is_symlink():
         raise OSError("Refusing to overwrite symbolic link: " + str(target))
     if source.is_dir():
@@ -16,7 +18,7 @@ def copy_changed(source, target):
         for item in source.iterdir():
             if item.name == "__pycache__" or item.suffix in {".pyc", ".zip"}:
                 continue
-            copy_changed(item, target / item.name)
+            copy_changed(item, target / item.name, excluded=excluded)
     else:
         template = source.name.endswith('-template.txt')
         if not target.is_file() or source.read_bytes() != target.read_bytes():
@@ -120,8 +122,14 @@ def main(source=None, home=None, update=False, pi=False):
     try:
         destination.mkdir(parents=True, exist_ok=True)
         copy_changed(source / "yac.py", destination / "yac.py")
-        for name in ("modules", "lang", "rad_cmds"):
+        from modules.nexus_ft8 import BUNDLED_ENGINES, engine_target
+        target = engine_target()
+        excluded = {source / path.parent for name, path in BUNDLED_ENGINES.items() if name != target}
+        copy_changed(source / 'modules', destination / 'modules', excluded=excluded)
+        for name in ("lang", "rad_cmds"):
             copy_changed(source / name, destination / name)
+        if (engine := BUNDLED_ENGINES.get(target)) and (source / engine).is_file():
+            (destination / engine).chmod(0o755)
         if (source / 'doc/supported-radios').is_dir():
             copy_changed(source / 'doc/supported-radios', destination / 'doc/supported-radios')
         for directory in ('English', 'Deutsch', 'Espanol', 'Polski'):

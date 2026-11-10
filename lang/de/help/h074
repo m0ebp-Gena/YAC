@@ -1,6 +1,9 @@
 Hilfe zum FT8- und FT4-Empfang
 
-Dieses Windows-Experiment verwendet den unter Empfangsaudio gespeicherten Funkeingang und Kanal. Nexus-Engine, Audioausgang außerhalb des Funkgeräts und Locator in yac.ini einstellen.
+Den Funkeingang unter Empfangsaudio auswählen. Unter Linux und Mac wählt
+YAC bei Bedarf ein reines Wiedergabegerät. Ein Locator ist erforderlich.
+
+Beim Lesen wird für Meldungen mit gültigem Locator in allen Filtermodi die geschätzte Entfernung angegeben.
 
 f) Decodierte Meldungen filtern.
 m) Zwischen FT8 und FT4 wechseln. Die Decodierung stoppt und die Ergebnisse werden gelöscht.

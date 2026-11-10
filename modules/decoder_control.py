@@ -2,6 +2,7 @@
 from collections import deque
 import logging
 import math
+import subprocess
 import sys
 import time
 from modules.decoder_text import TextBuffer, RestoreError
@@ -53,28 +54,45 @@ class DecoderManager:
             return self.label('l276')
         if kind == 'f':
             settings = self.yac._read_settings(self.root / 'yac.ini')
-            if sys.platform != 'win32':
+            if sys.platform not in ('win32', 'linux', 'darwin'):
                 return self.label('l129')
-            if not settings.get('cw_audio_identity'):
-                return hints.get_hint(self.root, self.language, 'm004')
             try:
-                import sounddevice as sd
-                from modules.audio_setup import resolve
-                from experiments.nexus_ft8 import NexusReceive
-                device = resolve(sd, settings['cw_audio_identity'])
-                channel = int(settings.get('cw_audio_channel', '1'))
-                if not 1 <= channel <= device['channels']:
-                    return hints.get_hint(self.root, self.language, 'm006')
-                engine = self.root / settings.get('ft_engine', '')
-                output = settings.get('ft_audio_output', '')
+                from modules.nexus_ft8 import (NexusReceive, configured_engine,
+                                              linux_receive_output, macos_receive_output)
+                input_channel = None
+                if sys.platform in ('linux', 'darwin'):
+                    input_device = settings.get('ft_audio_input', '').strip()
+                    if not input_device:
+                        return hints.get_hint(self.root, self.language, 'm004')
+                else:
+                    if not settings.get('cw_audio_identity'):
+                        return hints.get_hint(self.root, self.language, 'm004')
+                    import sounddevice as sd
+                    from modules.audio_setup import resolve
+                    device = resolve(sd, settings['cw_audio_identity'])
+                    channel = int(settings.get('cw_audio_channel', '1'))
+                    if not 1 <= channel <= device['channels']:
+                        return hints.get_hint(self.root, self.language, 'm006')
+                    input_device = device['name']
+                    if device['channels'] > 1:
+                        input_channel = channel
+                engine = configured_engine(self.root, settings)
+                output = settings.get('ft_audio_output', '').strip()
                 callsign, grid = settings.get('call', '').upper(), settings.get('ft_grid', '').upper()
-                if not engine.is_file() or not all((output, callsign, grid)):
+                if not engine.is_file() or not all((callsign, grid)):
+                    return hints.get_hint(self.root, self.language, 'm007')
+                if not output and sys.platform == 'linux':
+                    output = linux_receive_output(engine, input_device)
+                if not output and sys.platform == 'darwin':
+                    output = macos_receive_output(engine, input_device)
+                if not output:
                     return hints.get_hint(self.root, self.language, 'm007')
                 session = NexusReceive(lambda message, line: self.ft_buffer.append((message, line)),
-                                       engine, device['name'], output,
+                                       engine, input_device, output,
                                        callsign, grid, self.ft_mode, self.label('l079'), self.label('l080'),
-                                       input_channel=channel if device['channels'] > 1 else None)
-            except (ImportError, OSError, KeyError, ValueError, TypeError):
+                                       input_channel=input_channel)
+            except (ImportError, OSError, KeyError, ValueError, TypeError, RuntimeError,
+                    subprocess.TimeoutExpired):
                 LOG.exception('FT audio input could not be resolved')
                 return self.label('l279')
         try:
@@ -134,6 +152,7 @@ class DecoderManager:
         self.session, self.kind = session, kind
         if kind == 'f':
             self.ft_origin = ft_decode_filter.grid_center(grid)
+            self.read_ft_distance(settings)
         if kind == 'c' and callable(getattr(session, 'speed', None)):
             self.audio_wpm = session.speed()
         return self.label('l276')
@@ -224,27 +243,33 @@ class DecoderManager:
         return lines[position], position
 
     def ft_lines(self):
-        if self.ft_filter == 0:
-            return [line for _, line in self.ft_buffer]
-        if self.ft_filter == 1:
-            return [line for message, line in self.ft_buffer if message.upper().split(maxsplit=1)[:1] == ['CQ']]
-        if self.ft_distance is None:
+        if self.ft_filter == 2 and self.ft_distance is None:
             return []
-        limit, unit = self.ft_distance
+        limit, unit = self.ft_distance or (0, 'km')
         factor = ft_decode_filter.KM_PER_MILE if unit == 'mi' else 1
         unit_label = self.label('l443') if unit == 'mi' else 'km'
         results = []
         for message, line in self.ft_buffer:
+            if self.ft_filter == 1 and message.upper().split(maxsplit=1)[:1] != ['CQ']:
+                continue
             distance = ft_decode_filter.message_distance(message, self.ft_origin)
-            if distance is not None and distance / factor > limit:
-                results.append(f'{line} {round(distance / factor)} {unit_label}.')
+            if distance is not None:
+                distance /= factor
+            if self.ft_filter == 2 and (distance is None or distance <= limit):
+                continue
+            if distance is not None:
+                line = f'{line} {round(distance)} {unit_label}.'
+            results.append(line)
         return results
 
-    def ft_filter_control(self, read_key):
+    def read_ft_distance(self, settings):
         try:
-            self.ft_distance = ft_decode_filter.distance_settings(self.yac._read_settings(self.root / 'yac.ini'))
+            self.ft_distance = ft_decode_filter.distance_settings(settings)
         except ValueError:
             self.ft_distance = None
+
+    def ft_filter_control(self, read_key):
+        self.read_ft_distance(self.yac._read_settings(self.root / 'yac.ini'))
         labels = [self.label('l440'), self.label('l441'), self.ft_distance_label()]
         chat_int.show_response(labels[self.ft_filter])
         while True:

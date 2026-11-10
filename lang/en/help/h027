@@ -3,6 +3,8 @@ Help For The YAC Updates
 Update YAC
 An internet connection is required. YAC checks GitHub for the latest version. If a newer version is available, you can read its release notes and choose whether to download and install it. If you already have the latest version, YAC reports No Update and returns to Settings.
 
+YAC asks about its own update first. It then offers a compatible FT8 and FT4 decoder engine if none is configured, even when YAC is up to date. Press y to download and verify the engine, or n to skip it. If you accept both, YAC installs its update first. Press q to cancel.
+
 Looking: checking for an update.
 No Internet: GitHub could not be reached; returns to Settings.
 No Update: no newer release; returns to Settings.

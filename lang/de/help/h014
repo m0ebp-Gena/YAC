@@ -8,7 +8,9 @@ Enter prüft das Eingangsformat, speichert die Wahl für YAC und kehrt zum Decod
 
 v prüft den Kanal eine Sekunde und meldet den Pegel ohne Wiedergabe. Gleichmäßiges Signal empfangen und Werte vergleichen. Dies prüft Audio, nicht korrekte Dekodierung. Übersteuerung bedeutet zu lauten Eingang. Prüfen oder Speichern stoppt laufende Audio-CW-Aufnahme; mit c im Decodermenü neu starten.
 
-YAC ändert weder Windows-Standardgeräte noch Bildschirmleser- oder Lautsprecherton. Die gespeicherte Gerätewahl bleibt erhalten. Fehlende oder mehrdeutige Eingänge werden gemeldet und nicht still ersetzt. Ohne gewählten Eingang zuerst Punkt/Komma oder c verwenden. Die optionale Audioabhängigkeit muss installiert sein.
+YAC ändert weder Windows-Standardgeräte noch Bildschirmleser- oder Lautsprecherton. Die gespeicherte Gerätewahl bleibt erhalten. Fehlende oder mehrdeutige Eingänge werden gemeldet und nicht still ersetzt. Ohne gewählten Eingang zuerst Punkt/Komma oder c verwenden. Audio-CW benötigt die optionale Audiobibliothek.
+
+Unter Linux und Mac enthält die Liste auch FT-Eingänge. Erkennt YAC denselben Eingang für beide Decoder, speichert eine Auswahl beide Einstellungen. Ein als FT angesagter Eintrag speichert nur den FT-Eingang. Kanal und Pegel gelten für Audio-CW. FT verwendet die Eingangsmischung der Engine.
 
 ***
 Ende der Hilfe

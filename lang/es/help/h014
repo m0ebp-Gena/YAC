@@ -8,7 +8,9 @@ Enter comprueba el formato, guarda la elección para YAC y vuelve al menú del d
 
 v comprueba el canal durante un segundo y anuncia su nivel sin reproducirlo. Reciba una señal constante y compare la lectura. Comprueba audio, no una decodificación correcta. La saturación indica una entrada demasiado alta. Comprobar o guardar detiene la captura CW por audio activa; reiníciela con c en el menú del decodificador.
 
-YAC no cambia los dispositivos predeterminados de Windows, el sonido del lector de pantalla ni los altavoces. Conserva la entrada guardada. Las entradas ausentes o ambiguas se notifican, sin sustituirlas automáticamente. Sin entrada elegida, use primero punto/coma o c. Se requiere la dependencia de audio opcional.
+YAC no cambia los dispositivos predeterminados de Windows, el sonido del lector de pantalla ni los altavoces. Conserva la entrada guardada. Las entradas ausentes o ambiguas se notifican, sin sustituirlas automáticamente. Sin entrada elegida, use primero punto/coma o c. El CW por audio requiere la biblioteca de audio opcional.
+
+En Linux y Mac, la lista también contiene entradas FT. Una elección guarda ambos decodificadores si YAC identifica la misma entrada. Una opción anunciada como FT guarda solo la entrada FT. El canal y el nivel se aplican al CW por audio. FT usa la mezcla de entrada del motor.
 
 ***
 Fin de la ayuda

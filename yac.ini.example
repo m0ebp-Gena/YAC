@@ -32,9 +32,13 @@ cw_audio_wpm=20
 # Optional verified IC-705 companion USB B port, only needed if identification fails.
 rtty_port=
 
-# Experimental Windows FT8/FT4 receive view. Save the radio input and channel with d a.
-# Use the YAC channel-enabled engine host and its DLLs. Choose a non-radio output.
+# Experimental FT8/FT4 reception. Choose the radio input with d a.
+# Windows: Save the radio input and channel with d a and use the YAC engine and DLLs.
+# Linux can select a playback-only endpoint when ft_audio_output is blank.
+# Leave ft_engine blank to use the bundled engine when present on ARM64 Linux.
+# Linux uses the engine's default stereo downmix.
 ft_engine=
+ft_audio_input=
 ft_audio_output=
 ft_grid=
 # Distance filter cutoff. Use km, mi or miles for the unit.

@@ -8,7 +8,9 @@ Enter checks the selected input format, saves the choice for YAC and returns to 
 
 v checks the selected channel for one second and reports its level without playing it. Receive a steady signal and compare the reading. This checks for audio, not correct decoding. Clipping means the input is too loud. An explicit check or save stops active audio CW capture; restart it with c from the decoder menu.
 
-YAC never changes Windows defaults, screen-reader sound or speaker output. It retains your saved device choice. Missing or ambiguous inputs are reported rather than silently replaced. If no input is selected, use full stop/comma or c before checking or saving. The optional audio dependency must be installed.
+YAC never changes Windows defaults, screen-reader sound or speaker output. It retains your saved device choice. Missing or ambiguous inputs are reported rather than silently replaced. If no input is selected, use full stop/comma or c before checking or saving. Audio CW requires the optional audio dependency.
+
+On Linux and Mac, this list includes FT inputs. One choice saves both decoders when YAC can match them to the same input. A choice announced as FT saves only the FT input. Channel and level controls apply to audio CW. FT uses the engine's input mix.
 
 ***
 End of help

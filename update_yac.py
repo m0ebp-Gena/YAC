@@ -43,6 +43,13 @@ def newest_release(releases):
     return max(candidates, key=lambda r: r['published_at'])
 
 
+def release_is_newer(destination, release):
+    marker = destination / 'release.json'
+    current = json.loads(marker.read_text()) if marker.is_file() else {}
+    return (current.get('tag') != release['tag_name']
+            and current.get('published_at', '') < release['published_at'])
+
+
 def asset_pair(release, windows=False):
     assets = {a['name']: a for a in release.get('assets', [])}
     platform = 'win' if windows else 'mac-linux'
@@ -58,13 +65,26 @@ def asset_pair(release, windows=False):
     checksum = next((n for n in (name + '.sha256', name[:-4] + '.sha256') if n in assets), None)
     if checksum is None:
         raise ValueError('The release is missing its package checksum.')
-    pair = assets[name], assets[checksum]
+    return checked_asset_pair(assets[name], assets[checksum])
+
+
+def checked_asset_pair(*pair):
     for asset in pair:
         url = urllib.parse.urlparse(asset['browser_download_url'])
         prefix = '/' + REPOSITORY + '/releases/download/'
         if url.scheme != 'https' or url.netloc != 'github.com' or not url.path.startswith(prefix):
             raise ValueError('Unexpected release download address.')
     return pair
+
+
+def verified_download(archive, checksum):
+    data = fetch(archive['browser_download_url'], MAX_ARCHIVE)
+    expected = fetch(checksum['browser_download_url'], 4096).decode('ascii').split()
+    if len(expected) != 2 or expected[1].lstrip('*') != archive['name'] or not re.fullmatch('[a-fA-F0-9]{64}', expected[0]):
+        raise ValueError('Invalid checksum file.')
+    if hashlib.sha256(data).hexdigest() != expected[0].lower():
+        raise ValueError('Download checksum failed; YAC was not changed.')
+    return data
 
 
 def extract_source(data, target):
@@ -138,9 +158,7 @@ def run(destination, key=read_key, *, selected_release=None):
     if selected_release is None:
         print('Checking for YAC updates over the internet...', flush=True)
         release = newest_release(json.loads(fetch(API, 2 * 1024 * 1024)))
-        marker = destination / 'release.json'
-        current = json.loads(marker.read_text()) if marker.is_file() else {}
-        if current.get('tag') == release['tag_name'] or current.get('published_at', '') >= release['published_at']:
+        if not release_is_newer(destination, release):
             print('YAC is up to date.')
             return 0
     else:
@@ -159,12 +177,7 @@ def run(destination, key=read_key, *, selected_release=None):
             break
     from modules.update_lock import application_lock
     with application_lock(destination, exclusive=True):
-        data = fetch(archive['browser_download_url'], MAX_ARCHIVE)
-        expected = fetch(checksum['browser_download_url'], 4096).decode('ascii').split()
-        if len(expected) != 2 or expected[1].lstrip('*') != archive['name'] or not re.fullmatch('[a-fA-F0-9]{64}', expected[0]):
-            raise ValueError('Invalid source checksum file.')
-        if hashlib.sha256(data).hexdigest() != expected[0].lower():
-            raise ValueError('Download checksum failed; YAC was not changed.')
+        data = verified_download(archive, checksum)
         with tempfile.TemporaryDirectory(prefix='yac-update-') as temporary:
             source = extract_source(data, Path(temporary))
             # The installer uses this metadata only after successful setup.

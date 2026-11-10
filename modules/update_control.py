@@ -6,8 +6,9 @@ import sys
 import json
 import logging
 import threading
+import zipfile
 
-from modules import chat_int, help_int
+from modules import chat_int, ft_engine_update, help_int, hints
 
 REQUEST = 75
 LOG = logging.getLogger('yac.update')
@@ -32,12 +33,10 @@ def lookup(root):
         LOG.warning('GitHub connection failed', exc_info=True)
         raise NoInternet from error
     release = update_yac.newest_release(json.loads(data))
-    marker = root / 'release.json'
-    current = json.loads(marker.read_text()) if marker.is_file() else {}
-    if current.get('tag') == release['tag_name'] or current.get('published_at', '') >= release['published_at']:
-        return None
-    update_yac.asset_pair(release, windows=sys.platform == 'win32')
-    return release
+    if update_yac.release_is_newer(root, release):
+        update_yac.asset_pair(release, windows=sys.platform == 'win32')
+        return release
+    return release if ft_engine_update.offer(root, release) else None
 
 
 def _lookup_while_cancellable(root, read_key):
@@ -75,6 +74,31 @@ def supported(root):
     return False
 
 
+def ask_engine(root, language, read_key):
+    prompt = hints.get_hint(root, language, 'm011')
+    chat_int.show_response(prompt)
+    while True:
+        key = read_key().casefold()
+        if key in ('y', 'n'):
+            return key
+        if key in ('', 'q', '\x03', '\x04'):
+            return 'q'
+        if key == 'h':
+            chat_int.show_response(help_int.get_help(root, language, 'h027'))
+            chat_int.show_response(prompt)
+
+
+def install_engine(root, language, engine):
+    chat_int.show_response(chat_int.label(root, language, 'l364'))
+    try:
+        ft_engine_update.install(root, *engine)
+    except (OSError, ValueError, KeyError, RuntimeError, zipfile.BadZipFile):
+        LOG.exception('Optional FT decoder installation failed')
+        chat_int.show_response(hints.get_hint(root, language, 'm013'))
+    else:
+        chat_int.show_response(hints.get_hint(root, language, 'm012'))
+
+
 def confirm(root, language, read_key):
     global _pending
     _pending = None
@@ -100,23 +124,52 @@ def confirm(root, language, read_key):
     if release is None:
         say('l358')
         return False
-    say('l359')
     import update_yac
+    newer = update_yac.release_is_newer(root, release)
+    choice = 'n'
+    if newer:
+        say('l359')
+        choice = ask_update(root, language, read_key, release, say)
+        if choice == 'q':
+            chat_int.show_done(root, language)
+            return False
+    else:
+        say('l358')
+    engine = ft_engine_update.offer(root, release)
+    if engine:
+        engine_choice = ask_engine(root, language, read_key)
+        if engine_choice == 'q':
+            chat_int.show_done(root, language)
+            return False
+        if engine_choice == 'n':
+            engine = None
+    if choice == 'y':
+        _pending = (root.resolve(), release, language, engine)
+        return True
+    if engine:
+        install_engine(root, language, engine)
+    if newer:
+        chat_int.show_done(root, language)
+    return False
+
+
+def ask_update(root, language, read_key, release, say):
+    from update_yac import clean_changes
+
     notes_question = True
     say('l366')
     while True:
         key = read_key().casefold()
         if notes_question and key in {'y', 'n'}:
             if key == 'y':
-                help_int.show_paged(root, language, update_yac.clean_changes(release.get('body') or ''), read_key)
+                help_int.show_paged(root, language, clean_changes(release.get('body') or ''), read_key)
             notes_question = False
             say('l326')
             continue
-        if key == 'y':
-            _pending = (root.resolve(), release, language)
-            return True
+        if key in ('y', 'n'):
+            return key
         if key == 'r':
-            help_int.show_paged(root, language, update_yac.clean_changes(release.get('body') or ''), read_key)
+            help_int.show_paged(root, language, clean_changes(release.get('body') or ''), read_key)
             notes_question = False
             say('l326')
             continue
@@ -124,9 +177,8 @@ def confirm(root, language, read_key):
             chat_int.show_response(help_int.get_help(root, language, 'h027'))
             say('l366' if notes_question else 'l326')
             continue
-        if key in ('n', 'q', '\x03', '\x04'):
-            chat_int.show_done(root, language)
-            return False
+        if key in ('', 'q', '\x03', '\x04'):
+            return 'q'
 
 
 def run(root):
@@ -134,26 +186,28 @@ def run(root):
     global _pending
     plan, _pending = _pending, None
     if plan is not None:
-        if plan[0] != root.resolve():
+        destination, release, language, engine = plan
+        if destination != root.resolve():
             raise RuntimeError('Update selection belongs to another installation')
         import update_yac
-        language = plan[2]
         # Installation can replace label files; retain outcomes from this build.
         outcomes = {code: chat_int.label(root, language, code) for code in ('l361', 'l365')}
         chat_int.show_response(chat_int.label(root, language, 'l364'))
         try:
             if sys.platform == 'win32':
                 from modules import windows_update
-                result = windows_update.run(root, selected_release=plan[1])
+                result = windows_update.run(root, selected_release=release)
             else:
-                result = update_yac.run(root, selected_release=plan[1])
+                result = update_yac.run(root, selected_release=release)
         except (OSError, ValueError, KeyError, RuntimeError):
             LOG.exception('Update installation failed')
             result = 1
         if result == REQUEST:
             return 0
-        LOG.info('Update installation finished: tag=%s result=%s', plan[1].get('tag_name', '?'), result)
+        LOG.info('Update installation finished: tag=%s result=%s', release.get('tag_name', '?'), result)
         chat_int.show_response(outcomes['l365' if not result else 'l361'])
+        if not result and engine:
+            install_engine(root, language, engine)
         chat_int.finish_response()
         os.execv(sys.executable, [sys.executable,
                                  *([] if sys.platform == 'win32' else [str(root / 'yac.py')]),
