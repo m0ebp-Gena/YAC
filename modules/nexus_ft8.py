@@ -23,6 +23,7 @@ CHANNEL_CAPABILITY = 'yac-input-channel-v1'
 LINUX_ARM64_ENGINE = Path('modules/nexus-linux-aarch64/jimmy-engine-host')
 MACOS_ARM64_ENGINE = Path('modules/nexus-macos-arm64/jimmy-engine-host')
 LINUX_ENGINE_MACHINES = {'linux-arm64': 183, 'linux-x86_64': 62}
+MACOS_ENGINE_MACHINES = {'macos-arm64': 0x0100000C, 'macos-x86_64': 0x01000007}
 BUNDLED_ENGINES = {'linux-arm64': LINUX_ARM64_ENGINE, 'macos-arm64': MACOS_ARM64_ENGINE}
 
 
@@ -32,8 +33,8 @@ def engine_target():
     machine = platform.machine().lower()
     if machine in ('aarch64', 'arm64'):
         return 'macos-arm64' if sys.platform == 'darwin' else 'linux-arm64'
-    if sys.platform == 'linux' and machine == 'x86_64':
-        return 'linux-x86_64'
+    if machine == 'x86_64':
+        return 'macos-x86_64' if sys.platform == 'darwin' else 'linux-x86_64'
     return None
 
 

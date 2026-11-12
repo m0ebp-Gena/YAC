@@ -1344,6 +1344,70 @@ def _set_mode(radio: RadioConnection, mode_code: int | str) -> bool:
     return _current_mode_code(radio) == mode_code
 
 
+def _frequency_entry(root, radio, language):
+    from modules import chat_int, help_int
+
+    original_frequency = _current_frequency(root, radio)
+    if original_frequency is None:
+        return _radio_error(root, radio, language)
+    while True:
+        chat_int.show_response(original_frequency + " MHz")
+        chat_int.show_frequency_prompt(root, language)
+        try:
+            frequency = input().strip()
+        except (EOFError, KeyboardInterrupt):
+            print()
+            return None
+        if frequency.casefold() != "h":
+            return _dispatch(root, radio, language, "e", frequency, original_frequency)
+        chat_int.show_response(help_int.get_help(root, language, "h033"))
+
+
+def _radio_mode_control(root, radio, language, call, read_radio_key, watch, on_change=None):
+    from modules import chat_int, help_int
+
+    modes = _available_modes(radio)
+    current_mode = _current_mode_code(radio)
+    if not modes or current_mode is None:
+        chat_int.show_response(
+            _read_label(root, language, "l057", "Missing Handler")
+            if not modes else _radio_error(root, radio, language)
+        )
+        return None
+    mode_index = next((i for i, (code, _) in enumerate(modes) if code == current_mode), 0)
+    mode_select_label = _read_label(root, language, "l088", "Mode Select")
+    chat_int.show_response(f"{mode_select_label} {_mode_name(radio, modes[mode_index][0])}")
+    while True:
+        try:
+            mode_key = read_radio_key().casefold()
+        except (RuntimeError, OSError) as error:
+            print(f"\n{error}", file=sys.stderr)
+            return None
+        if watch.lost:
+            return mode_key or "w"
+        if not mode_key:
+            continue
+        chat_int.show_request(call, mode_key)
+        if mode_key in {UP_KEY, DOWN_KEY}:
+            direction = 1 if mode_key == UP_KEY else -1
+            next_index = (mode_index + direction) % len(modes)
+            if not _set_mode(radio, modes[next_index][0]):
+                chat_int.show_response(_radio_error(root, radio, language))
+                continue
+            if next_index != mode_index and on_change is not None:
+                on_change()
+            mode_index = next_index
+            chat_int.show_response(_mode_name(radio, modes[mode_index][0]))
+        elif mode_key == "h":
+            chat_int.show_response(help_int.get_help(root, language, "h003"))
+        elif mode_key == "q":
+            chat_int.show_done(root, language)
+            return None
+        else:
+            DEBUG_LOG.debug("Leaving mode selection and queueing command key=%r", mode_key)
+            return mode_key
+
+
 def _mode_name(radio: RadioConnection, mode_code: int | str) -> str:
     if _icom_supported(radio):
         mode = _icom_profile(radio)["modes"][int(mode_code)]
@@ -1505,6 +1569,27 @@ def _icom_status(root: Path, radio: RadioConnection, language: str, command_path
     return _radio_error(root, radio, language)
 
 
+def _frequency_ranges(radio):
+    if radio.protocol == "CAT" and radio.manufacturer_key == "yaesu":
+        minimum_hz = 30_000
+        maximum_hz = 75_000_000 if radio.model_id == "0761" else 470_000_000 if radio.model_id == "0840" else 0
+    elif radio.manufacturer_key == "elecraft":
+        minimum_hz, maximum_hz = elecraft_kx2.FREQUENCY_RANGE
+    elif radio.protocol == "CAT" and radio.manufacturer_key == "kenwood" and radio.model_id in {"023", "020"}:
+        minimum_hz, maximum_hz = 30_000, 60_000_000
+    elif _icom_supported(radio):
+        profile = _icom_profile(radio)
+        minimum_hz, maximum_hz = profile["minimum_hz"], profile["maximum_hz"]
+    else:
+        return ()
+
+    if maximum_hz == 0:
+        return ()
+    if _icom_supported(radio):
+        return profile.get("frequency_ranges_hz", ((minimum_hz, maximum_hz),))
+    return ((minimum_hz, maximum_hz),)
+
+
 def _set_frequency(
     root: Path, radio: RadioConnection, language: str, value: str,
     original_frequency: str | None = None,
@@ -1517,22 +1602,9 @@ def _set_frequency(
     except (ValueError, OverflowError):
         return _read_label(root, language, "l356", "Invalid")
 
-    if radio.protocol == "CAT" and radio.manufacturer_key == "yaesu":
-        minimum_hz = 30_000
-        maximum_hz = 75_000_000 if radio.model_id == "0761" else 470_000_000 if radio.model_id == "0840" else 0
-    elif radio.manufacturer_key == "elecraft":
-        minimum_hz, maximum_hz = elecraft_kx2.FREQUENCY_RANGE
-    elif radio.protocol == "CAT" and radio.manufacturer_key == "kenwood" and radio.model_id in {"023", "020"}:
-        minimum_hz, maximum_hz = 30_000, 60_000_000
-    elif _icom_supported(radio):
-        profile = _icom_profile(radio)
-        minimum_hz, maximum_hz = profile["minimum_hz"], profile["maximum_hz"]
-    else:
+    ranges = _frequency_ranges(radio)
+    if not ranges:
         return _read_label(root, language, "l057", "Missing Handler")
-
-    if maximum_hz == 0:
-        return _read_label(root, language, "l057", "Missing Handler")
-    ranges = _icom_profile(radio).get("frequency_ranges_hz", [[minimum_hz, maximum_hz]]) if _icom_supported(radio) else [[minimum_hz, maximum_hz]]
     if not any(low <= hz <= high for low, high in ranges):
         return _read_label(root, language, "l356", "Invalid")
 
@@ -1880,17 +1952,13 @@ def _main(argv: list[str] | None = None) -> int:
     decoders = DecoderManager(sys.modules[__name__], root, radio, language)
     def read_radio_key(idle_callback=None):
         watch.tick()
-        if idle_callback is not None:
-            def idle():
-                decoders.tick()
-                watch.tick()
-                idle_callback()
-            return lang_sel.read_key(idle_callback=idle)
-        if radio.is_dummy:
+        if radio.is_dummy and decoders.session is None and idle_callback is None:
             return lang_sel.read_key()
         def idle():
             decoders.tick()
             watch.tick()
+            if idle_callback is not None:
+                idle_callback()
         return lang_sel.read_key(idle_callback=idle)
     prompt_open = True
     where_details_next = False
@@ -1939,86 +2007,10 @@ def _main(argv: list[str] | None = None) -> int:
                                 if has_details and where_details_next else _dispatch(root, radio, language, key, None))
                     where_details_next = has_details and not where_details_next
                 elif key == "e":
-                    original_frequency = _current_frequency(root, radio)
-                    if original_frequency is None:
-                        response = _radio_error(root, radio, language)
-                    else:
-                        frequency = None
-                        while True:
-                            chat_int.show_response(original_frequency + " MHz")
-                            chat_int.show_frequency_prompt(root, language)
-                            try:
-                                frequency = input().strip()
-                            except (EOFError, KeyboardInterrupt):
-                                print()
-                                frequency = None
-                                break
-                            if frequency.casefold() == "h":
-                                from modules import help_int
-                                chat_int.show_response(help_int.get_help(root, language, "h033"))
-                                continue
-                            break
-                        if frequency is None:
-                            continue
-                        response = _dispatch(
-                            root, radio, language, key, frequency, original_frequency
-                        )
+                    response = _frequency_entry(root, radio, language)
                 elif key == "m":
-                    modes = _available_modes(radio)
-                    current_mode = _current_mode_code(radio)
-                    if not modes or current_mode is None:
-                        chat_int.show_response(
-                            _read_label(root, language, "l057", "Missing Handler")
-                            if not modes else _radio_error(root, radio, language)
-                        )
-                        response = None
-                        continue
-                    mode_index = next(
-                        (i for i, (code, _name) in enumerate(modes) if code == current_mode),
-                        0,
-                    )
-                    mode_select_label = _read_label(root, language, "l088", "Mode Select")
-                    chat_int.show_response(
-                        f"{mode_select_label} {_mode_name(radio, modes[mode_index][0])}"
-                    )
+                    pending_key = _radio_mode_control(root, radio, language, call, read_radio_key, watch)
                     response = None
-                    while True:
-                        try:
-                            mode_key = read_radio_key()
-                        except (RuntimeError, OSError) as error:
-                            print(f"\n{error}", file=sys.stderr)
-                            break
-                        if watch.lost:
-                            pending_key = mode_key or "w"
-                            break
-                        mode_key = mode_key.casefold()
-                        if not mode_key:
-                            continue
-                        if mode_key in {UP_KEY, DOWN_KEY}:
-                            direction = 1 if mode_key == UP_KEY else -1
-                            next_index = (mode_index + direction) % len(modes)
-                            chat_int.show_request(call, mode_key)
-                            if _set_mode(radio, modes[next_index][0]):
-                                mode_index = next_index
-                                mode_response = _mode_name(radio, modes[mode_index][0])
-                            else:
-                                mode_response = _radio_error(root, radio, language)
-                            chat_int.show_response(mode_response)
-                            continue
-                        if mode_key == "h":
-                            from modules import help_int
-                            chat_int.show_request(call, mode_key)
-                            chat_int.show_response(help_int.get_help(root, language, "h003"))
-                            continue
-                        if mode_key == "q":
-                            chat_int.show_done(root, language)
-                            chat_int.show_request(call, mode_key)
-                            break
-                        DEBUG_LOG.debug(
-                            "Leaving mode selection and queueing command key=%r", mode_key,
-                        )
-                        pending_key = mode_key
-                        break
                 elif key == "b":
                     frequency = _current_frequency(root, radio)
                     if frequency is None:

@@ -1,0 +1,12 @@
+Digital Mode help
+
+Opening announces the current digital mode. Full stop and comma cycle
+through the modes. If decoding is running, it restarts in the new mode.
+q keeps the selection and returns to the decoder.
+
+YAC tunes to the new mode’s preset on the current band. If there is no
+preset, decoding stops. Use e to tune and s to start.
+
+***
+End of help
+***

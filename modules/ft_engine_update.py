@@ -9,13 +9,13 @@ import tempfile
 import zipfile
 
 from modules.ini_settings import read_settings
-from modules.nexus_ft8 import (LINUX_ENGINE_MACHINES, configured_engine,
+from modules.nexus_ft8 import (LINUX_ENGINE_MACHINES, MACOS_ENGINE_MACHINES, configured_engine,
                               downloaded_engine, engine_target)
 
 
 ENGINE_FILES = ('jimmy-engine-host', 'Jimmy-Next-LICENSE.txt',
                 'Nexus-COPYING.txt', 'Nexus-NOTICE.txt')
-ENGINE_TARGETS = (*LINUX_ENGINE_MACHINES, 'macos-arm64')
+ENGINE_TARGETS = (*LINUX_ENGINE_MACHINES, *MACOS_ENGINE_MACHINES)
 
 
 def asset_name(target):
@@ -44,9 +44,10 @@ def offer(root, release):
 
 
 def check_engine_header(header, target):
-    if target == 'macos-arm64':
-        # Little-endian 64-bit Mach-O, CPU_TYPE_ARM64, MH_EXECUTE.
-        valid = (len(header) == 20 and header[:8] == b'\xcf\xfa\xed\xfe\x0c\x00\x00\x01'
+    if target in MACOS_ENGINE_MACHINES:
+        # Little-endian 64-bit Mach-O, matching CPU type, MH_EXECUTE.
+        valid = (len(header) == 20 and header[:4] == b'\xcf\xfa\xed\xfe'
+                 and int.from_bytes(header[4:8], 'little') == MACOS_ENGINE_MACHINES[target]
                  and header[12:16] == b'\x02\x00\x00\x00')
     else:
         valid = (len(header) == 20 and header[:6] == b'\x7fELF\x02\x01'

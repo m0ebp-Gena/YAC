@@ -2,7 +2,7 @@ Mode Select help
 
 Full stop) Select the next mode.
 Comma) Select the previous mode.
-q) Return to Top Level and keep the selected mode.
+q) Return to the previous menu and keep the selected mode.
 Another command key leaves Mode Select and runs that command.
 
 ***

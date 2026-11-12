@@ -4,12 +4,19 @@ Elige la entrada de radio en la configuración del audio de recepción.
 En Linux y Mac, YAC elige un dispositivo de solo reproducción si no hay
 una salida configurada. Se requiere un localizador.
 
+Al abrir, YAC sintoniza la frecuencia predefinida del modo en la banda
+actual y empieza a decodificar. Si no hay una, usa e para sintonizar y s para iniciar.
+
 Al leer mensajes con un localizador válido, se indica la distancia estimada en todos los modos de filtro.
 
+b) Banda. Sintonizar la frecuencia de recepción del modo digital.
+d) Modo digital. Seleccionar FT8 o FT4.
+e) Introducir una frecuencia en MHz.
 f) Filtrar los mensajes decodificados.
-m) Alternar entre FT8 y FT4. Se detiene la decodificación y se borran los resultados.
+m) Seleccionar el modo de la radio.
 s) Iniciar o detener la decodificación.
 v) Leer el último mensaje.
+w) ¿Dónde estoy? Leer señal, frecuencia y modo.
 Coma) Leer el mensaje anterior.
 Punto) Leer el mensaje siguiente.
 c) Borrar los resultados.

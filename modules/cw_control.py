@@ -279,6 +279,8 @@ def control(yac, root, radio, language, read_key, watch):
             chat_int.show_response(help_int.get_help(root, language, 'h042'))
         elif key == 'k':
             pending = speed_entry(yac, root, radio, language, read_key, watch)
+        elif key == 'm':
+            pending = yac._radio_mode_control(root, radio, language, '', read_key, watch)
         elif key in ('b', 'd', 'i', 'p', 'v'):
             pending = adjustment(yac, root, radio, language,
                                  {'b': 'break_in', 'd': 'delay', 'i': 'internal_keyer', 'p': 'pitch', 'v': 'volume'}[key], read_key, watch)

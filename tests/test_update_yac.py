@@ -30,6 +30,27 @@ def release():
 
 
 class Updates(unittest.TestCase):
+    def test_intel_mac_offers_and_validates_its_own_engine(self):
+        target = 'macos-x86_64'
+        name = ft_engine_update.asset_name(target)
+        published = release()
+        base = published['assets'][0]['browser_download_url'].rsplit('/', 1)[0] + '/'
+        assets = [dict(name=entry, browser_download_url=base + entry)
+                  for entry in (name, name + '.sha256')]
+        published['assets'].extend(assets)
+        with tempfile.TemporaryDirectory() as folder, \
+             patch.object(nexus_ft8.sys, 'platform', 'darwin'), \
+             patch.object(nexus_ft8.platform, 'machine', return_value='x86_64') as machine:
+            root = Path(folder)
+            self.assertEqual(ft_engine_update.offer(root, published), (target, tuple(assets)))
+            machine.return_value = 'arm64'
+            self.assertIsNone(ft_engine_update.offer(root, published))
+
+        header = b'\xcf\xfa\xed\xfe\x07\x00\x00\x01' + bytes(4) + b'\x02\x00\x00\x00' + bytes(4)
+        ft_engine_update.check_engine_header(header, target)
+        with self.assertRaises(ValueError):
+            ft_engine_update.check_engine_header(header, 'macos-arm64')
+
     def test_current_release_offers_only_matching_missing_decoder(self):
         published = release()
         base = published['assets'][0]['browser_download_url'].rsplit('/', 1)[0] + '/'

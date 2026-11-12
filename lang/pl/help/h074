@@ -4,12 +4,19 @@ Wybierz wejście radia w konfiguracji dźwięku odbiorczego. W systemach
 Linux i Mac YAC wybiera urządzenie tylko do odtwarzania, jeśli nie
 ustawiono wyjścia. Wymagany jest lokator.
 
+Po otwarciu YAC ustawia domyślną częstotliwość trybu w bieżącym paśmie
+i zaczyna dekodowanie. Jeśli nie ma nastawy, użyj e do strojenia i s do startu.
+
 Przy odczycie komunikatów z prawidłowym lokatorem każdy tryb filtra podaje szacowaną odległość.
 
+b) Pasmo. Ustaw częstotliwość odbioru wybranego trybu cyfrowego.
+d) Tryb cyfrowy. Wybierz FT8 lub FT4.
+e) Wprowadź częstotliwość w MHz.
 f) Filtruj zdekodowane komunikaty.
-m) Przełącz między FT8 i FT4. Dekodowanie zostanie zatrzymane, a wyniki usunięte.
+m) Wybierz tryb pracy radia.
 s) Rozpocznij lub zatrzymaj dekodowanie.
 v) Odczytaj najnowszy komunikat.
+w) Gdzie jestem? Odczytaj sygnał, częstotliwość i tryb.
 Przecinek) Odczytaj poprzedni komunikat.
 Kropka) Odczytaj następny komunikat.
 c) Usuń wyniki.

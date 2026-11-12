@@ -10,6 +10,14 @@ from modules import chat_int, ft_decode_filter, help_int, hints
 
 LOG = logging.getLogger('yac')
 
+# Receive dial frequencies in MHz. Region-specific bands can be tuned with e.
+FT_DIAL_FREQUENCIES = {
+    'FT8': ('1.840', '3.573', '7.074', '10.136', '14.074', '18.100', '21.074',
+            '24.915', '28.074', '50.313', '144.174', '432.065', '1296.174'),
+    'FT4': ('3.575', '7.0475', '10.140', '14.080', '18.104', '21.140',
+            '24.919', '28.180', '50.318', '144.170'),
+}
+
 
 class DecoderManager:
     def __init__(self, yac, root, radio, language):
@@ -26,7 +34,7 @@ class DecoderManager:
         self.cw_buffer = self.buffer
         self.rtty_buffer = TextBuffer()
         self.ft_buffer = deque(maxlen=250)
-        self.ft_mode = 'FT8'
+        self.ft_mode = next(iter(FT_DIAL_FREQUENCIES))
         self.ft_filter = 0
         self.ft_origin = None
         self.ft_distance = (2000, 'km')
@@ -404,16 +412,142 @@ class DecoderManager:
             elif key:
                 chat_int.show_response(self.label('l129'))
 
+    def restart_ft(self):
+        if self.kind != 'f' or self.session is None:
+            return
+        try:
+            self.stop()
+        except (OSError, RuntimeError):
+            LOG.exception('FT decoder stop failed')
+            chat_int.show_response(self.label('l003'))
+            return
+        response = self.start('f')
+        if self.session is None:
+            chat_int.show_response(response)
+
+    def ft_mode_control(self, read_key):
+        modes = tuple(FT_DIAL_FREQUENCIES)
+        chat_int.show_response(self.ft_mode)
+        while True:
+            key = read_key().casefold()
+            if key == 'q':
+                chat_int.show_done(self.root, self.language)
+                return
+            if key == 'h':
+                chat_int.show_response(help_int.get_help(self.root, self.language, 'h076'))
+            elif key in ('.', ','):
+                direction = 1 if key == '.' else -1
+                mode = modes[(modes.index(self.ft_mode) + direction) % len(modes)]
+                frequency, error = self.ft_tune_preset(mode)
+                if error:
+                    chat_int.show_response(error)
+                    continue
+                if frequency is None and self.session is not None and self.kind == 'f':
+                    try:
+                        self.stop()
+                    except (OSError, RuntimeError):
+                        LOG.exception('FT decoder stop failed')
+                        chat_int.show_response(self.label('l003'))
+                        continue
+                self.ft_mode = mode
+                self.ft_buffer.clear()
+                if frequency is None:
+                    chat_int.show_response(f'{mode}. {hints.get_hint(self.root, self.language, "m015")}')
+                else:
+                    self.restart_ft()
+                    chat_int.show_response(f'{mode}. {frequency} MHz' if frequency else mode)
+            elif key:
+                chat_int.show_response(self.label('l129'))
+
+    def ft_tune_preset(self, mode):
+        """Tune the selected mode on this band, with no CAT in Demo Mode."""
+        app, root, radio, language = self.yac, self.root, self.radio, self.language
+        if radio.is_dummy:
+            return '', None
+        if radio._yac_connection_watch.lost:
+            return None, self.label('l109')
+        current = app._current_frequency(root, radio)
+        if current is None:
+            return None, app._radio_error(root, radio, language)
+        mhz = float(current)
+        low, high = next(((low, high) for low, high, _, _ in app.AMATEUR_BANDS
+                          if low <= mhz <= high), (mhz, mhz))
+        target = next((freq for freq in FT_DIAL_FREQUENCIES[mode]
+                       if low <= float(freq) <= high), None)
+        if target is None:
+            return None, None
+        if float(target) == mhz:
+            return current, None
+        response = app._set_frequency(root, radio, language, target, current)
+        if response.replace('.', '', 1).isdigit():
+            return response, None
+        return None, response
+
+    def ft_band_control(self, read_key, watch):
+        app, root, radio, language = self.yac, self.root, self.radio, self.language
+        ranges = app._frequency_ranges(radio)
+        presets = [(float(freq), freq) for freq in FT_DIAL_FREQUENCIES[self.ft_mode]
+                   if any(low <= round(float(freq) * 1_000_000) <= high for low, high in ranges)]
+        if not presets:
+            chat_int.show_response(self.label('l129'))
+            return
+        current = app._current_frequency(root, radio)
+        if current is None:
+            chat_int.show_response(app._radio_error(root, radio, language))
+            return
+        chat_int.show_response(self.label('l090', band=app._band_name(root, language, current))
+                               + f'. {current} MHz')
+        while True:
+            key = read_key().casefold()
+            if watch.lost:
+                return
+            if key == 'q':
+                chat_int.show_done(root, language)
+                return
+            if key == 'h':
+                chat_int.show_response(help_int.get_help(root, language, 'h077'))
+            elif key in ('.', ','):
+                mhz = float(current)
+                low, high = next(((low, high) for low, high, _, _ in app.AMATEUR_BANDS
+                                  if low <= mhz <= high), (mhz, mhz))
+                if key == '.':
+                    target = next((freq for dial, freq in presets if dial > high), None)
+                else:
+                    target = next((freq for dial, freq in reversed(presets) if dial < low), None)
+                if target is None:
+                    chat_int.show_response(f'{app._band_name(root, language, current)} {current} MHz')
+                    continue
+                response = app._set_frequency(root, radio, language, target, current)
+                if response.replace('.', '', 1).isdigit():
+                    current = response
+                    self.restart_ft()
+                    response = f'{app._band_name(root, language, current)} {current} MHz'
+                chat_int.show_response(response)
+            elif key:
+                chat_int.show_response(self.label('l129'))
+
     def decoder_view(self, kind, read_key):
         if kind == 'f':
-            chat_int.show_response(f'{self.ft_mode}. {self.label("l277")}')
+            chat_int.show_response(hints.get_hint(self.root, self.language, 'm014'))
+            frequency, error = self.ft_tune_preset(self.ft_mode)
+            if error:
+                response = error
+            elif frequency is None:
+                response = hints.get_hint(self.root, self.language, 'm015')
+            else:
+                response = self.start(kind)
+                if frequency:
+                    response = f'{frequency} MHz. {response}'
+            chat_int.show_response(f'{self.ft_mode}. {response}')
         else:
             chat_int.show_response(self.label('l273' if kind == 'c' else 'l274'))
         position = -1
+        pending_key = None
         self.view = kind != 'f'
         try:
             while True:
-                key = read_key().casefold()
+                key = pending_key if pending_key is not None else read_key().casefold()
+                pending_key = None
                 if key == 'q':
                     if kind == 'c' or (kind == 'f' and self.kind == 'f'):
                         try:
@@ -441,19 +575,33 @@ class DecoderManager:
                         LOG.exception('Decoder stop failed')
                         response = self.label('l003')
                     chat_int.show_response(response)
-                elif key == 'm' and kind == 'f':
-                    if self.session and self.kind == 'f':
-                        try:
-                            self.stop()
-                        except (OSError, RuntimeError):
-                            LOG.exception('FT decoder stop failed')
-                            chat_int.show_response(self.label('l003'))
-                            continue
-                        chat_int.show_response(self.label('l277'))
-                    self.ft_mode = 'FT4' if self.ft_mode == 'FT8' else 'FT8'
-                    self.ft_buffer.clear()
+                elif key == 'd' and kind == 'f':
+                    self.ft_mode_control(read_key)
                     position = -1
-                    chat_int.show_response(self.ft_mode)
+                elif key == 'w' and kind == 'f':
+                    if self.radio._yac_connection_watch.lost:
+                        chat_int.show_response(self.label('l109'))
+                    else:
+                        chat_int.show_response(self.yac._dispatch(
+                            self.root, self.radio, self.language, 'w', None,
+                        ))
+                elif key in ('b', 'e', 'm') and kind == 'f':
+                    watch = self.radio._yac_connection_watch
+                    if watch.lost:
+                        chat_int.show_response(self.label('l109'))
+                    elif key == 'b':
+                        self.ft_band_control(read_key, watch)
+                    elif key == 'e':
+                        response = self.yac._frequency_entry(self.root, self.radio, self.language)
+                        if response and response.replace('.', '', 1).isdigit():
+                            self.restart_ft()
+                        chat_int.show_response(response)
+                    else:
+                        pending_key = self.yac._radio_mode_control(
+                            self.root, self.radio, self.language, '', read_key, watch,
+                            on_change=self.restart_ft,
+                        )
+                    position = -1
                 elif key == 'f' and kind == 'f':
                     self.ft_filter_control(read_key)
                     position = -1

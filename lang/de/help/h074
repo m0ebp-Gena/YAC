@@ -3,12 +3,19 @@ Hilfe zum FT8- und FT4-Empfang
 Den Funkeingang unter Empfangsaudio auswählen. Unter Linux und Mac wählt
 YAC bei Bedarf ein reines Wiedergabegerät. Ein Locator ist erforderlich.
 
+Beim Öffnen stimmt YAC im aktuellen Band auf die Vorgabefrequenz ab
+und startet die Decodierung. Ohne Vorgabe mit e abstimmen und mit s starten.
+
 Beim Lesen wird für Meldungen mit gültigem Locator in allen Filtermodi die geschätzte Entfernung angegeben.
 
+b) Band. Auf die Empfangsfrequenz der digitalen Betriebsart abstimmen.
+d) Digitale Betriebsart. FT8 oder FT4 wählen.
+e) Frequenz in MHz eingeben.
 f) Decodierte Meldungen filtern.
-m) Zwischen FT8 und FT4 wechseln. Die Decodierung stoppt und die Ergebnisse werden gelöscht.
+m) Funkbetriebsart wählen.
 s) Decodierung starten oder stoppen.
 v) Neueste Meldung lesen.
+w) Wo bin ich? Signal, Frequenz und Betriebsart abfragen.
 Komma) Vorherige Meldung lesen.
 Punkt) Nächste Meldung lesen.
 c) Ergebnisse löschen.

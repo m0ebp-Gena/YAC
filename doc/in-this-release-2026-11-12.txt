@@ -1,0 +1,42 @@
+YAC 001 r7, 12 November 2026
+
+FT8 and FT4 reception
+
+Intel Mac and Linux x86-64 now have optional receive engines. In Settings,
+press u to check for updates. YAC asks about its own update first and offers
+the matching decoder when none is installed or configured. Press y to install
+the decoder or n to skip. Apple Silicon and Linux ARM64 engines remain
+available. Windows continues to use the bundled engine.
+
+The Intel Mac engine was built and tested on macOS Big Sur 11.7.11. It uses
+system libraries. The Linux x86-64 engine was built on Debian 13 and requires
+glibc 2.39 or newer, plus the ALSA, udev, OpenSSL 3, GNU Fortran and
+single-precision FFTW runtime libraries. The installer checks that the
+engine can start. The Mac/Linux engine needs a playback device separate
+from the radio input. Synchronize the computer clock before decoding.
+
+Save the radio input with d, a. Use full stop or comma to browse and
+Enter to save. A callsign and Maidenhead locator are needed.
+
+From Top Level, press d, f to open the decoder. With a connected radio,
+YAC tunes to the selected digital mode's preset on the current band and
+starts receiving. In Demo Mode, tune the physical radio manually.
+
+Inside the decoder, b opens the band presets and e enters a frequency
+in MHz. m opens Radio Mode, and w reads signal, frequency and radio mode.
+d opens Digital Mode. Use full stop or comma to choose FT8 or FT4.
+The radio follows the new mode's preset for the current band. If there
+is no preset, enter a frequency with e and start with s.
+
+Press v to read the latest decode. Comma reads the previous message
+and full stop reads the next. A usable locator gives an estimated
+distance. s stops or starts decoding, and q leaves the decoder.
+
+The CW menu also offers Radio Mode with m. b remains Break-in.
+
+Verification
+
+On Debian 13 x86-64, the FTX-1 tuned to the 40 m FT8 preset on entry,
+then to the 40 m FT4 preset when the digital mode changed. Both modes
+decoded live signals and displayed distances. The Intel Mac engine
+decoded live FT8 in Demo Mode. Live tuning on other bands was not tested.

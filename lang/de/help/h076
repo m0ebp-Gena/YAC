@@ -1,0 +1,13 @@
+Hilfe zur digitalen Betriebsart
+
+Beim Öffnen wird die aktuelle digitale Betriebsart angesagt. Punkt und
+Komma wechseln zwischen den Betriebsarten. Eine laufende Decodierung
+startet in der neuen Betriebsart. q übernimmt die Auswahl und kehrt zurück.
+
+YAC stimmt im aktuellen Band auf die Vorgabefrequenz der neuen
+Betriebsart ab. Ohne Vorgabe stoppt die Decodierung. Mit e abstimmen
+und mit s starten.
+
+***
+Ende der Hilfe
+***

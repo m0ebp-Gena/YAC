@@ -1,0 +1,13 @@
+Ayuda del modo digital
+
+Al abrir se anuncia el modo digital actual. Punto y coma recorren los
+modos. Si la decodificación está activa, se reinicia en el nuevo modo.
+q conserva la selección y vuelve al decodificador.
+
+YAC sintoniza la frecuencia predefinida del nuevo modo en la banda
+actual. Si no hay una, la decodificación se detiene. Usa e para
+sintonizar y s para iniciar.
+
+***
+Fin de la ayuda
+***

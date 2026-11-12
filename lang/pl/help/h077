@@ -1,0 +1,9 @@
+Pomoc dotycząca wyboru pasma w trybie cyfrowym
+
+Po otwarciu odczytywane są bieżące pasmo i częstotliwość. Kropka ustawia
+częstotliwość następnego pasma dla wybranego trybu cyfrowego, a przecinek
+poprzedniego. q zachowuje częstotliwość i wraca do dekodera.
+
+***
+Koniec pomocy
+***

@@ -1,0 +1,13 @@
+Pomoc dotycząca trybu cyfrowego
+
+Po otwarciu odczytywany jest bieżący tryb cyfrowy. Kropka i przecinek
+przełączają tryby. Jeśli dekodowanie jest włączone, uruchamia się w nowym
+trybie. q zachowuje wybór i wraca do dekodera.
+
+YAC ustawia domyślną częstotliwość nowego trybu w bieżącym paśmie.
+Jeśli nie ma nastawy, dekodowanie się zatrzymuje. Użyj e do strojenia
+i s do startu.
+
+***
+Koniec pomocy
+***

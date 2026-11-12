@@ -4,12 +4,19 @@ Choose the radio input in Receive Audio Setup. On Linux and Mac, YAC
 selects a playback-only device when none is configured. A grid locator
 is required.
 
+Opening tunes to the selected mode’s preset on the current band and
+starts decoding. If there is no preset, use e to tune and s to start.
+
 Reviewed messages with a usable locator include an estimated distance in every filter mode.
 
+b) Band. Tune to the selected digital mode’s receive frequency.
+d) Digital Mode. Select FT8 or FT4.
+e) Enter a frequency in MHz.
 f) Filter decoded messages.
-m) Switch between FT8 and FT4. This stops decoding and clears the results.
+m) Select the radio mode.
 s) Start or stop decoding.
 v) Read the latest message.
+w) Where am I? Read signal, frequency and mode.
 Comma) Read the previous message.
 Full stop) Read the next message.
 c) Clear the results.

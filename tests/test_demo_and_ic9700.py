@@ -5,10 +5,12 @@ import tempfile
 import unittest
 from contextlib import redirect_stdout, redirect_stderr
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import patch
 
 import yac
 from modules import lang_sel, find_rad
+from modules.decoder_control import DecoderManager
 from modules.dummy_radio import create_dummy_radio
 from tests.test_icom_7300 import IcomSerial
 
@@ -16,6 +18,96 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class DemoTests(unittest.TestCase):
+    def test_ft_mode_follows_presets_and_review_keeps_the_dial(self):
+        radio = create_dummy_radio()
+        radio.is_dummy = False
+        keys = iter(['d', 'f', 'd', '.', 'q', 'w', 'v', ',', '.', 'w',
+                     'd', ',', 'q', 'e', 'd', '.', 'q', 'q', 'q', 'q', 'y'])
+        output = io.StringIO()
+        starts = []
+
+        def start(manager, kind):
+            starts.append((manager.ft_mode, yac._current_frequency(ROOT, radio)))
+            manager.kind = kind
+            manager.session = SimpleNamespace(close=lambda: None)
+            manager.ft_buffer.extend([('CQ K1ABC', 'Older decode'),
+                                      ('CQ N1ABC', 'Latest decode')])
+            return 'Listening'
+
+        with patch.object(yac, 'connect_radio', return_value=radio), \
+             patch.object(yac, '_read_settings', return_value={'call': 'TEST', 'lang': 'en'}), \
+             patch.object(DecoderManager, 'start', new=start), \
+             patch.object(lang_sel, 'read_key', side_effect=lambda **kwargs: next(keys)), \
+             patch('builtins.input', return_value='7.08'), redirect_stdout(output):
+            self.assertEqual(yac.main([]), 0)
+        self.assertEqual(starts, [
+            ('FT8', '7.074'), ('FT4', '7.0475'),
+            ('FT8', '7.074'), ('FT8', '7.08'), ('FT4', '7.0475'),
+        ])
+        self.assertIn('FT4. 7.0475 MHz\nDone\nS 9 7.0475 LSB', output.getvalue())
+        self.assertIn('Latest decode\nOlder decode\nLatest decode\nS 9 7.0475 LSB',
+                      output.getvalue())
+
+    def test_ft_controls_tune_and_change_mode_inside_the_decoder(self):
+        radio = create_dummy_radio()
+        radio.is_dummy = False
+        keys = iter(['d', 'f', 'd', '.', 'q', 'w', 'b', '.', 'q', 'e', 'm', '.', 'q',
+                     's', 'd', ',', 'q', 'q', 'q', 'c', 'm', ',', 'q', 'q', 'q', 'y'])
+        output = io.StringIO()
+        starts = []
+
+        def start(manager, kind):
+            starts.append((manager.ft_mode, yac._current_frequency(ROOT, radio),
+                           yac._current_mode(radio)))
+            manager.kind = kind
+            manager.session = SimpleNamespace(close=lambda: None)
+            return 'Listening'
+
+        with patch.object(yac, 'connect_radio', return_value=radio), \
+             patch.object(yac, '_read_settings', return_value={'call': 'TEST', 'lang': 'en'}), \
+             patch.object(DecoderManager, 'start', new=start), \
+             patch.object(lang_sel, 'read_key', side_effect=lambda **kwargs: next(keys)), \
+             patch('builtins.input', return_value='14.08'), redirect_stdout(output):
+            self.assertEqual(yac.main([]), 0)
+        self.assertEqual(starts, [
+            ('FT8', '7.074', 'LSB'),
+            ('FT4', '7.0475', 'LSB'),
+            ('FT4', '10.14', 'LSB'),
+            ('FT4', '14.08', 'LSB'),
+            ('FT4', '14.08', 'USB'),
+        ])
+        self.assertIn('Mode Select USB\nLSB', output.getvalue())
+        self.assertIn('FT4. 7.0475 MHz\nDone\nS 9 7.0475 LSB', output.getvalue())
+
+    def test_demo_ft8_polls_live_decoder_before_review(self):
+        radio = create_dummy_radio()
+        keys = iter(['d', 'f', 'v', 'q', 'q', 'q', 'y'])
+        output = io.StringIO()
+        message = 'CQ K1ABC'
+
+        def start(manager, kind):
+            def poll():
+                manager.ft_buffer.append((message, f'12:00:00 UTC. {message}. Minus 5 dB.'))
+
+            manager.kind = kind
+            manager.session = SimpleNamespace(poll=poll, close=lambda: None, error=None)
+            return 'Listening'
+
+        def read_key(idle_callback=None):
+            key = next(keys)
+            if key == 'v' and idle_callback is not None:
+                idle_callback()
+            return key
+
+        with patch.object(yac, 'connect_radio', return_value=radio), \
+             patch.object(yac, '_read_settings', return_value={'call': 'TEST', 'lang': 'en'}), \
+             patch.object(DecoderManager, 'start', new=start), \
+             patch.object(lang_sel, 'read_key', side_effect=read_key), redirect_stdout(output):
+            self.assertEqual(yac.main([]), 0)
+        self.assertIn(f'12:00:00 UTC. {message}. Minus 5 dB.', output.getvalue())
+        self.assertIn('Keep the computer clock synchronized.\nFT8. Listening',
+                      output.getvalue())
+
     def test_startup_reports_position_before_input_without_changing_radio(self):
         for language in ('en', 'de', 'es', 'pl'):
             for simulated in (False, True):
