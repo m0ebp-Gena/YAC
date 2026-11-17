@@ -239,12 +239,12 @@ class Icom7300Tests(unittest.TestCase):
             save.assert_called_once()
             self.assertEqual(serial.vfo,1)
 
-    def test_radio_list_has_no_selection_before_number(self):
+    def test_radio_list_selects_immediately_on_valid_number(self):
         radios = [radio for radio, serial in self.radios()]
         for radio in radios:
             radio.serial.close = MagicMock()
         output = io.StringIO()
-        keys = iter([' ', 'h', '9', '2', ' '])
+        keys = iter([' ', 'h', '9', '2'])
         calls = []
         def read_key():
             calls.append(output.getvalue())
@@ -255,7 +255,7 @@ class Icom7300Tests(unittest.TestCase):
         self.assertNotIn('Selected:',output.getvalue())
         self.assertEqual(calls[0].count('IC-7300 ('),1)
         self.assertNotIn('2. IC-7300MK2\n',calls[0])
-        self.assertIn('2. IC-7300MK2\n',calls[-1])
+        self.assertIn('2. IC-7300MK2\n',output.getvalue())
         radios[0].serial.close.assert_called_once()
         radios[1].serial.close.assert_not_called()
 

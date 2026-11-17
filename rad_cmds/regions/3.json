@@ -3,6 +3,17 @@
   "reviewed": "2026-10-29",
   "sources": ["https://www.iaru-r3.org/wp-content/uploads/2025/01/R3-004-Band-Plans-IARU-Region-3.pdf"],
   "notes": "Regional envelopes, not national permissions or mode sub-bands. Country-dependent 60 m requires separate national definitions and is not enabled for automatic RF. Uses November 2024 revision: 7.2-7.3 MHz and 440-450 MHz are not general Region 3 allocations. Upper edges excluded.",
+  "cw_ranges_hz": [
+    [1800000, 1830000],
+    [3500000, 3535000],
+    [7000000, 7030000],
+    [10110000, 10130000],
+    [14000000, 14070000],
+    [18068000, 18095000],
+    [21000000, 21070000],
+    [24890000, 24915000],
+    [28000000, 28070000]
+  ],
   "transmit_ranges_hz": [
     [1800000, 2000000], [3500000, 3900000], [7000000, 7200000],
     [10100000, 10150000], [14000000, 14350000], [18068000, 18168000],

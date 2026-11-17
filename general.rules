@@ -18,6 +18,8 @@
 
 1g. Every help file starts with a descriptive help title. End with three asterisks on a separate line, End of help in the selected language, then three asterisks on a separate line. These announce the boundary between help and operating prompts.
 
+1h. Keep help and feedback as short as possible while giving users what they need to operate YAC and return to listening. Leave general radio operation and tuning guidance to the radio's user guide or other references. Test that the intended help opens, describes the available actions, and returns to the right place without changing settings. Avoid tying tests to incidental wording or punctuation.
+
 2. General principles
 
 2a. Keep operating responses brief: the setting, "Invalid", "Aborted" or necessary status.

@@ -1,0 +1,18 @@
+DX Spot help
+
+YAC fetches up to ten recent spots from the internet, newest first.
+YAC sends your saved callsign to the DX cluster.
+YAC tries two DX spot servers for up to 12 seconds in total.
+
+Full stop) Next spot.
+Comma) Previous spot.
+Enter) Tune to the spot and apply its reported or likely mode if supported.
+h) Read this help.
+m) Select the radio mode. Press q to return to the current spot.
+q) Return to Top Level.
+r) Refresh the spot list.
+w) Read the radio's signal, frequency and mode.
+
+***
+End of help
+***

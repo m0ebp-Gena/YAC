@@ -1,5 +1,9 @@
 YAC changes
 
+17 November 2026 revision 4
+- Browse recent DX spots and tune to a selected spot.
+- Automatically switch supported radios on at startup or off when quitting.
+
 2 November 2026 revision 1
 - Read-only control entry, explicit Offset actions and active-lock Verify.
 - CW break-in, delay, internal keyer, speed, pitch and sidetone controls.

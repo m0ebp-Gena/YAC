@@ -81,7 +81,8 @@ class ToneInput(unittest.TestCase):
         output, edit, setting = self.control([("h", "88.5"), ("enter", "88.5")], ["h", "x", "t"], lambda *a: "CTCSS 88.5 Hz TX")
         self.assertEqual(edit.call_args_list[1].args, ("CTCSS", "88.5"))
         self.assertIn("TX/Both: t/b", output)
-        self.assertIn("transmission only", output)
+        help_text = (ROOT / 'lang/en/help/h004').read_text(encoding='utf-8').strip()
+        self.assertEqual(output.count(help_text), 2)
         self.assertEqual(setting.call_args.args[3:], ("88.5", "TX", "CTCSS"))
         self.assertEqual(setting.call_count, 1)
 

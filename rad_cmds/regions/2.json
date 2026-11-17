@@ -3,6 +3,17 @@
   "reviewed": "2026-10-29",
   "sources": ["https://www.iaru-r2.org/wp-content/uploads/2020/02/IARU-Region-2-Band-plan.pdf"],
   "notes": "Regional envelopes, not national permissions or mode sub-bands. Country-dependent 60 m requires separate national definitions and is not enabled for automatic RF. The published 145.790-145.800 MHz no-transmission guard band is excluded. Upper edges excluded.",
+  "cw_ranges_hz": [
+    [1810000, 1839000],
+    [3500000, 3570000],
+    [7000000, 7040000],
+    [10100000, 10130000],
+    [14000000, 14070000],
+    [18068000, 18095000],
+    [21000000, 21070000],
+    [24890000, 24915000],
+    [28000000, 28070000]
+  ],
   "transmit_ranges_hz": [
     [1800000, 2000000], [3500000, 4000000], [7000000, 7300000],
     [10100000, 10150000], [14000000, 14350000], [18068000, 18168000],

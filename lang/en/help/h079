@@ -1,0 +1,14 @@
+Automatic radio power help
+
+Opening announces the saved setting.
+o or full stop) Next choice. Comma) Previous choice.
+Choices are Off, Start only, Stop only, and Start and stop.
+Start wakes the selected saved radio at startup if its control port is visible.
+Stop switches off the selected radio when you confirm quitting YAC.
+Power control works on supported radios.
+h) Read this help.
+q) Keep the choice and return to Settings.
+
+***
+End of help
+***

@@ -139,7 +139,8 @@ class AntennaTests(unittest.TestCase):
         output=io.StringIO()
         with redirect_stdout(output):
             self.assertIsNone(ant.control(yac,ROOT,radio,'en',lambda:next(keys),SimpleNamespace(lost=False)))
-        self.assertIn('Antennas:',output.getvalue())
+        self.assertIn('TX 1, RX 1', output.getvalue())
+        self.assertIn((ROOT / 'lang/en/help/h012').read_text(encoding='utf-8').strip(), output.getvalue())
         self.assertTrue(output.getvalue().endswith('Done'))
         self.assertEqual(ant.control(yac,ROOT,radio,'en',lambda:'w',SimpleNamespace(lost=False)),'w')
 

@@ -1,7 +1,7 @@
-Hilfe: Name und Rufzeichen
+Hilfe zum Rufzeichen
 
-Name und Rufzeichen
-Geben Sie den gewünschten Namen, das Rufzeichen oder eine Kombination für YAC ein, bis zu 10 Zeichen einschließlich Leerzeichen. Enter zeigt die Eingabe zur Prüfung.
+Geben Sie Ihr Amateurfunkrufzeichen ein und drücken Sie Enter, um die Eingabe zu prüfen.
+YAC akzeptiert auch einen Namen oder einen Namen zusammen mit dem Rufzeichen. Die Eingabe darf höchstens 10 Zeichen einschließlich Leerzeichen enthalten.
 Für FT8 oder FT4 geben Sie nur Ihr Amateurfunkrufzeichen ein.
 
 h: bei Weiter Y/N? diese Hilfe erneut lesen, dann zurück zur Frage.

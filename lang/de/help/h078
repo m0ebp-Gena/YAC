@@ -1,0 +1,18 @@
+Hilfe zu DX-Meldungen
+
+YAC lädt bis zu zehn aktuelle DX-Meldungen aus dem Internet, die neueste zuerst.
+YAC sendet Ihr gespeichertes Rufzeichen an den DX-Cluster.
+YAC versucht, zwei DX-Cluster in insgesamt bis zu 12 Sekunden zu erreichen.
+
+Punkt) Nächste Meldung.
+Komma) Vorherige Meldung.
+Enter) Frequenz und, falls unterstützt, die gemeldete oder vermutete Betriebsart einstellen.
+h) Diese Hilfe lesen.
+m) Betriebsart wählen. Mit q zur aktuellen Meldung zurückkehren.
+q) Zur Hauptebene zurückkehren.
+r) Die Meldungsliste aktualisieren.
+w) Signalstärke, Frequenz und Betriebsart des Funkgeräts abfragen.
+
+***
+Ende der Hilfe
+***

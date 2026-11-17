@@ -19,6 +19,7 @@ from modules.signal_report import format_s_meter
 from modules.icom_profile import SUPPORTED_MODELS, load_profile
 from modules import verify_settings, gain_control, power_control, filter_control, ts480_control, mic_gain, agc_control
 from modules import speech_processor, split_control, antenna_control, access_control, update_control, wifi_control, setting_selector, offset_control
+from modules import radio_power
 
 
 DEBUG_LOG = logging.getLogger("yac")
@@ -219,8 +220,8 @@ def _show_welcome(root: Path, language: str, call: str) -> None:
 
 
 def _choose_radio(
-    radios: list[RadioConnection], root: Path, language: str
-) -> RadioConnection | None:
+    radios: list[RadioConnection | radio_power.WakeCandidate], root: Path, language: str
+) -> RadioConnection | radio_power.WakeCandidate | None:
     """Use the only discovered radio, or ask which discovered profile to use."""
     from modules import lang_sel, help_int
 
@@ -238,8 +239,7 @@ def _choose_radio(
 
     prompt = _read_label(root, language, "l027", "Profile?")
     help_hint = _read_label(root, language, "l074", "h: Help")
-    chosen: RadioConnection | None = None
-    selection: int | None = None
+    chosen: RadioConnection | radio_power.WakeCandidate | None = None
     while True:
         try:
             print(help_hint)
@@ -252,20 +252,16 @@ def _choose_radio(
         if entered.casefold() == "h":
             print(help_int.get_help(root, language, "h030"))
             continue
-        if entered == " ":
-            if selection is not None:
-                chosen = radios[selection - 1]
-                break
+        if not entered.isdecimal():
             continue
-        if not entered.isdigit():
-            continue
-        new_selection = int(entered)
-        if 1 <= new_selection <= len(radios):
-            selection = new_selection
-            print(f"{selection}. {radios[selection - 1].model_name}")
+        number = int(entered)
+        if 1 <= number <= len(radios):
+            chosen = radios[number - 1]
+            print(f"{number}. {chosen.model_name}", flush=True)
+            break
 
     for radio in radios:
-        if radio is not chosen:
+        if radio is not chosen and not isinstance(radio, radio_power.WakeCandidate):
             radio.close()
     return chosen
 
@@ -1408,6 +1404,35 @@ def _radio_mode_control(root, radio, language, call, read_radio_key, watch, on_c
             return mode_key
 
 
+def _tune_dx_spot(root, radio, language, frequency, mode):
+    result = _set_frequency(root, radio, language, frequency)
+    if not mode or not result.replace('.', '', 1).isdigit():
+        return result
+
+    if mode == "SSB":
+        mhz = float(result)
+        mode = "LSB" if mhz < 10 and not 5 <= mhz < 6 else "USB"
+    if mode == "CW":
+        names = ("CW", "CW-U", "CW-L", "CW-R")
+    elif mode == "RTTY":
+        names = ("RTTY", "RTTY-L", "RTTY-U", "RTTY-R")
+    elif mode in {"FT8", "FT4", "JS8", "PSK31"}:
+        names = ("DATA-U", "DATA", "USB")
+    else:
+        names = (mode,)
+
+    available = {name: code for code, name in _available_modes(radio)}
+    codes = [available[name] for name in names if name in available]
+    current = _current_mode_code(radio)
+    if not codes:
+        return f'{result}, {_read_label(root, language, "l129", "Not Supported")}'
+    if current == codes[0] or (mode in {"CW", "RTTY"} and current in codes):
+        return f"{result}, {_mode_name(radio, current)}"
+    if not _set_mode(radio, codes[0]):
+        return f"{result}, {_radio_error(root, radio, language)}"
+    return f"{result}, {_mode_name(radio, codes[0])}"
+
+
 def _mode_name(radio: RadioConnection, mode_code: int | str) -> str:
     if _icom_supported(radio):
         mode = _icom_profile(radio)["modes"][int(mode_code)]
@@ -1877,6 +1902,17 @@ def connect_radio(ini_path: Path | None = None) -> RadioConnection | None:
     DEBUG_LOG.info("Starting configured-port probe and radio discovery")
     radios = find_radios(ini_path)
     DEBUG_LOG.info("Radio discovery returned %d radio(s)", len(radios))
+    if radio_power.setting(_read_settings(ini_path)) in {'start', 'both'}:
+        candidates = radio_power.wake_candidates(ini_path, radios)
+        if candidates:
+            selection = _choose_radio([*radios, *candidates], root, language)
+            if isinstance(selection, radio_power.WakeCandidate):
+                radio = radio_power.wake(selection)
+                if radio is None:
+                    print(f"{selection.model_name}. {_read_label(root, language, 'l050', 'Radio Error')}",
+                          flush=True)
+                return radio
+            return selection
     if not radios:
         from modules.dummy_radio import create_dummy_radio
         DEBUG_LOG.info("Loading in-memory FT-DX10 demo")
@@ -1950,6 +1986,7 @@ def _main(argv: list[str] | None = None) -> int:
     radio._yac_connection_watch = watch
     from modules.decoder_control import DecoderManager
     decoders = DecoderManager(sys.modules[__name__], root, radio, language)
+
     def read_radio_key(idle_callback=None):
         watch.tick()
         if radio.is_dummy and decoders.session is None and idle_callback is None:
@@ -1962,6 +1999,7 @@ def _main(argv: list[str] | None = None) -> int:
         return lang_sel.read_key(idle_callback=idle)
     prompt_open = True
     where_details_next = False
+    confirmed_quit = False
     try:
         with watch.command():
             chat_int.show_response(_dispatch(root, radio, language, "w", None) or "")
@@ -1990,6 +2028,7 @@ def _main(argv: list[str] | None = None) -> int:
                     from modules import quit_control
                     if not quit_control.confirm(root, language, read_radio_key):
                         continue
+                    confirmed_quit = True
                     chat_int.show_goodbye(root, language, call)
                     sys.stdout.flush()
                     time.sleep(1)
@@ -2116,9 +2155,12 @@ def _main(argv: list[str] | None = None) -> int:
                             if update_control.confirm(root, language, read_radio_key):
                                 return update_control.REQUEST
                             continue
-                        if settings_key in {"b", "o"}:
+                        if settings_key in {"b", "l"}:
                             access_control.control(root, language, read_radio_key, watch,
                                                    modes=settings_key == "b")
+                            continue
+                        if settings_key == "o":
+                            radio_power.control(sys.modules[__name__], root, language, read_radio_key)
                             continue
                         if settings_key == "s":
                             DEBUG_LOG.debug("Settings key=%r", settings_key)
@@ -2175,6 +2217,18 @@ def _main(argv: list[str] | None = None) -> int:
                 elif key == "d":
                     decoders.control(read_radio_key)
                     response = None
+                elif key == "j":
+                    from modules import dx_spots, region_plan
+                    dx_spots.control(
+                        root, language, call, read_radio_key,
+                        lambda frequency, mode: (_radio_error(root, radio, language) if watch.lost
+                                                 else _tune_dx_spot(root, radio, language, frequency, mode)),
+                        region_plan.selected(_read_settings(root / "yac.ini")),
+                        lambda: (_read_label(root, language, 'l109', 'Reconnecting') if watch.lost
+                                 else _dispatch(root, radio, language, "w", None) or ""),
+                        lambda: _radio_mode_control(root, radio, language, call, read_radio_key, watch)
+                        if not watch.lost else None)
+                    response = None
                 elif key == "k":
                     from modules import lock_control
                     pending_key = lock_control.control(
@@ -2212,13 +2266,22 @@ def _main(argv: list[str] | None = None) -> int:
     except RecoveryExpired:
         return 1
     finally:
-        decoders.close()
-        from modules import swr_control
-        restore_error = swr_control.recover(radio)
-        if restore_error:
-            chat_int.show_response(_read_label(root, language, restore_error, 'Restore failed'))
-        radio.close()
-        del radio._yac_connection_watch
+        try:
+            decoders.close()
+            from modules import swr_control
+            restore_error = swr_control.recover(radio)
+            if restore_error:
+                chat_int.show_response(_read_label(root, language, restore_error, 'Restore failed'))
+            if (confirmed_quit and not watch.lost and not restore_error
+                    and radio_power.setting(_read_settings(root / 'yac.ini')) in {'stop', 'both'}):
+                try:
+                    radio_power.power_off(radio)
+                except OSError:
+                    DEBUG_LOG.exception("Radio power-off failed")
+                    chat_int.show_response(_read_label(root, language, 'l050', 'Radio Error'))
+        finally:
+            radio.close()
+            del radio._yac_connection_watch
     return 0
 
 

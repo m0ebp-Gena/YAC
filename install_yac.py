@@ -146,7 +146,7 @@ def main(source=None, home=None, update=False, pi=False):
             if (source / chart).is_file():
                 copy_changed(source / chart, destination / chart)
         if not (destination / "yac.ini").exists():
-            (destination / "yac.ini").write_text("[yac]\nplatform=\nlang=\ncall=\ndebug=true\n", encoding="utf-8")
+            (destination / "yac.ini").write_text("[yac]\nplatform=\nlang=\ncall=\nft_grid=\ndebug=true\n", encoding="utf-8")
         python = destination / ".venv/bin/python"
         try:
             if not python.is_file():

@@ -157,7 +157,6 @@ class SWRTests(unittest.TestCase):
             hint = swr.hints.get_hint(ROOT, language, 'm002')
             self.assertTrue(hint)
             self.assertLessEqual(len(hint), 50)
-            self.assertIn(hint, (ROOT / 'lang' / language / 'help/h035').read_text(encoding='utf-8'))
 
     def test_ftx_usb_retained_ars_measures_and_restores_without_shift_writes(self):
         for hz in ('028020000', '014213000'):

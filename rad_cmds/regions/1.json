@@ -6,6 +6,17 @@
     "https://www.iaru-r1.org/about-us/committees-and-working-groups/vhf-uhf-shf-committee-c5/vhf-up-bandplanning/"
   ],
   "notes": "Regional envelopes, not national permissions or mode sub-bands. Country-dependent 60 m and 4 m require separate national definitions and are not enabled for automatic RF. Upper edges excluded.",
+  "cw_ranges_hz": [
+    [1810000, 1838000],
+    [3500000, 3570000],
+    [7000000, 7040000],
+    [10100000, 10130000],
+    [14000000, 14070000],
+    [18068000, 18095000],
+    [21000000, 21070000],
+    [24890000, 24915000],
+    [28000000, 28070000]
+  ],
   "transmit_ranges_hz": [
     [1810000, 2000000], [3500000, 3800000], [7000000, 7200000],
     [10100000, 10150000], [14000000, 14350000], [18068000, 18168000],

@@ -143,7 +143,7 @@ class MicGainTests(unittest.TestCase):
         with patch.object(yac, '_cat_exchange', wraps=yac._cat_exchange) as exchange:
             _, output = self.run_control(['h', 'q'])
             self.assertTrue(all(call.args[1] in {'MG;', 'MD0;'} for call in exchange.call_args_list))
-        self.assertIn('Lower power does not make an unsuitable load safe', output)
+        self.assertIn((ROOT / 'lang/en/help/h008').read_text(encoding='utf-8').strip(), output)
 
     def test_demo_changes_only_mic_gain_and_keeps_value_on_exit(self):
         radio = create_dummy_radio()

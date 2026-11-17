@@ -1,7 +1,7 @@
-Ayuda: Nombre e indicativo
+Ayuda del indicativo
 
-Nombre e indicativo
-Introduce el nombre, indicativo o combinación que quieres usar en YAC, hasta 10 caracteres incluidos los espacios. Enter muestra la entrada para revisarla.
+Introduce tu indicativo de radioaficionado y pulsa Enter para revisar lo escrito.
+YAC también admite un nombre o un nombre junto con el indicativo. El límite es de 10 caracteres, incluidos los espacios.
 Para FT8 o FT4, introduce solo tu indicativo de radioaficionado.
 
 h: en Seguir Y/N?, leer esta ayuda de nuevo y volver a la pregunta.

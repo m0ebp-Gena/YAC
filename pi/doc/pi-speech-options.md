@@ -1,6 +1,6 @@
 # Pi speech options with Speakup
 
-YAC's `s o` menu now uses Speakup/espeakup. BRLTTY continues providing braille.
+YAC's `s l` menu uses Speakup/espeakup. BRLTTY continues providing braille.
 The previous BRLTTY speech helper is superseded: do not install or use it.
 This is a local implementation awaiting testing on the Pi; nothing is pushed.
 
@@ -96,7 +96,7 @@ Normal source/Windows/macOS launches keep their external screen-reader settings.
 
 ## First test and limitations
 
-Start with rate: `s o`, full stop once. Use `t` to test; `q` returns.
+Start with rate: `s l`, full stop once. Use `t` to test; `q` returns.
 Repeat `o` to select Volume, then use full stop or comma to adjust it.
 Check speech and braille remain available. Test saved values after reboot before
 releasing the image. Automated tests use fake sysfs files, not actual Pi hardware.

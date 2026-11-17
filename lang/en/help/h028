@@ -1,7 +1,7 @@
-Help For The Name and Callsign
+Callsign help
 
-Name and callsign
-Enter the name, callsign or combination you want YAC to use, up to 10 characters including spaces. Press Enter to review it.
+Enter your amateur radio callsign, then press Enter to review it.
+YAC also accepts a name or a name and callsign together. The limit is 10 characters, including spaces.
 For FT8 or FT4, enter your amateur radio callsign by itself.
 
 h: at Continue Y/N?, read this help again, then return to the question.

@@ -6,6 +6,8 @@ call=
 # Choose the region for the radio's location with Settings, r. Repeat r to cycle.
 region=1
 debug=0
+# Automatic radio power. Settings, o selects off, start, stop, or both.
+radio_power=off
 step_ssb=1000
 step_cw=500
 step_am=2500

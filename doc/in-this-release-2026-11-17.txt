@@ -1,0 +1,30 @@
+YAC 001 r4, 17 November 2026
+
+DX spots
+
+From Top Level, press j for recent DX spots. YAC sends your saved
+callsign to the DX cluster and lists up to ten spots, newest first.
+Use full stop and comma to browse. Press Enter to tune to the spot
+and apply its reported or likely mode if the radio supports it.
+Press r to refresh, m to select the radio mode manually, h for help,
+or q to return to Top Level.
+
+Automatic radio power
+
+From Top Level, press s, o. The control announces the saved setting.
+Press o or full stop to advance, or comma to go back. The choices
+are Off, Start only, Stop only, and Start and stop. Press q to keep
+the choice and return to Settings. The default is Off.
+
+Start wakes the selected saved radio at launch if the radio supports
+wake-up and its control port is visible. Stop sends the selected
+radio a power-off command after you confirm quitting YAC, where
+the radio supports that command.
+
+Windows radio startup check
+
+In the Windows r3 hardware test, YAC detected the FTX-1 on COM22 on
+two launches. On two other
+launches it woke the FTDX10 on COM9 and connected. Both radios
+returned frequency, mode and signal readings. The log also records
+power-off requests for both radios.

@@ -120,7 +120,8 @@ In FM, w also reads active CTCSS/DCS on radios supported by i: tone/code, TX or 
 d then a: Receive audio setup. Full stop/comma browse inputs; c channel; v one-second level check; Enter save; q Back. Decoders: s stop/restart, v latest text, comma/full stop review, n clear; q leaves capture running. Native CW: TS-590SG. Native RTTY: IC-705. Audio CW is experimental; see doc/decoder-controls.md.
 
 s b: h Help; b Speech and braille; r Braille only; s Speech only; q Back. Each choice applies and saves immediately for future boots. r mutes Speakup while keeping braille input and output working. b or s restores speech. An attached braille display remains available in every mode. q returns and keeps the selected mode.
-s o: h Help; . increase; , decrease; q Back. r Rate; v Volume; p Pitch; u Punctuation; t Test; d Defaults. Changes apply and save immediately.
+s l: h Help; . increase; , decrease; q Back. r Rate; v Volume; p Pitch; u Punctuation; t Test; d Defaults. Changes apply and save immediately.
+s o: Automatic radio power. Opens at the saved choice. o or full stop selects next; comma selects previous. h Help; q Back.
 h Help; r Rate; v Volume; p Pitch; u Punctuation; . increase; , decrease; t Test; d Defaults; q Back. Every adjustment applies and saves immediately. Rate is selected on entry. Rate and pitch range from 0 to 9; volume from 1 to 9. Punctuation is None, Some, Most or All. q returns and keeps changes. d immediately restores YAC defaults: rate 2, volume 5, pitch 5, punctuation Some. t displays a test sentence using the current settings. System volume, braille and other Speakup preferences are unchanged.
 
 s u: Update YAC. Shows help, then Looking. No Internet or No Update returns to Settings. Update Found asks Read Notes Y/N?, then Update Y/N?. y accepts; n skips notes or declines installation; q returns. Long notes use Space for the next page and q to leave.

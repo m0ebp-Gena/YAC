@@ -76,7 +76,7 @@ the Pi kit. Initial Linux testing
 has confirmed usable Freedom Scientific braille and the simulated-radio startup
 line; broader hardware and sleep/wake testing remains ongoing.
 
-On the configured Pi image, Settings `s o` opens Speakup speech options.
+On the configured Pi image, Settings `s l` opens Speakup speech options.
 `s b` selects the saved speech/braille mode. Speech adjustments apply and save
 immediately; `q` returns and keeps changes. `s s` remains tuning step. These require the
 image-only helper, supplied and documented in the separate Pi kit.

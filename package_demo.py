@@ -30,7 +30,7 @@ folder = 'yac-win-' + args.date + release_suffix
 staging = root / 'builds/.work/packages'
 staging.mkdir(parents=True, exist_ok=True)
 archive = staging / (folder + '.zip')
-expected_settings = b'[yac]\nplatform=\nlang=\ncall=\ndebug=true\n'
+expected_settings = b'[yac]\nplatform=\nlang=\ncall=\nft_grid=\ndebug=true\n'
 if (source / 'yac.ini').read_bytes().replace(b'\r\n', b'\n') != expected_settings:
     raise RuntimeError('Package settings must be clean, with no personal preferences or radio devices')
 expected_files = {

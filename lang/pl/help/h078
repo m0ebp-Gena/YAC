@@ -1,0 +1,18 @@
+Pomoc dotycząca spotów DX
+
+YAC pobiera z internetu do dziesięciu ostatnich spotów, od najnowszego.
+YAC wysyła zapisany znak do klastra DX.
+YAC próbuje połączyć się z dwoma serwerami spotów DX przez łącznie do 12 sekund.
+
+Kropka) Następny spot.
+Przecinek) Poprzedni spot.
+Enter) Dostrój radio i ustaw zgłoszony lub prawdopodobny tryb, jeśli radio go obsługuje.
+h) Przeczytaj tę pomoc.
+m) Wybierz tryb pracy radia. Naciśnij q, aby wrócić do bieżącego spotu.
+q) Wróć do poziomu głównego.
+r) Odśwież listę spotów.
+w) Odczytaj sygnał, częstotliwość i tryb pracy radia.
+
+***
+Koniec pomocy
+***

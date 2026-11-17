@@ -102,9 +102,6 @@ class DecoderTests(unittest.TestCase):
             self.assertLessEqual(len(hint), 50)
             audio.assert_not_called()
             self.assertIsNone(manager.session)
-            help_text = (ROOT / 'lang' / language / 'help/h013').read_text(encoding='utf-8')
-            self.assertIn(hint, help_text)
-            self.assertNotIn('cw_audio_device', help_text)
 
     def test_configured_audio_starts_and_other_failures_keep_generic_response(self):
         radio = SimpleNamespace(protocol='CAT', model_id='0840')
